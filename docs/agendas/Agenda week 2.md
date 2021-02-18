@@ -26,7 +26,10 @@ Note taker:     {Beatriz Barroso}
   - Design a “code of conduct” for our group
 
 ## Action points for next week (Scrum board)
+- Submit Code of Conduct
+- Fill README file
 - Create a Backlog for the CTA meeting.
+- Prepare agenda for next meeting
 - Work on Information Literacy assignment
 - Start Design
 
