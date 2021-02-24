@@ -14,6 +14,7 @@ Add your own name (do not add the names for others!) to the section below.
 
 | 📸 | Name | Email |
 |---|---|---|
+| ![](./docs/images/PedroInfoPic.jpeg) | Pedro H. Brandão | P.H.BrandaodeAraujo@student.tudelft.nl |
 | ![](.\docs\images\npietnoczko.png) | Natalia Pietnoczko | n.pietnoczko@student.tudelft.nl |
 | ![](.\docs\images\MauroStortiPic.png) | Mauro Storti | m.storti@student.tudelft.nl |
 
