@@ -11,7 +11,6 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## Group members
 
-<<<<<<< README.md
 | 📸 | Name | Email |
 |---|---|---|
 | ![](./docs/images/RadoslavSozonov.png) | Radoslav Sozonov | R.N.Sozonov@student.tudelft.nl |
@@ -19,7 +18,6 @@ Add your own name (do not add the names for others!) to the section below.
 | ![](./docs/images/npietnoczko.png) | Natalia Pietnoczko | n.pietnoczko@student.tudelft.nl |
 | ![](./docs/images/MauroStortiPic.png) | Mauro Storti | m.storti@student.tudelft.nl |
 | ![](docs/images/Rado.jpg)           | Rado Todorov | R.A.Todorov@student.tudelft.nl |
->>>>>>> README.md
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
