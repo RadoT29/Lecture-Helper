@@ -14,7 +14,7 @@ Add your own name (do not add the names for others!) to the section below.
 
 | 📸 | Name | Email |
 |---|---|---|
-| ![](./docs/images/picture.jpg) | Beatriz Barroso | B.MachadoGonzagaBarroso-1@student.tudelft.nl |
+| ![](./docs/images/pictureBeatriz.jpg) | Beatriz Barroso | B.MachadoGonzagaBarroso-1@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
