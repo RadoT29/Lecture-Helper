@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories("nl.tudelft.oopp.demo")
 @PropertySource("application-dev.properties")
 @EnableTransactionManagement
 public class H2Config {
