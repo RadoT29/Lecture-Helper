@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="76.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
+    <Label text="Enter room name" />
+   <TextField fx:id="roomName" />
+    <Button fx:id="button" onAction="#buttonClicked" text="Click me!" />
+</VBox>
