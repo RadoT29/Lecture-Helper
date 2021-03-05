@@ -14,11 +14,6 @@ public class SplashCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
-    /**
-     * Retrieves a quote from the server.
-     * @return the body of a get request to the server.
-     * @throws Exception if communication with the server fails.
-     */
     public static Room postRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ","%20"))).build();
