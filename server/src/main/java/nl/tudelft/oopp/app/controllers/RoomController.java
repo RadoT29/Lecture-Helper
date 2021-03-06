@@ -21,4 +21,10 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         return new Room(name);
     }
+
+    @PostMapping("closeRoomByName")
+    @ResponseBody
+    public void closeRoom(@RequestParam String name){
+        //make query and close the room!
+    }
 }

@@ -1,10 +1,12 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
@@ -20,6 +22,8 @@ public class SplashSceneController {
     private TextField userType;
     @FXML
     private Button roleControl;
+    @FXML
+    private Label nameOfRoom;
 
     /**
      * Handles clicking the button.
@@ -63,5 +67,9 @@ public class SplashSceneController {
             io.printStackTrace();
         }
 
+    }
+
+    public void closeRoom() {
+        ServerCommunication.closeRoom(nameOfRoom.getText());
     }
 }
