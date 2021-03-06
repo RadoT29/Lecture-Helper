@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.app.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -21,6 +20,10 @@ public class Moderator extends User {
         super(name, roomId);
     }
 
+    /**
+     * Empty constructor
+     * (Intellij insists that this has to be created)
+     */
     public Moderator() {
 
     }
