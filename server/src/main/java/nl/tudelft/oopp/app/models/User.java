@@ -41,10 +41,21 @@ public class User {
     @Column(name = "updated_at")
     private  Date updatedAt;
 
+
+    public User() {
+
+    }
+
+    /**
+     * Create a user.
+     * @param name - name of user
+     * @param roomId - the room, which the user enters.
+     */
     public User(String name, Room roomId) {
         this.name = name;
         this.roomId = roomId;
     }
+
 
     public String getName() {
         return name;
