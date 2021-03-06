@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="76.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
+<VBox prefHeight="230.0" prefWidth="303.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
     <Label text="Enter room name" />
-   <TextField fx:id="roomName" />
-    <Button fx:id="button" onAction="#buttonClicked" text="Click me!" />
+   <TextField fx:id="roomName" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0">
+      <VBox.margin>
+         <Insets />
+      </VBox.margin></TextField>
+    <Button fx:id="button" onAction="#buttonClicked" text="Click me!" VBox.vgrow="NEVER">
+      <VBox.margin>
+         <Insets left="175.0" top="-25.0" />
+      </VBox.margin></Button>
+   <Label prefHeight="17.0" prefWidth="95.0" text="Enter your role">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin>
+   </Label>
+   <TextField fx:id="userType" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" />
+   <Button fx:id="roleControl" onAction="#selectUserType" prefHeight="25.0" prefWidth="64.0" text="Enter">
+      <VBox.margin>
+         <Insets left="175.0" top="-25.0" />
+      </VBox.margin>
+   </Button>
 </VBox>
