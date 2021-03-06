@@ -3,7 +3,14 @@ package nl.tudelft.oopp.app.models;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -67,14 +74,20 @@ public class User {
         return updatedAt;
     }
 
-    public boolean equals(Object other){
-        if(this == other){
+    /**
+     * The equals method checks whether our user object
+     * is the same as another object.
+     * @param other - the object we check.
+     * @return true if the objects are equal and false otherwise.
+     */
+    public boolean equals(Object other) {
+        if (this == other) {
             return true;
         }
-        if(other instanceof User){
+        if (other instanceof User) {
             User that = (User) other;
-            if(this.getRoomId().equals(that.getRoomId()) &&
-            this.getName().equals(that.getName())){
+            if (this.getRoomId().equals(that.getRoomId())
+                    && this.getName().equals(that.getName())) {
                 return true;
             }
         }

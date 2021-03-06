@@ -6,7 +6,7 @@ public class User {
     private long id;
     private String name;
     private long roomId;
-//    private Date createdAt;
-  //  private Date updatedAt;
+    //  private Date createdAt;
+    //  private Date updatedAt;
 
 }
