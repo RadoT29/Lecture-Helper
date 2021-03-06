@@ -22,7 +22,7 @@ public class Student extends User {
     }
 
     /**
-     * Empty constructor
+     * Empty constructor.
      * (Intellij insists that this has to be created)
      */
     public Student() {

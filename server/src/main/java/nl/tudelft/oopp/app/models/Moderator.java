@@ -21,7 +21,7 @@ public class Moderator extends User {
     }
 
     /**
-     * Empty constructor
+     * Empty constructor.
      * (Intellij insists that this has to be created)
      */
     public Moderator() {
