@@ -7,19 +7,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
-    //@Autowired
-    private RoomRepository repository;
-
-    @Autowired
-    public RoomService(@Qualifier("RoomRepository") RoomRepository roomRepository) {
-        this.repository = roomRepository;
-    }
-
-    public void closeRoom(String name) {
-        repository.closeRoom(name);
-    }
-
-    public void kickAllStudents(String name) {
-        repository.kickAllStudent(name);
-    }
+//    //@Autowired
+//    private RoomRepository repository;
+//
+//    @Autowired
+//    public RoomService(@Qualifier("RoomRepository") RoomRepository roomRepository) {
+//        this.repository = roomRepository;
+//    }
+//
+//    public void closeRoom(String name) {
+//        repository.closeRoom(name);
+//    }
+//
+//    public void kickAllStudents(String name) {
+//        repository.kickAllStudent(name);
+//    }
 }

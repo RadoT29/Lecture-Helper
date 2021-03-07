@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class RoomController {
-
-    private RoomService service;
-
-    @Autowired
-    public RoomController(RoomService roomService) {
-        this.service = roomService;
-    }
-
+//
+//    private RoomService service;
+//
+//    @Autowired
+//    public RoomController(RoomService roomService) {
+//        this.service = roomService;
+//    }
+//
     /**
      * GET Endpoint to retrieve a random quote.
      *
@@ -31,24 +31,24 @@ public class RoomController {
         return new Room(name);
     }
 
-    /**
-     * PUT Endpoint close the room
-     *
-     * @param name - name of the room
-     */
-    @PutMapping("closeRoomByName")
-    public void closeRoom(@RequestParam String name) {
-        //make query and close the room!
-        service.closeRoom(name);
-    }
-
-    /**
-     * PUT Endpoint kick all student
-     *
-     * @param name - name of the room
-     */
-    @PutMapping("kickAllStudents")
-    public void kickAllStudent(@RequestParam String name) {
-        service.kickAllStudents(name);
-    }
+//    /**
+//     * PUT Endpoint close the room
+//     *
+//     * @param name - name of the room
+//     */
+//    @PutMapping("closeRoomByName")
+//    public void closeRoom(@RequestParam String name) {
+//        //make query and close the room!
+//        service.closeRoom(name);
+//    }
+//
+//    /**
+//     * PUT Endpoint kick all student
+//     *
+//     * @param name - name of the room
+//     */
+//    @PutMapping("kickAllStudents")
+//    public void kickAllStudent(@RequestParam String name) {
+//        service.kickAllStudents(name);
+//    }
 }
