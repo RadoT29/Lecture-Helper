@@ -1,8 +1,11 @@
 package nl.tudelft.oopp.app.controllers;
 
 import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.service.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -11,6 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class RoomController {
 
+    private RoomService service;
+    @Autowired
+    public RoomController(RoomService roomService){
+        this.service=roomService;
+    }
     /**
      * GET Endpoint to retrieve a random quote.
      *
@@ -22,9 +30,9 @@ public class RoomController {
         return new Room(name);
     }
 
-    @PostMapping("closeRoomByName")
-    @ResponseBody
+    @PutMapping("closeRoomByName")
     public void closeRoom(@RequestParam String name){
         //make query and close the room!
+        service.closeRoom(name);
     }
 }
