@@ -14,4 +14,15 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.name='My room'")
     void closeRoom(String name);
 
+    String query = "UPDATE Student s " +
+            "SET s.permission = false " +
+            "FROM s " +
+            "JOIN Room as r " +
+            "On s.roomID=r.id " +
+            "WHERE r.name='My room'";
+
+    @Modifying
+    @Transactional
+    @Query(value = query)
+    void kickAllStudent(String name);
 }

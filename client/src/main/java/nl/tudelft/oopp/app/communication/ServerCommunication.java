@@ -36,6 +36,11 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+    /**
+     * Close the room
+     * @param name - name of the room
+     * @throws Exception if communication with the server fails.
+     */
     public static void closeRoom(String name){
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room?closeRoomByName=" + name.replace(" ","%20"))).build();
@@ -50,6 +55,25 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
 
+    }
+    /**
+     * Kick all students
+     * @param name - name of the room
+     * @throws Exception if communication with the server fails.
+     */
+    public static void kickAllStudents(String name) {
+        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/room?kickAllStudents=" + name.replace(" ", "%20"))).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
     }
 
 }

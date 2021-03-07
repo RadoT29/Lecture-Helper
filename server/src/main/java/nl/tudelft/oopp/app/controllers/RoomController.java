@@ -30,9 +30,22 @@ public class RoomController {
         return new Room(name);
     }
 
+    /**
+     * PUT Endpoint close the room
+     * @param name - name of the room
+     */
     @PutMapping("closeRoomByName")
     public void closeRoom(@RequestParam String name){
         //make query and close the room!
         service.closeRoom(name);
+    }
+
+    /**
+     * PUT Endpoint kick all student
+     * @param name - name of the room
+     */
+    @PutMapping("kickAllStudents")
+    public void kickAllStudent(@RequestParam String name){
+        service.kickAllStudents(name);
     }
 }

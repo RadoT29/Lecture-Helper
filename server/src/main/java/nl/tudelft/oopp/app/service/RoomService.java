@@ -18,4 +18,8 @@ public class RoomService {
     public void closeRoom(String name){
         repository.closeRoom(name);
     }
+
+    public void kickAllStudents(String name){
+        repository.kickAllStudent(name);
+    }
 }
