@@ -11,7 +11,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.name='My room'")
+    @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.name=?1")
     void closeRoom(String name);
 
     String query = "UPDATE Student s " +
@@ -19,7 +19,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "FROM s " +
             "JOIN Room as r " +
             "On s.roomID=r.id " +
-            "WHERE r.name='My room'";
+            "WHERE r.name=?1";
 
     @Modifying
     @Transactional
