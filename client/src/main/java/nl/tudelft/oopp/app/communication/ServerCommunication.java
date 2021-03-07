@@ -17,12 +17,13 @@ public class ServerCommunication {
 
     /**
      * Retrieves a quote from the server.
+     *
      * @return the body of a get request to the server.
      * @throws Exception if communication with the server fails.
      */
     public static Room postRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ","%20"))).build();
+                .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ", "%20"))).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -38,12 +39,13 @@ public class ServerCommunication {
 
     /**
      * Close the room
+     *
      * @param name - name of the room
      * @throws Exception if communication with the server fails.
      */
-    public static void closeRoom(String name){
+    public static void closeRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?closeRoomByName=" + name.replace(" ","%20"))).build();
+                .uri(URI.create("http://localhost:8080/room?closeRoomByName=" + name.replace(" ", "%20"))).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -56,8 +58,10 @@ public class ServerCommunication {
         }
 
     }
+
     /**
      * Kick all students
+     *
      * @param name - name of the room
      * @throws Exception if communication with the server fails.
      */

@@ -30,7 +30,7 @@ public class Room {
     private UUID linkIdModerator;
 
     @Column(name = "is_open")
-    private  boolean isOpen;
+    private boolean isOpen;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -38,7 +38,7 @@ public class Room {
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private  Date updatedAt;
+    private Date updatedAt;
 
     public Room() {
     }

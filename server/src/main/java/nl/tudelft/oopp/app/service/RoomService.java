@@ -11,15 +11,15 @@ public class RoomService {
     private RoomRepository repository;
 
     @Autowired
-    public RoomService(@Qualifier("RoomRepository") RoomRepository roomRepository){
-        this.repository=roomRepository;
+    public RoomService(@Qualifier("RoomRepository") RoomRepository roomRepository) {
+        this.repository = roomRepository;
     }
 
-    public void closeRoom(String name){
+    public void closeRoom(String name) {
         repository.closeRoom(name);
     }
 
-    public void kickAllStudents(String name){
+    public void kickAllStudents(String name) {
         repository.kickAllStudent(name);
     }
 }

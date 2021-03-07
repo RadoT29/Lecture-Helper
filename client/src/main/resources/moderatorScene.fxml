@@ -4,12 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="215.0" prefWidth="329.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
-   <Button fx:id="CloseRoom" mnemonicParsing="false" onAction="#closeRoom" text="Close room! " />
-   <Label fx:id="nameOfRoom" text="#RoomName#" />
-   <Button fx:id="kickAllStudents" mnemonicParsing="false" onAction="#kickAllStudents" text="Kick all students!" />
+<VBox prefHeight="215.0" prefWidth="329.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
+    <Button fx:id="CloseRoom" mnemonicParsing="false" onAction="#closeRoom" text="Close room! "/>
+    <Label fx:id="nameOfRoom" text="#RoomName#"/>
+    <Button fx:id="kickAllStudents" mnemonicParsing="false" onAction="#kickAllStudents" text="Kick all students!"/>
     <Label prefWidth="190.0" text="Welcome to the moderator display.">
-      <VBox.margin>
-         <Insets left="55.0" top="100.0" />
-      </VBox.margin></Label>
+        <VBox.margin>
+            <Insets left="55.0" top="100.0"/>
+        </VBox.margin>
+    </Label>
 </VBox>

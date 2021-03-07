@@ -27,7 +27,7 @@ public class User {
 
     @Column(name = "name")
     private String name;
-    
+
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room roomId;
@@ -39,7 +39,7 @@ public class User {
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private  Date updatedAt;
+    private Date updatedAt;
 
 
     public User() {
@@ -48,7 +48,8 @@ public class User {
 
     /**
      * Create a user.
-     * @param name - name of user
+     *
+     * @param name   - name of user
      * @param roomId - the room, which the user enters.
      */
     public User(String name, Room roomId) {
@@ -88,6 +89,7 @@ public class User {
     /**
      * The equals method checks whether our user object
      * is the same as another object.
+     *
      * @param other - the object we check.
      * @return true if the objects are equal and false otherwise.
      */

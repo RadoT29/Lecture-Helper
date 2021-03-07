@@ -79,7 +79,7 @@ public class SplashSceneController {
     /**
      * kick all students
      */
-    public void kickAllStudents(){
+    public void kickAllStudents() {
         ServerCommunication.kickAllStudents(nameOfRoom.getText());
     }
 }
