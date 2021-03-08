@@ -14,6 +14,11 @@ public class SplashCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
+    /**
+     * Creates a new room on server and retrieves room info.
+     * @param name Name for the room
+     * @return Room object with name, links and isOpen boolena
+     */
     public static Room postRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ","%20"))).build();
