@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
+import javax.persistence.GenerationType;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,7 +17,7 @@ import java.util.UUID;
 @Table(name = "rooms")
 public class Room {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
@@ -30,14 +32,6 @@ public class Room {
 
     @Column(name = "is_open")
     private  boolean isOpen;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private  Date updatedAt;
 
     public Room() {
     }
