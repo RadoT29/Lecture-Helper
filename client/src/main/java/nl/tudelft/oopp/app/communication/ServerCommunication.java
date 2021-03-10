@@ -34,23 +34,5 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
-    /**
-     * Checks whether the user is a Student or a Moderator.
-     * @return the body of a get request to the server.
-     */
-    public static String checkForRoom(String roomLink) {
-        System.out.println("This worked - checkForRoom !!!");
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return response.body();
-    }
+
 }
