@@ -13,35 +13,26 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "rooms")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "link_id_student")
     private UUID linkIdStudent;
 
-    @Column(name = "link_id_moderator")
     private UUID linkIdModerator;
 
-    @Column(name = "is_open")
-    private boolean isOpen;
+    private  boolean isOpen;
 
     @Column(name = "student_permission")
     private boolean permission;
-
     @CreationTimestamp
-    @Column(name = "created_at")
     private Date createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    private  Date updatedAt;
 
     public Room() {
     }
@@ -90,5 +81,13 @@ public class Room {
 
     public void setOpen(boolean open) {
         isOpen = open;
+    }
+
+    public boolean getPermission(){
+        return permission;
+    }
+
+    public void setPermission(boolean permission) {
+        this.permission = permission;
     }
 }

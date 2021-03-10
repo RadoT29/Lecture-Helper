@@ -17,13 +17,12 @@ public class ServerCommunication {
 
     /**
      * Retrieves a quote from the server.
-     *
      * @return the body of a get request to the server.
      * @throws Exception if communication with the server fails.
      */
     public static Room postRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ", "%20"))).build();
+                .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ","%20"))).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -36,7 +35,6 @@ public class ServerCommunication {
         }
         return gson.fromJson(response.body(), Room.class);
     }
-
     /**
      * Close the room.
      *

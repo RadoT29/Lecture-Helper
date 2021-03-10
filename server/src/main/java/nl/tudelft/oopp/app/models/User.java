@@ -3,14 +3,11 @@ package nl.tudelft.oopp.app.models;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -18,43 +15,41 @@ import java.util.Date;
  * The user is stored in the database.
  */
 @Entity
-@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
     private String name;
-
+    
     @ManyToOne
-    @JoinColumn(name = "room_id")
     private Room roomId;
 
 
     @CreationTimestamp
-    @Column(name = "created_at")
     private Date createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    private  Date updatedAt;
 
-
-    public User() {
-
-    }
 
     /**
      * Create a user.
-     *
-     * @param name   - name of user
+     * @param name - name of user
      * @param roomId - the room, which the user enters.
      */
     public User(String name, Room roomId) {
         this.name = name;
         this.roomId = roomId;
+    }
+
+    public User(Room roomId) {
+        this.roomId = roomId;
+        this.name = "Anonymous";
+    }
+
+    public User() {
+
     }
 
 
@@ -89,7 +84,6 @@ public class User {
     /**
      * The equals method checks whether our user object
      * is the same as another object.
-     *
      * @param other - the object we check.
      * @return true if the objects are equal and false otherwise.
      */

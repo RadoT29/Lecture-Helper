@@ -1,14 +1,12 @@
 package nl.tudelft.oopp.app.models;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * This class represents a Student in the application.
  * The student is a type of user and is stored in the database.
  */
 @Entity
-@Table(name = "students")
 public class Student extends User {
 
     /**
@@ -21,13 +19,14 @@ public class Student extends User {
         super(name, roomId);
     }
 
-    /**
-     * Empty constructor.
-     * (Intellij insists that this has to be created)
-     */
+    public Student(Room roomId) {
+        super(roomId);
+    }
+
     public Student() {
 
     }
+
 
     @Override
     public boolean equals(Object other) {

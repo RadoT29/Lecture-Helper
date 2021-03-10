@@ -15,7 +15,7 @@ public class ServerCommunication {
      * @throws Exception if communication with the server fails.
      */
     public static String getQuote() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote%22")).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

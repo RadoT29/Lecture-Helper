@@ -1,14 +1,12 @@
 package nl.tudelft.oopp.app.models;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * This class represents a moderator of the application.
  * The moderator is a type of user and is stored in the database.
  */
 @Entity
-@Table(name = "moderators")
 public class Moderator extends User {
 
     /**
@@ -25,8 +23,12 @@ public class Moderator extends User {
      * Empty constructor.
      * (Intellij insists that this has to be created)
      */
-    public Moderator() {
+    public Moderator(Room roomId) {
+        super(roomId);
+    }
 
+    public Moderator() {
+        super();
     }
 
     @Override
