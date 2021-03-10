@@ -3,7 +3,7 @@ package nl.tudelft.oopp.app.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import nl.tudelft.oopp.app.communication.ServerCommunication;
+import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.models.Room;
 
 public class SplashSceneController {
@@ -16,7 +16,7 @@ public class SplashSceneController {
      */
     public void buttonClicked() {
 
-        Room room = ServerCommunication.postRoom(roomName.getText());
+        Room room = SplashCommunication.postRoom(roomName.getText());
 
         String text = "Student link: " + room.linkIdStudent.toString()
                 + "\nModerator link: " + room.linkIdModerator.toString();

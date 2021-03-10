@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.Session;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -32,7 +33,10 @@ public class SplashCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        return gson.fromJson(response.body(), Room.class);
+
+        Room room = gson.fromJson(response.body(), Room.class);
+        Session session = Session.getInstace(room.linkIdModerator.toString(), room.name, true);
+        return room;
     }
 
 }
