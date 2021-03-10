@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.Room;
@@ -21,6 +23,7 @@ public class SplashSceneController {
     @FXML
     private Button roleControl;
 
+
     /**
      * Handles clicking the button.
      */
@@ -31,12 +34,16 @@ public class SplashSceneController {
         String text = "Student link: " + room.linkIdStudent.toString()
                 + "\nModerator link: " + room.linkIdModerator.toString();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setWidth(900);
-        alert.setHeight(300);
-        alert.setTitle("Room links");
-        alert.setHeaderText(null);
-        alert.setContentText(text);
+        TextArea textArea = new TextArea(text);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        GridPane gridPane = new GridPane();
+        gridPane.setMaxWidth(Double.MAX_VALUE);
+        gridPane.add(textArea, 0, 0);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Stuff");
+        alert.getDialogPane().setContent(gridPane);
         alert.showAndWait();
 
     }
@@ -45,10 +52,13 @@ public class SplashSceneController {
      * Handles different users.
      */
     public void selectUserType() {
+
+        String userRole = ServerCommunication.checkForRoom(userType.getText());
+        System.out.println("This worked - selectUserType!!!");
         FXMLLoader loader;
-        if (userType.getText().equals("Student")) {
+        if (userRole.equals("Student")) {
             loader = new FXMLLoader(getClass().getResource("/studentScene.fxml"));
-        } else if (userType.getText().equals("Moderator")) {
+        } else if (userRole.equals("Moderator")) {
             loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml"));
         } else {
             return;
@@ -62,6 +72,6 @@ public class SplashSceneController {
         } catch (IOException io) {
             io.printStackTrace();
         }
-
     }
+
 }

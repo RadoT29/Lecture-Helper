@@ -26,16 +26,13 @@ public class ModeratorStudentTest {
 
     @Test
     public void saveAndRetrieveStudent() {
-
         Room room = new Room("room name");
         roomRepository.save(room);
 
-        studentRepository.deleteAll();
-        moderatorRepository.deleteAll();
         Student student = new Student("Radoslav",room);
         studentRepository.save(student);
 
-        Student student2 = studentRepository.getOne((long) 1);
+        Student student2 = studentRepository.getOne(student.getId());
         assertEquals(student, student2);
     }
 
@@ -44,12 +41,10 @@ public class ModeratorStudentTest {
         Room room = new Room("room name");
         roomRepository.save(room);
 
-        studentRepository.deleteAll();
-        moderatorRepository.deleteAll();
         Moderator mod = new Moderator("Rado",room);
         moderatorRepository.save(mod);
 
-        Moderator mod2 = moderatorRepository.getOne((long) 1);
+        Moderator mod2 = moderatorRepository.getOne(mod.getId());
         assertEquals(mod, mod2);
     }
 
@@ -58,12 +53,10 @@ public class ModeratorStudentTest {
         Room room = new Room("OurRoom");
         roomRepository.save(room);
 
-        studentRepository.deleteAll();
-        moderatorRepository.deleteAll();
         Moderator mod = new Moderator("Pedro",room);
         moderatorRepository.save(mod);
 
-        Moderator moderator = moderatorRepository.getOne((long) 1);
+        Moderator moderator = moderatorRepository.getOne(mod.getId());
         assertEquals(moderator.getRoomId(), room);
         assertEquals(moderator.getRoomId().getName(), "OurRoom");
     }
@@ -73,12 +66,10 @@ public class ModeratorStudentTest {
         Room room = new Room("room name");
         roomRepository.save(room);
 
-        studentRepository.deleteAll();
-        moderatorRepository.deleteAll();
         Student stud = new Student("Pedro",room);
         studentRepository.save(stud);
 
-        Student student = studentRepository.getOne((long) 1);
+        Student student = studentRepository.getOne(stud.getId());
         assertEquals(student.getRoomId(), room);
         assertEquals(student.getRoomId().getName(), "room name");
     }
