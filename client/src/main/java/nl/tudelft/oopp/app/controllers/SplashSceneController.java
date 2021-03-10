@@ -50,7 +50,8 @@ public class SplashSceneController {
     }
 
     /**
-     * Handles different users.
+     * Handles user roles.
+     * @throws IOException - Is thrown if loader fails.
      */
     public void selectUserType() throws IOException {
 
