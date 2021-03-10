@@ -38,7 +38,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Close the room
+     * Close the room.
      *
      * @param name - name of the room
      * @throws Exception if communication with the server fails.
@@ -60,7 +60,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Kick all students
+     * Kick all students.
      *
      * @param name - name of the room
      * @throws Exception if communication with the server fails.

@@ -32,7 +32,7 @@ public class RoomController {
     }
 
     /**
-     * PUT Endpoint close the room
+     * PUT Endpoint close the room.
      *
      * @param name - name of the room
      */
@@ -43,7 +43,7 @@ public class RoomController {
     }
 
     /**
-     * PUT Endpoint kick all student
+     * PUT Endpoint kick all student.
      *
      * @param name - name of the room
      */

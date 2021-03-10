@@ -70,14 +70,14 @@ public class SplashSceneController {
     }
 
     /**
-     * close the room
+     * close the room.
      */
     public void closeRoom() {
         ServerCommunication.closeRoom(nameOfRoom.getText());
     }
 
     /**
-     * kick all students
+     * kick all students.
      */
     public void kickAllStudents() {
         ServerCommunication.kickAllStudents(nameOfRoom.getText());
