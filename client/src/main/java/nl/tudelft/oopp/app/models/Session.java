@@ -35,7 +35,7 @@ public final class Session {
      *                    just by changing this variable
      * @return singleton class instance
      */
-    public static Session getInstace(String roomLink, String roomName, boolean isModerator) {
+    public static Session getInstance(String roomLink, String roomName, boolean isModerator) {
         if (instance == null) {
             instance = new Session(roomLink, roomName, isModerator);
         }
@@ -45,7 +45,7 @@ public final class Session {
     /** Get session instance.
      * @return singleton class instance
      */
-    public static Session getInstace() {
+    public static Session getInstance() {
         return instance;
     }
 

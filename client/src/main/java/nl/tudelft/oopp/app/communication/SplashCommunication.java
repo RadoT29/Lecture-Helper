@@ -35,7 +35,7 @@ public class SplashCommunication {
         }
 
         Room room = gson.fromJson(response.body(), Room.class);
-        Session session = Session.getInstace(room.linkIdModerator.toString(), room.name, true);
+        Session session = Session.getInstance(room.linkIdModerator.toString(), room.name, true);
         return room;
     }
 
