@@ -17,12 +17,13 @@ public class SplashCommunication {
 
     /**
      * Creates a new room on server and retrieves room info.
+     *
      * @param name Name for the room
      * @return Room object with name, links and isOpen boolena
      */
     public static Room postRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ","%20"))).build();
+                .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ", "%20"))).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -38,5 +39,26 @@ public class SplashCommunication {
         Session session = Session.getInstance(room.linkIdModerator.toString(), room.name, true);
         return room;
     }
+
+    /**
+     * Checks whether the user is a Student or a Moderator.
+     * @return the body of a get request to the server.
+     */
+    public static String checkForRoom(String roomLink) {
+        System.out.println("This worked - checkForRoom !!!");
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Communication with server failed";
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return response.body();
+    }
+
 
 }
