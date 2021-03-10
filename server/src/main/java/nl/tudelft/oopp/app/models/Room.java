@@ -24,7 +24,7 @@ public class Room {
 
     private UUID linkIdModerator;
 
-    private  boolean isOpen;
+    private boolean isOpen;
 
     @Column(name = "student_permission")
     private boolean permission;
@@ -32,7 +32,7 @@ public class Room {
     private Date createdAt;
 
     @UpdateTimestamp
-    private  Date updatedAt;
+    private Date updatedAt;
 
     public Room() {
     }
@@ -83,7 +83,7 @@ public class Room {
         isOpen = open;
     }
 
-    public boolean getPermission(){
+    public boolean getPermission() {
         return permission;
     }
 

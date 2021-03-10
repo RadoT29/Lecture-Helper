@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
+
 @Repository("RoomRepository")
 
 public interface RoomRepository extends JpaRepository<Room, Long> {

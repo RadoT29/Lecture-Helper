@@ -12,18 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-
 @Controller
 public class RoomController {
-    final
-    RoomRepository roomRepository;
+    final RoomRepository roomRepository;
 
-    final
-    ModeratorRepository moderatorRepository;
+    final ModeratorRepository moderatorRepository;
 
     /**
      * User Controller constructor.
-     * @param roomRepository - The Room Repository.
+     *
+     * @param roomRepository      - The Room Repository.
      * @param moderatorRepository - The Moderator Repository.
      */
     @Autowired
@@ -31,6 +29,7 @@ public class RoomController {
         this.roomRepository = roomRepository;
         this.moderatorRepository = moderatorRepository;
     }
+
     /**
      * GET Endpoint to retrieve a random quote.
      *
