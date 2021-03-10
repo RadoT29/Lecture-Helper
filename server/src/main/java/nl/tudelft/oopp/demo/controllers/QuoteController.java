@@ -22,7 +22,7 @@ public class QuoteController {
 
     @GetMapping("search")
     @ResponseBody
-    public List<Quote> searchQuotes(@RequestParam String q){
+    public List<Quote> searchQuotes(@RequestParam String q) {
         return repository.findAllByQuoteContains(q);
     }
 
