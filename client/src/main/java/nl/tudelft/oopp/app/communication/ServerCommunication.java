@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.Session;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -40,12 +41,12 @@ public class ServerCommunication {
     /**
      * Close the room.
      *
-     * @param name - name of the room
+     * @param linkId - name of the room
      * @throws Exception if communication with the server fails.
      */
-    public static void closeRoom(String name) {
+    public static void closeRoom(String linkId) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?closeRoomByName=" + name.replace(" ", "%20"))).build();
+                .uri(URI.create("http://localhost:8080/room?closeRoomByName=" + linkId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -62,12 +63,12 @@ public class ServerCommunication {
     /**
      * Kick all students.
      *
-     * @param name - name of the room
+     * @param linkId - name of the room
      * @throws Exception if communication with the server fails.
      */
-    public static void kickAllStudents(String name) {
+    public static void kickAllStudents(String linkId) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?kickAllStudents=" + name.replace(" ", "%20"))).build();
+                .uri(URI.create("http://localhost:8080/room?kickAllStudents=" + linkId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

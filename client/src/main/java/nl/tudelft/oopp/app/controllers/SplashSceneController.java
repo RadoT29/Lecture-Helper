@@ -14,6 +14,8 @@ import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.models.Room;
 import javafx.scene.control.Label;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
+import nl.tudelft.oopp.app.models.Session;
+
 import java.io.IOException;
 
 public class SplashSceneController {
@@ -79,13 +81,17 @@ public class SplashSceneController {
      * close the room.
      */
     public void closeRoom() {
-        ServerCommunication.closeRoom(nameOfRoom.getText());
+        Session session = Session.getInstance();
+        String linkId=session.getRoomLink();
+        ServerCommunication.closeRoom(linkId);
     }
 
     /**
      * kick all students.
      */
     public void kickAllStudents() {
-        ServerCommunication.kickAllStudents(nameOfRoom.getText());
+        Session session = Session.getInstance();
+        String linkId=session.getRoomLink();
+        ServerCommunication.kickAllStudents(linkId);
     }
 }

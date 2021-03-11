@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.UUID;
+
 
 @Controller
 public class RoomController {
@@ -50,21 +52,21 @@ public class RoomController {
     /**
      * PUT Endpoint close the room.
      *
-     * @param name - name of the room
+     * @param linkId - name of the room
      */
     @PutMapping("closeRoomByName")
-    public void closeRoom(@RequestParam String name) {
+    public void closeRoom(@RequestParam String linkId) {
         //make query and close the room!
-        roomRepository.closeRoom(name);
+        roomRepository.closeRoom(UUID.fromString(linkId));
     }
 
     /**
      * PUT Endpoint kick all student.
      *
-     * @param name - name of the room
+     * @param linkId - name of the room
      */
     @PutMapping("kickAllStudents")
-    public void kickAllStudent(@RequestParam String name) {
-        roomRepository.kickAllStudents(name);
+    public void kickAllStudent(@RequestParam String linkId) {
+        roomRepository.kickAllStudents(UUID.fromString(linkId));
     }
 }
