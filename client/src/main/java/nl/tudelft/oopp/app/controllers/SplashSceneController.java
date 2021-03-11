@@ -23,7 +23,10 @@ public class SplashSceneController {
     private TextField roomLink;
     @FXML
     private Button roleControl;
-
+    @FXML
+    private TextField nickName;
+    @FXML
+    private Button setNick;
 
     /**
      * Handles clicking the button.
@@ -71,6 +74,10 @@ public class SplashSceneController {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    public void setNickName() {
+        //TODO
     }
 
 }

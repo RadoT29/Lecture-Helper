@@ -22,7 +22,7 @@
                   <HBox.margin>
                      <Insets right="45.0" />
                   </HBox.margin></TextField>
-                <Button fx:id="roleControl"  maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#selectUserType" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
+                <Button fx:id="roleControl" style="-fx-background-radius: 5em;" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#selectUserType" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
                   <font>
                      <Font name="Roboto" size="16.0" />
                   </font></Button>
@@ -42,7 +42,7 @@
                       <HBox.margin>
                           <Insets right="45.0" />
                       </HBox.margin></TextField>
-                  <Button fx:id="buttonCreate" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#buttonClicked" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
+                  <Button fx:id="buttonCreate" style="-fx-background-radius: 5em;" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#buttonClicked" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
                   <font>
                      <Font name="Roboto" size="16.0" />
                   </font></Button>
