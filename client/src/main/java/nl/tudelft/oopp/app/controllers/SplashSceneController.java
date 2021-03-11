@@ -55,6 +55,7 @@ public class SplashSceneController {
 
     /**
      * Handles user roles.
+     *
      * @throws IOException - Is thrown if loader fails.
      */
     public void selectUserType() throws IOException {
@@ -82,7 +83,7 @@ public class SplashSceneController {
      */
     public void closeRoom() {
         Session session = Session.getInstance();
-        String linkId=session.getRoomLink();
+        String linkId = session.getRoomLink();
         ServerCommunication.closeRoom(linkId);
     }
 
@@ -91,7 +92,7 @@ public class SplashSceneController {
      */
     public void kickAllStudents() {
         Session session = Session.getInstance();
-        String linkId=session.getRoomLink();
+        String linkId = session.getRoomLink();
         ServerCommunication.kickAllStudents(linkId);
     }
 }
