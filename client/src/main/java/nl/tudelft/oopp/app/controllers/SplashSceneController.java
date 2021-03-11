@@ -62,9 +62,11 @@ public class SplashSceneController {
         System.out.println("This worked - selectUserType!!!");
         Parent loader;
         if (userRole.equals("Student")) {
+            System.out.println("You're a student");
             loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
         } else if (userRole.equals("Moderator")) {
-            loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
+            System.out.println("You're a moderator");
+            loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
         } else {
             return;
         }
@@ -76,8 +78,14 @@ public class SplashSceneController {
         stage.show();
     }
 
-    public void setNickName() {
-        //TODO
+    public void setNickName() throws IOException {
+
+        Parent loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
+        Stage stage = (Stage) setNick.getScene().getWindow();
+        Scene scene = new Scene(loader);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
 }
