@@ -7,23 +7,23 @@ import nl.tudelft.oopp.app.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.UUID;
 
 
 @Controller
 public class RoomController {
+    final RoomRepository roomRepository;
 
-    final
-        RoomRepository roomRepository;
-
-    final
-        ModeratorRepository moderatorRepository;
+    final ModeratorRepository moderatorRepository;
 
     /**
      * User Controller constructor.
-     * @param roomRepository - The Room Repository.
+     *
+     * @param roomRepository      - The Room Repository.
      * @param moderatorRepository - The Moderator Repository.
      */
     @Autowired
@@ -31,7 +31,6 @@ public class RoomController {
         this.roomRepository = roomRepository;
         this.moderatorRepository = moderatorRepository;
     }
-
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -48,5 +47,26 @@ public class RoomController {
         moderatorRepository.save(lecturer);
 
         return room;
+    }
+
+    /**
+     * PUT Endpoint close the room.
+     *
+     * @param linkId - name of the room
+     */
+    @PutMapping("closeRoomByName")
+    public void closeRoom(@RequestParam String linkId) {
+        //make query and close the room!
+        roomRepository.closeRoom(UUID.fromString(linkId));
+    }
+
+    /**
+     * PUT Endpoint kick all student.
+     *
+     * @param linkId - name of the room
+     */
+    @PutMapping("kickAllStudents")
+    public void kickAllStudent(@RequestParam String linkId) {
+        roomRepository.kickAllStudents(UUID.fromString(linkId));
     }
 }
