@@ -17,7 +17,6 @@ public class ServerCommunication {
     /**
      * Retrieves a quote from the server.
      * @return the body of a get request to the server.
-     * @throws Exception if communication with the server fails.
      */
     public static Room postRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
@@ -34,5 +33,6 @@ public class ServerCommunication {
         }
         return gson.fromJson(response.body(), Room.class);
     }
+
 
 }

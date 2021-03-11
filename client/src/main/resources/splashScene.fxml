@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
+<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
     <Button fx:id="logo" maxHeight="192.0" maxWidth="192.0" minHeight="192.0" minWidth="192.0" prefHeight="192.0" prefWidth="192.0">
       <VBox.margin>
          <Insets bottom="106.0" />
@@ -22,7 +22,7 @@
                   <HBox.margin>
                      <Insets right="45.0" />
                   </HBox.margin></TextField>
-                <Button fx:id="buttonEnter" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#buttonClicked" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
+                <Button fx:id="roleControl"  maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#selectUserType" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
                   <font>
                      <Font name="Roboto" size="16.0" />
                   </font></Button>
