@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
@@ -63,7 +62,7 @@ public class ModeratorSceneController implements Initializable {
      * This method checks the current state of the navigation bar.
      * Afterwards, it decides whether to close or open the navigation bar.
      */
-    public void controlMenu(MouseEvent event) {
+    public void controlMenu() {
 
         if ((slidingMenu.getTranslateX()) == -(slidingMenu.getWidth())) {
             menuButton.getStyleClass().remove("menuBtnBlack");

@@ -60,7 +60,7 @@
             <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                 <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                     <VBox.margin>
-                        <Insets bottom="2" top="102" />
+                        <Insets bottom="2"/>
                     </VBox.margin>
                 </Button>
                 <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
