@@ -22,13 +22,15 @@ public class Room {
 
     private UUID linkIdModerator;
 
-    private  boolean isOpen;
+    private boolean isOpen;
 
+    @Column(name = "student_permission")
+    private boolean permission;
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
-    private  Date updatedAt;
+    private Date updatedAt;
 
     public Room() {
     }
@@ -77,5 +79,13 @@ public class Room {
 
     public void setOpen(boolean open) {
         isOpen = open;
+    }
+
+    public boolean getPermission() {
+        return permission;
+    }
+
+    public void setPermission(boolean permission) {
+        this.permission = permission;
     }
 }

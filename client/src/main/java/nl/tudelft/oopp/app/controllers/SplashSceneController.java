@@ -12,6 +12,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.models.Room;
+import javafx.scene.control.Label;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.io.IOException;
@@ -24,6 +26,8 @@ public class SplashSceneController {
     private TextField roomLink;
     @FXML
     private Button roleControl;
+    @FXML
+    private Label nameOfRoom;
 
     /**
      * Handles clicking the button.
@@ -51,6 +55,7 @@ public class SplashSceneController {
 
     /**
      * Handles user roles.
+     *
      * @throws IOException - Is thrown if loader fails.
      */
     public void selectUserType() throws IOException {
