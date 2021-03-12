@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.communication;
 import com.google.gson.Gson;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
+import nl.tudelft.oopp.app.models.User;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -14,6 +15,8 @@ public class SplashCommunication {
     private static Gson gson = new Gson();
 
     private static HttpClient client = HttpClient.newBuilder().build();
+
+    private static Session session;
 
     /**
      * Creates a new room on server and retrieves room info.
@@ -36,15 +39,14 @@ public class SplashCommunication {
         }
 
         Room room = gson.fromJson(response.body(), Room.class);
-        Session session = Session.getInstance(room.linkIdModerator.toString(), room.name, true);
         return room;
     }
 
     /**
-     * Checks whether the user is a Student or a Moderator.
-     * @return the body of a get request to the server.
+     * Checks whether the user is a Student or a Moderator
+     * and creates a session based on this credentials.
      */
-    public static String checkForRoom(String roomLink) {
+    public static void checkForRoom(String roomLink) {
         System.out.println("This worked - checkForRoom !!!");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
         HttpResponse<String> response = null;
@@ -52,12 +54,17 @@ public class SplashCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return "Communication with server failed";
+            return;
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
+            return;
         }
-        return response.body();
+        // Parses Json response from server
+        User user = gson.fromJson(response.body(), User.class);
+        // Uses the information received to update the session information
+        session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
+
     }
 
 

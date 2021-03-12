@@ -3,12 +3,10 @@ package nl.tudelft.oopp.app.models;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
@@ -26,8 +24,8 @@ public class Room {
 
     private boolean isOpen;
 
-    @Column(name = "student_permission")
     private boolean permission;
+
     @CreationTimestamp
     private Date createdAt;
 

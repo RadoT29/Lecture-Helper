@@ -16,9 +16,9 @@ import java.util.UUID;
 
 @Controller
 public class RoomController {
-    final RoomRepository roomRepository;
 
-    final ModeratorRepository moderatorRepository;
+    private RoomRepository roomRepository;
+    private ModeratorRepository moderatorRepository;
 
     /**
      * User Controller constructor.

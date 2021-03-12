@@ -60,15 +60,27 @@ public class SplashSceneController {
      */
     public void selectUserType() throws IOException {
 
-        String userRole = SplashCommunication.checkForRoom(roomLink.getText());
-        System.out.println("This worked - selectUserType!!!");
+        //This method checks if the link inserted corresponds
+        // to a Student one, Moderator one or if it is invalid.
+        SplashCommunication.checkForRoom(roomLink.getText());
+
         Parent loader;
-        if (userRole.equals("Student")) {
-            loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
-        } else if (userRole.equals("Moderator")) {
+
+        //Gets the session with the updated information
+        Session session = Session.getInstance();
+
+        //If the link is not valid then no session is started and user should stay on splash screen
+        if (session == null) {
+            System.out.println("Insert valid link");
+            return;
+        }
+
+        // If the user is a moderator, loads the moderator moderatorScene,
+        // otherwise loads the studentScene
+        if (session.getIsModerator()) {
             loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         } else {
-            return;
+            loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
         }
 
         Stage stage = (Stage) roleControl.getScene().getWindow();
@@ -78,21 +90,4 @@ public class SplashSceneController {
         stage.show();
     }
 
-    /**
-     * close the room.
-     */
-    public void closeRoom() {
-        Session session = Session.getInstance();
-        String linkId = session.getRoomLink();
-        ServerCommunication.closeRoom(linkId);
-    }
-
-    /**
-     * kick all students.
-     */
-    public void kickAllStudents() {
-        Session session = Session.getInstance();
-        String linkId = session.getRoomLink();
-        ServerCommunication.kickAllStudents(linkId);
-    }
 }

@@ -3,12 +3,18 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <VBox prefHeight="215.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
+      fx:controller="nl.tudelft.oopp.app.controllers.HomeSceneController">
     <Label prefWidth="175.0" text="Welcome to the student display.">
-        <VBox.margin>
-            <Insets left="62.5" top="100.0"/>
-        </VBox.margin>
-    </Label>
+      <VBox.margin>
+         <Insets left="62.5" top="100.0" />
+      </VBox.margin></Label>
+   <TextField fx:id="questionInput" prefWidth="231.0" promptText="Write your question here">
+      <font>
+         <Font name="System Italic" size="12.0" />
+      </font>
+   </TextField>
+   <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendQuestion" text="Send" />
 </VBox>
