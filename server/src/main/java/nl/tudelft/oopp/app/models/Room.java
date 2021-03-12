@@ -24,8 +24,8 @@ public class Room {
 
     private boolean isOpen;
 
-    @Column(name = "student_permission")
     private boolean permission;
+
     @CreationTimestamp
     private Date createdAt;
 
