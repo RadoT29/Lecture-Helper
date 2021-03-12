@@ -29,7 +29,7 @@ public class QuestionTest {
     @Autowired
     private ModeratorRepository moderatorRepository;
 
-    /***
+    /**
      * This test saves a Question on the database and then retrieves it
      * to assert that it's the same.
      */
@@ -54,7 +54,7 @@ public class QuestionTest {
         assertEquals(question, qestion2);
     }
 
-    /***
+    /**
      * This test saves a Question on the database and then asserts
      * that the associated Room is the same one.
      */
@@ -77,7 +77,7 @@ public class QuestionTest {
 
     }
 
-    /***
+    /**
      * This test saves a Question on the database and then asserts
      * that the associated User is the same one.
      */
