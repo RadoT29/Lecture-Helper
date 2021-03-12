@@ -23,7 +23,7 @@ public class Moderator extends User {
      * (Intellij insists that this has to be created)
      */
     public Moderator(Room roomId) {
-        super(roomId);
+        super(roomId, true);
     }
 
     public Moderator() {

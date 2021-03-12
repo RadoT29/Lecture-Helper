@@ -3,11 +3,7 @@ package nl.tudelft.oopp.app.models;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -21,16 +17,17 @@ public class User {
     private long id;
 
     private String name;
-    
+    private Boolean isModerator;
+
     @ManyToOne
     private Room roomId;
-
 
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
-    private  Date updatedAt;
+    private Date updatedAt;
+
 
 
     /**
@@ -43,9 +40,15 @@ public class User {
         this.roomId = roomId;
     }
 
-    public User(Room roomId) {
+    /**
+     * Create a user with a roomId and role.
+     * @param roomId - the room, which the user enters.
+     * @param isModerator - true if Moderator, false if Student
+     */
+    public User(Room roomId, boolean isModerator) {
         this.roomId = roomId;
         this.name = "Anonymous";
+        this.isModerator = isModerator;
     }
 
     public User() {
@@ -79,6 +82,14 @@ public class User {
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Boolean getIsModerator() {
+        return isModerator;
+    }
+
+    public void setIsModerator(Boolean moderator) {
+        isModerator = moderator;
     }
 
     /**

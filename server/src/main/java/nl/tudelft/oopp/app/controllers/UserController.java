@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.controllers;
 import nl.tudelft.oopp.app.models.Moderator;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Student;
+import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.services.RoomService;
@@ -18,12 +19,9 @@ import java.util.UUID;
 @Controller
 public class UserController {
 
-    final
-        RoomService roomService;
-    final
-        ModeratorRepository moderatorRepository;
-    final
-        StudentRepository studentRepository;
+    private RoomService roomService;
+    private ModeratorRepository moderatorRepository;
+    private StudentRepository studentRepository;
 
     /**
      * User Controller constructor.
@@ -44,20 +42,20 @@ public class UserController {
      **/
     @GetMapping(path = "/room/user/{roomLink}")
     @ResponseBody
-    public String roomExists(@PathVariable String roomLink) {
+    public User roomExists(@PathVariable String roomLink) {
         System.out.println(roomService.count());
-        Room room = roomService.getByLink(UUID.fromString(roomLink));
+        Room room = roomService.getByLink(roomLink);
 
-        if (room.getLinkIdModerator().equals(UUID.fromString(roomLink))) {
+        if (room.getLinkIdModerator().compareTo(UUID.fromString(roomLink)) == 0) {
             System.out.println("A moderator is created!");
             Moderator moderator = new Moderator(room);
             moderatorRepository.save(moderator);
-            return "Moderator";
-        } else if (room.getLinkIdStudent().equals(UUID.fromString(roomLink))) {
+            return moderator;
+        } else if (room.getLinkIdStudent().compareTo(UUID.fromString(roomLink)) == 0) {
             System.out.println("A student is created!");
             Student student = new Student(room);
             studentRepository.save(student);
-            return "Student";
+            return student;
         }
         return null;
 
