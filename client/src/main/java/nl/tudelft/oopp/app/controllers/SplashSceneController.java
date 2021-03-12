@@ -78,6 +78,10 @@ public class SplashSceneController {
         stage.show();
     }
 
+    /**
+     * For now Just goes to Moderator Scene.
+     * @throws IOException - is thrown if loader fails.
+     */
     public void setNickName() throws IOException {
 
         Parent loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
@@ -86,6 +90,9 @@ public class SplashSceneController {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+
+        //TODO
+        //Add name to user,but first we need to figure out how the client can store information.
     }
 
 }
