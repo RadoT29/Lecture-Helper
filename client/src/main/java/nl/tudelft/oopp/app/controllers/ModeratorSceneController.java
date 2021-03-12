@@ -1,64 +1,77 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
-
-import javafx.scene.control.Button;
-import javafx.util.Duration;
-
 import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
+/**
+ * This class controls the Main scene of the Moderators.
+ */
 public class ModeratorSceneController implements Initializable {
+    @FXML
+    public Button menuButton;
+    @FXML
+    public VBox mainMenu;
+    @FXML
+    public VBox slidingMenu;
 
-    @FXML
-    private AnchorPane navBar;
-    @FXML
-    private Button menuOpen;
-    @FXML
-    private Button menuClose;
+    private TranslateTransition openNav;
+    private TranslateTransition closeNav;
+    private TranslateTransition closeFastNav;
 
+    /**
+     * This method initializes the state of the navigation bar.
+     * It hides the sliding bar behind the regular one.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        navBar.setTranslateX(-200);
+    public void initialize(URL url, ResourceBundle rb) {
+        openNav = new TranslateTransition(Duration.millis(100), slidingMenu);
+        openNav.setToX(slidingMenu.getTranslateX() - slidingMenu.getWidth());
+        closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
+        closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
-    }
-
-    public void openMenu(MouseEvent event) {
-
-        TranslateTransition slide = new TranslateTransition();
-        slide.setDuration(Duration.seconds(0.4));
-        slide.setNode(navBar);
-
-        slide.setToX(0);
-        slide.play();
-
-        navBar.setTranslateX(-200);
-
-        slide.setOnFinished((ActionEvent e) -> {
-            menuOpen.setStyle("-fx-background-color: #ffffff;");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                closeFastNav.setToX(-(slidingMenu.getWidth()));
+                closeFastNav.play();
+            }
         });
     }
 
-    public void closeMenu(MouseEvent event) {
+    /**
+     * This method closes the sliding part of the navigation bar.
+     */
+    public void hideSlidingBar() {
 
-        TranslateTransition slide = new TranslateTransition();
-        slide.setDuration(Duration.seconds(0.4));
-        slide.setNode(navBar);
-
-        slide.setToX(-200);
-        slide.play();
-
-        navBar.setTranslateX(0);
-
-        slide.setOnFinished((ActionEvent e) -> {
-            menuOpen.setStyle("-fx-background-color: #000000;");
-        });
+        menuButton.getStyleClass().remove("menuBtnWhite");
+        menuButton.getStyleClass().add("menuBtnBlack");
+        closeNav.setToX(-(slidingMenu.getWidth()));
+        closeNav.play();
     }
 
+    /**
+     * This method checks the current state of the navigation bar.
+     * Afterwards, it decides whether to close or open the navigation bar.
+     */
+    public void controlMenu(MouseEvent event) {
 
+        if ((slidingMenu.getTranslateX()) == -(slidingMenu.getWidth())) {
+            menuButton.getStyleClass().remove("menuBtnBlack");
+            menuButton.getStyleClass().add("menuBtnWhite");
+            openNav.play();
+        } else {
+            hideSlidingBar();
+        }
+    }
+    
 }
