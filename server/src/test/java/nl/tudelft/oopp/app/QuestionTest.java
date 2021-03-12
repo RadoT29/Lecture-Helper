@@ -31,9 +31,8 @@ public class QuestionTest {
 
     /***
      * This test saves a Question on the database and then retrieves it
-     * to assert that it's the same
+     * to assert that it's the same.
      */
-
     @Test
     public void saveAndRetrieveQuestion() {
 
@@ -57,9 +56,8 @@ public class QuestionTest {
 
     /***
      * This test saves a Question on the database and then asserts
-     * that the associated Room is the same one
+     * that the associated Room is the same one.
      */
-
     @Test
     public void saveAndRetrieveRoomViaQuestion() {
         Room room = new Room("OurRoom");
@@ -81,9 +79,8 @@ public class QuestionTest {
 
     /***
      * This test saves a Question on the database and then asserts
-     * that the associated User is the same one
+     * that the associated User is the same one.
      */
-
     @Test
     public void saveAndRetrieveUserViaQuestion() {
         Room room = new Room("OurRoom");
