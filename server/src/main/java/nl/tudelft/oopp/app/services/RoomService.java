@@ -26,7 +26,8 @@ public class RoomService {
         return roomRepository.count();
     }
 
-    public Room getByLink(UUID link) {
-        return  roomRepository.findByLink(link);
+    public Room getByLink(String link) {
+        UUID toCheck = UUID.fromString(link);
+        return  roomRepository.findByLink(UUID.fromString(link));
     }
 }
