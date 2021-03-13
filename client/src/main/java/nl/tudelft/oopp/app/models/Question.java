@@ -16,4 +16,8 @@ public class Question {
     public Question(String questionText) {
         this.questionText = questionText;
     }
+
+    public String getQuestionID() {
+        return questionID;
+    }
 }
