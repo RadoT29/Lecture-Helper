@@ -148,4 +148,10 @@
       </VBox>
    </VBox>
    <!-- Here ends the nav Bar -->
+    <TextField fx:id="questionInput" prefWidth="231.0" promptText="Write your question here">
+        <font>
+            <Font name="System Italic" size="12.0" />
+        </font>
+    </TextField>
+    <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendQuestion" text="Send" />
 </AnchorPane>

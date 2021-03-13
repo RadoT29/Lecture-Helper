@@ -11,7 +11,8 @@ public class Moderator extends User {
 
     /**
      * Create a moderator.
-     * @param name - name of moderator
+     *
+     * @param name   - name of moderator
      * @param roomId - the room, which the moderator enters.
      */
     public Moderator(String name, Room roomId) {
@@ -23,7 +24,7 @@ public class Moderator extends User {
      * (Intellij insists that this has to be created)
      */
     public Moderator(Room roomId) {
-        super(roomId);
+        super(roomId, true);
     }
 
     public Moderator() {
@@ -33,7 +34,7 @@ public class Moderator extends User {
     @Override
     public boolean equals(Object other) {
         if (super.equals(other)
-            && other instanceof Moderator) {
+                && other instanceof Moderator) {
             return true;
         }
 

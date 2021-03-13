@@ -20,7 +20,7 @@ public class Student extends User {
     }
 
     public Student(Room roomId) {
-        super(roomId);
+        super(roomId, false);
     }
 
     public Student() {

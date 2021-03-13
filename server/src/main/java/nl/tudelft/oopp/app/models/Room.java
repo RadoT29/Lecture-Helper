@@ -3,12 +3,10 @@ package nl.tudelft.oopp.app.models;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,13 +22,15 @@ public class Room {
 
     private UUID linkIdModerator;
 
-    private  boolean isOpen;
+    private boolean isOpen;
+
+    private boolean permission;
 
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
-    private  Date updatedAt;
+    private Date updatedAt;
 
     public Room() {
     }
@@ -79,5 +79,13 @@ public class Room {
 
     public void setOpen(boolean open) {
         isOpen = open;
+    }
+
+    public boolean getPermission() {
+        return permission;
+    }
+
+    public void setPermission(boolean permission) {
+        this.permission = permission;
     }
 }
