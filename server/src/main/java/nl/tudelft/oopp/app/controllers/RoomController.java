@@ -6,10 +6,7 @@ import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -54,8 +51,10 @@ public class RoomController {
      *
      * @param linkId - name of the room
      */
-    @PutMapping("closeRoomByName")
-    public void closeRoom(@RequestParam String linkId) {
+    //@RequestMapping("")
+    @PutMapping("closeRoomById/{linkId}")
+    @ResponseBody
+    public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
         roomRepository.closeRoom(UUID.fromString(linkId));
     }
@@ -65,8 +64,9 @@ public class RoomController {
      *
      * @param linkId - name of the room
      */
-    @PutMapping("kickAllStudents")
-    public void kickAllStudent(@RequestParam String linkId) {
+    @PutMapping("kickAllStudents/{linkId}")
+    @ResponseBody
+    public void kickAllStudent(@PathVariable String linkId) {
         roomRepository.kickAllStudents(UUID.fromString(linkId));
     }
 }

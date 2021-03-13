@@ -45,8 +45,8 @@ public class ServerCommunication {
      * @throws Exception if communication with the server fails.
      */
     public static void closeRoom(String linkId) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?closeRoomByName=" + linkId)).build();
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/closeRoomById/" + linkId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -67,8 +67,8 @@ public class ServerCommunication {
      * @throws Exception if communication with the server fails.
      */
     public static void kickAllStudents(String linkId) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?kickAllStudents=" + linkId)).build();
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/kickAllStudents/" + linkId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
