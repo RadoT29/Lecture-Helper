@@ -43,4 +43,10 @@ public class QuestionController {
         System.out.println("Question arrived on server!");
         questionService.addNewQuestion(roomLink,userId,question);
     }
+
+    @GetMapping("/refresh/{roomLink}")
+    @ResponseBody
+    public List<Question> getAllQuestions(@PathVariable String roomLink) {
+        return questionService.getAllQuestionsByRoom(roomLink);
+    }
 }
