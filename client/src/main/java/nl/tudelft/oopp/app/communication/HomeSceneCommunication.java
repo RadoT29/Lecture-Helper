@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.app.models.Entry;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -8,6 +10,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,7 +28,7 @@ public class HomeSceneCommunication {
      * This method makes a POST Request on the server with the question object as body
      * and the roomLink and userId as path variables
      * so that the question is associated with the right room and user.
-     * @param question the question to be saved on the databse
+     * @param question the question to be saved on the database
      */
 
     public static void postQuestion(Question question) {
@@ -50,6 +54,28 @@ public class HomeSceneCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
+
+    /**
+     * gets the list of entries from the server.
+     * @return a list of entries (question + upvotes)
+     */
+    public static List<Question> getQuestions() {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/refresh/" + session.getRoomLink()))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+    }
+
 
 }
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This class handles all business logic related to the Question object.
@@ -36,6 +37,22 @@ public class QuestionService {
 
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
+    }
+
+    /**
+     * gets all questions from the room.
+     * @param roomLinkString a room link
+     * @return list of questions from the room.
+     *      Questions have to roomId and UserId changed to 0.
+     */
+    public List<Question> getAllQuestionsByRoom(String roomLinkString) {
+        UUID roomLink = UUID.fromString(roomLinkString);
+        List<Question> result = questionRepository.findAllByRoomLink(roomLink);
+        for (Question q : result) {
+            q.getRoom().setId(0);
+            q.getUser().setId(0);
+        }
+        return result;
     }
 
     /**
