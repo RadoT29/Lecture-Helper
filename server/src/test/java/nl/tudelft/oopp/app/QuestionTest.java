@@ -14,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @DataJpaTest
 public class QuestionTest {
 
@@ -98,6 +101,58 @@ public class QuestionTest {
         assertEquals(question2.getUser(), mod);
         assertEquals(question2.getUser().getName(), "Natalia");
 
+    }
+
+    /**
+     * Tests the query that finds all questions
+     * by a room link for a moderator.
+     */
+    @Test
+    public void testFindAllByRoomLinkModerator() {
+        Room room = new Room("OurRoom");
+        roomRepository.save(room);
+
+        Question q1 = new Question("Does this work?");
+        q1.setRoom(room);
+
+        Question q2 = new Question("Different question");
+
+        questionRepository.save(q1);
+        questionRepository.save(q2);
+
+        List<Question> res = new ArrayList<>();
+        res.add(q1);
+
+        List<Question> test = questionRepository
+                .findAllByRoomLink(room.getLinkIdModerator());
+
+        assertEquals(res, test);
+    }
+
+    /**
+     * Tests the query that finds all questions
+     * by a room link for a student.
+     */
+    @Test
+    public void testFindAllByRoomLinkStudent() {
+        Room room = new Room("OurRoom");
+        roomRepository.save(room);
+
+        Question q1 = new Question("Does this work?");
+        q1.setRoom(room);
+
+        Question q2 = new Question("Different question");
+
+        questionRepository.save(q1);
+        questionRepository.save(q2);
+
+        List<Question> res = new ArrayList<>();
+        res.add(q1);
+
+        List<Question> test = questionRepository
+                .findAllByRoomLink(room.getLinkIdStudent());
+
+        assertEquals(res, test);
     }
 
 }
