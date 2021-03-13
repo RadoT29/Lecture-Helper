@@ -38,6 +38,7 @@ public class Question implements Comparable<Question> {
     public List<Upvote> getUpvotes() {
         return upvotes;
     }
+
     public int getNumberOfUpvotes() {
         return upvotes.size();
     }

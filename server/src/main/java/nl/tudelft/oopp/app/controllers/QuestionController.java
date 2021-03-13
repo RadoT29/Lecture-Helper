@@ -28,6 +28,12 @@ public class QuestionController {
         return questionService.getAllQuestions();
     }
 
+    @GetMapping("/refresh/{roomLink}")
+    @ResponseBody
+    public List<Question> getAllQuestions(@PathVariable String roomLink) {
+        return questionService.getAllQuestionsByRoom(roomLink);
+    }
+
     /**
      * This method parses the path variables and the http request
      * to get the values needed to create the question to be saved on the DB.
@@ -44,9 +50,5 @@ public class QuestionController {
         questionService.addNewQuestion(roomLink,userId,question);
     }
 
-    @GetMapping("/refresh/{roomLink}")
-    @ResponseBody
-    public List<Question> getAllQuestions(@PathVariable String roomLink) {
-        return questionService.getAllQuestionsByRoom(roomLink);
-    }
+
 }

@@ -38,6 +38,13 @@ public class QuestionService {
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }
+
+    /**
+     * gets all questions from the room.
+     * @param roomLinkString a room link
+     * @return list of questions from the room.
+     *      Questions have to roomId and UserId changed to 0.
+     */
     public List<Question> getAllQuestionsByRoom(String roomLinkString) {
         UUID roomLink = UUID.fromString(roomLinkString);
         List<Question> result = questionRepository.findAllByRoomLink(roomLink);

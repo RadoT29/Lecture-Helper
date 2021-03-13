@@ -58,11 +58,11 @@ public class HomeSceneController {
         ServerCommunication.kickAllStudents(linkId);
     }
 
+    /**
+     * fill in the priority queue and and load them on the screen.
+     */
     public void refresh() {
         questions = new PriorityQueue<>();
-//        questions.add(new Question("Question 2"));
-//        questions.add(new Question("Question 3"));
-//        questions.add(new Question("Question 1"));
         questions.addAll(HomeSceneCommunication.getQuestions());
         loadQuestions();
     }
@@ -92,13 +92,13 @@ public class HomeSceneController {
     }
 
     /**
-     * creates a node for a question
+     * creates a node for a question.
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
      *      or one of the fields that should be changed where not found
      */
-    protected Node createQuestionCell (Question question, String resource) throws IOException {
+    protected Node createQuestionCell(Question question, String resource) throws IOException {
         Node newQuestion = FXMLLoader.load(getClass().getResource(resource));
 
         //set the node id to the question id
