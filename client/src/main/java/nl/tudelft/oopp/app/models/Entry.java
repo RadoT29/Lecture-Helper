@@ -27,6 +27,6 @@ public class Entry implements Comparable<Entry> {
 
     @Override
     public int compareTo(Entry o) {
-        return this.upvote - o.upvote;
+        return -(this.upvote - o.upvote);
     }
 }

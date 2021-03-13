@@ -60,10 +60,10 @@ public class HomeSceneController {
 
     public void refresh() {
         questions = new PriorityQueue<>();
-//        questions.add(new Entry(new Question("Question 2"), 10));
-//        questions.add(new Entry(new Question("Question 3"), 11));
-//        questions.add(new Entry(new Question("Question 1"), 9));
-        questions.addAll(HomeSceneCommunication.getQuestions());
+        questions.add(new Entry(new Question("Question 2"), 10));
+        questions.add(new Entry(new Question("Question 3"), 11));
+        questions.add(new Entry(new Question("Question 1"), 9));
+//        questions.addAll(HomeSceneCommunication.getQuestions());
         loadQuestions();
     }
 
