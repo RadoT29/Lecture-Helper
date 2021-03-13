@@ -86,7 +86,7 @@ public class HomeSceneController {
                         .add(createQuestionCell(question, resource));
             } catch (IOException e) {
                 questionBox.getChildren().add(
-                        new Label("Something when wrong while loading this question"));
+                        new Label("Something went wrong while loading this question"));
             }
         }
     }
