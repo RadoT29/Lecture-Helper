@@ -13,7 +13,7 @@ import javafx.util.Duration;
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class ModeratorSceneController implements Initializable {
+public class ModeratorSceneController extends HomeSceneController implements Initializable {
     @FXML
     public Button menuButton;
     @FXML
@@ -73,4 +73,25 @@ public class ModeratorSceneController implements Initializable {
         }
     }
 
+    /**
+     * close the room.
+     */
+    public void closeRoom() {
+        super.closeRoom();
+    }
+
+    /**
+     * kick all students.
+     */
+    public void kickAllStudents() {
+        super.kickAllStudents();
+    }
+
+    /**
+     * Pressing the sendButton will send all the text in the questionInput
+     * to the sever as a Question object.
+     */
+    public void sendQuestion() {
+        super.sendQuestion();
+    }
 }

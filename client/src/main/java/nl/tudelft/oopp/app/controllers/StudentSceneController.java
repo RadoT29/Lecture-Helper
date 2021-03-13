@@ -13,7 +13,7 @@ import javafx.util.Duration;
 /**
  * This class controls the Main scene of the Students.
  */
-public class StudentSceneController implements Initializable {
+public class StudentSceneController extends HomeSceneController implements Initializable {
 
     @FXML
     public Button reactionButton;
@@ -114,6 +114,14 @@ public class StudentSceneController implements Initializable {
         } else {
             hideReactionBar();
         }
+    }
+
+    /**
+     * Pressing the sendButton will send all the text in the questionInput
+     * to the sever as a Question object.
+     */
+    public void sendQuestion() {
+        super.sendQuestion();
     }
 
 }
