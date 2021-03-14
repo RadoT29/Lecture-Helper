@@ -60,3 +60,25 @@
     -fx-shape: "M67.3327 6.73326C67.3327 3.06659 64.3327 0.0665894 60.666 0.0665894H7.33268C3.66602 0.0665894 0.666016 3.06659 0.666016 6.73326V46.7333C0.666016 50.3999 3.66602 53.3999 7.33268 53.3999H53.9994L67.3327 66.7333V6.73326ZM60.666 50.6333L56.766 46.7333H7.33268V6.73326H60.666V50.6333Z";
 }
 
+.textField {
+    -fx-focus-color: transparent;
+    -fx-text-box-border: transparent;
+}
+
+#sendButton {
+    -fx-shape: "M9.68123 11.9886L26.9456 17.9848L9.65824 16.1226L9.68123 11.9886ZM26.9226 28.2268L9.65824 34.223V30.089L26.9226 28.2268ZM5.08354 6.34619L5.06055 19.3814L39.5433 23.1058L5.06055 26.8302L5.08354 39.8654L53.3364 23.1058L5.08354 6.34619Z";
+}
+
+#textBox {
+    -fx-border-style: solid inside;
+    -fx-border-width: 2;
+    -fx-border-radius: 50 50 50 50;
+    -fx-background-radius: 50 50 50 50;
+    -fx-border-color: black;
+    -fx-background-color: white;
+}
+
+#questionInput {
+    -fx-border-radius: 50 50 50 50;
+    -fx-background-radius: 50 50 50 50;
+}

@@ -148,11 +148,24 @@
       </VBox>
    </VBox>
    <!-- Here ends the nav Bar -->
-   <VBox />
-   <TextField fx:id="questionInput" layoutX="390.0" layoutY="489.0" prefWidth="231.0" promptText="Write your question here">
-      <font>
-         <Font name="System Italic" size="12.0" />
-      </font>
-   </TextField>
-   <Button fx:id="sendButton" layoutX="622.0" layoutY="489.0" mnemonicParsing="false" onAction="#sendQuestion" text="Send" />
-</AnchorPane>
+   <VBox layoutX="200.0" prefHeight="600.0" prefWidth="801.0" VBox.vgrow="ALWAYS">
+      <!-- You can put the scrollPane here :) -->
+      <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
+         <TextField fx:id="questionInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
+            <font>
+               <Font name="System Italic" size="12.0" />
+            </font>
+            <HBox.margin>
+               <Insets right="5.0" />
+            </HBox.margin>
+         </TextField>
+         <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendQuestion" prefHeight="20.0" prefWidth="25.0" styleClass="menuBtnBlack">
+            <HBox.margin>
+               <Insets bottom="3.0" right="2.0" />
+            </HBox.margin></Button>
+         <VBox.margin>
+            <Insets left="50.0" top="550.0" />
+         </VBox.margin>
+      </HBox>
+   </VBox>
+   </AnchorPane>
