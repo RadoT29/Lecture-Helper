@@ -50,5 +50,15 @@ public class QuestionController {
         questionService.addNewQuestion(roomLink,userId,question);
     }
 
+    /**
+     * calls the questionService to delete the question from the database.
+     * @param questionId the id of the question to be deleted
+     */
+    @DeleteMapping("/dismiss/{questionId}")
+    @ResponseBody
+    public void dismissQuestion(@PathVariable("questionId") long questionId) {
+        questionService.dismissQuestion(questionId);
+    }
+
 
 }

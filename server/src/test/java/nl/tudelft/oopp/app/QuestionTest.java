@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.app;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Student;
@@ -13,6 +11,8 @@ import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class QuestionTest {
@@ -99,5 +99,18 @@ public class QuestionTest {
         assertEquals(question2.getUser().getName(), "Natalia");
 
     }
+
+//    /**
+//     * Tests if the question is deleted from the database.
+//     */
+//    @Test
+//    public void dismissTest() {
+//        Question question = new Question("This will be deleted");
+//        long deletedId = question.getId();
+//        questionRepository.save(question);
+////        assertTrue(questionRepository.existsById(deletedId));
+////        questionRepository.deleteById(deletedId);
+//        assertFalse(questionRepository.existsById(deletedId));
+//    }
 
 }
