@@ -94,4 +94,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void sendQuestion() {
         super.sendQuestion();
     }
+
+    /**
+     * fill in the priority queue and and load them on the screen.
+     */
+    public void refresh() {
+        super.refresh();
+    }
+
 }

@@ -124,5 +124,12 @@ public class StudentSceneController extends HomeSceneController implements Initi
         super.sendQuestion();
     }
 
+    /**
+     * fill in the priority queue and and load them on the screen.
+     */
+    public void refresh() {
+        super.refresh();
+    }
+
 }
 

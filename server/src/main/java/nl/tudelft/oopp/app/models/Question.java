@@ -5,6 +5,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -36,12 +37,18 @@ public class Question {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @OneToMany
+    public List<Upvote> upvotes;
 
     public Question() {
     }
 
     public Question(String questionText) {
         this.questionText = questionText;
+    }
+
+    public int getNumberOfUpvotes() {
+        return upvotes.size();
     }
 
     public long getId() {
