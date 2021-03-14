@@ -18,21 +18,16 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
+//@DataJpaTest
 public class RoomTestMock {
-    @Autowired
-    private RoomRepository roomRepository;
 
-    @InjectMocks
+     @InjectMocks
     private RoomService roomService;
-
-    @InjectMocks
-    private RoomController roomController;
 
     @Mock
     private RoomRepository repository;
@@ -55,6 +50,46 @@ public class RoomTestMock {
         when(repository.count()).thenReturn(5L);
         assertEquals(5,roomService.count());
     }
+
+    @Test
+    public void findRoomByModeratorLink()
+    {
+        Room room = new Room("My room");
+        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdModerator())));
+
+    }
+
+    @Test
+    public void findRoomByStudentLink()
+    {
+        Room room = new Room("My room");
+        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
+        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdStudent())));
+
+    }
+
+    @Test
+    public void findRoomByModeratorLinkFalse()
+    {
+        Room room = new Room("My room");
+        Room room2 = new Room("new Room");
+        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+        assertNotEquals(room2,roomService.getByLink(String.valueOf(room.getLinkIdModerator())));
+
+    }
+
+    @Test
+    public void findRoomByStudentLinkFalse()
+    {
+        Room room = new Room("My room");
+        Room room2 = new Room("new Room");
+        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
+        assertNotEquals(room2,roomService.getByLink(String.valueOf(room.getLinkIdStudent())));
+
+    }
+
+
 
 //    @Test
 //    public void roomCloseTrue()
