@@ -37,6 +37,9 @@ public class RoomTestMock {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Check the size of the list which is returned from method findAll
+     */
     @Test
     public void roomSize()
     {
@@ -45,12 +48,18 @@ public class RoomTestMock {
         //verify()
     }
 
+    /**
+     * check the works of the method count
+     */
     @Test
     public void roomCounter(){
         when(repository.count()).thenReturn(5L);
         assertEquals(5,roomService.count());
     }
 
+    /**
+     * Find the room by moderator link.
+     */
     @Test
     public void findRoomByModeratorLink()
     {
@@ -60,6 +69,9 @@ public class RoomTestMock {
 
     }
 
+    /**
+     * Find the room by student link.
+     */
     @Test
     public void findRoomByStudentLink()
     {
@@ -69,6 +81,10 @@ public class RoomTestMock {
 
     }
 
+    /**
+     * Find the room by moderator link.
+     * In the test the expected room is different from that is returned from when().thenReturn() structure
+     */
     @Test
     public void findRoomByModeratorLinkFalse()
     {
@@ -78,7 +94,10 @@ public class RoomTestMock {
         assertNotEquals(room2,roomService.getByLink(String.valueOf(room.getLinkIdModerator())));
 
     }
-
+    /**
+     * Find the room by student link.
+     * In the test the expected room is different from that is returned from when().thenReturn() structure
+     */
     @Test
     public void findRoomByStudentLinkFalse()
     {
