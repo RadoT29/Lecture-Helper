@@ -17,7 +17,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="kickUserButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="kickUserButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#kickAllStudents" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
                 </VBox.margin>
@@ -47,7 +47,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="closeRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="closeRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeRoom" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
                 </VBox.margin>
@@ -60,7 +60,7 @@
             <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                 <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                     <VBox.margin>
-                        <Insets bottom="2"/>
+                        <Insets bottom="2" />
                     </VBox.margin>
                 </Button>
                 <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
@@ -150,13 +150,7 @@
                 </Label>
             </VBox>
         </VBox>
-    <VBox><Button fx:id="CloseRoom" mnemonicParsing="false" onAction="#closeRoom" text="Close room! "/>
-        <Label fx:id="nameOfRoom" text="#RoomName#"/>
-        <Button fx:id="kickAllStudents" mnemonicParsing="false" onAction="#kickAllStudents" text="Kick all students!"/>
-        <Label prefWidth="175.0" text="Welcome to the moderator display.">
-            <VBox.margin>
-                <Insets left="62.5" top="100.0" />
-            </VBox.margin></Label>
+    <VBox layoutX="372.0" layoutY="464.0" prefHeight="99.0" prefWidth="311.0">
         <TextField fx:id="questionInput" prefWidth="231.0" promptText="Write your question here">
             <font>
                 <Font name="System Italic" size="12.0" />

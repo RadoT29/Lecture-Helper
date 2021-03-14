@@ -12,7 +12,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.models.Room;
-import javafx.scene.control.Label;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -25,18 +24,16 @@ public class SplashSceneController {
     @FXML
     private TextField roomLink;
     @FXML
-    private Button roleControl;
-    @FXML
     private TextField nickName;
     @FXML
     private Button setNick;
     @FXML
-    private Label nameOfRoom;
+    private Button enterRoomButton;
 
     /**
      * Handles clicking the button.
      */
-    public void buttonClicked() {
+    public void createRoom() {
 
         Room room = SplashCommunication.postRoom(roomName.getText());
 
@@ -51,9 +48,35 @@ public class SplashSceneController {
         gridPane.add(textArea, 0, 0);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Stuff");
+        alert.setTitle("Room Links");
         alert.getDialogPane().setContent(gridPane);
         alert.showAndWait();
+
+    }
+
+    /**
+     * Enters a room and goes to nickname scene.
+     *
+     * @throws IOException - Is thrown if loader fails.
+     */
+    public void enterRoom() throws IOException {
+        //This method checks if the link inserted corresponds
+        // to a Student one, Moderator one or if it is invalid.
+        SplashCommunication.checkForRoom(roomLink.getText());
+        //Gets the session with the updated information
+        Session session = Session.getInstance();
+
+        //If the link is not valid then no session is started and user should stay on splash screen
+        if (session == null) {
+            System.out.println("Insert valid link");
+            return;
+        }
+        Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
+        Stage stage = (Stage) enterRoomButton.getScene().getWindow();
+        Scene scene = new Scene(loader);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
 
     }
 
@@ -64,21 +87,8 @@ public class SplashSceneController {
      */
     public void selectUserType() throws IOException {
 
-        //This method checks if the link inserted corresponds
-        // to a Student one, Moderator one or if it is invalid.
-        SplashCommunication.checkForRoom(roomLink.getText());
-
         Parent loader;
-
-        //Gets the session with the updated information
         Session session = Session.getInstance();
-
-        //If the link is not valid then no session is started and user should stay on splash screen
-        if (session == null) {
-            System.out.println("Insert valid link");
-            return;
-        }
-
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
         if (session.getIsModerator()) {
@@ -87,28 +97,16 @@ public class SplashSceneController {
             loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
         }
 
-        Stage stage = (Stage) roleControl.getScene().getWindow();
-        Scene scene = new Scene(loader);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
-    }
-
-    /**
-     * For now Just goes to Moderator Scene.
-     * @throws IOException - is thrown if loader fails.
-     */
-    public void setNickName() throws IOException {
-
-        Parent loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         Stage stage = (Stage) setNick.getScene().getWindow();
         Scene scene = new Scene(loader);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
 
-        //TODO
-        //Add name to user,but first we need to figure out how the client can store information.
+        if (nickName.getText() != null) {
+            String userId = session.getUserId();
+            ServerCommunication.setNick(userId, nickName.getText());
+        }
     }
 
 }

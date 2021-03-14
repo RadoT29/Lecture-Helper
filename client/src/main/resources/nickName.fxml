@@ -16,26 +16,22 @@
             <Insets bottom="106.0" />
         </VBox.margin></Button>
     <VBox maxHeight="220.0" maxWidth="605.0" minHeight="220.0" minWidth="605.0" prefHeight="220.0" prefWidth="605.0">
-        <children>
-            <Label text="Enter a nickname">
+        <Label text="Enter a nickname">
                 <font>
                     <Font name="Roboto" size="16.0" />
                 </font></Label>
             <HBox maxHeight="50.0" maxWidth="605.0" minHeight="50.0" minWidth="605.0" prefHeight="50.0" prefWidth="605.0">
-                <children>
                     <TextField fx:id="nickName" maxHeight="50.0" maxWidth="410.0" minHeight="50.0" minWidth="410.0" prefHeight="50.0" prefWidth="410.0">
                         <HBox.margin>
                             <Insets right="45.0" />
                         </HBox.margin></TextField>
-                    <Button fx:id="setNick" style="-fx-background-radius: 5em;"  maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#setNickName" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
+                    <Button fx:id="setNick" style="-fx-background-radius: 5em;"  maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#selectUserType" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
                         <font>
                             <Font name="Roboto" size="16.0" />
                         </font></Button>
-                </children>
                 <VBox.margin>
                     <Insets bottom="40.0" top="10.0" />
                 </VBox.margin>
             </HBox>
-        </children>
     </VBox>
 </VBox>
