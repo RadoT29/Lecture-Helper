@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Question implements Comparable<Question> {
 
-    public String questionID;
+    public long id;
     public Room room;
     public User user;
     public String questionText;
@@ -19,8 +19,8 @@ public class Question implements Comparable<Question> {
         this.questionText = questionText;
     }
 
-    public String getQuestionID() {
-        return questionID;
+    public long getQuestionID() {
+        return id;
     }
 
     public Room getRoom() {
