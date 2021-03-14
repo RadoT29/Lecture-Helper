@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Session {
@@ -25,6 +26,7 @@ public final class Session {
         this.roomName = roomName;
         this.isModerator = isModerator;
         this.userId = userId;
+        upVotedQuestions = new ArrayList<>();
     }
 
     /**Session constructor.
@@ -39,6 +41,7 @@ public final class Session {
         this.roomLink = roomLink;
         this.userId = userId;
         this.isModerator = isModerator;
+        upVotedQuestions = new ArrayList<>();
     }
 
     /**Get Instance/Instance constructor.

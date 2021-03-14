@@ -111,7 +111,7 @@ public class HomeSceneController {
         l.setText(question.questionText);
         //set the upvote
         Label u = (Label) newQuestion.lookup(("#upvoteLabel"));
-        u.setText("+" + question.getNumberOfUpvotes());
+        u.setText("+" + question.getUpVotes());
 
 
         return newQuestion;
