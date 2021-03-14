@@ -27,12 +27,12 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="archiveButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2.0" left="35.0" top="20.0" />
                 </VBox.margin>
             </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Archive Questions" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Export Questions" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="10.0" />
                 </font>
