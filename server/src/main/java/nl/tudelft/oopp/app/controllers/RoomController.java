@@ -26,7 +26,7 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         Room room = new Room(name);
         roomRepository.save(room);
-
+        System.out.println("Server: "+room.isOpen());
         return room;
     }
 

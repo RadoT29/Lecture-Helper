@@ -80,4 +80,13 @@ public class SplashCommunicationTest {
         roomArray2[2]=room3;
         assertArrayEquals(roomArray,roomArray2);
     }
+
+    @Test
+    public void testIsRoomClosed(){
+        Room room = SplashCommunication.postRoom("My room");
+
+        assertEquals(true, room.isOpen());
+        //ServerCommunication.closeRoom(room.getLinkIdModerator().toString());
+        //assertEquals(false, room.isOpen());
+    }
 }
