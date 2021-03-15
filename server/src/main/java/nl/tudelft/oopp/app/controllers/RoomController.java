@@ -26,7 +26,6 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         Room room = new Room(name);
         roomRepository.save(room);
-        System.out.println("Server: "+room.isOpen());
         return room;
     }
 
@@ -41,6 +40,18 @@ public class RoomController {
     public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
         roomRepository.closeRoom(UUID.fromString(linkId));
+    }
+
+    @GetMapping("isOpenById/{linkId}")
+    @ResponseBody
+    public boolean isClose(@PathVariable String linkId){
+        return roomRepository.isClose(UUID.fromString(linkId)).getIsOpen();
+    }
+
+    @GetMapping("hasStudentPermission/{linkId}")
+    @ResponseBody
+    public boolean hasStudentPermission(@PathVariable String linkId){
+        return roomRepository.permission(UUID.fromString(linkId)).getPermission();
     }
 
     /**

@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -8,6 +10,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.UUID;
 
 public class ServerCommunication {
@@ -36,6 +39,50 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
 
+    }
+
+    /**
+     *
+     * @param linkId
+     * @return boolean true if the room is open, otherwise false
+     */
+    public static boolean isTheRoomClosed(String linkId){
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/isOpenById/" + linkId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        return gson.fromJson(response.body(),Boolean.class);
+    }
+
+    /**
+     *
+     * @param linkId
+     * @return boolean true if the room is open, otherwise false
+     */
+    public static boolean hasStudentPermission(String linkId){
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        return gson.fromJson(response.body(),Boolean.class);
     }
 
     /**
