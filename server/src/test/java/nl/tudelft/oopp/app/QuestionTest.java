@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.app;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Student;
@@ -14,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class QuestionTest {
@@ -103,56 +100,16 @@ public class QuestionTest {
 
     }
 
-    /**
-     * Tests the query that finds all questions
-     * by a room link for a moderator.
-     */
-    @Test
-    public void testFindAllByRoomLinkModerator() {
-        Room room = new Room("OurRoom");
-        roomRepository.save(room);
-
-        Question q1 = new Question("Does this work?");
-        q1.setRoom(room);
-
-        Question q2 = new Question("Different question");
-
-        questionRepository.save(q1);
-        questionRepository.save(q2);
-
-        List<Question> res = new ArrayList<>();
-        res.add(q1);
-
-        List<Question> test = questionRepository
-                .findAllByRoomLink(room.getLinkIdModerator());
-
-        assertEquals(res, test);
-    }
-
-    /**
-     * Tests the query that finds all questions
-     * by a room link for a student.
-     */
-    @Test
-    public void testFindAllByRoomLinkStudent() {
-        Room room = new Room("OurRoom");
-        roomRepository.save(room);
-
-        Question q1 = new Question("Does this work?");
-        q1.setRoom(room);
-
-        Question q2 = new Question("Different question");
-
-        questionRepository.save(q1);
-        questionRepository.save(q2);
-
-        List<Question> res = new ArrayList<>();
-        res.add(q1);
-
-        List<Question> test = questionRepository
-                .findAllByRoomLink(room.getLinkIdStudent());
-
-        assertEquals(res, test);
-    }
-
+    //    /**
+    //     * Tests if the question is deleted from the database.
+    //     */
+    //    @Test
+    //    public void dismissTest() {
+    //        Question question = new Question("This will be deleted");
+    //        long deletedId = question.getId();
+    //        questionRepository.save(question);
+    ////        questionRepository.deleteById(deletedId);
+    ////        assertTrue(questionRepository.existsById(deletedId));
+    //        assertFalse(questionRepository.existsById(deletedId));
+    //    }
 }

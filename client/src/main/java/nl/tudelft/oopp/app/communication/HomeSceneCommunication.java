@@ -45,17 +45,19 @@ public class HomeSceneCommunication {
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
+
     }
 
     /**
-     * gets the list of entries from the server.
-     * @return a list of entries (question + upvotes)
+     * Gets list of questions from the server specific to this room link.
+     * (all of the questions user's IDs and room ID are already set to zero)
+     * @return a list questions
      */
     public static List<Question> getQuestions() {
         HttpRequest request = HttpRequest.newBuilder().GET()

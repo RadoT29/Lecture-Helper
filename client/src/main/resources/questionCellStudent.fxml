@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="80.0" prefWidth="1090.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="80.0" prefWidth="1090.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="nl.tudelft.oopp.app.controllers.QuestionCellController">
    <children>
       <HBox fx:id="questionCell" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="80.0" prefWidth="1050.0">
          <children>
@@ -35,7 +36,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="upvoteButton" layoutX="596.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="U">
+                  <Button fx:id="upvoteButton" onAction="#upvoteClicked" layoutX="596.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="U">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>
