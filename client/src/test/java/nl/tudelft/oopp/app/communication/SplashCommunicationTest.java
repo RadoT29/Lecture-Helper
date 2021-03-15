@@ -16,7 +16,7 @@ public class SplashCommunicationTest {
      */
     @Test
     public void testRandomRoom() {
-        assertNotNull(ServerCommunication.postRoom("My room"));
+        assertNotNull(SplashCommunication.postRoom("My room"));
     }
     /**
      * Check if the returned object is Room with name "My room"
@@ -24,7 +24,7 @@ public class SplashCommunicationTest {
     @Test
     public void testRoomName(){
         Room room = new Room("My room");
-        assertEquals(room.getName(),ServerCommunication.postRoom("My room").getName());
+        assertEquals(room.getName(),SplashCommunication.postRoom("My room").getName());
     }
     /**
      * Check if the returned object Room is open
@@ -32,7 +32,7 @@ public class SplashCommunicationTest {
     @Test
     public void testRoomIsOpen(){
         Room room = new Room("My room");
-        assertEquals(room.isOpen(),ServerCommunication.postRoom("My room").isOpen());
+        assertEquals(room.isOpen(),SplashCommunication.postRoom("My room").isOpen());
     }
     /**
      * Check if the returned object Room give permission to the students to enter the room
@@ -40,16 +40,16 @@ public class SplashCommunicationTest {
     @Test
     public void testRoomStudentPermission(){
         Room room = new Room("My room");
-        assertEquals(room.isPermission(),ServerCommunication.postRoom("My room").isPermission());
+        assertEquals(room.isPermission(),SplashCommunication.postRoom("My room").isPermission());
     }
     /**
      * Check if the number of returned object
      */
     @Test
     public void testMultipleRoomsSize(){
-        Room room1 = ServerCommunication.postRoom("My room");
-        Room room2 = ServerCommunication.postRoom("My second Room");
-        Room room3 = ServerCommunication.postRoom("My third room");
+        Room room1 = SplashCommunication.postRoom("My room");
+        Room room2 = SplashCommunication.postRoom("My second Room");
+        Room room3 = SplashCommunication.postRoom("My third room");
         List<Room> list = new ArrayList<>();
         list.add(room1);
         list.add(room2);
@@ -71,9 +71,9 @@ public class SplashCommunicationTest {
         roomArray[2]=room3;
 
         //objects returned from the server
-        Room room4 = ServerCommunication.postRoom("My room");
-        Room room5 = ServerCommunication.postRoom("My second Room");
-        Room room6 = ServerCommunication.postRoom("My third room");
+        Room room4 = SplashCommunication.postRoom("My room");
+        Room room5 = SplashCommunication.postRoom("My second Room");
+        Room room6 = SplashCommunication.postRoom("My third room");
         Room[] roomArray2 = new Room[3];
         roomArray2[0]=room1;
         roomArray2[1]=room2;
