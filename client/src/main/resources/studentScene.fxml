@@ -12,7 +12,7 @@
             <Insets bottom="2" left="30" top="10.0" />
          </VBox.margin>
       </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Refresh" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Too fast" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="10.0" />
          </font>
@@ -22,7 +22,7 @@
             <Insets bottom="2" left="30" top="25.0" />
          </VBox.margin>
       </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Refresh" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Fast enough" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="10.0" />
          </font>
@@ -32,7 +32,7 @@
             <Insets bottom="2" left="20" top="30.0" />
          </VBox.margin>
       </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Refresh" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Too slow" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="10.0" />
          </font>
@@ -106,7 +106,7 @@
             <Insets bottom="2" left="32.5" top="30.0" />
          </VBox.margin>
       </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Question log" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="How Fast?" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="10.0" />
          </font>
@@ -116,7 +116,7 @@
             <Insets bottom="2" left="35" top="30.0" />
          </VBox.margin>
       </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Question log" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Add reaction" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="10.0" />
          </font>
