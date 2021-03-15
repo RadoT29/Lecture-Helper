@@ -101,6 +101,20 @@ public class QuestionTest {
 
     }
 
+    /**
+     * Count the number of questions on the repository
+     */
+    @Test
+    public void findTheSizeOffAllQuestions(){
+        Question question1 = new Question("question1");
+        Question question2 = new Question("question2");
+        Question question3 = new Question("question3");
+        questionRepository.save(question1);
+        questionRepository.save(question2);
+        questionRepository.save(question3);
+        assertEquals(3,questionRepository.count());
+    }
+
 //    /**
 //     * Tests if the question is deleted from the database.
 //     */
