@@ -32,16 +32,16 @@ public class SplashCommunicationTest {
     @Test
     public void testRoomIsOpen(){
         Room room = new Room("My room");
-        assertEquals(room.isOpen(),SplashCommunication.postRoom("My room").isOpen());
+        assertEquals(true,SplashCommunication.postRoom("My room").isOpen());
     }
     /**
      * Check if the returned object Room give permission to the students to enter the room
      */
-    @Test
-    public void testRoomStudentPermission(){
-        Room room = new Room("My room");
-        assertEquals(room.isPermission(),SplashCommunication.postRoom("My room").isPermission());
-    }
+//    @Test
+//    public void testRoomStudentPermission(){
+//        Room room = new Room("My room");
+//        assertEquals(true,SplashCommunication.postRoom("My room").isPermission());
+//    }
     /**
      * Check if the number of returned object
      */
@@ -85,8 +85,57 @@ public class SplashCommunicationTest {
     public void testIsRoomClosed(){
         Room room = SplashCommunication.postRoom("My room");
 
-        assertEquals(true, room.isOpen());
-        //ServerCommunication.closeRoom(room.getLinkIdModerator().toString());
-        //assertEquals(false, room.isOpen());
+        //assertEquals(true, room.isOpen());
+        ServerCommunication.closeRoom(room.getLinkIdModerator().toString());
+        assertEquals(false, ServerCommunication.isTheRoomClosed(room.getLinkIdModerator().toString()));
     }
+
+    @Test
+    public void testIsRoomClosedTwoRoomsFalse(){
+        Room room = SplashCommunication.postRoom("My room");
+        Room room2 = SplashCommunication.postRoom("New room");
+
+        //assertEquals(true, room.isOpen());
+        ServerCommunication.closeRoom(room.getLinkIdModerator().toString());
+        assertEquals(false, ServerCommunication.isTheRoomClosed(room.getLinkIdModerator().toString()));
+    }
+
+    @Test
+    public void testIsRoomClosedTwoRoomsTrue(){
+        Room room = SplashCommunication.postRoom("My room");
+        Room room2 = SplashCommunication.postRoom("New room");
+
+        //assertEquals(true, room.isOpen());
+        ServerCommunication.closeRoom(room.getLinkIdModerator().toString());
+        assertEquals(true, ServerCommunication.isTheRoomClosed(room2.getLinkIdModerator().toString()));
+    }
+
+    @Test
+    public void testIsStudentHasPermission(){
+        Room room = SplashCommunication.postRoom("My room");
+
+        //assertEquals(true, room.isOpen());
+        ServerCommunication.kickAllStudents(room.getLinkIdModerator().toString());
+        assertEquals(false, ServerCommunication.hasStudentPermission(room.getLinkIdModerator().toString()));
+    }
+
+    @Test
+    public void testIsStudentHasPermissionFalse(){
+        Room room = SplashCommunication.postRoom("My room");
+        Room room2 = SplashCommunication.postRoom("New room");
+
+        //assertEquals(true, room.isOpen());
+        ServerCommunication.kickAllStudents(room.getLinkIdModerator().toString());
+        assertEquals(false, ServerCommunication.hasStudentPermission(room.getLinkIdModerator().toString()));
+    }
+
+//    @Test
+//    public void testIsStudentHasPermissionTrue(){
+//        Room room = SplashCommunication.postRoom("My room");
+//        Room room2 = SplashCommunication.postRoom("New room");
+//
+//        //assertEquals(true, room.isOpen());
+//        ServerCommunication.kickAllStudents(room.getLinkIdModerator().toString());
+//        assertEquals(true, ServerCommunication.hasStudentPermission(room2.getLinkIdModerator().toString()));
+//    }
 }
