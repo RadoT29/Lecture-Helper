@@ -23,7 +23,7 @@ public class Question {
             generator = "question_sequence"
     )
     private long id;
-
+    private int upVotes;
     @ManyToOne
     private Room room;
     @ManyToOne
@@ -37,9 +37,6 @@ public class Question {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany
-    public List<Upvote> upvotes;
-
     public Question() {
     }
 
@@ -47,8 +44,8 @@ public class Question {
         this.questionText = questionText;
     }
 
-    public int getNumberOfUpvotes() {
-        return upvotes.size();
+    public int getUpVotes() {
+        return upVotes;
     }
 
     public long getId() {
@@ -113,7 +110,8 @@ public class Question {
                 && Objects.equals(user, question.user)
                 && Objects.equals(questionText, question.questionText)
                 && Objects.equals(createdAt, question.createdAt)
-                && Objects.equals(updatedAt, question.updatedAt);
+                && Objects.equals(updatedAt, question.updatedAt)
+                && Objects.equals(upVotes, question.upVotes);
     }
 
     @Override

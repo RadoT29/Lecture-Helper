@@ -50,5 +50,45 @@ public class QuestionController {
         questionService.addNewQuestion(roomLink,userId,question);
     }
 
+    /**
+     * calls the questionService to delete the question from the database.
+     * @param questionId the id of the question to be deleted
+     */
+    @DeleteMapping("/dismiss/{questionId}")
+    @ResponseBody
+    public void dismissQuestion(@PathVariable("questionId") long questionId) {
+        questionService.dismissQuestion(questionId);
+    }
+
+    /**
+     * calls the questionService to add an upvote to a specific question by a specific
+     * user on the database.
+     * @param questionId the id of the question to be upVoted
+     * @param userId - Id of the user who upVoted
+     */
+    @PostMapping("/changeUpvote/{questionId}/{userId}")
+    @ResponseBody
+    public void addUpvote(@PathVariable String questionId,
+                    @PathVariable String userId) {
+        System.out.println("Upvote arrived on server!");
+
+        questionService.addUpvote(questionId, userId);
+
+    }
+
+    /**
+     * calls the questionService to delete the upvote from the database.
+     * @param questionId the id of the question to be deleted
+     * @param userId - user who made the change
+     */
+    @DeleteMapping("/deleteUpvote/{questionId}/{userId}")
+    @ResponseBody
+    public void deleteUpvote(@PathVariable("questionId") String questionId,
+                                @PathVariable("userId") String userId) {
+        questionService.deleteUpvote(questionId, userId);
+    }
+
+
+
 
 }

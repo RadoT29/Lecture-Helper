@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.app.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class Session {
 
     private static Session instance;
@@ -8,6 +11,7 @@ public final class Session {
     private String roomName;
     private boolean isModerator;
     private String userId;
+    private List<String> upVotedQuestions;
 
     /**Session constructor.
      * @param roomLink Link for the room that is going to be used by this client for requests
@@ -22,6 +26,7 @@ public final class Session {
         this.roomName = roomName;
         this.isModerator = isModerator;
         this.userId = userId;
+        upVotedQuestions = new ArrayList<>();
     }
 
     /**Session constructor.
@@ -36,6 +41,7 @@ public final class Session {
         this.roomLink = roomLink;
         this.userId = userId;
         this.isModerator = isModerator;
+        upVotedQuestions = new ArrayList<>();
     }
 
     /**Get Instance/Instance constructor.
@@ -103,6 +109,29 @@ public final class Session {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public List<String> getUpvotesList() {
+        return this.upVotedQuestions;
+    }
+
+    /**
+     * Method to add a question to the list of the upvoted questions by a specific user
+     * (given that each user will have a different list initiated in their session).
+     * @param questionId - Question Id from question that has been upvoted by user
+     */
+    public void incrementUpvotes(String questionId) {
+        this.upVotedQuestions.add(questionId);
+    }
+
+    /**
+     * Method to remove a question from the list of the upvoted questions by a specific user
+     * (given that each user will have a different list initiated in their session).
+     * @param questionId - Question Id of question to remove the upvote from
+     */
+    public void decrementUpvotes(String questionId) {
+        this.upVotedQuestions.remove(questionId);
+    }
+
 
     /**
      * This method resets the session by clearing all the session Data.
