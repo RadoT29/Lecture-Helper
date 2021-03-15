@@ -111,19 +111,19 @@ public class HomeSceneController {
         l.setText(question.questionText);
         //set the upvote
         Label u = (Label) newQuestion.lookup(("#upvoteLabel"));
-        u.setText("+" + question.getNumberOfUpvotes());
+        u.setText("+" + question.getUpVotes());
 
 
         return newQuestion;
     }
 
-    /**
-     * finds the question by the id and deletes it from the scene.
-     * (this method will probably be deleted once we implement the real-time updates)
-     * @param id the id of the question to be deleted
-     */
+    /*  /**
+    * finds the question by the id and deletes it from the scene.
+    * (this method will probably be deleted once we implement the real-time updates)
+    * @param id the id of the question to be deleted
+    **
     public void deleteQuestionFromScene(String id) {
-        Node q = questionBox.lookup("#" + id);
-        questionBox.getChildren().remove(q);
-    }
+    Node q = questionBox.lookup("#" + id);
+    questionBox.getChildren().remove(q);
+    }*/
 }

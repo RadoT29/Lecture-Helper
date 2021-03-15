@@ -7,43 +7,38 @@ import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.services.RoomService;
+import nl.tudelft.oopp.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-
+/**
+ * This class is used to control the following:
+ * Adding a user
+ * Adding a nickName to an already existing user.
+ */
 @Controller
 public class UserController {
-
-    private RoomService roomService;
-    private ModeratorRepository moderatorRepository;
-    private StudentRepository studentRepository;
-
-    /**
-     * User Controller constructor.
-     * @param roomService - The Room Service that users the Room Repository.
-     * @param moderatorRepository - The Moderator Repository.
-     * @param studentRepository - The Student Repository.
-     */
     @Autowired
-    public UserController(RoomService roomService, ModeratorRepository moderatorRepository,
-                          StudentRepository studentRepository) {
-        this.roomService = roomService;
-        this.moderatorRepository = moderatorRepository;
-        this.studentRepository = studentRepository;
-    }
+    private RoomService roomService;
+    @Autowired
+    private ModeratorRepository moderatorRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private UserService userService;
 
     /**
-     * GET Endpoint to add a new user.
-     **/
+     *  Create a new user via entered room link.
+     * @param roomLink - the link for the room.
+     * @return - a User object, which will be saved on the client side.
+     */
     @GetMapping(path = "/room/user/{roomLink}")
     @ResponseBody
     public User roomExists(@PathVariable String roomLink) {
-        System.out.println(roomService.count());
+
         Room room = roomService.getByLink(roomLink);
 
         if (room.getLinkIdModerator().compareTo(UUID.fromString(roomLink)) == 0) {
@@ -59,6 +54,18 @@ public class UserController {
         }
         return null;
 
+    }
+
+    /**
+     * Add a nickname to an already existing user.
+     * @param nickName - the nickname.
+     * @param userId - the id of the user, used to find the right one.
+     */
+    @PostMapping(path = "/room/user/{userId}/nick/{nickName}")
+    @ResponseBody
+    public void setNickName(@PathVariable("nickName") String nickName,
+                             @PathVariable("userId") String userId) {
+        userService.update(Long.parseLong(userId), nickName);
     }
 
 }

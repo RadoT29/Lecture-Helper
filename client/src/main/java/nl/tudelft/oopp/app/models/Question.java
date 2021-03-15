@@ -10,7 +10,7 @@ public class Question implements Comparable<Question> {
     public Room room;
     public User user;
     public String questionText;
-    public List<Upvote> upvotes;
+    public int upVotes;
     //  public LocalDateTime createdAt;
     //  public LocalDateTime updatedAt;
 
@@ -35,16 +35,14 @@ public class Question implements Comparable<Question> {
         return questionText;
     }
 
-    public List<Upvote> getUpvotes() {
-        return upvotes;
-    }
 
-    public int getNumberOfUpvotes() {
-        return upvotes.size();
+
+    public int getUpVotes() {
+        return upVotes;
     }
 
     @Override
     public int compareTo(Question o) {
-        return o.getNumberOfUpvotes() - this.getNumberOfUpvotes();
+        return o.getUpVotes() - this.getUpVotes();
     }
 }

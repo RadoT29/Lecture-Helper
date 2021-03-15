@@ -2,8 +2,10 @@ package nl.tudelft.oopp.app.services;
 
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.Upvote;
 import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
+import nl.tudelft.oopp.app.repositories.UpvoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class QuestionService {
     private QuestionRepository questionRepository;
     private RoomService roomService;
     private UserService userService;
+    private UpvoteRepository upvoteRepository;
 
     /**
      * This constructor injects all the dependencies needed by the class.
@@ -29,10 +32,12 @@ public class QuestionService {
     @Autowired
     public QuestionService(QuestionRepository questionRepository,
                            RoomService roomService,
-                           UserService userService) {
+                           UserService userService,
+                           UpvoteRepository upvoteRepository) {
         this.questionRepository = questionRepository;
         this.roomService = roomService;
         this.userService = userService;
+        this.upvoteRepository = upvoteRepository;
     }
 
     public List<Question> getAllQuestions() {
@@ -71,11 +76,48 @@ public class QuestionService {
     }
 
 
-    /**
+    /* /**
      * calls the questionRepository to delete the question from the database.
      * @param questionId long id of the question to be deleted
-     */
+     **
     public void dismissQuestion(long questionId) {
         questionRepository.deleteById(questionId);
     }
+    */
+
+    /**
+     * Method add an upvote on the server side.
+     * @param questionId - Id of the question upvote to be added
+     * @param userId - Id of user making the change
+     */
+    public void addUpvote(String questionId, String userId) {
+        long questionId2 = Long.parseLong(questionId);
+
+        User user = userService.getByID(userId);
+        Question question = questionRepository.getOne(questionId2);
+
+        Upvote upvote = new Upvote(question, user);
+        upvoteRepository.save(upvote);
+        upvoteRepository.incrementUpVotes(questionId2);
+
+    }
+
+
+    /**
+     * Method to delete the upvote on the server side.
+     * @param questionId - Id of the question upvote to be deleted
+     * @param userId - Id of user making the change
+     */
+    public void deleteUpvote(String questionId, String userId) {
+        long questionId2 = Long.parseLong(questionId);
+        long userId2 = Long.parseLong(userId);
+
+        System.out.print(questionId2 + " " + userId2);
+
+        Upvote temp = upvoteRepository.findUpvoteByUserAndQuestion(userId2, questionId2);
+        upvoteRepository.deleteById(temp.getId());
+        upvoteRepository.decrementUpVotes(questionId2);
+    }
+
+
 }
