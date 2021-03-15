@@ -18,6 +18,11 @@ public interface UpvoteRepository extends JpaRepository<Upvote, Long> {
     @Query("SELECT u FROM Upvote u WHERE u.user.id=?1 AND u.question.id=?2")
     Upvote findUpvoteByUserAndQuestion(long user, long question);
 
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Upvote u WHERE u.question.id=?1")
+    void deleteUpVotesByQuestionId(long questionId);
+
 
     @Transactional
     @Modifying
