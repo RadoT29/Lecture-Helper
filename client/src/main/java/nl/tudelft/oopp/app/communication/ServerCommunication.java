@@ -17,28 +17,6 @@ public class ServerCommunication {
     private static HttpClient client = HttpClient.newBuilder().build();
 
     /**
-     * Retrieves a quote from the server.
-     *
-     * @return the body of a get request to the server.
-     * @throws Exception if communication with the server fails.
-     */
-    public static Room postRoom(String name) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ", "%20"))).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return gson.fromJson(response.body(), Room.class);
-    }
-
-    /**
      * Close the room.
      *
      * @param linkId - name of the room
@@ -80,5 +58,23 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
-
+    /**
+     * Sends a request to server to change user's name.
+     * @param userId - the id of the user.
+     * @param nickName - the name of the user.
+     */
+    public static void setNick(String userId, String nickName) {
+        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/room/user/" + userId.replace(" ", "%20") + "/nick/" + nickName.replace(" ", "%20"))).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
 }

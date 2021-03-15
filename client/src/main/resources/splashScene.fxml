@@ -18,11 +18,11 @@
             </font></Label>
          <HBox maxHeight="50.0" maxWidth="605.0" minHeight="50.0" minWidth="605.0" prefHeight="50.0" prefWidth="605.0">
             <children>
-               <TextField fx:id="roomLink" maxHeight="50.0" maxWidth="410.0" minHeight="50.0" minWidth="410.0" prefHeight="50.0" prefWidth="410.0">
+               <TextField fx:id="roomLink" promptText="Enter a link" maxHeight="50.0" maxWidth="410.0" minHeight="50.0" minWidth="410.0" prefHeight="50.0" prefWidth="410.0">
                   <HBox.margin>
                      <Insets right="45.0" />
                   </HBox.margin></TextField>
-                <Button fx:id="roleControl"  maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#selectUserType" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
+                <Button fx:id="enterRoomButton" style="-fx-background-radius: 5em;" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#enterRoom" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
                   <font>
                      <Font name="Roboto" size="16.0" />
                   </font></Button>
@@ -38,11 +38,11 @@
             </font></Label>
           <HBox maxHeight="50.0" maxWidth="605.0" minHeight="50.0" minWidth="605.0" prefHeight="50.0" prefWidth="605.0">
               <children>
-                  <TextField fx:id="roomName" maxHeight="50.0" maxWidth="410.0" minHeight="50.0" minWidth="410.0" prefHeight="50.0" prefWidth="410.0">
+                  <TextField fx:id="roomName" promptText="Enter a link" maxHeight="50.0" maxWidth="410.0" minHeight="50.0" minWidth="410.0" prefHeight="50.0" prefWidth="410.0">
                       <HBox.margin>
                           <Insets right="45.0" />
                       </HBox.margin></TextField>
-                  <Button fx:id="buttonCreate" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#buttonClicked" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
+                  <Button fx:id="buttonCreate" style="-fx-background-radius: 5em;" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" onAction="#createRoom" prefHeight="50.0" prefWidth="150.0" text="Enter" textFill="WHITE">
                   <font>
                      <Font name="Roboto" size="16.0" />
                   </font></Button>

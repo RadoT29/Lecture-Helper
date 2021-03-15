@@ -28,7 +28,7 @@ public class HomeSceneController {
     @FXML
     private VBox questionBox;
 
-    protected PriorityQueue<Entry> questions;
+    protected PriorityQueue<Question> questions;
 
     /**
      * Pressing the sendButton will send all the text in the questionInput
@@ -58,11 +58,11 @@ public class HomeSceneController {
         ServerCommunication.kickAllStudents(linkId);
     }
 
+    /**
+     * fill in the priority queue and and load them on the screen.
+     */
     public void refresh() {
         questions = new PriorityQueue<>();
-//        questions.add(new Entry(new Question("Question 2"), 10));
-//        questions.add(new Entry(new Question("Question 3"), 11));
-//        questions.add(new Entry(new Question("Question 1"), 9));
         questions.addAll(HomeSceneCommunication.getQuestions());
         loadQuestions();
     }
@@ -80,36 +80,35 @@ public class HomeSceneController {
         questionBox.getChildren().clear();
         int count = 1;
         while (!questions.isEmpty()) {
-            Entry entry = questions.poll();
+            Question question = questions.poll();
             try {
                 questionBox.getChildren()
-                        .add(createQuestionCell(entry, resource));
+                        .add(createQuestionCell(question, resource));
             } catch (IOException e) {
                 questionBox.getChildren().add(
-                        new Label("Something when wrong while loading this question"));
+                        new Label("Something went wrong while loading this question"));
             }
         }
     }
 
     /**
-     * creates a node for a question
-     * @param entry Entry to be displayed
+     * creates a node for a question.
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
      *      or one of the fields that should be changed where not found
      */
-    protected Node createQuestionCell (Entry entry, String resource) throws IOException {
+    protected Node createQuestionCell(Question question, String resource) throws IOException {
         Node newQuestion = FXMLLoader.load(getClass().getResource(resource));
 
         //set the node id to the question id
-        newQuestion.setId(entry.getQuestion().getQuestionID());
+        newQuestion.setId(question.getQuestionID());
         //set the question text
         Label l = (Label) newQuestion.lookup("#questionTextLabel");
-        l.setText(entry.getQuestion().questionText);
+        l.setText(question.questionText);
         //set the upvote
         Label u = (Label) newQuestion.lookup(("#upvoteLabel"));
-        u.setText("+" + entry.getUpvote());
+        u.setText("+" + question.getNumberOfUpvotes());
 
         return newQuestion;
     }
