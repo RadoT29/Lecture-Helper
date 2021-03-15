@@ -14,10 +14,10 @@ public class QuestionCommunication {
     private static HttpClient client = HttpClient.newBuilder().build();
 
 
-    /**
-     * send a DELETE request to the server to delete the question.
-     * @param questionId the id of a question that is supposed to be deleted
-     */
+    /* /**
+    * send a DELETE request to the server to delete the question.
+    * @param questionId the id of a question that is supposed to be deleted
+    *//*
     public static void dismissQuestion(long questionId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/questions/dismiss/" + questionId))
@@ -33,7 +33,7 @@ public class QuestionCommunication {
             e.printStackTrace();
         }
     }
-
+*/
     /**
      * Send a POST request to update the number of Upvotes associated to a specific question.
      * @param questionId - question where upvote status is changed
