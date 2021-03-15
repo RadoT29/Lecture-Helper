@@ -6,11 +6,11 @@ import java.util.UUID;
 
 public class Question implements Comparable<Question> {
 
-    public String questionID;
+    public long id;
     public Room room;
     public User user;
     public String questionText;
-    public List<Upvote> upvotes;
+    public int upVotes;
     //  public LocalDateTime createdAt;
     //  public LocalDateTime updatedAt;
 
@@ -19,8 +19,8 @@ public class Question implements Comparable<Question> {
         this.questionText = questionText;
     }
 
-    public String getQuestionID() {
-        return questionID;
+    public long getQuestionID() {
+        return id;
     }
 
     public Room getRoom() {
@@ -35,16 +35,14 @@ public class Question implements Comparable<Question> {
         return questionText;
     }
 
-    public List<Upvote> getUpvotes() {
-        return upvotes;
-    }
 
-    public int getNumberOfUpvotes() {
-        return upvotes.size();
+
+    public int getUpVotes() {
+        return upVotes;
     }
 
     @Override
     public int compareTo(Question o) {
-        return o.getNumberOfUpvotes() - this.getNumberOfUpvotes();
+        return o.getUpVotes() - this.getUpVotes();
     }
 }

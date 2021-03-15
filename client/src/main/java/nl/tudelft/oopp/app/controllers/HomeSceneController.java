@@ -8,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
-import nl.tudelft.oopp.app.models.Entry;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -99,17 +98,32 @@ public class HomeSceneController {
      *      or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
-        Node newQuestion = FXMLLoader.load(getClass().getResource(resource));
+        // load the question to a newNode and set it's homeSceneController to this
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Node newQuestion = loader.load();
+        QuestionCellController qsc = loader.getController();
+        qsc.setHomeScene(this);
 
         //set the node id to the question id
-        newQuestion.setId(question.getQuestionID());
+        newQuestion.setId(question.getQuestionID() + "");
         //set the question text
         Label l = (Label) newQuestion.lookup("#questionTextLabel");
         l.setText(question.questionText);
         //set the upvote
         Label u = (Label) newQuestion.lookup(("#upvoteLabel"));
-        u.setText("+" + question.getNumberOfUpvotes());
+        u.setText("+" + question.getUpVotes());
+
 
         return newQuestion;
     }
+
+    /*  /**
+    * finds the question by the id and deletes it from the scene.
+    * (this method will probably be deleted once we implement the real-time updates)
+    * @param id the id of the question to be deleted
+    **
+    public void deleteQuestionFromScene(String id) {
+    Node q = questionBox.lookup("#" + id);
+    questionBox.getChildren().remove(q);
+    }*/
 }
