@@ -100,17 +100,16 @@ public class QuestionTest {
 
     }
 
-//    /**
-//     * Tests if the question is deleted from the database.
-//     */
-//    @Test
-//    public void dismissTest() {
-//        Question question = new Question("This will be deleted");
-//        long deletedId = question.getId();
-//        questionRepository.save(question);
-////        assertTrue(questionRepository.existsById(deletedId));
-////        questionRepository.deleteById(deletedId);
-//        assertFalse(questionRepository.existsById(deletedId));
-//    }
+    /**
+     * Tests if the question is deleted from the database.
+     */
+    @Test
+    public void dismissTest() {
+        Question question = new Question("This will be deleted");
+        questionRepository.save(question);
+        assertTrue(questionRepository.existsById(question.getId()));
+        questionRepository.deleteById(question.getId());
+        assertFalse(questionRepository.existsById(question.getId()));
+    }
 
 }
