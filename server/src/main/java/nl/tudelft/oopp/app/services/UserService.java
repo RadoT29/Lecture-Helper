@@ -14,19 +14,32 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    /**
+     * Gets all users in the application.
+     * @return - a list of all users.
+     */
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    /**
+     * Gets the number of users in the application.
+     * @return - their count.
+     */
     public long count() {
         return userRepository.count();
+    }
+
+    /**
+     * Updates a user's name.
+     * @param userId - user's id.
+     * @param userName - name of user.
+     */
+    public void update(long userId, String userName) {
+        userRepository.updateUserName(userId, userName);
     }
 
     /**
