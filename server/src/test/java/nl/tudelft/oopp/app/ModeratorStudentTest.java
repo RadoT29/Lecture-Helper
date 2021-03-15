@@ -23,7 +23,9 @@ public class ModeratorStudentTest {
     @Autowired
     private ModeratorRepository moderatorRepository;
 
-
+    /**
+     * Save student to the student repository and then check if it is there
+     */
     @Test
     public void saveAndRetrieveStudent() {
         Room room = new Room("room name");
@@ -35,7 +37,9 @@ public class ModeratorStudentTest {
         Student student2 = studentRepository.getOne(student.getId());
         assertEquals(student, student2);
     }
-
+    /**
+     * Save moderator to the moderator repository and then check if it is there
+     */
     @Test
     public void saveAndRetrieveModerator() {
         Room room = new Room("room name");
@@ -48,6 +52,9 @@ public class ModeratorStudentTest {
         assertEquals(mod, mod2);
     }
 
+    /**
+     * Save room to the room repository and then check if it is there by moderator
+     */
     @Test
     public void saveAndRetrieveRoomViaModerator() {
         Room room = new Room("OurRoom");
@@ -60,7 +67,9 @@ public class ModeratorStudentTest {
         assertEquals(moderator.getRoomId(), room);
         assertEquals(moderator.getRoomId().getName(), "OurRoom");
     }
-
+    /**
+     * Save room to the room repository and then check if it is there by student
+     */
     @Test
     public void saveAndRetrieveRoomViaStudent() {
         Room room = new Room("room name");

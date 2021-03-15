@@ -10,6 +10,7 @@ import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.repositories.ModeratorRepository;
+import nl.tudelft.oopp.app.services.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
