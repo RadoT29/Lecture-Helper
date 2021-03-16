@@ -103,32 +103,6 @@ public class QuestionTest {
     }
 
     /**
-     * Count the number of questions on the repository
-     */
-    @Test
-    public void findTheSizeOffAllQuestions(){
-        Question question1 = new Question("question1");
-        Question question2 = new Question("question2");
-        Question question3 = new Question("question3");
-        questionRepository.save(question1);
-        questionRepository.save(question2);
-        questionRepository.save(question3);
-        assertEquals(3,questionRepository.count());
-    }
-
-//    /**
-//     * Tests if the question is deleted from the database.
-//     */
-//    @Test
-//    public void dismissTest() {
-//        Question question = new Question("This will be deleted");
-//        long deletedId = question.getId();
-//        questionRepository.save(question);
-////        assertTrue(questionRepository.existsById(deletedId));
-////        questionRepository.deleteById(deletedId);
-//        assertFalse(questionRepository.existsById(deletedId));
-//    }
-    /**
      * Tests if the question is deleted from the database.
      */
     @Test
@@ -139,18 +113,6 @@ public class QuestionTest {
         questionRepository.deleteById(question.getId());
         assertFalse(questionRepository.existsById(question.getId()));
     }
-    //    /**
-    //     * Tests if the question is deleted from the database.
-    //     */
-    //    @Test
-    //    public void dismissTest() {
-    //        Question question = new Question("This will be deleted");
-    //        long deletedId = question.getId();
-    //        questionRepository.save(question);
-    ////        questionRepository.deleteById(deletedId);
-    ////        assertTrue(questionRepository.existsById(deletedId));
-    //        assertFalse(questionRepository.existsById(deletedId));
-    //    }
 
     @Test
     public void findAllByRoomLinkTest() {
