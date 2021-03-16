@@ -28,7 +28,7 @@ public class QuestionTestMock {
     private QuestionRepository questionRepository;
 
     @BeforeEach
-    void SetUp() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 

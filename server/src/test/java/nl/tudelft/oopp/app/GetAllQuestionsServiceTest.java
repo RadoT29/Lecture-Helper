@@ -158,7 +158,8 @@ public class GetAllQuestionsServiceTest {
         resultQuestions.add(question3);
         resultQuestions.add(question1);
 
-        //it does not matter which link we will use, because we test both of them in different tests.
+        //it does not matter which link we will use,.
+        // because we test both of them in different tests.
         UUID linkToTest = room1.getLinkIdModerator();
 
         Mockito.when(questionRepository.findAllByRoomLink(linkToTest))
@@ -170,7 +171,8 @@ public class GetAllQuestionsServiceTest {
     }
 
     /**
-     * tests it the questions returned by the method have the userid and userid changed to 0's.
+     * tests it the questions returned by the method.
+     * have the userid and userid changed to 0's.
      */
     @Test
     public void getAllQuestionsByRoom_userIdZero_Test() {
@@ -179,7 +181,8 @@ public class GetAllQuestionsServiceTest {
         resultQuestions.add(question3);
         resultQuestions.add(question1);
 
-        //it does not matter which link we will use, because we test both of them in different tests.
+        //it does not matter which link we will use,
+        // because we test both of them in different tests.
         UUID linkToTest = room1.getLinkIdModerator();
 
         Mockito.when(questionRepository.findAllByRoomLink(linkToTest))

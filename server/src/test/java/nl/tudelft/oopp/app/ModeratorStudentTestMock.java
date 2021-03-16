@@ -30,7 +30,7 @@ public class ModeratorStudentTestMock {
     private UserRepository userRepository;
 
     @BeforeEach
-    void SetUp() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 

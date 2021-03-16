@@ -37,45 +37,45 @@ public class RoomTestMock {
     private RoomController roomController;
 
     @BeforeEach
-    void SetUp() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
 
-//   @Test
-//    public void roomSize()
-//    {
-//        when(repository.findAll()).
-//        thenReturn(Stream.of(new Room("my room")).collect(Collectors.toList()));
-//        assertEquals(1,roomService.findAll().size());
-//        //verify()
-//    }
+    //   @Test
+    //    public void roomSize()
+    //    {
+    //        when(repository.findAll()).
+    //        thenReturn(Stream.of(new Room("my room")).collect(Collectors.toList()));
+    //        assertEquals(1,roomService.findAll().size());
+    //        //verify()
+    //    }
 
 
-//    /**
-//     * Find the room by moderator link.
-//     */
-//    @Test
-//    public void findRoomByModeratorLink()
-//    {
-//        Room room = new Room("My room");
-//        //repository.save(room);
-//        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
-//        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdModerator())));
-//
-//    }
+    //    /**
+    //     * Find the room by moderator link.
+    //     */
+    //    @Test
+    //    public void findRoomByModeratorLink()
+    //    {
+    //        Room room = new Room("My room");
+    //        //repository.save(room);
+    //        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+    //        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdModerator())));
+    //
+    //    }
 
-//    /**
-//     * Find the room by student link.
-//     */
-//    @Test
-//    public void findRoomByStudentLink()
-//    {
-//        Room room = new Room("My room");
-//        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
-//        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdStudent())));
-//
-//    }
+    //    /**
+    //     * Find the room by student link.
+    //     */
+    //    @Test
+    //    public void findRoomByStudentLink()
+    //    {
+    //        Room room = new Room("My room");
+    //        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
+    //        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdStudent())));
+    //      }
+
 
     /**
      * Find the room by moderator link.
@@ -93,7 +93,8 @@ public class RoomTestMock {
 
     /**
      * Find the room by student link.
-     * In the test the expected room is different from that is returned from when().thenReturn() structure
+     * In the test the expected room is different from that is returned from
+     * when().thenReturn() structure.
      */
     @Test
     public void findRoomByStudentLinkFalse() {
@@ -125,73 +126,5 @@ public class RoomTestMock {
         assertEquals(false, roomController.isClose(String.valueOf(room.getLinkIdModerator())));
     }
 
-//    /**
-//     * check for permission for room.
-//     */
-////    @Test
-////    public void testMethodPermission(){
-////        Room room = new Room("My room");
-////        when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
-////        assertEquals(true, roomController.hasStudentPermission(String.valueOf(room.getLinkIdModerator())) );
-////    }
-////
-//    /**
-//     * check for permission for room
-//     */
-////    @Test
-////    public void testMethodNoPermission(){
-////        Room room = new Room("My room");
-////        room.setPermission(false);
-////        when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
-////        assertEquals(false, roomController.hasStudentPermission(String.valueOf(room.getLinkIdModerator())) );
-////    }
 
-
-//    @Test
-//    public void roomCloseTrue()
-//    {
-//        Room room = new Room("My room");
-//        Room room2 = new Room("My room");
-//        when(repository.closeRoom(room.getLinkIdModerator())).thenReturn(true);
-//        assertEquals(true,roomController.closeRoom(room.getLinkIdModerator().toString()));
-//        verify(repository).closeRoom(room.getLinkIdModerator());
-//    }
-//
-//    @Test
-//    public void roomCloseFalse()
-//    {
-//        Room room = new Room("My room");
-//        Room room2 = new Room("My room");
-//        when(repository.closeRoom(room2.getLinkIdModerator())).thenReturn(true);
-//        assertEquals(false,roomController.closeRoom(room.getLinkIdModerator().toString()));
-//        verify(repository).closeRoom(room.getLinkIdModerator());
-//    }
-//
-//    @Test
-//    public void kickStudentsTrue()
-//    {
-//        Room room = new Room("My room");
-//        Room room2 = new Room("My room");
-//        when(repository.kickAllStudents(room.getLinkIdModerator())).thenReturn(true);
-//        assertEquals(true,roomController.kickAllStudent(room.getLinkIdModerator().toString()));
-//        verify(repository).kickAllStudents(room.getLinkIdModerator());
-//    }
-//
-//    @Test
-//    public void kickStudentsFalse()
-//    {
-//        Room room = new Room("My room");
-//        Room room2 = new Room("My room");
-//        when(repository.kickAllStudents(room2.getLinkIdModerator())).thenReturn(true);
-//        assertEquals(false,roomController.kickAllStudent(room.getLinkIdModerator().toString()));
-//        verify(repository).kickAllStudents(room.getLinkIdModerator());
-//    }
-//    @Test
-//    public void numberOfRooms(){
-//        Room room = new Room("My room");
-//        Room room2 = new Room("My room");
-//        roomRepository.save(room);
-//        roomRepository.save(room2);
-//        assertEquals(2,roomRepository.count());
-//    }
 }
