@@ -42,12 +42,25 @@ public class RoomController {
         roomRepository.closeRoom(UUID.fromString(linkId));
     }
 
+    /**
+     * Get end point. Receive a request for if the room is open
+     *
+     * @param linkId - the link of the room for which isClose status is requested
+     * @return - true if the room is still open, otherwise false
+     */
     @GetMapping("isOpenById/{linkId}")
     @ResponseBody
     public boolean isClose(@PathVariable String linkId){
-        return roomRepository.isClose(UUID.fromString(linkId)).getIsOpen();
+        Room room = roomRepository.isClose(UUID.fromString(linkId));
+        return room.getIsOpen();
     }
 
+    /**
+     * Get end point. Receive a request for if the students have permission to the room
+     *
+     * @param linkId - the link of the room for which permission status is requested
+     * @return - true if the students have permission to the room, otherwise false
+     */
     @GetMapping("hasStudentPermission/{linkId}")
     @ResponseBody
     public boolean hasStudentPermission(@PathVariable String linkId){

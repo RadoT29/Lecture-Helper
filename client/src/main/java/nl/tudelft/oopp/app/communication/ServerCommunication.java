@@ -42,8 +42,8 @@ public class ServerCommunication {
     }
 
     /**
-     *
-     * @param linkId
+     *  Make get requested if the room is open
+     * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
      */
     public static boolean isTheRoomClosed(String linkId){
@@ -64,8 +64,8 @@ public class ServerCommunication {
     }
 
     /**
-     *
-     * @param linkId
+     *Make a requested if the students has permission to the room
+     * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
      */
     public static boolean hasStudentPermission(String linkId){
@@ -88,7 +88,7 @@ public class ServerCommunication {
     /**
      * Kick all students.
      *
-     * @param linkId - name of the room
+     * @param linkId - link of the room
      * @throws Exception if communication with the server fails.
      */
     public static void kickAllStudents(String linkId) {
