@@ -22,21 +22,21 @@ public class QuestionCellController {
         this.hsc = hsc;
     }
 
-    /* **
+    /**
     * dismisses the question.
     * deletes the database from the database and remove it from the screen
-    **
+    **/
     public void dismissClicked() {
-    //get the id of the question to be deleted
-    Node question = questionCell.getParent();
-    String id = question.getId();
+        //get the id of the question to be deleted
+        Node question = questionCell.getParent();
+        String id = question.getId();
 
-    //delete the question from the database
-    QuestionCommunication.dismissQuestion(Long.parseLong(id));
+        //delete the question from the database
+        QuestionCommunication.dismissQuestion(Long.parseLong(id));
 
-    //remove the database from the screen
-    hsc.deleteQuestionFromScene(id);
-    }*/
+        //remove the database from the screen
+        hsc.deleteQuestionFromScene(id);
+    }
 
     /**
      * Method called when the upvote button is clicked,
