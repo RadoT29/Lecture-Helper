@@ -139,6 +139,18 @@ public class QuestionTest {
         questionRepository.deleteById(question.getId());
         assertFalse(questionRepository.existsById(question.getId()));
     }
+    //    /**
+    //     * Tests if the question is deleted from the database.
+    //     */
+    //    @Test
+    //    public void dismissTest() {
+    //        Question question = new Question("This will be deleted");
+    //        long deletedId = question.getId();
+    //        questionRepository.save(question);
+    ////        questionRepository.deleteById(deletedId);
+    ////        assertTrue(questionRepository.existsById(deletedId));
+    //        assertFalse(questionRepository.existsById(deletedId));
+    //    }
 
     @Test
     public void findAllByRoomLinkTest() {

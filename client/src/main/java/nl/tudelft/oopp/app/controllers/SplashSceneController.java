@@ -11,9 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
-import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
-import nl.tudelft.oopp.app.models.Session;
 
 import java.io.IOException;
 
@@ -106,7 +105,29 @@ public class SplashSceneController {
         if (nickName.getText() != null) {
             String userId = session.getUserId();
             ServerCommunication.setNick(userId, nickName.getText());
+            //setUserClass(nickName.getText());
         }
+
+
+
     }
+
+    /* **
+    * Establishes the subclass of the user in the session
+    * @param name - This parameter corresponds to the user nickname set on the previous method
+    *//*
+    public void setUserClass(String name){
+    Session session = Session.getInstance();
+
+    if(session.getIsModerator()) {
+    User moderator = new Moderator(session.getUserId(), name, session.get);
+    } else {
+    User student = new Student();
+    }
+
+    }
+    */
+
+
 
 }

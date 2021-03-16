@@ -122,5 +122,14 @@ public class QuestionService {
         upvoteRepository.decrementUpVotes(questionId2);
     }
 
+    /**
+     * For now this works but need to set up the room ID
+     * part so to identify the room from which to delete.
+     */
+    public void clearQuestions(String roomLink) {
+        Room room = roomService.getByLink(roomLink);
+
+        questionRepository.clearQuestions(room.getId());
+    }
 
 }
