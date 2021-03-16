@@ -44,7 +44,7 @@ public class RoomTest {
         Room room = new Room("My room");
         roomRepository.save(room);
         roomRepository.closeRoom(room.getLinkIdModerator());
-        assertEquals(false,room.isOpen());
+        assertEquals(false,roomRepository.getOne(room.getId()).getIsOpen());
     }
     /**
      *Check if the the students has permission to room (if they do not have permission so they are kickked)
@@ -66,7 +66,7 @@ public class RoomTest {
         roomRepository.save(room);
         roomRepository.save(room2);
         roomRepository.closeRoom(room.getLinkIdModerator());
-        assertEquals(true,room2.isOpen());
+        assertEquals(true,room2.getIsOpen());
     }
     /**
      *Check if the other room is still open for students
