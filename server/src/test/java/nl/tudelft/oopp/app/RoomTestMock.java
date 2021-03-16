@@ -23,14 +23,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-//@DataJpaTest
+@DataJpaTest
 public class RoomTestMock {
 
      @InjectMocks
     private RoomService roomService;
 
-    @Mock
+    @MockBean
     private RoomRepository repository;
+
+    @InjectMocks
+    private RoomController roomController;
 
     @BeforeEach
     void SetUp() {
@@ -107,6 +110,48 @@ public class RoomTestMock {
         assertNotEquals(room2,roomService.getByLink(String.valueOf(room.getLinkIdStudent())));
 
     }
+
+    /**
+     * check if the room is closed
+     */
+    @Test
+    public void testMethodIsClose(){
+        Room room = new Room("My room");
+        when(repository.isClose(room.getLinkIdModerator())).thenReturn(room);
+        assertEquals(true, roomController.isClose(String.valueOf(room.getLinkIdModerator())) );
+    }
+
+    /**
+     * check if the room is closed
+     */
+    @Test
+    public void testMethodIsCloseClosedRoom(){
+        Room room = new Room("My room");
+        room.setIsOpen(false);
+        when(repository.isClose(room.getLinkIdModerator())).thenReturn(room);
+        assertEquals(false, roomController.isClose(String.valueOf(room.getLinkIdModerator())) );
+    }
+
+//    /**
+//     * check for permission for room
+//     */
+////    @Test
+////    public void testMethodPermission(){
+////        Room room = new Room("My room");
+////        when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
+////        assertEquals(true, roomController.hasStudentPermission(String.valueOf(room.getLinkIdModerator())) );
+////    }
+////
+//    /**
+//     * check for permission for room
+//     */
+////    @Test
+////    public void testMethodNoPermission(){
+////        Room room = new Room("My room");
+////        room.setPermission(false);
+////        when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
+////        assertEquals(false, roomController.hasStudentPermission(String.valueOf(room.getLinkIdModerator())) );
+////    }
 
 
 

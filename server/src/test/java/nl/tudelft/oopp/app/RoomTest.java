@@ -14,19 +14,36 @@ public class RoomTest {
     @Autowired
     private RoomRepository roomRepository;
 
+    /**
+     * check if the created room is with the same name
+     */
     @Test
     public void roomName() {
         Room room = new Room("room name");
         assertEquals(room.getName(), "room name");
     }
 
+    /**
+     * check if the moderator link is created
+     */
     @Test
-    public void roomLinks() {
+    public void roomLinksModerator() {
         Room room = new Room("room name");
         assertNotNull(room.getLinkIdModerator());
+    }
+
+    /**
+     * check if the student link is created
+     */
+    @Test
+    public void roomLinksStudent() {
+        Room room = new Room("room name");
         assertNotNull(room.getLinkIdStudent());
     }
 
+    /**
+     * check if the room saved and after that retrieved from the repository is the same
+     */
     @Test
     public void saveAndRetrieveRoom() {
         Room room = new Room("room name");
@@ -36,26 +53,7 @@ public class RoomTest {
         assertEquals(room, room2);
     }
 
-    /**
-     * Check if the room is close
-     */
-    @Test
-    public void closeRoom(){
-        Room room = new Room("My room");
-        roomRepository.save(room);
-        roomRepository.closeRoom(room.getLinkIdModerator());
-        assertEquals(false,roomRepository.getOne(room.getId()).getIsOpen());
-    }
-    /**
-     *Check if the the students has permission to room (if they do not have permission so they are kickked)
-     */
-    @Test
-    public void kickTheStudents(){
-        Room room = new Room("My room");
-        roomRepository.save(room);
-        roomRepository.kickAllStudents(room.getLinkIdModerator());
-        assertEquals(false,room.getPermission());
-    }
+
     /**
      *Check if the other room on the repository is still open
      */
@@ -68,16 +66,5 @@ public class RoomTest {
         roomRepository.closeRoom(room.getLinkIdModerator());
         assertEquals(true,room2.getIsOpen());
     }
-    /**
-     *Check if the other room is still open for students
-     */
-    @Test
-    public void kickTheStudentsFalse(){
-        Room room = new Room("My room");
-        Room room2 = new Room("New room");
-        roomRepository.save(room);
-        roomRepository.save(room2);
-        roomRepository.kickAllStudents(room.getLinkIdModerator());
-        assertEquals(true,room2.getPermission());
-    }
+
 }

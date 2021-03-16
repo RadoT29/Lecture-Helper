@@ -18,7 +18,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'junit:junit:4.12'
 	implementation 'junit:junit:4.12'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Local test database (in-memory)
 	implementation 'com.h2database:h2'
