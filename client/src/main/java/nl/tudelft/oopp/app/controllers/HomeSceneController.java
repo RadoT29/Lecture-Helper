@@ -123,7 +123,7 @@ public class HomeSceneController {
     * @param id the id of the question to be deleted
     **/
     public void deleteQuestionFromScene(String id) {
-    Node q = questionBox.lookup("#" + id);
-    questionBox.getChildren().remove(q);
+        Node q = questionBox.lookup("#" + id);
+        questionBox.getChildren().remove(q);
     }
 }
