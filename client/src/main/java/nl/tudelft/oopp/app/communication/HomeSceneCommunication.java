@@ -78,6 +78,28 @@ public class HomeSceneCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
+    /**
+     * Method to send a DELETE request to the server
+     * so to delete all of the questions created so far in a particular room.
+     * @param roomLink - Link of the room from which the request was made from
+     */
+    public static void clearQuestions(String roomLink) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/questions/clearAllQuestions/" + roomLink))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
 

@@ -9,6 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.models.Session;
 
 /**
  * This class controls the Main scene of the Moderators.
@@ -102,4 +104,21 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         super.refresh();
     }
 
+    /**
+     * Method to clear all questions and allow the moderator to reset the room
+     * It will activate when the clear questions button is clicked (within the moderator view)
+     * It will reconfirm if the user is a moderator and call clearQuestions
+     * in the HomeCommunicationScene.
+     * NEED TO ADD THE ROOM ID FROM WHICH QUESTIONS ARE CLEARED
+     * (this part will be changed later when the classes of the user,
+     * moderator and student are finished).
+     */
+    public void clearQuestionsClicked() {
+        Session session = Session.getInstance();
+
+        if (session.getIsModerator()) {
+            HomeSceneCommunication.clearQuestions(session.getRoomLink());
+        }
+
+    }
 }
