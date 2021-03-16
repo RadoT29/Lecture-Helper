@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -108,9 +110,32 @@ public class QuestionTest {
     //        Question question = new Question("This will be deleted");
     //        long deletedId = question.getId();
     //        questionRepository.save(question);
-    ////        assertTrue(questionRepository.existsById(deletedId));
     ////        questionRepository.deleteById(deletedId);
+    ////        assertTrue(questionRepository.existsById(deletedId));
     //        assertFalse(questionRepository.existsById(deletedId));
     //    }
+
+    @Test
+    public void findAllByRoomLinkTest() {
+        Room room1 = new Room("Room1");
+        room1.setLinkIdModerator();
+        Room room2 = new Room("Room2");
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+
+        Question question1 = new Question("should be in the result");
+        question1.setRoom(room1);
+
+        Question question2 = new Question("should not be in the result");
+        question2.setRoom(room2);
+
+        questionRepository.save(question1);
+        questionRepository.save(question2);
+
+        List<Question> expected = List.of(question1);
+        List<Question> result = questionRepository.findAllByRoomLink(room1.getLinkIdModerator());
+
+        assertEquals(expected, result);
+    }
 
 }
