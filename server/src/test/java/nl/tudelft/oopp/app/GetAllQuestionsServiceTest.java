@@ -39,8 +39,8 @@ public class GetAllQuestionsServiceTest {
      * initializes the objects for the mock repository.
      * room1: id = 12, name = "Room_1", Student/Moderator links initialized
      * room2: name = "Room_2"
-     * question1: id=3, text="Question1", room=room1, user=moderator(id=1, name="Adam1", room=room1)
-     * question2: id=3, text="Question2", room=room2, user=student(id=2, name="Adam2", room=room2)
+     * question1: id=1, text="Question1", room=room1, user=moderator(id=1, name="Adam1", room=room1)
+     * question2: id=2, text="Question2", room=room2, user=student(id=2, name="Adam2", room=room2)
      * question3: id=3, text="Question3", room=room1, user=student(id=3, name="Adam3", room=room1)
      */
     @BeforeEach
