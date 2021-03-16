@@ -92,6 +92,8 @@ public class QuestionController {
     /**
      * Receives DELETE request made from the client side
      * calls the questionService so to delete all the questions made in that room.
+     * Receives the roomLink from which the request was made
+     * The roomLink is unique so it can be used as an identifier for the room
      */
     @DeleteMapping("/clearAllQuestions/{roomLink}")
     @ResponseBody

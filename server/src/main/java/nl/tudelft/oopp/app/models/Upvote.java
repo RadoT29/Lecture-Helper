@@ -12,7 +12,10 @@ public class Upvote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
+    /**
+     * The onDelete feature establishes that once a question is deleted
+     * All of its corresponding entries in the upVotes table are also deleted.
+     */
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     public Question question;
