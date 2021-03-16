@@ -8,10 +8,11 @@ import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.repositories.ModeratorRepository;
-import nl.tudelft.oopp.app.services.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -127,5 +128,39 @@ public class QuestionTest {
 ////        questionRepository.deleteById(deletedId);
 //        assertFalse(questionRepository.existsById(deletedId));
 //    }
+    /**
+     * Tests if the question is deleted from the database.
+     */
+    @Test
+    public void dismissTest() {
+        Question question = new Question("This will be deleted");
+        questionRepository.save(question);
+        assertTrue(questionRepository.existsById(question.getId()));
+        questionRepository.deleteById(question.getId());
+        assertFalse(questionRepository.existsById(question.getId()));
+    }
+
+    @Test
+    public void findAllByRoomLinkTest() {
+        Room room1 = new Room("Room1");
+        room1.setLinkIdModerator();
+        Room room2 = new Room("Room2");
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+
+        Question question1 = new Question("should be in the result");
+        question1.setRoom(room1);
+
+        Question question2 = new Question("should not be in the result");
+        question2.setRoom(room2);
+
+        questionRepository.save(question1);
+        questionRepository.save(question2);
+
+        List<Question> expected = List.of(question1);
+        List<Question> result = questionRepository.findAllByRoomLink(room1.getLinkIdModerator());
+
+        assertEquals(expected, result);
+    }
 
 }

@@ -118,10 +118,10 @@ public class HomeSceneController {
     }
 
     /**
-     * finds the question by the id and deletes it from the scene.
-     * (this method will probably be deleted once we implement the real-time updates)
-     * @param id the id of the question to be deleted
-     */
+    * finds the question by the id and deletes it from the scene.
+    * (this method will probably be deleted once we implement the real-time updates)
+    * @param id the id of the question to be deleted
+    **/
     public void deleteQuestionFromScene(String id) {
         Node q = questionBox.lookup("#" + id);
         questionBox.getChildren().remove(q);

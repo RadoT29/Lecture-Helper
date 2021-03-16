@@ -78,12 +78,15 @@ public class QuestionService {
 
     /**
      * calls the questionRepository to delete the question from the database.
+     * calls the upvoteRepository to delete the upVotes related to that question
      * @param questionId long id of the question to be deleted
-     */
+     **/
     public void dismissQuestion(long questionId) {
+        //delete upVvotes
+        upvoteRepository.deleteUpVotesByQuestionId(questionId);
+        //delete the question
         questionRepository.deleteById(questionId);
     }
-
 
     /**
      * Method add an upvote on the server side.

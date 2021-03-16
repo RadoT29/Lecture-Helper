@@ -23,9 +23,9 @@ public class QuestionCellController {
     }
 
     /**
-     * dismisses the question.
-     * deletes the database from the database and remove it from the screen
-     */
+    * dismisses the question.
+    * deletes the database from the database and remove it from the screen
+    **/
     public void dismissClicked() {
         //get the id of the question to be deleted
         Node question = questionCell.getParent();

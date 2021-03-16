@@ -15,9 +15,9 @@ public class QuestionCommunication {
 
 
     /**
-     * send a DELETE request to the server to delete the question.
-     * @param questionId the id of a question that is supposed to be deleted
-     */
+    * send a DELETE request to the server to delete the question.
+    * @param questionId the id of a question that is supposed to be deleted
+    */
     public static void dismissQuestion(long questionId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/questions/dismiss/" + questionId))
