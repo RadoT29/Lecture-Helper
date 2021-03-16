@@ -4,34 +4,33 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
 import javax.persistence.GenerationType;
-
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "rooms")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "link_id_student")
     private UUID linkIdStudent;
 
-    @Column(name = "link_id_moderator")
     private UUID linkIdModerator;
 
-    @Column(name = "is_open")
-    private  boolean isOpen;
+    private boolean isOpen;
+
+    private boolean permission;
+
+    @CreationTimestamp
+    private Date createdAt;
+
+    @UpdateTimestamp
+    private Date updatedAt;
 
     public Room() {
     }
@@ -44,6 +43,14 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -76,5 +83,13 @@ public class Room {
 
     public void setOpen(boolean open) {
         isOpen = open;
+    }
+
+    public boolean getPermission() {
+        return permission;
+    }
+
+    public void setPermission(boolean permission) {
+        this.permission = permission;
     }
 }

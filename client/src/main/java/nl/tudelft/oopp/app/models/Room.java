@@ -7,6 +7,25 @@ public class Room {
     public UUID linkIdStudent;
     public UUID linkIdModerator;
     public boolean isOpen;
+    public boolean permission;
+
+
+    public String getName() {
+        return name;
+    }
+
+    public UUID getLinkIdStudent() {
+        return linkIdStudent;
+    }
+
+    public UUID getLinkIdModerator() {
+        return linkIdModerator;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
 
 
 }

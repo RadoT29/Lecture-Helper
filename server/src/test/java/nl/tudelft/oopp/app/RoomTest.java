@@ -32,7 +32,7 @@ public class RoomTest {
         Room room = new Room("room name");
         roomRepository.save(room);
 
-        Room room2 = roomRepository.getOne((long) 1);
+        Room room2 = roomRepository.getOne(room.getId());
         assertEquals(room, room2);
     }
 }
