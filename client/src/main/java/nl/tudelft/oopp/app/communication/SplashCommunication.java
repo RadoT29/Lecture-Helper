@@ -39,7 +39,7 @@ public class SplashCommunication {
         }
 
         Room room = gson.fromJson(response.body(), Room.class);
-        System.out.println("Client1: "+gson.fromJson(response.body(), Room.class).isOpen());
+        System.out.println("Client1: " + gson.fromJson(response.body(), Room.class).isOpen());
         return room;
     }
 

@@ -50,7 +50,7 @@ public class RoomController {
      */
     @GetMapping("isOpenById/{linkId}")
     @ResponseBody
-    public boolean isClose(@PathVariable String linkId){
+    public boolean isClose(@PathVariable String linkId) {
         Room room = roomRepository.isClose(UUID.fromString(linkId));
         return room.getIsOpen();
     }
@@ -63,7 +63,7 @@ public class RoomController {
      */
     @GetMapping("hasStudentPermission/{linkId}")
     @ResponseBody
-    public boolean hasStudentPermission(@PathVariable String linkId){
+    public boolean hasStudentPermission(@PathVariable String linkId) {
         return roomRepository.permission(UUID.fromString(linkId)).getPermission();
     }
 

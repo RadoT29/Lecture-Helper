@@ -27,7 +27,7 @@ public class RoomService {
     }
 
     /**
-     * Looking for a room by UUID link
+     * Looking for a room by UUID link.
      *
      * @param link - the link of the room which is being searched
      * @return the room

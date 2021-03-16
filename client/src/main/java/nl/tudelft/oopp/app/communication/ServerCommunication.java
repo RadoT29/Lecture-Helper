@@ -41,12 +41,13 @@ public class ServerCommunication {
 
     }
 
-    /**
-     *  Make get requested if the room is open
+    /**.
+     * Make get requested if the room is open
+     *
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
      */
-    public static boolean isTheRoomClosed(String linkId){
+    public static boolean isTheRoomClosed(String linkId) {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/isOpenById/" + linkId)).build();
         HttpResponse<String> response = null;
@@ -60,15 +61,16 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
         System.out.println(response.body());
-        return gson.fromJson(response.body(),Boolean.class);
+        return gson.fromJson(response.body(), Boolean.class);
     }
 
-    /**
-     *Make a requested if the students has permission to the room
+    /**.
+     * Make a requested if the students has permission to the room
+     *
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
      */
-    public static boolean hasStudentPermission(String linkId){
+    public static boolean hasStudentPermission(String linkId) {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
         HttpResponse<String> response = null;
@@ -82,7 +84,7 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
         System.out.println(response.body());
-        return gson.fromJson(response.body(),Boolean.class);
+        return gson.fromJson(response.body(), Boolean.class);
     }
 
     /**
@@ -105,9 +107,11 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
+
     /**
      * Sends a request to server to change user's name.
-     * @param userId - the id of the user.
+     *
+     * @param userId   - the id of the user.
      * @param nickName - the name of the user.
      */
     public static void setNick(String userId, String nickName) {
