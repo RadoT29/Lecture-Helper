@@ -15,7 +15,7 @@ public class RoomTest {
     private RoomRepository roomRepository;
 
     /**
-     * check if the created room is with the same name
+     * check if the created room is with the same name.
      */
     @Test
     public void roomName() {
@@ -24,7 +24,7 @@ public class RoomTest {
     }
 
     /**
-     * check if the moderator link is created
+     * check if the moderator link is created.
      */
     @Test
     public void roomLinksModerator() {
@@ -33,7 +33,7 @@ public class RoomTest {
     }
 
     /**
-     * check if the student link is created
+     * check if the student link is created.
      */
     @Test
     public void roomLinksStudent() {
@@ -42,7 +42,7 @@ public class RoomTest {
     }
 
     /**
-     * check if the room saved and after that retrieved from the repository is the same
+     * check if the room saved and after that retrieved from the repository is the same.
      */
     @Test
     public void saveAndRetrieveRoom() {
@@ -55,16 +55,16 @@ public class RoomTest {
 
 
     /**
-     *Check if the other room on the repository is still open
+     * Check if the other room on the repository is still open.
      */
     @Test
-    public void closeRoomFalse(){
+    public void closeRoomFalse() {
         Room room = new Room("My room");
         Room room2 = new Room("New room");
         roomRepository.save(room);
         roomRepository.save(room2);
         roomRepository.closeRoom(room.getLinkIdModerator());
-        assertEquals(true,room2.getIsOpen());
+        assertEquals(true, room2.getIsOpen());
     }
 
 }

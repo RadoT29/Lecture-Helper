@@ -35,23 +35,14 @@ public class ModeratorStudentTestMock {
     }
 
     /**
-     * Find and return the user by id
+     * Find and return the user by id.
      */
     @Test
-    public void getUserById(){
+    public void getUserById() {
         Room room = new Room("My room");
-        User user = new Student("Tom",room);
+        User user = new Student("Tom", room);
         when(userRepository.findById(user.getId())).thenReturn(java.util.Optional.of(user));
-        assertEquals(user,userService.getByID(String.valueOf(user.getId())));
+        assertEquals(user, userService.getByID(String.valueOf(user.getId())));
     }
-//    @Test
-//    public void getUserByIdNull(){
-//        Room room = new Room("My room");
-//        User user = new Student("Tom",room);
-//        userRepository.save(user);
-//        when(userRepository.findById(user.getId())).thenReturn(java.util.Optional.of(null));
-//        assertEquals(null, userService.getByID(String.valueOf(user.getId())));
-//
-//    }
 
 }

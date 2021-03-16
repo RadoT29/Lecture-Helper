@@ -41,10 +41,8 @@ public class RoomTestMock {
         MockitoAnnotations.initMocks(this);
     }
 
-//    /**
-//     * Check the size of the list which is returned from method findAll
-//     */
-//    @Test
+
+//   @Test
 //    public void roomSize()
 //    {
 //        when(repository.findAll()).
@@ -107,7 +105,7 @@ public class RoomTestMock {
     }
 
     /**
-     * check if the room is closed
+     * check if the room is closed.
      */
     @Test
     public void testMethodIsClose() {
@@ -117,7 +115,7 @@ public class RoomTestMock {
     }
 
     /**
-     * check if the room is closed
+     * check if the room is closed.
      */
     @Test
     public void testMethodIsCloseClosedRoom() {
@@ -128,7 +126,7 @@ public class RoomTestMock {
     }
 
 //    /**
-//     * check for permission for room
+//     * check for permission for room.
 //     */
 ////    @Test
 ////    public void testMethodPermission(){

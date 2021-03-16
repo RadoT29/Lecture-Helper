@@ -10,7 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,41 +33,41 @@ public class QuestionTestMock {
     }
 
     /**
-     * check the if the size of the returned object is the same as the expected
+     * check the if the size of the returned object is the same as the expected.
      */
     @Test
-    public void getAllQuestionsSize(){
+    public void getAllQuestionsSize() {
         when(questionRepository.findAll())
                 .thenReturn(Stream.of(
                         new Question("question1"),
                         new Question("question2"))
                         .collect(Collectors.toList()));
-        assertEquals(2,questionService.getAllQuestions().size());
+        assertEquals(2, questionService.getAllQuestions().size());
     }
 
     /**
-     * check if the returned question text is the same as the intended
+     * check if the returned question text is the same as the intended.
      */
     @Test
-    public void getSecondQuestion(){
+    public void getSecondQuestion() {
         when(questionRepository.findAll())
                 .thenReturn(Stream.of(
                         new Question("question1"),
                         new Question("question2"))
                         .collect(Collectors.toList()));
-        assertEquals("question2",questionService.getAllQuestions().get(1).getQuestionText());
+        assertEquals("question2", questionService.getAllQuestions().get(1).getQuestionText());
     }
 
     /**
-     * check if the returned question text is the same as the intended
+     * check if the returned question text is the same as the intended.
      */
     @Test
-    public void getFirstQuestion(){
+    public void getFirstQuestion() {
         when(questionRepository.findAll())
                 .thenReturn(Stream.of(
                         new Question("question1"),
                         new Question("question2"))
                         .collect(Collectors.toList()));
-        assertEquals("question1",questionService.getAllQuestions().get(0).getQuestionText());
+        assertEquals("question1", questionService.getAllQuestions().get(0).getQuestionText());
     }
 }

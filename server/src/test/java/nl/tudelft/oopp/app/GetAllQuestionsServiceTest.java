@@ -97,9 +97,9 @@ public class GetAllQuestionsServiceTest {
     }
 
     /**
-     * tests if the function correctly returns
-     *      all questions for a specific room (identified by the LinkIdModerator)
-     *      that are stored in the database.
+     * tests if the function correctly returns.
+     * all questions for a specific room (identified by the LinkIdModerator)
+     * that are stored in the database.
      */
     @Test
     public void getAllQuestionsByRoom_ModeratorLink_Test() {
@@ -108,9 +108,9 @@ public class GetAllQuestionsServiceTest {
         resultQuestions.add(question3);
         resultQuestions.add(question1);
 
-        //we don't have to change userid and roomid to 0's to check if the results are the same
-        //this is because they will be changed in the service method we are testing
-        //zero ids are tested in different tests
+        //we don't have to change userid and roomid to 0's to check if the results are the same.
+        //this is because they will be changed in the service method we are testing.
+        //zero ids are tested in different tests.
 
         UUID linkToTest = room1.getLinkIdModerator();
 
@@ -123,9 +123,9 @@ public class GetAllQuestionsServiceTest {
     }
 
     /**
-     * tests if the function correctly returns
-     *      all questions for a specific room (identified by the LinkIdStudent)
-     *      that are stored in the database.
+     * tests if the function correctly returns.
+     * all questions for a specific room (identified by the LinkIdStudent).
+     * that are stored in the database.
      */
     @Test
     public void getAllQuestionsByRoom_StudentLink_Test() {
@@ -134,9 +134,9 @@ public class GetAllQuestionsServiceTest {
         resultQuestions.add(question3);
         resultQuestions.add(question1);
 
-        //we don't have to change userid and roomid to 0's to check if the results are the same
-        //this is because they will be changed in the service method we are testing
-        //zero ids are tested in different tests
+        //we don't have to change userid and roomid to 0's to check if the results are the same.
+        //this is because they will be changed in the service method we are testing.
+        //zero ids are tested in different tests.
 
         UUID linkToTest = room1.getLinkIdStudent();
 
@@ -158,7 +158,7 @@ public class GetAllQuestionsServiceTest {
         resultQuestions.add(question3);
         resultQuestions.add(question1);
 
-        //it does not matter which link we will use, because we test both of them in different tests
+        //it does not matter which link we will use, because we test both of them in different tests.
         UUID linkToTest = room1.getLinkIdModerator();
 
         Mockito.when(questionRepository.findAllByRoomLink(linkToTest))
@@ -179,7 +179,7 @@ public class GetAllQuestionsServiceTest {
         resultQuestions.add(question3);
         resultQuestions.add(question1);
 
-        //it does not matter which link we will use, because we test both of them in different tests
+        //it does not matter which link we will use, because we test both of them in different tests.
         UUID linkToTest = room1.getLinkIdModerator();
 
         Mockito.when(questionRepository.findAllByRoomLink(linkToTest))
