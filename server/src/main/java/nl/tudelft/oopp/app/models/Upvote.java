@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.app.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +12,8 @@ public class Upvote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     public Question question;
 
