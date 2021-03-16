@@ -34,5 +34,9 @@ public interface UpvoteRepository extends JpaRepository<Upvote, Long> {
     @Query("UPDATE Question u SET u.upVotes=u.upVotes-1 WHERE u.id=?1")
     void decrementUpVotes(long questionId);
 
+    /*@Transactional
+    @Modifying
+    @Query("DELETE FROM Upvote u JOIN Question q ON u.Question.id = q.id WHERE q.Room.id=?1" )
+    void clearAllUpVotes(long roomId);*/
 
 }

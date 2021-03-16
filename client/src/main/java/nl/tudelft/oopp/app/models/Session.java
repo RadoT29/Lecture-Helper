@@ -12,6 +12,7 @@ public final class Session {
     private boolean isModerator;
     private String userId;
     private List<String> upVotedQuestions;
+    private List<String> questionsMade;
 
     /**Session constructor.
      * @param roomLink Link for the room that is going to be used by this client for requests
@@ -21,12 +22,17 @@ public final class Session {
      *                    so a student can not access moderator rights
      *                    just by changing this variable
      */
-    public Session(String roomLink, String roomName, String userId, boolean isModerator) {
+    public Session(String roomLink,
+                   String roomName,
+                   String userId,
+                   boolean isModerator) {
         this.roomLink = roomLink;
         this.roomName = roomName;
         this.isModerator = isModerator;
         this.userId = userId;
-        upVotedQuestions = new ArrayList<>();
+        this.upVotedQuestions = new ArrayList<>();
+        this.questionsMade = new ArrayList<>();
+
     }
 
     /**Session constructor.
@@ -41,7 +47,9 @@ public final class Session {
         this.roomLink = roomLink;
         this.userId = userId;
         this.isModerator = isModerator;
-        upVotedQuestions = new ArrayList<>();
+        this.upVotedQuestions = new ArrayList<>();
+        this.questionsMade = new ArrayList<>();
+
     }
 
     /**Get Instance/Instance constructor.
@@ -58,7 +66,8 @@ public final class Session {
     public static Session getInstance(String roomLink,
                                       String roomName,
                                       String userId,
-                                      boolean isModerator) {
+                                      boolean isModerator
+                                      ) {
         if (instance == null) {
             instance = new Session(roomLink, roomName, userId, isModerator);
         }
@@ -76,7 +85,9 @@ public final class Session {
      *                    just by changing this variable
      * @return singleton class instance
      */
-    public static Session getInstance(String roomLink, String userId, boolean isModerator) {
+    public static Session getInstance(String roomLink,
+                                      String userId,
+                                      boolean isModerator) {
         if (instance == null) {
             instance = new Session(roomLink, userId, isModerator);
         }
@@ -109,6 +120,12 @@ public final class Session {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+
+    public List<String> getQuestionsMade() {
+        return this.questionsMade;
+    }
+
 
     public List<String> getUpvotesList() {
         return this.upVotedQuestions;
