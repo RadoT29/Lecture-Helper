@@ -47,7 +47,8 @@ public class RoomTestMock {
 //    @Test
 //    public void roomSize()
 //    {
-//        when(repository.findAll()).thenReturn(Stream.of(new Room("my room")).collect(Collectors.toList()));
+//        when(repository.findAll()).
+//        thenReturn(Stream.of(new Room("my room")).collect(Collectors.toList()));
 //        assertEquals(1,roomService.findAll().size());
 //        //verify()
 //    }
@@ -80,7 +81,8 @@ public class RoomTestMock {
 
     /**
      * Find the room by moderator link.
-     * In the test the expected room is different from that is returned from when().thenReturn() structure
+     * In the test the expected room is different from
+     * that is returned from when().thenReturn() structure
      */
     @Test
     public void findRoomByModeratorLinkFalse() {

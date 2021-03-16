@@ -35,7 +35,11 @@ public class QuestionTestMock {
      */
     @Test
     public void getAllQuestionsSize(){
-        when(questionRepository.findAll()).thenReturn(Stream.of(new Question("question1"),new Question("question2")).collect(Collectors.toList()));
+        when(questionRepository.findAll())
+                .thenReturn(Stream.of(
+                        new Question("question1"),
+                        new Question("question2"))
+                        .collect(Collectors.toList()));
         assertEquals(2,questionService.getAllQuestions().size());
     }
 
@@ -44,7 +48,11 @@ public class QuestionTestMock {
      */
     @Test
     public void getSecondQuestion(){
-        when(questionRepository.findAll()).thenReturn(Stream.of(new Question("question1"),new Question("question2")).collect(Collectors.toList()));
+        when(questionRepository.findAll())
+                .thenReturn(Stream.of(
+                        new Question("question1"),
+                        new Question("question2"))
+                        .collect(Collectors.toList()));
         assertEquals("question2",questionService.getAllQuestions().get(1).getQuestionText());
     }
 
@@ -53,7 +61,11 @@ public class QuestionTestMock {
      */
     @Test
     public void getFirstQuestion(){
-        when(questionRepository.findAll()).thenReturn(Stream.of(new Question("question1"),new Question("question2")).collect(Collectors.toList()));
+        when(questionRepository.findAll())
+                .thenReturn(Stream.of(
+                        new Question("question1"),
+                        new Question("question2"))
+                        .collect(Collectors.toList()));
         assertEquals("question1",questionService.getAllQuestions().get(0).getQuestionText());
     }
 }
