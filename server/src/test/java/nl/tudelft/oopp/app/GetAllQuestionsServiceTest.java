@@ -48,7 +48,7 @@ public class GetAllQuestionsServiceTest {
         room1 = new Room();
         room1.setName("Room_1");
         room1.setLinkIdModerator();
-        room1.getLinkIdStudent();
+        room1.newLinkIdStudent();
         room1.setId(12);
 
         room2 = new Room();
