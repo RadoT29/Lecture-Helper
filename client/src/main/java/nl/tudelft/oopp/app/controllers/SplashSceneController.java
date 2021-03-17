@@ -4,13 +4,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
+
 
 import java.awt.*;
 import java.io.IOException;
@@ -67,34 +74,47 @@ public class SplashSceneController {
 
         // Cannot enter rooms with empty links
         if (roomLink.getText().equals("")) {
+            invalidRoomLink.setText("Insert a Room Link!");
             invalidRoomLink.setVisible(true);
             return;
         }
 
-        //This method checks if the link inserted corresponds
-        // to a Student one, Moderator one or if it is invalid.
-        SplashCommunication.checkForRoom(roomLink.getText());
-        //Gets the session with the updated information
-        Session session = Session.getInstance();
+        try {
+            //This method checks if the link inserted corresponds
+            // to a Student one, Moderator one or if it is invalid.
+            SplashCommunication.checkForRoom(roomLink.getText());
+            //Gets the session with the updated information
+            Session session = Session.getInstance();
+            ServerCommunication.isTheRoomClosed(session.getRoomLink());
+            System.out.println("Is moderator " + session.getIsModerator());
+            if (!session.getIsModerator()) {
+                ServerCommunication.hasStudentPermission(session.getRoomLink());
+            }
 
-        //If the link is not valid then no session is started and user should stay on splash screen
-        if (session == null) {
-            System.out.println("Insert valid link");
+            Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
+            Stage stage = (Stage) enterRoomButton.getScene().getWindow();
+            Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+            double width = screenSize.getWidth() * 0.8;
+            double height = screenSize.getHeight() * 0.8;
+
+            Scene scene = new Scene(loader, width, height);
+            stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
+
+        } catch (NoSuchRoomException exception) {
+            invalidRoomLink.setText("No such room exists or the link is wrong!");
             invalidRoomLink.setVisible(true);
-            roomLink.clear();
-            return;
+
+        } catch (RoomIsClosedException exception) {
+            invalidRoomLink.setText("The room is closed!");
+            invalidRoomLink.setVisible(true);
+
+        } catch (NoStudentPermissionException exception) {
+            invalidRoomLink.setText("No student permission to the Room!");
+            invalidRoomLink.setVisible(true);
         }
-        Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
-        Stage stage = (Stage) enterRoomButton.getScene().getWindow();
 
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
-
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
 
     }
 
@@ -143,9 +163,9 @@ public class SplashSceneController {
 
 
     /* **
-    * Establishes the subclass of the user in the session
-    * @param name - This parameter corresponds to the user nickname set on the previous method
-    *//*
+     * Establishes the subclass of the user in the session
+     * @param name - This parameter corresponds to the user nickname set on the previous method
+     *//*
     public void setUserClass(String name){
     Session session = Session.getInstance();
 

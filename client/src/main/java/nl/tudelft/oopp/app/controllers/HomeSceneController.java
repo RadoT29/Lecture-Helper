@@ -122,7 +122,7 @@ public class HomeSceneController {
         qsc.setHomeScene(this);
 
         //set the node id to the question id
-        newQuestion.setId(question.getQuestionID() + "");
+        newQuestion.setId(question.getId() + "");
 
         //Check if the question loaded was created by the session's user
         checkForQuestion(newQuestion, question);
@@ -143,8 +143,8 @@ public class HomeSceneController {
 
         //set upvote button as active or inactive
         Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
-        boolean isActive = session.getUpvotesList()
-                .contains(String.valueOf(question.getQuestionID()));
+        boolean isActive = session.getUpVotedQuestions()
+                .contains(String.valueOf(question.getId()));
         if (isActive) {
             upvoteButton.getStyleClass().add("active");
         }

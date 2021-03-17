@@ -19,6 +19,7 @@ dependencies {
     implementation 'junit:junit:4.12'
 	implementation 'junit:junit:4.12'
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    implementation 'org.projectlombok:lombok:1.18.16'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Local test database (in-memory)
@@ -30,6 +31,9 @@ dependencies {
 	}
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	compileOnly 'org.projectlombok:lombok:1.18.8'
+	annotationProcessor 'org.projectlombok:lombok:1.18.8'
 }
 
 asciidoctor {

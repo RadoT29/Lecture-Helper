@@ -34,7 +34,7 @@
                <Insets top="10.0" />
             </VBox.margin>
          </HBox>
-         <Label fx:id="invalidRoomLink" text="Insert a valid Room Link!" visible="false">
+         <Label fx:id="invalidRoomLink" text="" visible="false">
             <VBox.margin>
                <Insets bottom="40.0" left="5.0" top="5.0" />
             </VBox.margin>
