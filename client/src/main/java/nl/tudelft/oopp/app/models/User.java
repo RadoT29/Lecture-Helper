@@ -1,6 +1,14 @@
 package nl.tudelft.oopp.app.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Date;
+
+@Setter
+@Getter
+@NoArgsConstructor
 
 public class User {
     public long id;
@@ -28,21 +36,21 @@ public class User {
 
     }
 
-    public Long getUserID() {
-        return id;
-    }
-
-    public Room getRoomId() {
-        return roomId;
-    }
-
-    public String getUserName() {
-        return name;
-    }
-
-    public boolean getIsModerator() {
-        return isModerator;
-    }
+    //    public Long getUserID() {
+    //        return id;
+    //    }
+    //
+    //    public Room getRoomId() {
+    //        return roomId;
+    //    }
+    //
+    //    public String getUserName() {
+    //        return name;
+    //    }
+    //
+    //    public boolean getIsModerator() {
+    //        return isModerator;
+    //    }
 
 
 

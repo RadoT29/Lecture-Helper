@@ -62,7 +62,7 @@ public class QuestionCellController {
     public void setUpvote(String questionId) {
         Session session = Session.getInstance();
 
-        boolean upvote = session.getUpvotesList().contains(questionId);
+        boolean upvote = session.getUpVotedQuestions().contains(questionId);
 
         if (upvote) {
             session.decrementUpvotes(questionId);
