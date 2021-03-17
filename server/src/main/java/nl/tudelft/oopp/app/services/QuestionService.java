@@ -60,6 +60,23 @@ public class QuestionService {
         return result;
     }
 
+
+    /**
+     * Get the last added question by user that created the request.
+     * @param roomLink - the room link
+     * @param userId - the users Id
+     * @return list of questions from the room.
+     *      Questions have to roomId and UserId changed to 0.
+     */
+    public String getSingleQuestion(String roomLink, String userId) {
+        Room room = roomService.getByLink(roomLink);
+        User user = userService.getByID(userId);
+        return questionRepository.getSingularQuestion(room.getId(), user.getId());
+
+    }
+
+
+
     /**
      * This method gets the correct Room and User associated with the question that has been sent.
      * @param roomLink the roomLink where the question has been asked
@@ -87,6 +104,20 @@ public class QuestionService {
         //delete the question
         questionRepository.deleteById(questionId);
     }
+
+    /**
+     * In this method the server itself will check if the question was made by the
+     * user that sent the request (thus 2 parameters), only if so the question will
+     * be deleted.
+     * calls questionRepository to execute DELETE query
+     * @param questionId - Id of the question to delete
+     * @param userId - Id of the student attempting to delete
+     */
+    public void dismissSingular(long questionId, long userId) {
+        //delete question
+        questionRepository.deleteSingular(questionId, userId);
+    }
+
 
     /**
      * Method add an upvote on the server side.

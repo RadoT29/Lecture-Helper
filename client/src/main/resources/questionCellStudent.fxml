@@ -36,12 +36,12 @@
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="editIcon" text="E">
+                  <Button fx:id="editButton" disable="true" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="editIcon" text="E">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="dismissButton" alignment="BOTTOM_LEFT" layoutX="646.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#dismissClicked" prefHeight="50.0" prefWidth="50.0" styleClass="dismissIcon" text="D">
+                  <Button fx:id="dismissButton" disable="true" alignment="BOTTOM_LEFT" layoutX="646.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#dismissClicked" prefHeight="50.0" prefWidth="50.0" styleClass="dismissIcon" text="D">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>

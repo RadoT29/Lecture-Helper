@@ -33,9 +33,19 @@ public class QuestionCellController {
         //get the id of the question to be deleted
         Node question = questionCell.getParent();
         String id = question.getId();
+        Session session = Session.getInstance();
 
-        //delete the question from the database
-        QuestionCommunication.dismissQuestion(Long.parseLong(id));
+        if (session.getIsModerator()) {
+            //delete the question from the database if moderator
+            QuestionCommunication.dismissQuestion(Long.parseLong(id));
+
+            //if statement checks if the question is in the list of questions
+            //made in the user's session
+        } else if (session.getQuestionsMade().contains(id)) {
+            String user = Session.getInstance().getUserId();
+            session.questionDeleted(id);
+            QuestionCommunication.dismissSingular(Long.parseLong(id), Long.parseLong(user));
+        }
 
         //remove the database from the screen
         hsc.deleteQuestionFromScene(id);
@@ -57,6 +67,7 @@ public class QuestionCellController {
 
         if (upvoteButton.getStyleClass().contains("active")) {
             upvoteButton.getStyleClass().remove("active");
+            System.out.println();
         } else {
             upvoteButton.getStyleClass().add("active");
         }
@@ -85,7 +96,6 @@ public class QuestionCellController {
         }
 
     }
-
 
 
 }
