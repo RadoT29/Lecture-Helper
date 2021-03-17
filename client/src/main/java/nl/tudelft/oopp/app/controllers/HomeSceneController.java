@@ -12,6 +12,7 @@ import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.PriorityQueue;
 
@@ -109,8 +110,15 @@ public class HomeSceneController {
         //set the node id to the question id
         newQuestion.setId(question.getQuestionID() + "");
         //set the question text
-        Label l = (Label) newQuestion.lookup("#questionTextLabel");
-        l.setText(question.questionText);
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
+        questionLabel.setText(question.questionText);
+
+        //set the question box size
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth()*0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
         upvoteLabel.setText("+" + question.getUpVotes());

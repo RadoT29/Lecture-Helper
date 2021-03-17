@@ -133,8 +133,8 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         Stage stage = (Stage) mainMenu.getScene().getWindow();
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth()*0.55;
-        double height = screenSize.getHeight()*0.55;
+        double width = screenSize.getWidth()*0.65;
+        double height = screenSize.getHeight()*0.6;
 
         Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);
