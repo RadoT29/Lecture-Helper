@@ -6,6 +6,7 @@ import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 import nl.tudelft.oopp.app.models.User;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -62,15 +63,24 @@ public class SplashCommunication {
             System.out.println("Status: " + response.statusCode());
             return;
         }
-        // Parses Json response from server
-        User user = gson.fromJson(response.body(), User.class);
-        // Uses the information received to update the session information
-        session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
-        //If the link is not valid then no session is started and user should stay on splash screen
-        if (session == null) {
-            System.out.println("Insert valid link");
+        try {
+            // Parses Json response from server.
+            User user = gson.fromJson(response.body(), User.class);
+            // Uses the information received to update the session information.
+            session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
+            //If the link is not valid then no session is started and user should stay on splash screen.
+            if (session == null) {
+                System.out.println("Insert valid link");
+                throw new NoSuchRoomException();
+            }
+        }
+        catch (Exception e){
             throw new NoSuchRoomException();
         }
+//        catch (Exception e){
+//            throw new NoSuchRoomException();
+//        }
+
     }
 
 
