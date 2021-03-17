@@ -14,14 +14,6 @@
    <children>
       <HBox fx:id="questionCell" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="80.0" prefWidth="1050.0">
          <children>
-            <Button fx:id="urgentButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="!">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Button>
             <HBox fx:id="questionBlueBox" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: #17AEDA;">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -32,19 +24,16 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="upvoteLabel" styleClass="upvoteIcon" maxHeight="1.7976931348623157E308" prefHeight="70.0" prefWidth="50.0" text="+130" textAlignment="CENTER">
+                  <Label fx:id="upvoteLabel" maxHeight="1.7976931348623157E308" prefHeight="70.0" prefWidth="50.0" text="+130" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
+
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="editButton" styleClass="editIcon" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="E">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
+
                   <Button fx:id="answerButton" styleClass="answeredIcon" layoutX="596.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="A">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
@@ -57,16 +46,6 @@
                   </Button>
                </children>
             </HBox>
-            <Button fx:id="blockButton" styleClass="blockIcon" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="B">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="replyButton" styleClass="replyIcon" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="R">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
-               </HBox.margin>
-            </Button>
          </children>
       </HBox>
    </children>

@@ -1,28 +1,31 @@
 package nl.tudelft.oopp.app.controllers;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class ModeratorSceneController extends HomeSceneController implements Initializable {
+public class PresentationSceneController extends HomeSceneController implements Initializable {
+    @FXML
+    private VBox questionBox;
     @FXML
     public Button menuButton;
     @FXML
@@ -54,6 +57,25 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
                 closeFastNav.play();
             }
         });
+    }
+
+    @Override
+    public void loadQuestions() {
+
+        String resource = "/questionCellPresentation.fxml";
+
+        questionBox.getChildren().clear();
+
+        for (int i = 0; i < 5; i++) {
+            Question question = questions.poll();
+            try {
+                questionBox.getChildren()
+                        .add(createQuestionCell(question, resource));
+            } catch (IOException e) {
+                questionBox.getChildren().add(
+                        new Label("Something went wrong while loading this question"));
+            }
+        }
     }
 
     /**
@@ -127,7 +149,11 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     }
 
     public void presenterMode() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/presentationScene.fxml")).load();
+
+    }
+
+    public void goToHome() throws IOException {
+        Parent loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         Stage stage = (Stage) mainMenu.getScene().getWindow();
         Scene scene = new Scene(loader);
         stage.setScene(scene);

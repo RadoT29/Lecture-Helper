@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorSceneController">
+<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.PresentationSceneController">
         <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="clearQuestionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
@@ -84,7 +84,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="homeButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="35.0" styleClass="menuBtnBlack">
+            <Button fx:id="homeButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToHome" prefHeight="30.0" prefWidth="35.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="31.5" top="30.0" />
                 </VBox.margin>
@@ -156,23 +156,6 @@
                 <VBox fx:id="questionBox" prefHeight="446.0" prefWidth="1100.0" />
             </content>
         </ScrollPane>
-        <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
-            <TextField fx:id="questionInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
-                <font>
-                    <Font name="System Italic" size="12.0" />
-                </font>
-            <HBox.margin>
-               <Insets right="5.0" />
-            </HBox.margin>
-            </TextField>
-            <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendQuestion" prefHeight="20.0" prefWidth="25.0" styleClass="menuBtnBlack">
-            <HBox.margin>
-               <Insets bottom="3.0" right="2.0" />
-            </HBox.margin></Button>
-         <VBox.margin>
-            <Insets bottom="50.0" top="50.0" />
-         </VBox.margin>
-        </HBox>
     </VBox>
 
 </AnchorPane>

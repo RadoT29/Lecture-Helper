@@ -25,6 +25,7 @@ public class SplashDisplay extends Application {
 
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.getScene().getStylesheets().add("styles/splashScene.css");
+        primaryStage.getScene().getStylesheets().add("styles/svgIcons.css");
         primaryStage.show();
     }
 
