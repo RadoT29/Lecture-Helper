@@ -1,6 +1,14 @@
 package nl.tudelft.oopp.app.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Date;
+
+@Setter
+@Getter
+@NoArgsConstructor
 
 public class User {
     public String id;
@@ -12,12 +20,13 @@ public class User {
 
     /**
      * Constructor for User class.
-     * @param id - Id for each user
-     * @param name - userName used by a user
-     * @param roomLink - roomId of the room where user is
+     *
+     * @param id          - Id for each user
+     * @param name        - userName used by a user
+     * @param roomLink    - roomId of the room where user is
      * @param isModerator - boolean to indicate if user is a moderator
      */
-    public User(String id,String name, String roomLink, boolean isModerator) {
+    public User(String id, String name, String roomLink, boolean isModerator) {
         this.id = id;
 
         this.name = name;
@@ -28,7 +37,9 @@ public class User {
 
     }
 
-
+    public boolean getIsModerator() {
+        return isModerator;
+    }
 
 
 }

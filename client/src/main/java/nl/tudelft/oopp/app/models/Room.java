@@ -1,6 +1,13 @@
 package nl.tudelft.oopp.app.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.UUID;
+
+@Setter
+@Getter
+@NoArgsConstructor
 
 public class Room {
     public String name;
@@ -13,23 +20,4 @@ public class Room {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public UUID getLinkIdStudent() {
-        return linkIdStudent;
-    }
-
-    public UUID getLinkIdModerator() {
-        return linkIdModerator;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public boolean isPermission() {
-        return permission;
-    }
 }

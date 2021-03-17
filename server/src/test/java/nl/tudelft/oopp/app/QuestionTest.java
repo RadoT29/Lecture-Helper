@@ -117,7 +117,7 @@ public class QuestionTest {
     @Test
     public void findAllByRoomLinkTest() {
         Room room1 = new Room("Room1");
-        room1.setLinkIdModerator();
+        room1.setLinkIdModerator(room1.getLinkIdModerator());
         Room room2 = new Room("Room2");
         roomRepository.save(room1);
         roomRepository.save(room2);

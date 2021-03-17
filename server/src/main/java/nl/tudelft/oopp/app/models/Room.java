@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.models;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,6 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 import java.util.UUID;
+
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
 
 @Entity
 public class Room {
@@ -32,8 +39,8 @@ public class Room {
     @UpdateTimestamp
     private Date updatedAt;
 
-    public Room() {
-    }
+    //    public Room() {
+    //    }
 
     /**
      * Create a new Room instance.
@@ -43,38 +50,15 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public UUID getLinkIdStudent() {
-        return linkIdStudent;
-    }
-
-    public void newLinkIdStudent() {
-        this.linkIdStudent = UUID.randomUUID();
-    }
-
-    public UUID getLinkIdModerator() {
-        return linkIdModerator;
+        this.permission = true;
     }
 
     public void setLinkIdModerator() {
         this.linkIdModerator = UUID.randomUUID();
+    }
+
+    public void newLinkIdStudent() {
+        this.linkIdStudent = UUID.randomUUID();
     }
 
     public boolean getIsOpen() {

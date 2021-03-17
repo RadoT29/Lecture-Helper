@@ -11,6 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 
@@ -60,28 +63,56 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
-        //This method checks if the link inserted corresponds
-        // to a Student one, Moderator one or if it is invalid.
-        SplashCommunication.checkForRoom(roomLink.getText());
-        //Gets the session with the updated information
-        Session session = Session.getInstance();
 
-        //If the link is not valid then no session is started and user should stay on splash screen
-        if (session == null) {
-            System.out.println("Insert valid link");
-            return;
+        try {
+            //This method checks if the link inserted corresponds
+            // to a Student one, Moderator one or if it is invalid.
+            SplashCommunication.checkForRoom(roomLink.getText());
+            //Gets the session with the updated information
+            Session session = Session.getInstance();
+            ServerCommunication.isTheRoomClosed(session.getRoomLink());
+            System.out.println("Is moderator " + session.getIsModerator());
+            if (!session.getIsModerator()) {
+                ServerCommunication.hasStudentPermission(session.getRoomLink());
+            }
+
+
+            Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
+            Stage stage = (Stage) enterRoomButton.getScene().getWindow();
+            Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+            double width = screenSize.getWidth() * 0.8;
+            double height = screenSize.getHeight() * 0.8;
+
+            Scene scene = new Scene(loader, width, height);
+            stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (NoSuchRoomException exception) {
+            String text = "No such room exists or the link is wrong!";
+            TextArea textArea = new TextArea(text);
+            textArea.setWrapText(true);
+            GridPane gridPane = new GridPane();
+            gridPane.setMaxWidth(Double.MAX_VALUE);
+            gridPane.add(textArea, 0, 0);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("The room does not exist!");
+            alert.getDialogPane().setContent(gridPane);
+            alert.showAndWait();
+        } catch (RoomIsClosedException exception) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("The room is closed!");
+            //alert.getDialogPane()
+            // .setContent("With this link, you already do not have permission to the room");
+            alert.showAndWait();
+        } catch (NoStudentPermissionException exception) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("No student permission to the Room!");
+            //alert.getDialogPane()
+            // .setContent("With this link, you already do not have permission to the room");
+            alert.showAndWait();
         }
-        Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
-        Stage stage = (Stage) enterRoomButton.getScene().getWindow();
 
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
-
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
 
     }
 
@@ -124,9 +155,9 @@ public class SplashSceneController {
     }
 
     /* **
-    * Establishes the subclass of the user in the session
-    * @param name - This parameter corresponds to the user nickname set on the previous method
-    *//*
+     * Establishes the subclass of the user in the session
+     * @param name - This parameter corresponds to the user nickname set on the previous method
+     *//*
     public void setUserClass(String name){
     Session session = Session.getInstance();
 
