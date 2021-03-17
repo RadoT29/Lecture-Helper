@@ -148,12 +148,12 @@
       </VBox>
    </VBox>
    <!-- Here ends the nav Bar -->
-   <VBox layoutX="200.0" prefHeight="600.0" prefWidth="801.0" VBox.vgrow="ALWAYS">
-       <ScrollPane fx:id="scrollPane" prefHeight="504.0" prefWidth="801.0">
-           <content>
-               <VBox fx:id="questionBox" maxHeight="1.7976931348623157E308" prefHeight="350.0" prefWidth="1100.0" />
-           </content>
-       </ScrollPane>
+   <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+      <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
+         <content>
+            <VBox fx:id="questionBox" prefHeight="446.0" prefWidth="1100.0" />
+         </content>
+      </ScrollPane>
       <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
          <TextField fx:id="questionInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
             <font>
@@ -168,7 +168,7 @@
                <Insets bottom="3.0" right="2.0" />
             </HBox.margin></Button>
          <VBox.margin>
-            <Insets bottom="30.0" left="50.0" top="100.0" />
+            <Insets bottom="50.0" top="100.0" />
          </VBox.margin>
       </HBox>
    </VBox>
