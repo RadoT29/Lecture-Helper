@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -109,9 +110,14 @@ public class HomeSceneController {
         //set the question text
         Label l = (Label) newQuestion.lookup("#questionTextLabel");
         l.setText(question.questionText);
-        //set the upvote
-        Label u = (Label) newQuestion.lookup(("#upvoteLabel"));
-        u.setText("+" + question.getUpVotes());
+        //set the upvote count
+        Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
+        upvoteLabel.setText("+" + question.getUpVotes());
+
+        //set upvote button as active or inactive
+        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
+        boolean isActive = session.getUpvotesList().contains(String.valueOf(question.getQuestionID()));
+        if (isActive) upvoteButton.getStyleClass().add("active");
 
 
         return newQuestion;

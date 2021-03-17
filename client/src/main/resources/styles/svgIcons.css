@@ -69,6 +69,15 @@
     22.3667L33.3337 20L20.0003 6.66667L6.66699 20Z"
 }
 
+.upvoteIcon.active{
+    -fx-scale-x: 0.4;
+    -fx-scale-y: 0.4;
+    -fx-background-color: #fff;
+    -fill: #fff;
+    -fx-shape: "M6.66699 20L9.01699 22.35L18.3337 13.05V33.3333H21.667V13.05L30.967
+    22.3667L33.3337 20L20.0003 6.66667L6.66699 20Z"
+}
+
 .blockIcon{
     -fx-scale-x: 0.4;
     -fx-scale-y: 0.4;

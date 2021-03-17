@@ -13,6 +13,9 @@ public class QuestionCellController {
     Button dismissButton;
 
     @FXML
+    Button upvoteButton;
+
+    @FXML
     HBox questionCell;
 
 
@@ -49,6 +52,10 @@ public class QuestionCellController {
         String id = question.getId();
 
         setUpvote(id);
+
+        if (upvoteButton.getStyleClass().contains("active"))
+            upvoteButton.getStyleClass().remove("active");
+        else upvoteButton.getStyleClass().add("active");
 
     }
 
