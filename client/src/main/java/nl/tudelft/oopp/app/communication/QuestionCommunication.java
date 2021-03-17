@@ -34,6 +34,33 @@ public class QuestionCommunication {
         }
     }
 
+
+    /**
+     * send a DELETE request to the server to delete the question by a student
+     * (also sends the ID of the student).
+     * The student delete request is separated from the normal delete since if
+     * those were made through the same request it could create a breach opportunity
+     * (for the student to delete questions that are not theirs)
+     * @param questionId the id of a question that is supposed to be deleted
+     */
+    public static void dismissSingular(long questionId, long userId) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/questions/dismissSingular/" + questionId + "/" + userId))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     /**
      * Send a POST request to update the number of Upvotes associated to a specific question.
      * @param questionId - question where upvote status is changed

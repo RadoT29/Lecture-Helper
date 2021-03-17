@@ -17,6 +17,7 @@ import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class SplashSceneController {
@@ -54,7 +55,6 @@ public class SplashSceneController {
         alert.getDialogPane().setContent(gridPane);
         alert.showAndWait();
 
-
     }
 
     /**
@@ -79,7 +79,11 @@ public class SplashSceneController {
 
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
-            Scene scene = new Scene(loader);
+            Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+            double width = screenSize.getWidth() * 0.8;
+            double height = screenSize.getHeight() * 0.8;
+
+            Scene scene = new Scene(loader, width, height);
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
@@ -130,7 +134,12 @@ public class SplashSceneController {
         }
 
         Stage stage = (Stage) setNick.getScene().getWindow();
-        Scene scene = new Scene(loader);
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
+
+        Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
@@ -140,6 +149,7 @@ public class SplashSceneController {
             ServerCommunication.setNick(userId, nickName.getText());
             //setUserClass(nickName.getText());
         }
+
 
 
     }
@@ -159,6 +169,7 @@ public class SplashSceneController {
 
     }
     */
+
 
 
 }

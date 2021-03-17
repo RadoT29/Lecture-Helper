@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -11,6 +12,7 @@ import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.PriorityQueue;
 
@@ -32,11 +34,20 @@ public class HomeSceneController {
     /**
      * Pressing the sendButton will send all the text in the questionInput
      * to the sever as a Question object.
+     * The question is also added to the list of questions made by the session's user
+     * (each client will have these stored locally)
      */
     public void sendQuestion() {
         Question question = new Question(questionInput.getText());
         HomeSceneCommunication.postQuestion(question);
+
+        //Sends a request to get the questionId of the question just created
+        Long questionId = HomeSceneCommunication.getSingleQuestion();
+        //Adds said question to the users list of created questions
+        session.questionAdded(String.valueOf(questionId));
+
         questionInput.clear(); // clears question input box
+        refresh();
     }
 
     /**
@@ -105,13 +116,32 @@ public class HomeSceneController {
         qsc.setHomeScene(this);
 
         //set the node id to the question id
-        newQuestion.setId(question.getId() + "");
+        newQuestion.setId(question.getQuestionID() + "");
+
+        //Check if the question loaded was created by the session's user
+        checkForQuestion(newQuestion, question);
+
         //set the question text
-        Label l = (Label) newQuestion.lookup("#questionTextLabel");
-        l.setText(question.questionText);
-        //set the upvote
-        Label u = (Label) newQuestion.lookup(("#upvoteLabel"));
-        u.setText("+" + question.getUpVotes());
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
+        questionLabel.setText(question.questionText);
+
+        //set the question box size
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
+        //set the upvote count
+        Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
+        upvoteLabel.setText("+" + question.getUpVotes());
+
+        //set upvote button as active or inactive
+        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
+        boolean isActive = session.getUpvotesList()
+                .contains(String.valueOf(question.getQuestionID()));
+        if (isActive) {
+            upvoteButton.getStyleClass().add("active");
+        }
 
 
         return newQuestion;
@@ -126,4 +156,33 @@ public class HomeSceneController {
         Node q = questionBox.lookup("#" + id);
         questionBox.getChildren().remove(q);
     }
+
+    /**
+     * Method to check whether the Question that is being created has been
+     * written by the student in the session (so that the dismiss button
+     * will be shown - if it does not correspond it won't show).
+     * @param newQuestion - Node of the new question created
+     * @param question - the object of the new question created
+     */
+    public void checkForQuestion(Node newQuestion, Question question) {
+        if (!session.getIsModerator()) {
+            Button d = (Button) newQuestion.lookup("#dismissButton");
+
+            String id = String.valueOf(question.id);
+            //Checks if the user made the question
+            boolean createdQuestion = session.getQuestionsMade().contains(id);
+
+            //If the question was created by user we want disabled to be set as false
+            d.setDisable(!createdQuestion);
+
+            //makes button visible
+            if (createdQuestion) {
+                d.setOpacity(1.0);
+            }
+
+        }
+    }
+
+
+
 }
