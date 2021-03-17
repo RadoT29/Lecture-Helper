@@ -82,7 +82,7 @@ public class HomeSceneCommunication {
      * the server. So to have store its ID locally.
      * @return a String questionID
      */
-    public static String getSingleQuestion() {
+    public static Long getSingleQuestion() {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/getOneQuestion/" + session.getRoomLink() + "/" + session.getUserId()))
                 .build();
@@ -91,12 +91,12 @@ public class HomeSceneCommunication {
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return response.body();
+            return null;
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        return gson.fromJson(response.body(), new TypeToken<String>(){}.getType());
+        return gson.fromJson(response.body(), Long.class);
     }
 
 

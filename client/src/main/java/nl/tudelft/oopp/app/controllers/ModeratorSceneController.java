@@ -1,13 +1,21 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.models.Session;
@@ -117,5 +125,25 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
         }
 
+        refresh();
+    }
+
+    /**
+     * Method to load the presentation mode scene.
+     * Makes the scene smaller so it takes less space on the lecturer screen
+     * @throws IOException if it cant load the fxml file
+     */
+    public void presenterMode() throws IOException {
+        Parent loader = new FXMLLoader(getClass().getResource("/presentationScene.fxml")).load();
+        Stage stage = (Stage) mainMenu.getScene().getWindow();
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.65;
+        double height = screenSize.getHeight() * 0.6;
+
+        Scene scene = new Scene(loader, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 }

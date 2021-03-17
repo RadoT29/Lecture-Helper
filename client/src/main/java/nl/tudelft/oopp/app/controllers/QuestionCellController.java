@@ -13,6 +13,9 @@ public class QuestionCellController {
     Button dismissButton;
 
     @FXML
+    Button upvoteButton;
+
+    @FXML
     HBox questionCell;
 
 
@@ -46,6 +49,8 @@ public class QuestionCellController {
 
         //remove the database from the screen
         hsc.deleteQuestionFromScene(id);
+
+        hsc.refresh();
     }
 
     /**
@@ -60,6 +65,14 @@ public class QuestionCellController {
 
         setUpvote(id);
 
+        if (upvoteButton.getStyleClass().contains("active")) {
+            upvoteButton.getStyleClass().remove("active");
+            System.out.println();
+        } else {
+            upvoteButton.getStyleClass().add("active");
+        }
+
+        hsc.refresh();
     }
 
     /**

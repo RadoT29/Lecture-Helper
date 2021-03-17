@@ -117,14 +117,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
     }
 
     /**
-     * Pressing the sendButton will send all the text in the questionInput
-     * to the sever as a Question object.
-     */
-    public void sendQuestion() {
-        super.sendQuestion();
-    }
-
-    /**
      * fill in the priority queue and and load them on the screen.
      */
     public void refresh() {
