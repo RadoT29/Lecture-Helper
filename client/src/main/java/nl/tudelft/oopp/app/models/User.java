@@ -20,12 +20,13 @@ public class User {
 
     /**
      * Constructor for User class.
-     * @param id - Id for each user
-     * @param name - userName used by a user
-     * @param roomLink - roomId of the room where user is
+     *
+     * @param id          - Id for each user
+     * @param name        - userName used by a user
+     * @param roomLink    - roomId of the room where user is
      * @param isModerator - boolean to indicate if user is a moderator
      */
-    public User(String id,String name, String roomLink, boolean isModerator) {
+    public User(String id, String name, String roomLink, boolean isModerator) {
         this.id = id;
 
         this.name = name;
@@ -48,10 +49,9 @@ public class User {
     //        return name;
     //    }
     //
-        public boolean getIsModerator() {
-            return isModerator;
-        }
-
+    public boolean getIsModerator() {
+        return isModerator;
+    }
 
 
 }
