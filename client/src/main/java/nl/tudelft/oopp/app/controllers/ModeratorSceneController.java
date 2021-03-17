@@ -128,13 +128,18 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         refresh();
     }
 
+    /**
+     * Method to load the presentation mode scene.
+     * Makes the scene smaller so it takes less space on the lecturer screen
+     * @throws IOException if it cant load the fxml file
+     */
     public void presenterMode() throws IOException {
         Parent loader = new FXMLLoader(getClass().getResource("/presentationScene.fxml")).load();
         Stage stage = (Stage) mainMenu.getScene().getWindow();
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth()*0.65;
-        double height = screenSize.getHeight()*0.6;
+        double width = screenSize.getWidth() * 0.65;
+        double height = screenSize.getHeight() * 0.6;
 
         Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);

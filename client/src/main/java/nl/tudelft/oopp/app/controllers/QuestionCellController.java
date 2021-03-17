@@ -55,9 +55,11 @@ public class QuestionCellController {
 
         setUpvote(id);
 
-        if (upvoteButton.getStyleClass().contains("active"))
+        if (upvoteButton.getStyleClass().contains("active")) {
             upvoteButton.getStyleClass().remove("active");
-        else upvoteButton.getStyleClass().add("active");
+        } else {
+            upvoteButton.getStyleClass().add("active");
+        }
 
         hsc.refresh();
     }

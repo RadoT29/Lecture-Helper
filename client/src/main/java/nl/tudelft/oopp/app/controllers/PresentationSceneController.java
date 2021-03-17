@@ -60,13 +60,18 @@ public class PresentationSceneController extends HomeSceneController {
 
     }
 
+    /**
+     * Method to load the main moderator scene.
+     * Makes the scene bigger so the moderator can interacat with all its features
+     * @throws IOException if it cant load the fxml file
+     */
     public void goToHome() throws IOException {
         Parent loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         Stage stage = (Stage) mainMenu.getScene().getWindow();
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth()*0.8;
-        double height = screenSize.getHeight()*0.8;
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
 
         Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);

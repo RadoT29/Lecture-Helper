@@ -115,7 +115,7 @@ public class HomeSceneController {
 
         //set the question box size
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth()*0.4;
+        double width = screenSize.getWidth() * 0.4;
         questionLabel.setPrefWidth(width);
         questionLabel.setMaxWidth(width);
 
@@ -125,8 +125,11 @@ public class HomeSceneController {
 
         //set upvote button as active or inactive
         Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
-        boolean isActive = session.getUpvotesList().contains(String.valueOf(question.getQuestionID()));
-        if (isActive) upvoteButton.getStyleClass().add("active");
+        boolean isActive = session.getUpvotesList()
+                .contains(String.valueOf(question.getQuestionID()));
+        if (isActive) {
+            upvoteButton.getStyleClass().add("active");
+        }
 
 
         return newQuestion;

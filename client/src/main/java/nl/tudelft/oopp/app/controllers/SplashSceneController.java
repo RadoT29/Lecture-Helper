@@ -75,8 +75,8 @@ public class SplashSceneController {
         Stage stage = (Stage) enterRoomButton.getScene().getWindow();
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth()*0.8;
-        double height = screenSize.getHeight()*0.8;
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
 
         Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);
@@ -105,8 +105,8 @@ public class SplashSceneController {
         Stage stage = (Stage) setNick.getScene().getWindow();
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth()*0.8;
-        double height = screenSize.getHeight()*0.8;
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
 
         Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);
