@@ -150,6 +150,17 @@ public final class Session {
     }
 
 
+
+    /**
+     * Method to remove a user's question from the list of questions that they have made
+     * (each user has their own list of questions made, in their correspondent session,
+     * if they want to delete one question they have made this method will be called).
+     * @param questionId - Id of the question to remove
+     */
+    public void questionDeleted(String questionId) {
+        this.questionsMade.remove(questionId);
+    }
+
     /**
      * This method resets the session by clearing all the session Data.
      */
