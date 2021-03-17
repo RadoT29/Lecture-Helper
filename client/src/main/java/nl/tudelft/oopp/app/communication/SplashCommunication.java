@@ -48,7 +48,6 @@ public class SplashCommunication {
      * and creates a session based on this credentials.
      */
     public static void checkForRoom(String roomLink) {
-        System.out.println("This worked - checkForRoom !!!");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
         HttpResponse<String> response = null;
         try {

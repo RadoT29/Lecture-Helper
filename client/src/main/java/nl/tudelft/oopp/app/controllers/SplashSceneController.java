@@ -29,13 +29,28 @@ public class SplashSceneController {
     private Button setNick;
     @FXML
     private Button enterRoomButton;
+    @FXML
+    private Label invalidRoomLink;
+    @FXML
+    private Label invalidRoomName;
+    @FXML
+    private Label invalidNickName;
 
     /**
      * Handles clicking the button.
      */
-    public void createRoom() {
+    public void createRoom() throws IOException {
 
+        // Cannot create rooms with empty names
+        if(roomName.getText().equals("")) {
+            invalidRoomName.setVisible(true);
+            return;
+        }
+
+        //Creates Room with given room name and clears input box
         Room room = SplashCommunication.postRoom(roomName.getText());
+        roomName.clear();
+        invalidRoomName.setVisible(false);
 
         String text = "Student link: " + room.linkIdStudent.toString()
                 + "\nModerator link: " + room.linkIdModerator.toString();
@@ -54,12 +69,20 @@ public class SplashSceneController {
 
     }
 
+
     /**
      * Enters a room and goes to nickname scene.
      *
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
+
+        // Cannot enter rooms with empty links
+        if(roomLink.getText().equals("")) {
+            invalidRoomLink.setVisible(true);
+            return;
+        }
+
         //This method checks if the link inserted corresponds
         // to a Student one, Moderator one or if it is invalid.
         SplashCommunication.checkForRoom(roomLink.getText());
@@ -69,6 +92,8 @@ public class SplashSceneController {
         //If the link is not valid then no session is started and user should stay on splash screen
         if (session == null) {
             System.out.println("Insert valid link");
+            invalidRoomLink.setVisible(true);
+            roomLink.clear();
             return;
         }
         Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
@@ -92,8 +117,19 @@ public class SplashSceneController {
      */
     public void selectUserType() throws IOException {
 
-        Parent loader;
+        // Cannot enter without nickname
+        if(nickName.getText().equals("")) {
+            invalidNickName.setVisible(true);
+            return;
+        }
+
         Session session = Session.getInstance();
+
+        // Sets nickname
+        String userId = session.getUserId();
+        ServerCommunication.setNick(userId, nickName.getText());
+
+        Parent loader;
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
         if (session.getIsModerator()) {
@@ -113,15 +149,10 @@ public class SplashSceneController {
         stage.centerOnScreen();
         stage.show();
 
-        if (nickName.getText() != null) {
-            String userId = session.getUserId();
-            ServerCommunication.setNick(userId, nickName.getText());
-            //setUserClass(nickName.getText());
-        }
-
-
-
     }
+
+
+
 
     /* **
     * Establishes the subclass of the user in the session

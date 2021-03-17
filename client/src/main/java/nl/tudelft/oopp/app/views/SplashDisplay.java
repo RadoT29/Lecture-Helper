@@ -27,6 +27,7 @@ public class SplashDisplay extends Application {
         primaryStage.getScene().getStylesheets().add("styles/splashScene.css");
         primaryStage.getScene().getStylesheets().add("styles/svgIcons.css");
         primaryStage.show();
+        primaryStage.setMaximized(true);
     }
 
     public static void main(String[] args) {

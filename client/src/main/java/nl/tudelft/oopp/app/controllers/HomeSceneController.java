@@ -38,6 +38,9 @@ public class HomeSceneController {
      * (each client will have these stored locally)
      */
     public void sendQuestion() {
+
+        if (questionInput.getText().equals("")) {return;} //If input is null, don't send question
+
         Question question = new Question(questionInput.getText());
         HomeSceneCommunication.postQuestion(question);
 

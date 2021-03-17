@@ -157,7 +157,7 @@
             </content>
         </ScrollPane>
         <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
-            <TextField fx:id="questionInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
+            <TextField fx:id="questionInput" maxWidth="-Infinity" onAction="#sendQuestion" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
                 <font>
                     <Font name="System Italic" size="12.0" />
                 </font>
