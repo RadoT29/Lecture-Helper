@@ -53,12 +53,13 @@ public class Room {
         this.permission = true;
     }
 
-        public void setLinkIdModerator() {
-            this.linkIdModerator = UUID.randomUUID();
-        }
-        public void newLinkIdStudent() {
-            this.linkIdStudent = UUID.randomUUID();
-        }
+    public void setLinkIdModerator() {
+        this.linkIdModerator = UUID.randomUUID();
+    }
+
+    public void newLinkIdStudent() {
+        this.linkIdStudent = UUID.randomUUID();
+    }
 
     //    public long getId() {
     //        return id;

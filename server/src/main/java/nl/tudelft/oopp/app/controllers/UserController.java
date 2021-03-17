@@ -57,8 +57,7 @@ public class UserController {
         } catch (IllegalArgumentException exception) {
             System.out.println("No room exists");
             return null;
-        }
-        catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             return null;
         }
     }

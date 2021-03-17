@@ -13,10 +13,6 @@ import java.util.Date;
 @EqualsAndHashCode
 @ToString
 
-/**
- * This class represents an user of the application.
- * The user is stored in the database.
- */
 @Entity
 public class User {
     @Id
@@ -36,10 +32,10 @@ public class User {
     private Date updatedAt;
 
 
-
     /**
      * Create a user.
-     * @param name - name of user
+     *
+     * @param name   - name of user
      * @param roomId - the room, which the user enters.
      */
     public User(String name, Room roomId) {
@@ -49,7 +45,8 @@ public class User {
 
     /**
      * Create a user with a roomId and role.
-     * @param roomId - the room, which the user enters.
+     *
+     * @param roomId      - the room, which the user enters.
      * @param isModerator - true if Moderator, false if Student
      */
     public User(Room roomId, boolean isModerator) {
@@ -57,7 +54,6 @@ public class User {
         this.name = "Anonymous";
         this.isModerator = isModerator;
     }
-
 
 
     //    public String getName() {

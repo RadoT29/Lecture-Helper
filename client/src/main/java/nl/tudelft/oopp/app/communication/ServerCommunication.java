@@ -43,7 +43,8 @@ public class ServerCommunication {
 
     }
 
-    /**.
+    /**
+     * .
      * Make get requested if the room is open
      *
      * @param linkId - link of the room
@@ -64,11 +65,14 @@ public class ServerCommunication {
         }
         System.out.println(response.body());
         boolean result = gson.fromJson(response.body(), Boolean.class);
-        if(result==false)throw new RoomIsClosedException();
+        if (!result) {
+            throw new RoomIsClosedException();
+        }
         return result;
     }
 
-    /**.
+    /**
+     * .
      * Make a requested if the students has permission to the room
      *
      * @param linkId - link of the room
@@ -89,7 +93,9 @@ public class ServerCommunication {
         }
         System.out.println(response.body());
         boolean result = gson.fromJson(response.body(), Boolean.class);
-        if(result==false)throw new NoStudentPermissionException();
+        if (!result) {
+            throw new NoStudentPermissionException();
+        }
         return result;
     }
 

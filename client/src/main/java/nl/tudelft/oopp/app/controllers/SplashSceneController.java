@@ -77,11 +77,6 @@ public class SplashSceneController {
             }
 
 
-//            //If the link is not valid then no session is started and user should stay on splash screen
-//            if (session == null) {
-//                System.out.println("Insert valid link");
-//                return;
-//            }
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
             Scene scene = new Scene(loader);
@@ -103,12 +98,14 @@ public class SplashSceneController {
         } catch (RoomIsClosedException exception) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("The room is closed!");
-            //alert.getDialogPane().setContent("With this link, you already do not have permission to the room");
+            //alert.getDialogPane()
+            // .setContent("With this link, you already do not have permission to the room");
             alert.showAndWait();
         } catch (NoStudentPermissionException exception) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("No student permission to the Room!");
-            //alert.getDialogPane().setContent("With this link, you already do not have permission to the room");
+            //alert.getDialogPane()
+            // .setContent("With this link, you already do not have permission to the room");
             alert.showAndWait();
         }
 
