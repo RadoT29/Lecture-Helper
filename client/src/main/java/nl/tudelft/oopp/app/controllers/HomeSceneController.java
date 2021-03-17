@@ -108,7 +108,7 @@ public class HomeSceneController {
         qsc.setHomeScene(this);
 
         //set the node id to the question id
-        newQuestion.setId(question.getQuestionID() + "");
+        newQuestion.setId(String.valueOf(question.getQuestionID()));
         //set the question text
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
         questionLabel.setText(question.questionText);

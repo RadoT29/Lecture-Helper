@@ -19,6 +19,7 @@ import nl.tudelft.oopp.app.models.Session;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 
 /**
@@ -39,6 +40,9 @@ public class PresentationSceneController extends HomeSceneController {
 
         for (int i = 0; i < 5; i++) {
             Question question = questions.poll();
+            if (question == null) {
+                break;
+            }
             try {
                 questionBox.getChildren()
                         .add(createQuestionCell(question, resource));
