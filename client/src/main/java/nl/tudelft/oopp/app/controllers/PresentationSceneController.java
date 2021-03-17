@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class PresentationSceneController extends HomeSceneController {
+public class PresentationSceneController extends HomeSceneController implements Initializable {
     @FXML
     private VBox questionBox;
     @FXML
@@ -81,5 +81,17 @@ public class PresentationSceneController extends HomeSceneController {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    /**
+    * Method to make it so that when the scene loads
+    * the refresh method is automatically executed.
+    * @param url - url of the scene
+    * @param rb - resource bundle used
+    */
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        refresh();
     }
 }

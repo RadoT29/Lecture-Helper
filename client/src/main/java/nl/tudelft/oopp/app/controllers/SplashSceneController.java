@@ -4,11 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
@@ -16,6 +15,7 @@ import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
+
 
 import java.awt.*;
 import java.io.IOException;
@@ -32,30 +32,37 @@ public class SplashSceneController {
     private Button setNick;
     @FXML
     private Button enterRoomButton;
+    @FXML
+    private Label invalidRoomLink;
+    @FXML
+    private Label invalidRoomName;
+    @FXML
+    private Label invalidNickName;
 
     /**
      * Handles clicking the button.
+     * @throws IOException Is thrown if loader fails.
      */
-    public void createRoom() {
+    public void createRoom() throws IOException {
 
+        // Cannot create rooms with empty names
+        if (roomName.getText().equals("")) {
+            invalidRoomName.setVisible(true);
+            return;
+        }
+
+        //Creates Room with given room name and clears input box
         Room room = SplashCommunication.postRoom(roomName.getText());
+        roomName.clear();
+        invalidRoomName.setVisible(false);
 
-        String text = "Student link: " + room.linkIdStudent.toString()
-                + "\nModerator link: " + room.linkIdModerator.toString();
+        //Creates a popup with the links
+        LinkController linkController = new LinkController();
+        linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
 
-        TextArea textArea = new TextArea(text);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-        GridPane gridPane = new GridPane();
-        gridPane.setMaxWidth(Double.MAX_VALUE);
-        gridPane.add(textArea, 0, 0);
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Room Links");
-        alert.getDialogPane().setContent(gridPane);
-        alert.showAndWait();
 
     }
+
 
     /**
      * Enters a room and goes to nickname scene.
@@ -63,6 +70,13 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
+
+        // Cannot enter rooms with empty links
+        if (roomLink.getText().equals("")) {
+            invalidRoomLink.setText("Insert a Room Link!");
+            invalidRoomLink.setVisible(true);
+            return;
+        }
 
         try {
             //This method checks if the link inserted corresponds
@@ -76,7 +90,6 @@ public class SplashSceneController {
                 ServerCommunication.hasStudentPermission(session.getRoomLink());
             }
 
-
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
             Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -87,30 +100,18 @@ public class SplashSceneController {
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
-        } catch (NoSuchRoomException exception) {
-            String text = "No such room exists or the link is wrong!";
-            TextArea textArea = new TextArea(text);
-            textArea.setWrapText(true);
-            GridPane gridPane = new GridPane();
-            gridPane.setMaxWidth(Double.MAX_VALUE);
-            gridPane.add(textArea, 0, 0);
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("The room does not exist!");
-            alert.getDialogPane().setContent(gridPane);
-            alert.showAndWait();
+        } catch (NoSuchRoomException exception) {
+            invalidRoomLink.setText("No such room exists or the link is wrong!");
+            invalidRoomLink.setVisible(true);
+
         } catch (RoomIsClosedException exception) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("The room is closed!");
-            //alert.getDialogPane()
-            // .setContent("With this link, you already do not have permission to the room");
-            alert.showAndWait();
+            invalidRoomLink.setText("The room is closed!");
+            invalidRoomLink.setVisible(true);
+
         } catch (NoStudentPermissionException exception) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("No student permission to the Room!");
-            //alert.getDialogPane()
-            // .setContent("With this link, you already do not have permission to the room");
-            alert.showAndWait();
+            invalidRoomLink.setText("No student permission to the Room!");
+            invalidRoomLink.setVisible(true);
         }
 
 
@@ -123,8 +124,19 @@ public class SplashSceneController {
      */
     public void selectUserType() throws IOException {
 
-        Parent loader;
+        // Cannot enter without nickname
+        if (nickName.getText().equals("")) {
+            invalidNickName.setVisible(true);
+            return;
+        }
+
         Session session = Session.getInstance();
+
+        // Sets nickname
+        String userId = session.getUserId();
+        ServerCommunication.setNick(userId, nickName.getText());
+
+        Parent loader;
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
         if (session.getIsModerator()) {
@@ -144,15 +156,10 @@ public class SplashSceneController {
         stage.centerOnScreen();
         stage.show();
 
-        if (nickName.getText() != null) {
-            String userId = session.getUserId();
-            ServerCommunication.setNick(userId, nickName.getText());
-            //setUserClass(nickName.getText());
-        }
-
-
-
     }
+
+
+
 
     /* **
      * Establishes the subclass of the user in the session
