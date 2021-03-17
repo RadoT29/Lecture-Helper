@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 import nl.tudelft.oopp.app.models.User;
@@ -47,7 +48,7 @@ public class SplashCommunication {
      * Checks whether the user is a Student or a Moderator
      * and creates a session based on this credentials.
      */
-    public static void checkForRoom(String roomLink) {
+    public static void checkForRoom(String roomLink)throws NoSuchRoomException {
         System.out.println("This worked - checkForRoom !!!");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
         HttpResponse<String> response = null;
@@ -65,7 +66,11 @@ public class SplashCommunication {
         User user = gson.fromJson(response.body(), User.class);
         // Uses the information received to update the session information
         session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
-
+        //If the link is not valid then no session is started and user should stay on splash screen
+        if (session == null) {
+            System.out.println("Insert valid link");
+            throw new NoSuchRoomException();
+        }
     }
 
 

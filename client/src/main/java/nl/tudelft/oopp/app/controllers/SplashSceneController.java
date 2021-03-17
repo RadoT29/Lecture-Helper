@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
@@ -53,6 +54,7 @@ public class SplashSceneController {
         alert.getDialogPane().setContent(gridPane);
         alert.showAndWait();
 
+
     }
 
     /**
@@ -69,30 +71,43 @@ public class SplashSceneController {
             //Gets the session with the updated information
             Session session = Session.getInstance();
             ServerCommunication.isTheRoomClosed(session.getRoomLink());
+            System.out.println("Is moderator " + session.getIsModerator());
             if (!session.getIsModerator()) {
                 ServerCommunication.hasStudentPermission(session.getRoomLink());
             }
 
 
-            //If the link is not valid then no session is started and user should stay on splash screen
-            if (session == null) {
-                System.out.println("Insert valid link");
-                return;
-            }
+//            //If the link is not valid then no session is started and user should stay on splash screen
+//            if (session == null) {
+//                System.out.println("Insert valid link");
+//                return;
+//            }
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
             Scene scene = new Scene(loader);
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
-        } catch (NoStudentPermissionException exception) {
+        } catch (NoSuchRoomException exception) {
+            String text = "No such room exists or the link is wrong!";
+            TextArea textArea = new TextArea(text);
+            textArea.setWrapText(true);
+            GridPane gridPane = new GridPane();
+            gridPane.setMaxWidth(Double.MAX_VALUE);
+            gridPane.add(textArea, 0, 0);
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("No student permission to the Room!");
-            //alert.getDialogPane().setContent("With this link, you already do not have permission to the room");
+            alert.setTitle("The room does not exist!");
+            alert.getDialogPane().setContent(gridPane);
             alert.showAndWait();
         } catch (RoomIsClosedException exception) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("The room is closed!");
+            //alert.getDialogPane().setContent("With this link, you already do not have permission to the room");
+            alert.showAndWait();
+        } catch (NoStudentPermissionException exception) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("No student permission to the Room!");
             //alert.getDialogPane().setContent("With this link, you already do not have permission to the room");
             alert.showAndWait();
         }
