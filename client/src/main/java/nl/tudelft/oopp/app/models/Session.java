@@ -132,6 +132,15 @@ public final class Session {
     }
 
     /**
+     * Method to add a question to the list of questions that the user in this session has made
+     * (given that each user will have their own list of questions made in their session).
+     * @param questionId - Question id of the question just made
+     */
+    public void questionAdded(String questionId) {
+        this.questionsMade.add(questionId);
+    }
+    
+    /**
      * Method to add a question to the list of the upvoted questions by a specific user
      * (given that each user will have a different list initiated in their session).
      * @param questionId - Question Id from question that has been upvoted by user
@@ -149,6 +158,17 @@ public final class Session {
         this.upVotedQuestions.remove(questionId);
     }
 
+
+
+    /**
+     * Method to remove a user's question from the list of questions that they have made
+     * (each user has their own list of questions made, in their correspondent session,
+     * if they want to delete one question they have made this method will be called).
+     * @param questionId - Id of the question to remove
+     */
+    public void questionDeleted(String questionId) {
+        this.questionsMade.remove(questionId);
+    }
 
     /**
      * This method resets the session by clearing all the session Data.

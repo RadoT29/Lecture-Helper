@@ -35,6 +35,21 @@ public class QuestionController {
     }
 
     /**
+     * Method to retrieve the last entry made by a specific user in a specific room.
+     * @param roomLink - room where request came from
+     * @param userId - Id of user that made request
+     * @return - string of the questionId
+     */
+    @GetMapping("/getOneQuestion/{roomLink}/{userId}")
+    @ResponseBody
+    public String getSingularQuestion(@PathVariable String roomLink,
+                                      @PathVariable String userId) {
+        return questionService.getSingleQuestion(roomLink, userId);
+
+    }
+
+
+    /**
      * This method parses the path variables and the http request
      * to get the values needed to create the question to be saved on the DB.
      * @param roomLink link of the room where the question has been asked
@@ -59,6 +74,16 @@ public class QuestionController {
     public void dismissQuestion(@PathVariable("questionId") long questionId) {
         questionService.dismissQuestion(questionId);
     }
+
+
+    @DeleteMapping("/dismissSingular/{questionId}/{userId}")
+    @ResponseBody
+    public void dismissSingular(@PathVariable("questionId") long questionId,
+                                @PathVariable("userId") long userId) {
+        questionService.dismissSingular(questionId, userId);
+    }
+
+
 
     /**
      * calls the questionService to add an upvote to a specific question by a specific
