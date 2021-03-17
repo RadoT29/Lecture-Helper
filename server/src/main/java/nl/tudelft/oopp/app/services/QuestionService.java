@@ -106,6 +106,20 @@ public class QuestionService {
     }
 
     /**
+     * In this method the server itself will check if the question was made by the
+     * user that sent the request (thus 2 parameters), only if so the question will
+     * be deleted.
+     * calls questionRepository to execute DELETE query
+     * @param questionId - Id of the question to delete
+     * @param userId - Id of the student attempting to delete
+     */
+    public void dismissSingular(long questionId, long userId) {
+        //delete question
+        questionRepository.deleteSingular(questionId, userId);
+    }
+
+
+    /**
      * Method add an upvote on the server side.
      * @param questionId - Id of the question upvote to be added
      * @param userId - Id of user making the change

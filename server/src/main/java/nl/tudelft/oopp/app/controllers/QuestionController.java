@@ -75,6 +75,16 @@ public class QuestionController {
         questionService.dismissQuestion(questionId);
     }
 
+
+    @DeleteMapping("/dismissSingular/{questionId}/{userId}")
+    @ResponseBody
+    public void dismissSingular(@PathVariable("questionId") long questionId,
+                                @PathVariable("userId") long userId) {
+        questionService.dismissSingular(questionId, userId);
+    }
+
+
+
     /**
      * calls the questionService to add an upvote to a specific question by a specific
      * user on the database.

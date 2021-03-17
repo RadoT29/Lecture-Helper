@@ -18,6 +18,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Transactional
     @Modifying
+    @Query("DELETE FROM Question u WHERE u.id=?1 AND u.user.id=?2")
+    void deleteSingular(long questionId, long userId);
+
+    @Transactional
+    @Modifying
     @Query("DELETE FROM Question u WHERE u.room.id=?1")
     void clearQuestions(long roomId);
 
