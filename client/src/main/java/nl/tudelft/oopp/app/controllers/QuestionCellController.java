@@ -39,6 +39,8 @@ public class QuestionCellController {
 
         //remove the database from the screen
         hsc.deleteQuestionFromScene(id);
+
+        hsc.refresh();
     }
 
     /**
@@ -57,6 +59,7 @@ public class QuestionCellController {
             upvoteButton.getStyleClass().remove("active");
         else upvoteButton.getStyleClass().add("active");
 
+        hsc.refresh();
     }
 
     /**

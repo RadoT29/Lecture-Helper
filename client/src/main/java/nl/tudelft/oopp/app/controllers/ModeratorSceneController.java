@@ -125,6 +125,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
         }
 
+        refresh();
     }
 
     public void presenterMode() throws IOException {

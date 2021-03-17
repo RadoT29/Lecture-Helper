@@ -38,6 +38,7 @@ public class HomeSceneController {
         Question question = new Question(questionInput.getText());
         HomeSceneCommunication.postQuestion(question);
         questionInput.clear(); // clears question input box
+        refresh();
     }
 
     /**
