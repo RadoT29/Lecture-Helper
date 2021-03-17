@@ -50,6 +50,7 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
+        this.permission = true;
     }
 
         public void setLinkIdModerator() {

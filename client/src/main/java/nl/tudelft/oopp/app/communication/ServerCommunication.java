@@ -2,6 +2,8 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
@@ -47,7 +49,7 @@ public class ServerCommunication {
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
      */
-    public static boolean isTheRoomClosed(String linkId) {
+    public static boolean isTheRoomClosed(String linkId) throws RoomIsClosedException {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/isOpenById/" + linkId)).build();
         HttpResponse<String> response = null;
@@ -61,7 +63,9 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
         System.out.println(response.body());
-        return gson.fromJson(response.body(), Boolean.class);
+        boolean result = gson.fromJson(response.body(), Boolean.class);
+        if(result==false)throw new RoomIsClosedException();
+        return result;
     }
 
     /**.
@@ -70,7 +74,7 @@ public class ServerCommunication {
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
      */
-    public static boolean hasStudentPermission(String linkId) {
+    public static boolean hasStudentPermission(String linkId) throws NoStudentPermissionException {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
         HttpResponse<String> response = null;
@@ -84,7 +88,9 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
         System.out.println(response.body());
-        return gson.fromJson(response.body(), Boolean.class);
+        boolean result = gson.fromJson(response.body(), Boolean.class);
+        if(result==false)throw new NoStudentPermissionException();
+        return result;
     }
 
     /**
