@@ -7,9 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
@@ -43,7 +41,7 @@ public class SplashSceneController {
 
     /**
      * Handles clicking the button.
-     * @throws - Is thrown if loader fails.
+     * @throws IOException Is thrown if loader fails.
      */
     public void createRoom() throws IOException {
 
