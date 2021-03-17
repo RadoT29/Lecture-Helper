@@ -15,8 +15,8 @@ public class SplashDisplay extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
+        double width = screenSize.getWidth()*0.8;
+        double height = screenSize.getHeight()*0.8;
 
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/splashScene.fxml");

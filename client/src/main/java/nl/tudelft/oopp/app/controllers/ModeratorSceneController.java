@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
@@ -129,7 +130,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void presenterMode() throws IOException {
         Parent loader = new FXMLLoader(getClass().getResource("/presentationScene.fxml")).load();
         Stage stage = (Stage) mainMenu.getScene().getWindow();
-        Scene scene = new Scene(loader);
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth()*0.55;
+        double height = screenSize.getHeight()*0.55;
+
+        Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();

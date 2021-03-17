@@ -6,73 +6,6 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.PresentationSceneController">
-        <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
-            <Button fx:id="clearQuestionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Clear Questions" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <Button fx:id="kickUserButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#kickAllStudents" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Kick Users" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2.0" left="35.0" top="20.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Export Questions" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <Button fx:id="createNewRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Create new room" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <Button fx:id="closeRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeRoom" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Close Room" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                    <VBox.margin>
-                        <Insets bottom="2" />
-                    </VBox.margin>
-                </Button>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
-                    <font>
-                        <Font name="System Bold" size="10.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="30" />
-                    </VBox.margin>
-                </Label>
-            </VBox>
-        </VBox>
         <VBox id="vboxNav" fx:id="mainMenu" layoutY="3.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="refreshButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#refresh" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
@@ -94,64 +27,9 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="linkButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="20.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Get Links" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <Button fx:id="presenterButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#presenterMode" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Presenter Mode" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <Button fx:id="pollsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Polls" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <Button fx:id="questionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Question log" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
-            <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                <Button fx:id="menuButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="35.0" prefWidth="10.0" styleClass="menuBtnBlack">
-                    <VBox.margin>
-                        <Insets bottom="2" />
-                    </VBox.margin>
-                </Button>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="More Options" textAlignment="CENTER">
-                    <font>
-                        <Font name="System Bold" size="10.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="30" />
-                    </VBox.margin>
-                </Label>
-            </VBox>
         </VBox>
-    <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
-        <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="539.0" prefWidth="801.0">
+    <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+        <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
             <content>
                 <VBox fx:id="questionBox" prefHeight="446.0" prefWidth="1100.0" />
             </content>
