@@ -76,6 +76,30 @@ public class HomeSceneCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
+
+    /**
+     * GET request to get the id of the question that was just created and sent to
+     * the server. So to have store its ID locally.
+     * @return a String questionID
+     */
+    public static String getSingleQuestion() {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/getOneQuestion/" + session.getRoomLink() + "/" + session.getUserId()))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return response.body();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return gson.fromJson(response.body(), new TypeToken<String>(){}.getType());
+    }
+
+
     /**
      * Method to send a DELETE request to the server
      * so to delete all of the questions created so far in a particular room.
