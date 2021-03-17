@@ -123,33 +123,6 @@ public final class Session {
         return isModerator;
     }
 
-    //    public String getRoomLink() {
-    //        return roomLink;
-    //    }
-    //
-    //    public String getRoomName() {
-    //        return roomName;
-    //    }
-    //
-    //
-    //
-    //    public String getUserId() {
-    //        return userId;
-    //    }
-    //
-    //    public void setUserId(String userId) {
-    //        this.userId = userId;
-    //    }
-    //
-    //
-    //    public List<String> getQuestionsMade() {
-    //        return this.questionsMade;
-    //    }
-    //
-    //
-    //    public List<String> getUpvotesList() {
-    //        return this.upVotedQuestions;
-    //    }
 
     /**
      * Method to add a question to the list of questions that the user in this session has made

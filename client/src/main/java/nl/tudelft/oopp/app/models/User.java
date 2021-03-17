@@ -37,18 +37,6 @@ public class User {
 
     }
 
-    //    public Long getUserID() {
-    //        return id;
-    //    }
-    //
-    //    public Room getRoomId() {
-    //        return roomId;
-    //    }
-    //
-    //    public String getUserName() {
-    //        return name;
-    //    }
-    //
     public boolean getIsModerator() {
         return isModerator;
     }

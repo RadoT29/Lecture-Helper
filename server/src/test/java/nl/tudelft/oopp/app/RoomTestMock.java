@@ -42,41 +42,6 @@ public class RoomTestMock {
     }
 
 
-    //   @Test
-    //    public void roomSize()
-    //    {
-    //        when(repository.findAll()).
-    //        thenReturn(Stream.of(new Room("my room")).collect(Collectors.toList()));
-    //        assertEquals(1,roomService.findAll().size());
-    //        //verify()
-    //    }
-
-
-    //    /**
-    //     * Find the room by moderator link.
-    //     */
-    //    @Test
-    //    public void findRoomByModeratorLink()
-    //    {
-    //        Room room = new Room("My room");
-    //        //repository.save(room);
-    //        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
-    //        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdModerator())));
-    //
-    //    }
-
-    //    /**
-    //     * Find the room by student link.
-    //     */
-    //    @Test
-    //    public void findRoomByStudentLink()
-    //    {
-    //        Room room = new Room("My room");
-    //        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
-    //        assertEquals(room,roomService.getByLink(String.valueOf(room.getLinkIdStudent())));
-    //      }
-
-
     /**
      * Find the room by moderator link.
      * In the test the expected room is different from

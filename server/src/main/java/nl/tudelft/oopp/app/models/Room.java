@@ -61,34 +61,6 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
     }
 
-    //    public long getId() {
-    //        return id;
-    //    }
-    //
-    //    public void setId(long id) {
-    //        this.id = id;
-    //    }
-    //
-    //    public String getName() {
-    //        return name;
-    //    }
-    //
-    //    public void setName(String name) {
-    //        this.name = name;
-    //    }
-    //
-    //    public UUID getLinkIdStudent() {
-    //        return linkIdStudent;
-    //    }
-    //
-
-    //
-    //    public UUID getLinkIdModerator() {
-    //        return linkIdModerator;
-    //    }
-    //
-
-    //
     public boolean getIsOpen() {
         return isOpen;
     }

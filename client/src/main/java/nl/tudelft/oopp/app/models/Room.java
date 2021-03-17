@@ -20,23 +20,4 @@ public class Room {
         this.name = name;
     }
 
-    //    public String getName() {
-    //        return name;
-    //    }
-    //
-    //    public UUID getLinkIdStudent() {
-    //        return linkIdStudent;
-    //    }
-    //
-    //    public UUID getLinkIdModerator() {
-    //        return linkIdModerator;
-    //    }
-    //
-    //    public boolean isOpen() {
-    //        return isOpen;
-    //    }
-    //
-    //    public boolean isPermission() {
-    //        return permission;
-    //    }
 }

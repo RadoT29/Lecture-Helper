@@ -27,27 +27,6 @@ public class Question implements Comparable<Question> {
         this.questionText = questionText;
     }
 
-    //    public long getQuestionID() {
-    //        return id;
-    //    }
-    //
-    //    public Room getRoom() {
-    //        return room;
-    //    }
-    //
-    //    public User getUser() {
-    //        return user;
-    //    }
-    //
-    //    public String getQuestionText() {
-    //        return questionText;
-    //    }
-    //
-    //
-    //
-    //    public int getUpVotes() {
-    //        return upVotes;
-    //    }
 
     @Override
     public int compareTo(Question o) {

@@ -18,15 +18,4 @@ public class Upvote {
         this.user = user;
     }
 
-//    public long getUpvoteId() {
-//        return id;
-//    }
-//
-//    public String getQuestionId() {
-//        return questionId;
-//    }
-//
-//    public User getUser() {
-//        return user;
-//    }
 }
