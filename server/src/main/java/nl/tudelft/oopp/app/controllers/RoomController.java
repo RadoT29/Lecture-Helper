@@ -4,10 +4,7 @@ import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -29,7 +26,6 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         Room room = new Room(name);
         roomRepository.save(room);
-
         return room;
     }
 
@@ -38,10 +34,37 @@ public class RoomController {
      *
      * @param linkId - name of the room
      */
-    @PutMapping("closeRoomByName")
-    public void closeRoom(@RequestParam String linkId) {
+    //@RequestMapping("")
+    @PutMapping("closeRoomById/{linkId}")
+    @ResponseBody
+    public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
         roomRepository.closeRoom(UUID.fromString(linkId));
+    }
+
+    /**
+     * Get end point. Receive a request for if the room is open
+     *
+     * @param linkId - the link of the room for which isClose status is requested
+     * @return - true if the room is still open, otherwise false
+     */
+    @GetMapping("isOpenById/{linkId}")
+    @ResponseBody
+    public boolean isClose(@PathVariable String linkId) {
+        Room room = roomRepository.isClose(UUID.fromString(linkId));
+        return room.getIsOpen();
+    }
+
+    /**
+     * Get end point. Receive a request for if the students have permission to the room
+     *
+     * @param linkId - the link of the room for which permission status is requested
+     * @return - true if the students have permission to the room, otherwise false
+     */
+    @GetMapping("hasStudentPermission/{linkId}")
+    @ResponseBody
+    public boolean hasStudentPermission(@PathVariable String linkId) {
+        return roomRepository.permission(UUID.fromString(linkId)).getPermission();
     }
 
     /**
@@ -49,8 +72,9 @@ public class RoomController {
      *
      * @param linkId - name of the room
      */
-    @PutMapping("kickAllStudents")
-    public void kickAllStudent(@RequestParam String linkId) {
+    @PutMapping("kickAllStudents/{linkId}")
+    @ResponseBody
+    public void kickAllStudent(@PathVariable String linkId) {
         roomRepository.kickAllStudents(UUID.fromString(linkId));
     }
 }

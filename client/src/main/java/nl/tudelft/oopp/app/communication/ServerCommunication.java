@@ -1,10 +1,17 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.Session;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.UUID;
 
 public class ServerCommunication {
 
@@ -16,15 +23,17 @@ public class ServerCommunication {
      * Close the room.
      *
      * @param linkId - name of the room
+     * @throws Exception if communication with the server fails.
      */
     public static void closeRoom(String linkId) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?closeRoomByName=" + linkId)).build();
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/closeRoomById/" + linkId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
+            //return null;
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
@@ -32,14 +41,61 @@ public class ServerCommunication {
 
     }
 
+    /**.
+     * Make get requested if the room is open
+     *
+     * @param linkId - link of the room
+     * @return boolean true if the room is open, otherwise false
+     */
+    public static boolean isTheRoomClosed(String linkId) {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/isOpenById/" + linkId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        return gson.fromJson(response.body(), Boolean.class);
+    }
+
+    /**.
+     * Make a requested if the students has permission to the room
+     *
+     * @param linkId - link of the room
+     * @return boolean true if the room is open, otherwise false
+     */
+    public static boolean hasStudentPermission(String linkId) {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        return gson.fromJson(response.body(), Boolean.class);
+    }
+
     /**
      * Kick all students.
      *
-     * @param linkId - name of the room
+     * @param linkId - link of the room
+     * @throws Exception if communication with the server fails.
      */
     public static void kickAllStudents(String linkId) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room?kickAllStudents=" + linkId)).build();
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/kickAllStudents/" + linkId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -54,7 +110,8 @@ public class ServerCommunication {
 
     /**
      * Sends a request to server to change user's name.
-     * @param userId - the id of the user.
+     *
+     * @param userId   - the id of the user.
      * @param nickName - the name of the user.
      */
     public static void setNick(String userId, String nickName) {
@@ -71,5 +128,4 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
-
 }

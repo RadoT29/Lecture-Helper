@@ -32,18 +32,18 @@ public class QuestionTest {
     private ModeratorRepository moderatorRepository;
 
     /**
-     * This test saves a Question on the database and then retrieves it
+     * This test saves a Question on the database and then retrieves it.
      * to assert that it's the same.
      */
     @Test
     public void saveAndRetrieveQuestion() {
 
-        //A question has a room associated to it
+        //A question has a room associated to it.
         Room room = new Room("room name");
         roomRepository.save(room);
 
         //A question has a user associated to it
-        Student student = new Student("Radoslav",room);
+        Student student = new Student("Radoslav", room);
         studentRepository.save(student);
 
         Question question = new Question("Does this test work?");
@@ -57,7 +57,7 @@ public class QuestionTest {
     }
 
     /**
-     * This test saves a Question on the database and then asserts
+     * This test saves a Question on the database and then asserts.
      * that the associated Room is the same one.
      */
     @Test
@@ -65,7 +65,7 @@ public class QuestionTest {
         Room room = new Room("OurRoom");
         roomRepository.save(room);
 
-        Moderator mod = new Moderator("Pedro",room);
+        Moderator mod = new Moderator("Pedro", room);
         moderatorRepository.save(mod);
 
         Question question = new Question("Does this test work?");
@@ -80,7 +80,7 @@ public class QuestionTest {
     }
 
     /**
-     * This test saves a Question on the database and then asserts
+     * This test saves a Question on the database and then asserts.
      * that the associated User is the same one.
      */
     @Test
@@ -88,7 +88,7 @@ public class QuestionTest {
         Room room = new Room("OurRoom");
         roomRepository.save(room);
 
-        Moderator mod = new Moderator("Natalia",room);
+        Moderator mod = new Moderator("Natalia", room);
         moderatorRepository.save(mod);
 
         Question question = new Question("Does this test work?");
