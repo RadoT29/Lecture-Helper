@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -21,6 +20,12 @@ public class LinkController {
     @FXML
     private TextField linkModeratorBox;
 
+    /**
+     * This method creates a popup containing the links for the room just created.
+     * @param studentLink link for a student User
+     * @param moderatorLink link for a Moderator User
+     * @throws IOException error if popup doesn't load correctly
+     */
     public void getLinks(String studentLink, String moderatorLink) throws IOException {
 
 
@@ -40,13 +45,20 @@ public class LinkController {
         linkStage.show();
     }
 
-    public void studentCopyLink(){
+    /**
+     * This method copies the student link to the clipboard.
+     */
+    public void studentCopyLink() {
         StringSelection selection = new StringSelection(linkStudentBox.getText());
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
     }
 
-    public void moderatorCopyLink(){
+
+    /**
+     * This method copies the moderator link to the clipboard.
+     */
+    public void moderatorCopyLink() {
         StringSelection selection = new StringSelection(linkModeratorBox.getText());
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);

@@ -40,7 +40,7 @@ public class SplashSceneController {
     public void createRoom() throws IOException {
 
         // Cannot create rooms with empty names
-        if(roomName.getText().equals("")) {
+        if (roomName.getText().equals("")) {
             invalidRoomName.setVisible(true);
             return;
         }
@@ -66,7 +66,7 @@ public class SplashSceneController {
     public void enterRoom() throws IOException {
 
         // Cannot enter rooms with empty links
-        if(roomLink.getText().equals("")) {
+        if (roomLink.getText().equals("")) {
             invalidRoomLink.setVisible(true);
             return;
         }
@@ -106,7 +106,7 @@ public class SplashSceneController {
     public void selectUserType() throws IOException {
 
         // Cannot enter without nickname
-        if(nickName.getText().equals("")) {
+        if (nickName.getText().equals("")) {
             invalidNickName.setVisible(true);
             return;
         }
