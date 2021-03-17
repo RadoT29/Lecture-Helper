@@ -52,6 +52,13 @@ public class Room {
         this.isOpen = true;
     }
 
+        public void setLinkIdModerator() {
+            this.linkIdModerator = UUID.randomUUID();
+        }
+        public void newLinkIdStudent() {
+            this.linkIdStudent = UUID.randomUUID();
+        }
+
     //    public long getId() {
     //        return id;
     //    }
@@ -72,17 +79,13 @@ public class Room {
     //        return linkIdStudent;
     //    }
     //
-    //    public void newLinkIdStudent() {
-    //        this.linkIdStudent = UUID.randomUUID();
-    //    }
+
     //
     //    public UUID getLinkIdModerator() {
     //        return linkIdModerator;
     //    }
     //
-    //    public void setLinkIdModerator() {
-    //        this.linkIdModerator = UUID.randomUUID();
-    //    }
+
     //
     public boolean getIsOpen() {
         return isOpen;
