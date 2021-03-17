@@ -149,7 +149,6 @@ public class HomeSceneController {
      */
     public void checkForQuestion(Node newQuestion, Question question) {
         if (!session.getIsModerator()) {
-            System.out.println("We got to the print disabled button");
             Button d = (Button) newQuestion.lookup("#dismissButton");
 
             String id = String.valueOf(question.id);
