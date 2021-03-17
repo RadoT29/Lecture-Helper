@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 
@@ -59,23 +61,38 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
-        //This method checks if the link inserted corresponds
-        // to a Student one, Moderator one or if it is invalid.
-        SplashCommunication.checkForRoom(roomLink.getText());
-        //Gets the session with the updated information
-        Session session = Session.getInstance();
 
-        //If the link is not valid then no session is started and user should stay on splash screen
-        if (session == null) {
-            System.out.println("Insert valid link");
-            return;
+        try{
+            //This method checks if the link inserted corresponds
+            // to a Student one, Moderator one or if it is invalid.
+            SplashCommunication.checkForRoom(roomLink.getText());
+            //Gets the session with the updated information
+            Session session = Session.getInstance();
+            ServerCommunication.isTheRoomClosed(session.getRoomLink());
+            if(!session.getIsModerator()){
+                ServerCommunication.hasStudentPermission(session.getRoomLink());
+            }
+
+
+            //If the link is not valid then no session is started and user should stay on splash screen
+            if (session == null) {
+                System.out.println("Insert valid link");
+                return;
+            }
+            Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
+            Stage stage = (Stage) enterRoomButton.getScene().getWindow();
+            Scene scene = new Scene(loader);
+            stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
         }
-        Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
-        Stage stage = (Stage) enterRoomButton.getScene().getWindow();
-        Scene scene = new Scene(loader);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+        catch (NoStudentPermissionException exception){
+
+        }
+        catch (RoomIsClosedException exception){
+
+        }
+
 
     }
 
