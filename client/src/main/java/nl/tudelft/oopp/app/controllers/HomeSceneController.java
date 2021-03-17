@@ -12,6 +12,7 @@ import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.PriorityQueue;
 
@@ -41,11 +42,12 @@ public class HomeSceneController {
         HomeSceneCommunication.postQuestion(question);
 
         //Sends a request to get the questionId of the question just created
-        String questionId = HomeSceneCommunication.getSingleQuestion();
+        Long questionId = HomeSceneCommunication.getSingleQuestion();
         //Adds said question to the users list of created questions
-        session.questionAdded(questionId);
+        session.questionAdded(String.valueOf(questionId));
 
         questionInput.clear(); // clears question input box
+        refresh();
     }
 
     /**
@@ -120,11 +122,26 @@ public class HomeSceneController {
         checkForQuestion(newQuestion, question);
 
         //set the question text
-        Label l = (Label) newQuestion.lookup("#questionTextLabel");
-        l.setText(question.questionText);
-        //set the upvote
-        Label u = (Label) newQuestion.lookup(("#upvoteLabel"));
-        u.setText("+" + question.getUpVotes());
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
+        questionLabel.setText(question.questionText);
+
+        //set the question box size
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
+        //set the upvote count
+        Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
+        upvoteLabel.setText("+" + question.getUpVotes());
+
+        //set upvote button as active or inactive
+        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
+        boolean isActive = session.getUpvotesList()
+                .contains(String.valueOf(question.getQuestionID()));
+        if (isActive) {
+            upvoteButton.getStyleClass().add("active");
+        }
 
 
         return newQuestion;

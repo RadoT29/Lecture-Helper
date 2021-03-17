@@ -31,16 +31,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="upvoteButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="upvoteIcon" text="E">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="editIcon" text="E">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
+
                   <Button fx:id="answerButton" layoutX="596.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="answeredIcon" text="A">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
@@ -53,16 +44,6 @@
                   </Button>
                </children>
             </HBox>
-            <Button fx:id="blockButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="blockIcon" text="B">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="replyButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="replyIcon" text="R">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
-               </HBox.margin>
-            </Button>
          </children>
       </HBox>
    </children>
