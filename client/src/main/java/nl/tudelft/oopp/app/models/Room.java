@@ -9,6 +9,9 @@ public class Room {
     public boolean isOpen;
     public boolean permission;
 
+    public Room(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -26,6 +29,7 @@ public class Room {
         return isOpen;
     }
 
-
-
+    public boolean isPermission() {
+        return permission;
+    }
 }

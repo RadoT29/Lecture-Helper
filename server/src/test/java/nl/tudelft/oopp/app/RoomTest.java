@@ -14,19 +14,36 @@ public class RoomTest {
     @Autowired
     private RoomRepository roomRepository;
 
+    /**
+     * check if the created room is with the same name.
+     */
     @Test
     public void roomName() {
         Room room = new Room("room name");
         assertEquals(room.getName(), "room name");
     }
 
+    /**
+     * check if the moderator link is created.
+     */
     @Test
-    public void roomLinks() {
+    public void roomLinksModerator() {
         Room room = new Room("room name");
         assertNotNull(room.getLinkIdModerator());
+    }
+
+    /**
+     * check if the student link is created.
+     */
+    @Test
+    public void roomLinksStudent() {
+        Room room = new Room("room name");
         assertNotNull(room.getLinkIdStudent());
     }
 
+    /**
+     * check if the room saved and after that retrieved from the repository is the same.
+     */
     @Test
     public void saveAndRetrieveRoom() {
         Room room = new Room("room name");
@@ -35,4 +52,19 @@ public class RoomTest {
         Room room2 = roomRepository.getOne(room.getId());
         assertEquals(room, room2);
     }
+
+
+    /**
+     * Check if the other room on the repository is still open.
+     */
+    @Test
+    public void closeRoomFalse() {
+        Room room = new Room("My room");
+        Room room2 = new Room("New room");
+        roomRepository.save(room);
+        roomRepository.save(room2);
+        roomRepository.closeRoom(room.getLinkIdModerator());
+        assertEquals(true, room2.getIsOpen());
+    }
+
 }

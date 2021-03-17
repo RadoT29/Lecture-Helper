@@ -77,12 +77,12 @@ public class Room {
         this.linkIdModerator = UUID.randomUUID();
     }
 
-    public boolean isOpen() {
+    public boolean getIsOpen() {
         return isOpen;
     }
 
-    public void setOpen(boolean open) {
-        isOpen = open;
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
     }
 
     public boolean getPermission() {
