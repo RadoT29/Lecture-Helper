@@ -48,6 +48,7 @@ public class SplashCommunication {
     /**
      * Checks whether the user is a Student or a Moderator
      * and creates a session based on this credentials.
+     * @throws NoSuchRoomException - throws this exception if the room link is wrong
      */
     public static void checkForRoom(String roomLink) throws NoSuchRoomException {
         System.out.println("This worked - checkForRoom !!!");

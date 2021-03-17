@@ -49,6 +49,7 @@ public class ServerCommunication {
      *
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
+     * @throws RoomIsClosedException - throws the exception when is tried to entry in closed room
      */
     public static boolean isTheRoomClosed(String linkId) throws RoomIsClosedException {
         HttpRequest request = HttpRequest.newBuilder().GET()
@@ -77,6 +78,8 @@ public class ServerCommunication {
      *
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
+     * @throws NoStudentPermissionException - throws the exception when a student try to entry
+     *      in room where all students are kicked
      */
     public static boolean hasStudentPermission(String linkId) throws NoStudentPermissionException {
         HttpRequest request = HttpRequest.newBuilder().GET()

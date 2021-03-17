@@ -127,7 +127,7 @@ public class RoomTestMock {
     }
 
     /**
-     * check if the room is closed.
+     * check if students have permission to the room.
      */
     @Test
     public void testMethodGetPermission() {
@@ -138,7 +138,7 @@ public class RoomTestMock {
     }
 
     /**
-     * check if the room is closed.
+     * check if students have permission to the room.
      */
     @Test
     public void testMethodGetPermissionFalse() {
