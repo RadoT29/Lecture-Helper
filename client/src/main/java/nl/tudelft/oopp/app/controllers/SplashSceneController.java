@@ -4,11 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.models.*;
@@ -52,20 +50,10 @@ public class SplashSceneController {
         roomName.clear();
         invalidRoomName.setVisible(false);
 
-        String text = "Student link: " + room.linkIdStudent.toString()
-                + "\nModerator link: " + room.linkIdModerator.toString();
+        //Creates a popup with the links
+        LinkController linkController = new LinkController();
+        linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
 
-        TextArea textArea = new TextArea(text);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-        GridPane gridPane = new GridPane();
-        gridPane.setMaxWidth(Double.MAX_VALUE);
-        gridPane.add(textArea, 0, 0);
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Room Links");
-        alert.getDialogPane().setContent(gridPane);
-        alert.showAndWait();
 
     }
 
