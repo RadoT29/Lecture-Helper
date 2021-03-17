@@ -62,14 +62,14 @@ public class SplashSceneController {
      */
     public void enterRoom() throws IOException {
 
-        try{
+        try {
             //This method checks if the link inserted corresponds
             // to a Student one, Moderator one or if it is invalid.
             SplashCommunication.checkForRoom(roomLink.getText());
             //Gets the session with the updated information
             Session session = Session.getInstance();
             ServerCommunication.isTheRoomClosed(session.getRoomLink());
-            if(!session.getIsModerator()){
+            if (!session.getIsModerator()) {
                 ServerCommunication.hasStudentPermission(session.getRoomLink());
             }
 
@@ -85,12 +85,16 @@ public class SplashSceneController {
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
-        }
-        catch (NoStudentPermissionException exception){
-
-        }
-        catch (RoomIsClosedException exception){
-
+        } catch (NoStudentPermissionException exception) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("No student permission to the Room!");
+            //alert.getDialogPane().setContent("With this link, you already do not have permission to the room");
+            alert.showAndWait();
+        } catch (RoomIsClosedException exception) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("The room is closed!");
+            //alert.getDialogPane().setContent("With this link, you already do not have permission to the room");
+            alert.showAndWait();
         }
 
 
@@ -126,13 +130,12 @@ public class SplashSceneController {
         }
 
 
-
     }
 
     /* **
-    * Establishes the subclass of the user in the session
-    * @param name - This parameter corresponds to the user nickname set on the previous method
-    *//*
+     * Establishes the subclass of the user in the session
+     * @param name - This parameter corresponds to the user nickname set on the previous method
+     *//*
     public void setUserClass(String name){
     Session session = Session.getInstance();
 
@@ -144,7 +147,6 @@ public class SplashSceneController {
 
     }
     */
-
 
 
 }
