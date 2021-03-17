@@ -43,6 +43,7 @@ public class SplashSceneController {
 
     /**
      * Handles clicking the button.
+     * @throws - Is thrown if loader fails.
      */
     public void createRoom() throws IOException {
 
