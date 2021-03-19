@@ -112,8 +112,10 @@ public class QuestionCommunication {
      * @param newText String - new text for the question
      */
     public static void editQuestionText(String questionId, String newText) {
+        newText = newText.replace("?", "%3F");
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/questions/edit/" + questionId + "/" + newText))
+                .uri(URI.create("http://localhost:8080/questions/edit/" + questionId + "/" + newText.replace(" ", "%20")))
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = null;
