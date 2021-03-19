@@ -39,8 +39,6 @@ public class Room {
     @UpdateTimestamp
     private Date updatedAt;
 
-    //    public Room() {
-    //    }
 
     /**
      * Create a new Room instance.

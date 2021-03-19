@@ -97,5 +97,14 @@ public class QuestionCellController {
 
     }
 
+    /**
+     * Method for blocking students by IP.
+     */
+    public void blockUser() {
+        Node question = questionCell.getParent();
+        String id = question.getId();
+        Session session = Session.getInstance();
+    }
+
 
 }

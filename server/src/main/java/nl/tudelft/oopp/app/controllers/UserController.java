@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
@@ -73,6 +74,19 @@ public class UserController {
     public void setNickName(@PathVariable("nickName") String nickName,
                             @PathVariable("userId") String userId) {
         userService.update(Long.parseLong(userId), nickName);
+    }
+
+    @PostMapping(path = "/room/user/saveIP/{userId}/{roomLink}")
+    @ResponseBody
+    public void saveStudentIp(@PathVariable("userId") String userId,
+                       @PathVariable("roomLink") String roomLink,
+                       HttpServletRequest request) {
+        System.out.println(request.getRemoteAddr());
+        Room room = roomService.getByLink(roomLink);
+        User user = userService.getByID(userId);
+        System.out.println("reach here");
+        userService.saveStudentIp(request.getRemoteAddr(),user,room);
+
     }
 
 }

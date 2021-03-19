@@ -48,6 +48,7 @@ public class SplashCommunication {
     /**
      * Checks whether the user is a Student or a Moderator
      * and creates a session based on this credentials.
+     *
      * @throws NoSuchRoomException - throws this exception if the room link is wrong
      */
     public static void checkForRoom(String roomLink) throws NoSuchRoomException {
@@ -79,6 +80,20 @@ public class SplashCommunication {
             throw new NoSuchRoomException();
         }
 
+    }
+
+    public static void saveStudentIp(String userId, String roomLink) {
+        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/room/user/saveIP/" + userId + "/" + roomLink)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
     }
 
 

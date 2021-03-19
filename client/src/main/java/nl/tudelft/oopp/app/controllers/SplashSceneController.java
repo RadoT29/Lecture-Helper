@@ -41,6 +41,7 @@ public class SplashSceneController {
 
     /**
      * Handles clicking the button.
+     *
      * @throws IOException Is thrown if loader fails.
      */
     public void createRoom() throws IOException {
@@ -58,7 +59,7 @@ public class SplashSceneController {
 
         //Creates a popup with the links
         LinkController linkController = new LinkController();
-        linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
+        linkController.getLinks(room.linkIdStudent.toString(), room.linkIdModerator.toString());
 
 
     }
@@ -84,6 +85,10 @@ public class SplashSceneController {
             SplashCommunication.checkForRoom(roomLink.getText());
             //Gets the session with the updated information
             Session session = Session.getInstance();
+            if (!session.getIsModerator()) {
+                SplashCommunication.saveStudentIp(session.getUserId(), session.getRoomLink());
+            }
+
             ServerCommunication.isTheRoomClosed(session.getRoomLink());
             System.out.println("Is moderator " + session.getIsModerator());
             if (!session.getIsModerator()) {
@@ -140,6 +145,7 @@ public class SplashSceneController {
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
         if (session.getIsModerator()) {
+
             loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         } else {
             loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
@@ -176,7 +182,6 @@ public class SplashSceneController {
 
     }
     */
-
 
 
 }

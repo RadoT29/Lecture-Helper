@@ -1,6 +1,10 @@
 package nl.tudelft.oopp.app.services;
 
+import nl.tudelft.oopp.app.models.IPAddress;
+import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.Student;
 import nl.tudelft.oopp.app.models.User;
+import nl.tudelft.oopp.app.repositories.IPAddressRepository;
 import nl.tudelft.oopp.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private IPAddressRepository ipAddressRepository;
 
     /**
      * Gets all users in the application.
@@ -55,5 +62,10 @@ public class UserService {
             System.out.println("User not found");
             return null;
         }
+    }
+
+    public void saveStudentIp(String ipAddress, User userId, Room roomLink){
+        IPAddress ipAddressObj = new IPAddress(ipAddress,roomLink,userId);
+        ipAddressRepository.save(ipAddressObj);
     }
 }
