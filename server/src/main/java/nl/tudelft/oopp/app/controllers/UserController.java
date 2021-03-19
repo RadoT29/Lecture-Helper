@@ -6,6 +6,7 @@ import nl.tudelft.oopp.app.models.Student;
 import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import nl.tudelft.oopp.app.repositories.StudentRepository;
+import nl.tudelft.oopp.app.services.QuestionService;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class UserController {
     private StudentRepository studentRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private QuestionService questionService;
 
     /**
      * Create a new user via entered room link.
@@ -76,17 +79,25 @@ public class UserController {
         userService.update(Long.parseLong(userId), nickName);
     }
 
-    @PostMapping(path = "/room/user/saveIP/{userId}/{roomLink}")
+    @PostMapping(path = "/room/user/saveIP/{userId}/{roomId}")
     @ResponseBody
     public void saveStudentIp(@PathVariable("userId") String userId,
-                       @PathVariable("roomLink") String roomLink,
-                       HttpServletRequest request) {
+                              @PathVariable("roomId") String roomId,
+                              HttpServletRequest request) {
         System.out.println(request.getRemoteAddr());
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLink(roomId);
         User user = userService.getByID(userId);
         System.out.println("reach here");
-        userService.saveStudentIp(request.getRemoteAddr(),user,room);
+        userService.saveStudentIp(request.getRemoteAddr(), user, room);
+    }
 
+    @PutMapping(path = "/room/user/banUserRoom/{questionId}/{roomLink}")
+    @ResponseBody
+    public void banUserForThatRoom(@PathVariable("questionId") String questionId,
+                                   @PathVariable("roomLink") String roomLink) {
+        String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
+        String userId = String.valueOf(questionService.findUserByQuestionId(questionId));
+        userService.banUserForThatRoom(userId, roomId);
     }
 
 }

@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.repositories;
 
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT MAX(u.id) FROM Question u WHERE u.room.id=?1 AND u.user.id=?2")
     String getSingularQuestion(long roomId, long userId);
 
+    @Query(value = "SELECT u.user from Question u where u.id=?1")
+    User getUserByQuestionId(Long questionId);
 }

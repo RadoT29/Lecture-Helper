@@ -26,6 +26,7 @@ public class UserService {
 
     /**
      * Gets all users in the application.
+     *
      * @return - a list of all users.
      */
     public List<User> findAll() {
@@ -34,6 +35,7 @@ public class UserService {
 
     /**
      * Gets the number of users in the application.
+     *
      * @return - their count.
      */
     public long count() {
@@ -42,7 +44,8 @@ public class UserService {
 
     /**
      * Updates a user's name.
-     * @param userId - user's id.
+     *
+     * @param userId   - user's id.
      * @param userName - name of user.
      */
     public void update(long userId, String userName) {
@@ -51,6 +54,7 @@ public class UserService {
 
     /**
      * This method finds a User in the Database from the givenID.
+     *
      * @param userID the User to be found
      * @return The User Object with the associated userId
      */
@@ -64,8 +68,12 @@ public class UserService {
         }
     }
 
-    public void saveStudentIp(String ipAddress, User userId, Room roomLink){
-        IPAddress ipAddressObj = new IPAddress(ipAddress,roomLink,userId);
+    public void saveStudentIp(String ipAddress, User userId, Room roomLink) {
+        IPAddress ipAddressObj = new IPAddress(ipAddress, roomLink, userId);
         ipAddressRepository.save(ipAddressObj);
+    }
+
+    public void banUserForThatRoom(String userId, String roomId) {
+        ipAddressRepository.banUserForRoom(Long.parseLong(roomId), Long.parseLong(userId));
     }
 }

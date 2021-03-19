@@ -121,6 +121,20 @@ public class HomeSceneCommunication {
         }
     }
 
+    public static void banUserForThatRoom(String questionId, String roomLink){
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/room/user/banUserRoom/" + questionId + "/" + roomLink)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
 
 
 }

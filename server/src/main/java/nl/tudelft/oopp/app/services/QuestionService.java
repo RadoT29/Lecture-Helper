@@ -163,4 +163,8 @@ public class QuestionService {
         questionRepository.clearQuestions(room.getId());
     }
 
+    public Long findUserByQuestionId(String questionId){
+        return questionRepository.getUserByQuestionId(Long.valueOf(questionId)).getId();
+    }
+
 }
