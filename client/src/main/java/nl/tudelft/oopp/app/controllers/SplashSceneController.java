@@ -87,15 +87,13 @@ public class SplashSceneController {
             //Gets the session with the updated information
             Session session = Session.getInstance();
             if (!session.getIsModerator()) {
-                SplashCommunication.saveStudentIp(session.getUserId(), session.getRoomLink());
+                SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
 
-            ServerCommunication.isTheRoomClosed(session.getRoomLink());
-            System.out.println("Is moderator " + session.getIsModerator());
-            if (!session.getIsModerator()) {
-                ServerCommunication.hasStudentPermission(session.getRoomLink());
-            }
-            SplashCommunication.isIPBanned(session.getRoomLink());
+            ServerCommunication.isTheRoomClosed(roomLink.getText());
+            System.out.println(roomLink.getText());
+            ServerCommunication.hasStudentPermission(roomLink.getText());
+            SplashCommunication.isIPBanned(roomLink.getText());
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
             Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -118,7 +116,7 @@ public class SplashSceneController {
         } catch (NoStudentPermissionException exception) {
             invalidRoomLink.setText("No student permission to the Room!");
             invalidRoomLink.setVisible(true);
-        }catch (AccessDeniedException exception){
+        } catch (AccessDeniedException exception) {
             invalidRoomLink.setText("Access denied!");
             invalidRoomLink.setVisible(true);
         }

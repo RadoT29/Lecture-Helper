@@ -64,7 +64,12 @@ public class RoomController {
     @GetMapping("hasStudentPermission/{linkId}")
     @ResponseBody
     public boolean hasStudentPermission(@PathVariable String linkId) {
-        return roomRepository.permission(UUID.fromString(linkId)).getPermission();
+        System.out.println(linkId);
+        Room room = roomRepository.permission(UUID.fromString(linkId));
+        if (linkId.equals(room.getLinkIdModerator().toString())) {
+            return true;
+        }
+        return room.getPermission();
     }
 
     /**

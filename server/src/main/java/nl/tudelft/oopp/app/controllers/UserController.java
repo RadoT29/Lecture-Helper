@@ -105,8 +105,10 @@ public class UserController {
     @ResponseBody
     public boolean isUserBanned(@PathVariable("roomLink") String roomLink,
                                 HttpServletRequest request) {
+        System.out.println(roomLink);
         String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         List<Boolean> list = userService.isUserBanned(request.getRemoteAddr(), Long.valueOf(roomId));
+        if(list.isEmpty())return true;
         return !list.contains(false);
     }
 
