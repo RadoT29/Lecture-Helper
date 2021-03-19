@@ -109,9 +109,9 @@ public class RoomTestMock {
     public void testMethodGetPermissionFalse() {
         Room room = new Room("My room");
         room.setPermission(false);
-        when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
+        when(repository.permission(room.getLinkIdStudent())).thenReturn(room);
         assertEquals(false, roomController.hasStudentPermission(
-                String.valueOf(room.getLinkIdModerator())));
+                String.valueOf(room.getLinkIdStudent())));
     }
 
 }
