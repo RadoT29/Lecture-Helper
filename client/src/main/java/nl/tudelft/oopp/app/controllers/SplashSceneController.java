@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
@@ -94,7 +95,7 @@ public class SplashSceneController {
             if (!session.getIsModerator()) {
                 ServerCommunication.hasStudentPermission(session.getRoomLink());
             }
-
+            SplashCommunication.isIPBanned(session.getRoomLink());
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
             Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -116,6 +117,9 @@ public class SplashSceneController {
 
         } catch (NoStudentPermissionException exception) {
             invalidRoomLink.setText("No student permission to the Room!");
+            invalidRoomLink.setVisible(true);
+        }catch (AccessDeniedException exception){
+            invalidRoomLink.setText("Access denied!");
             invalidRoomLink.setVisible(true);
         }
 

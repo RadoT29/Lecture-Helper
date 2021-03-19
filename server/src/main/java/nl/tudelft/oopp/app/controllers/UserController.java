@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -98,6 +99,15 @@ public class UserController {
         String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         String userId = String.valueOf(questionService.findUserByQuestionId(questionId));
         userService.banUserForThatRoom(userId, roomId);
+    }
+
+    @GetMapping(path = "/room/user/isBanned/{roomLink}")
+    @ResponseBody
+    public boolean isUserBanned(@PathVariable("roomLink") String roomLink,
+                                HttpServletRequest request) {
+        String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
+        List<Boolean> list = userService.isUserBanned(request.getRemoteAddr(), Long.valueOf(roomId));
+        return !list.contains(false);
     }
 
 }

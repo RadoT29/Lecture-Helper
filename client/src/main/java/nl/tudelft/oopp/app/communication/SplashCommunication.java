@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
@@ -95,6 +97,25 @@ public class SplashCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
-
+    public static void isIPBanned(String roomLink) throws AccessDeniedException{
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/room/user/isBanned/"+roomLink)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        boolean result = gson.fromJson(response.body(), Boolean.class);
+        if (!result) {
+            throw new AccessDeniedException();
+        }
+        System.out.println("access granted!");
+    }
 
 }
