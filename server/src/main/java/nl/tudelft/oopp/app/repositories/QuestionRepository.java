@@ -26,6 +26,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("DELETE FROM Question u WHERE u.room.id=?1")
     void clearQuestions(long roomId);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.questionText=?2 WHERE u.id=?1")
+    void editQuestionText(long questionId, String newText);
+
     @Query("SELECT MAX(u.id) FROM Question u WHERE u.room.id=?1 AND u.user.id=?2")
     String getSingularQuestion(long roomId, long userId);
 

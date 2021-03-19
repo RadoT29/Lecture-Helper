@@ -106,6 +106,28 @@ public class QuestionCommunication {
         }
     }
 
+    /**
+     * sends a POST request to the server to edit the text of a specific question.
+     * @param questionId String - id of the question to be modified
+     * @param newText String - new text for the question
+     */
+    public static void editQuestionText(String questionId, String newText) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/questions/edit/" + questionId + "/" + newText))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 
 }

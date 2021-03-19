@@ -127,4 +127,16 @@ public class QuestionController {
     }
 
 
+    /**
+     * Receives a POST request from the client.
+     * calls questionService to change the text of a question
+     * @param questionId String from PathVariable, id of the question to be modified
+     * @param newText String from PathVariable, new text for the question
+     */
+    @PostMapping("/edit/{questionId}/{newText}")
+    @ResponseBody
+    public void editQuestionText(@PathVariable("questionId") String questionId,
+                                @PathVariable("newText") String newText) {
+        questionService.editQuestionText(questionId, newText);
+    }
 }
