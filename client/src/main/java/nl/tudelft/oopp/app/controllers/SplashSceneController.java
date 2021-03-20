@@ -93,7 +93,10 @@ public class SplashSceneController {
             ServerCommunication.isTheRoomClosed(roomLink.getText());
             System.out.println(roomLink.getText());
             ServerCommunication.hasStudentPermission(roomLink.getText());
-            SplashCommunication.isIPBanned(roomLink.getText());
+            if (!session.getIsModerator()) {
+                SplashCommunication.isIPBanned(roomLink.getText());
+            }
+
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
             Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();

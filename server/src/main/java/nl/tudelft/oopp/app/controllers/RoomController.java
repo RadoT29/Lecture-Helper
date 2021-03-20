@@ -66,9 +66,9 @@ public class RoomController {
     public boolean hasStudentPermission(@PathVariable String linkId) {
         System.out.println(linkId);
         Room room = roomRepository.permission(UUID.fromString(linkId));
-        if (linkId.equals(room.getLinkIdModerator().toString())) {
-            return true;
-        }
+//        if (linkId.equals(room.getLinkIdModerator().toString())) {
+//            return true;
+//        }
         return room.getPermission();
     }
 
