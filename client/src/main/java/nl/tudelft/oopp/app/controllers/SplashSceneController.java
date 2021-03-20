@@ -72,7 +72,9 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
-
+        Session.cleanUserSession();
+//        Session session = new Session();
+//        session.cleanUserSession();
         // Cannot enter rooms with empty links
         if (roomLink.getText().equals("")) {
             invalidRoomLink.setText("Insert a Room Link!");
@@ -89,12 +91,13 @@ public class SplashSceneController {
             if (!session.getIsModerator()) {
                 SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
-
+            System.out.println("Is moderator3 "+session.getIsModerator());
             ServerCommunication.isTheRoomClosed(roomLink.getText());
-            System.out.println(roomLink.getText());
-            ServerCommunication.hasStudentPermission(roomLink.getText());
+            //System.out.println(roomLink.getText());
+
             if (!session.getIsModerator()) {
                 SplashCommunication.isIPBanned(roomLink.getText());
+                ServerCommunication.hasStudentPermission(roomLink.getText());
             }
 
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
