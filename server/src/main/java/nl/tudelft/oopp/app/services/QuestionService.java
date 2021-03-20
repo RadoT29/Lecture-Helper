@@ -171,7 +171,8 @@ public class QuestionService {
      */
     public void editQuestionText(String questionId, String newText) {
         long questionId2 = Long.parseLong(questionId);
-
+        //get rid of quotation marks (")
+        newText = newText.substring(1, newText.length() - 1);
         questionRepository.editQuestionText(questionId2, newText);
     }
 }

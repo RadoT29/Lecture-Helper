@@ -107,16 +107,18 @@ public class QuestionCommunication {
     }
 
     /**
-     * sends a POST request to the server to edit the text of a specific question.
+     * Sends a POST request to the server to edit the text of a specific question.
+     * New text is sent in the request body.
      * @param questionId String - id of the question to be modified
      * @param newText String - new text for the question
      */
     public static void editQuestionText(String questionId, String newText) {
-        newText = newText.replace("?", "%3F");
+        String requestBody = gson.toJson(newText);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/questions/edit/" + questionId + "/" + newText.replace(" ", "%20")))
-                .POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/questions/edit/" + questionId))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .setHeader("Content-Type", "text/plain")
                 .build();
         HttpResponse<String> response = null;
         try {
