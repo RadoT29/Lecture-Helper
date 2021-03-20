@@ -107,11 +107,18 @@ public class QuestionCellController {
     }
 
 
+    /**
+     * Handles click in the edit button.
+     * Tries to load new edit question scene.
+     */
     public void editClicked() {
 
+        //get question id
         String oldText = questionTextLabel.getText();
         Node question = questionCell.getParent();
         String id = question.getId();
+
+        //load edit question scene
         try {
             EditQuestionSceneController.init(oldText, id, this);
 

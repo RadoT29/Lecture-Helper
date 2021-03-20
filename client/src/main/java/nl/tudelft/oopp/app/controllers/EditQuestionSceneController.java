@@ -40,17 +40,21 @@ public class EditQuestionSceneController {
      * @param oldText String old text of the question, to be edited
      * @throws IOException when the loader fails
      */
-    public static void init (String oldText, String questionId, QuestionCellController qcc)
+    public static void init(String oldText, String questionId, QuestionCellController qcc)
             throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(EditQuestionSceneController.class.getResource("/editQuestionScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(EditQuestionSceneController
+                .class.getResource("/editQuestionScene.fxml"));
         Parent parent = loader.load();
         Scene scene = new Scene(parent);
         EditQuestionSceneController eqc = loader.<EditQuestionSceneController>getController();
+
+        //set the fields for the newly created scene
         eqc.setQuestionId(questionId);
         eqc.setOldText(oldText);
         eqc.setQcc(qcc);
 
+        //put current questionText in the text area
         TextArea textArea = (TextArea) scene.lookup("#editTextArea");
         textArea.setText(oldText);
 
@@ -72,7 +76,7 @@ public class EditQuestionSceneController {
     /**
      * Handles click on 'OK' button.
      * If the text was not edited just closes the window
-     * otherwise sends a
+     * otherwise sends a request (from QuestionCommunication) to change the question text
      */
     public void okClicked() {
         String newText = editTextArea.getText();

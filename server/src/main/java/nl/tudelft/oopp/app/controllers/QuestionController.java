@@ -137,8 +137,9 @@ public class QuestionController {
     @ResponseBody
     public void editQuestionText(@PathVariable String questionId,
                                  @RequestBody String newText) {
-        System.out.println(questionId);
-        System.out.println(newText);
-        questionService.editQuestionText(questionId, newText);
+        long questionId2 = Long.parseLong(questionId);
+        //remove quotation marks from the newText
+        newText = newText.substring(1, newText.length() - 1);
+        questionService.editQuestionText(questionId2, newText);
     }
 }

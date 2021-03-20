@@ -166,13 +166,10 @@ public class QuestionService {
 
     /**
      * Calls questionRepository to edit the text of a question.
-     * @param questionId String the id of the question to be modified
+     * @param questionId long the id of the question to be modified
      * @param newText String new question text
      */
-    public void editQuestionText(String questionId, String newText) {
-        long questionId2 = Long.parseLong(questionId);
-        //get rid of quotation marks (")
-        newText = newText.substring(1, newText.length() - 1);
-        questionRepository.editQuestionText(questionId2, newText);
+    public void editQuestionText(long questionId, String newText) {
+        questionRepository.editQuestionText(questionId, newText);
     }
 }
