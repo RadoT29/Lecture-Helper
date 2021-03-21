@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,4 +33,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query(value = "SELECT u.user from Question u where u.id=?1")
     User getUserByQuestionId(Long questionId);
+
+    @Query(value = "SELECT q.createdAt FROM Question q "
+            + "where q.user.id=?1 and q.room.id=?2 and q.createdAt>=?3")
+    List<Question> questionsByUserIdRoomIdInterval(long userId, long roomId, LocalDateTime time);
 }

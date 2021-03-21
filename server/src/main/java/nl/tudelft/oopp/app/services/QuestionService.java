@@ -6,9 +6,11 @@ import nl.tudelft.oopp.app.models.Upvote;
 import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.UpvoteRepository;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,9 +27,10 @@ public class QuestionService {
 
     /**
      * This constructor injects all the dependencies needed by the class.
+     *
      * @param questionRepository the Question Repository
-     * @param roomService class that handles rooms services
-     * @param userService class that handles user services
+     * @param roomService        class that handles rooms services
+     * @param userService        class that handles user services
      */
     @Autowired
     public QuestionService(QuestionRepository questionRepository,
@@ -46,9 +49,10 @@ public class QuestionService {
 
     /**
      * gets all questions from the room.
+     *
      * @param roomLinkString a room link
      * @return list of questions from the room.
-     *      Questions have to roomId and UserId changed to 0.
+     * Questions have to roomId and UserId changed to 0.
      */
     public List<Question> getAllQuestionsByRoom(String roomLinkString) {
         UUID roomLink = UUID.fromString(roomLinkString);
@@ -63,10 +67,11 @@ public class QuestionService {
 
     /**
      * Get the last added question by user that created the request.
+     *
      * @param roomLink - the room link
-     * @param userId - the users Id
+     * @param userId   - the users Id
      * @return list of questions from the room.
-     *      Questions have to roomId and UserId changed to 0.
+     * Questions have to roomId and UserId changed to 0.
      */
     public String getSingleQuestion(String roomLink, String userId) {
         Room room = roomService.getByLink(roomLink);
@@ -76,11 +81,11 @@ public class QuestionService {
     }
 
 
-
     /**
      * This method gets the correct Room and User associated with the question that has been sent.
+     *
      * @param roomLink the roomLink where the question has been asked
-     * @param userId the id of the user who asked the question
+     * @param userId   the id of the user who asked the question
      * @param question the question that has been asked
      */
     public void addNewQuestion(String roomLink, String userId, Question question) {
@@ -96,6 +101,7 @@ public class QuestionService {
     /**
      * calls the questionRepository to delete the question from the database.
      * calls the upvoteRepository to delete the upVotes related to that question
+     *
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
@@ -110,8 +116,9 @@ public class QuestionService {
      * user that sent the request (thus 2 parameters), only if so the question will
      * be deleted.
      * calls questionRepository to execute DELETE query
+     *
      * @param questionId - Id of the question to delete
-     * @param userId - Id of the student attempting to delete
+     * @param userId     - Id of the student attempting to delete
      */
     public void dismissSingular(long questionId, long userId) {
         //delete question
@@ -121,8 +128,9 @@ public class QuestionService {
 
     /**
      * Method add an upvote on the server side.
+     *
      * @param questionId - Id of the question upvote to be added
-     * @param userId - Id of user making the change
+     * @param userId     - Id of user making the change
      */
     public void addUpvote(String questionId, String userId) {
         long questionId2 = Long.parseLong(questionId);
@@ -139,8 +147,9 @@ public class QuestionService {
 
     /**
      * Method to delete the upvote on the server side.
+     *
      * @param questionId - Id of the question upvote to be deleted
-     * @param userId - Id of user making the change
+     * @param userId     - Id of user making the change
      */
     public void deleteUpvote(String questionId, String userId) {
         long questionId2 = Long.parseLong(questionId);
@@ -163,8 +172,16 @@ public class QuestionService {
         questionRepository.clearQuestions(room.getId());
     }
 
-    public Long findUserByQuestionId(String questionId){
+    public Long findUserByQuestionId(String questionId) {
         return questionRepository.getUserByQuestionId(Long.valueOf(questionId)).getId();
+    }
+
+    public List<Question> questionsByUserIdRoomIdInterval(
+            String userId,
+            long roomId,
+            LocalDateTime time) {
+        return questionRepository
+                .questionsByUserIdRoomIdInterval(Long.parseLong(userId), roomId, time);
     }
 
 }

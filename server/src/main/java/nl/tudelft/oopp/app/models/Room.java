@@ -33,6 +33,10 @@ public class Room {
 
     private boolean permission;
 
+    private int numberQuestionsInterval = Integer.MAX_VALUE;
+
+    private int interval = Integer.MAX_VALUE;
+
     @CreationTimestamp
     private Date createdAt;
 

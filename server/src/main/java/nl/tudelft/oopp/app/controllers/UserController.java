@@ -1,9 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
-import nl.tudelft.oopp.app.models.Moderator;
-import nl.tudelft.oopp.app.models.Room;
-import nl.tudelft.oopp.app.models.Student;
-import nl.tudelft.oopp.app.models.User;
+import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -111,4 +109,22 @@ public class UserController {
         return !list.contains(false);
     }
 
+    @GetMapping(path = "/room/user/canAskQuestion/{userId}/{roomLink}")
+    @ResponseBody
+    public boolean canAskQuestion(@PathVariable("userId") String userId,
+                                  @PathVariable("roomLink") String roomLink) {
+
+        Room room = roomService.getByLink(roomLink);
+        if (room.getInterval() == Integer.MAX_VALUE
+                || room.getNumberQuestionsInterval() == Integer.MAX_VALUE) {
+            return true;
+        }
+        LocalDateTime time = LocalDateTime.now();
+        time = time.minusMinutes(room.getInterval());
+        List<Question> questions = questionService
+                .questionsByUserIdRoomIdInterval(userId, room.getId(), time);
+
+
+        return questions.size() < room.getNumberQuestionsInterval();
+    }
 }

@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
+import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -39,6 +40,11 @@ public class HomeSceneController {
      */
     public void sendQuestion() {
 
+        try {
+            HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(),session.getRoomLink());
+        } catch (OutOfLimitOfQuestionsException exception) {
+
+        }
         // If input is null, don't send question
         if (questionInput.getText().equals("")) {
             return;
@@ -109,10 +115,11 @@ public class HomeSceneController {
 
     /**
      * creates a node for a question.
+     *
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
+     *                     or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
         // load the question to a newNode and set it's homeSceneController to this
@@ -154,10 +161,11 @@ public class HomeSceneController {
     }
 
     /**
-    * finds the question by the id and deletes it from the scene.
-    * (this method will probably be deleted once we implement the real-time updates)
-    * @param id the id of the question to be deleted
-    **/
+     * finds the question by the id and deletes it from the scene.
+     * (this method will probably be deleted once we implement the real-time updates)
+     *
+     * @param id the id of the question to be deleted
+     **/
     public void deleteQuestionFromScene(String id) {
         Node q = questionBox.lookup("#" + id);
         questionBox.getChildren().remove(q);
@@ -167,8 +175,9 @@ public class HomeSceneController {
      * Method to check whether the Question that is being created has been
      * written by the student in the session (so that the dismiss button
      * will be shown - if it does not correspond it won't show).
+     *
      * @param newQuestion - Node of the new question created
-     * @param question - the object of the new question created
+     * @param question    - the object of the new question created
      */
     public void checkForQuestion(Node newQuestion, Question question) {
         if (!session.getIsModerator()) {
@@ -188,7 +197,6 @@ public class HomeSceneController {
 
         }
     }
-
 
 
 }
