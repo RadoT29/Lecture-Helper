@@ -73,9 +73,6 @@ public class SplashSceneController {
      */
     public void enterRoom() throws IOException {
         Session.cleanUserSession();
-//        Session session = new Session();
-//        session.cleanUserSession();
-        // Cannot enter rooms with empty links
         if (roomLink.getText().equals("")) {
             invalidRoomLink.setText("Insert a Room Link!");
             invalidRoomLink.setVisible(true);

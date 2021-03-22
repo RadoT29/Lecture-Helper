@@ -44,6 +44,8 @@ public class HomeSceneController {
             HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(),session.getRoomLink());
         } catch (OutOfLimitOfQuestionsException exception) {
             System.out.println("Out of limit");
+            questionInput.clear();
+            return;
         }
         System.out.println("in limit");
         // If input is null, don't send question

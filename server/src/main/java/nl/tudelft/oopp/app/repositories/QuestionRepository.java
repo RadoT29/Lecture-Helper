@@ -34,7 +34,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query(value = "SELECT u.user from Question u where u.id=?1")
     User getUserByQuestionId(Long questionId);
 
-    @Query(value = "SELECT q.createdAt FROM Question q "
+    @Query(value = "SELECT q FROM Question q "
             + "where q.user.id=?1 and q.room.id=?2 and q.createdAt>=?3")
     List<Question> questionsByUserIdRoomIdInterval(long userId, long roomId, LocalDateTime time);
 }
