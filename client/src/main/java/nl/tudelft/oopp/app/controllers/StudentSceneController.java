@@ -2,8 +2,6 @@ package nl.tudelft.oopp.app.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
-
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -62,30 +60,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
             }
         });
 
-        // This thread will periodically refresh the content of the question queue.
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!(Thread.interrupted())) {
-                        try {
-                            Platform.runLater(() -> {
-                                try {
-                                    constantRefresh();
-                                } catch (ExecutionException | InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-
-                            Thread.sleep(2000);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                }
-            }
-        }).start();
-
+        super.initialize(url,rb);
     }
 
     /**

@@ -1,16 +1,15 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -56,7 +55,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             }
         });
 
-        refresh();
+        super.initialize(url, rb);
     }
 
     /**

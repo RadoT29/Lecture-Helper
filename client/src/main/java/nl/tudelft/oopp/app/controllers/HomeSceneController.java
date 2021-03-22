@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,7 +15,9 @@ import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.PriorityQueue;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -31,6 +34,41 @@ public class HomeSceneController {
     private VBox questionBox;
 
     protected PriorityQueue<Question> questions;
+
+
+    /**
+     * This method initializes the thread,
+     * which is responsible for constantly refreshing the questions.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
+    public void initialize(URL url, ResourceBundle rb) {
+
+        // This thread will periodically refresh the content of the question queue.
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!(Thread.interrupted())) {
+                    try {
+                        Platform.runLater(() -> {
+                            try {
+                                constantRefresh();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
 
     /**
      * Pressing the sendButton will send all the text in the questionInput
