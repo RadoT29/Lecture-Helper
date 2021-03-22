@@ -116,7 +116,8 @@ public class ScheduleRoomSceneController {
 
         //Creates a popup with the links
         LinkController linkController = new LinkController();
-        Room room = SplashCommunication.postRoom(roomName.getText());
+        Room room = SplashCommunication.scheduleRoom(roomName.getText(),
+                utcStartDate.toLocalDateTime());
         try {
             linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
         } catch (IOException e) {

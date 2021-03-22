@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 
 public class SplashCommunication {
 
@@ -29,6 +30,34 @@ public class SplashCommunication {
     public static Room postRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ", "%20"))).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+
+        Room room = gson.fromJson(response.body(), Room.class);
+        System.out.println("Client1: " + gson.fromJson(response.body(), Room.class).isOpen());
+        return room;
+    }
+
+    /**
+     * Creates a new room on server and retrieves room info.
+     *
+     * @param name Name for the room
+     * @return Room object with name, links and isOpen boolena
+     */
+    public static Room scheduleRoom(String name, LocalDateTime startDateUtc) {
+        String requestBody = gson.toJson(startDateUtc.toString());
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .setHeader("Content-Type", "text/plain")
+                .uri(URI.create("http://localhost:8080/scheduleRoom?name=" + name.replace(" ", "%20"))).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

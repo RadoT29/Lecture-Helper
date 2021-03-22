@@ -63,4 +63,17 @@ public class RoomService {
             room.setPermission(true);
         }
     }
+
+    /**
+     * saves a scheduled room in the database with the correct startingDate.
+     * @param name String name of the room to be saved
+     * @param startDateUtcString String representation of the startDate of the Room in UTC)
+     * @return newly created room
+     */
+    public Room scheduleRoom(String name, String startDateUtcString) {
+        LocalDateTime startDateUtc = LocalDateTime.parse(startDateUtcString);
+        Room room = new Room(name, startDateUtc);
+        roomRepository.save(room);
+        return room;
+    }
 }
