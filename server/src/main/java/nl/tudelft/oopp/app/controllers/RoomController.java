@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -39,7 +41,7 @@ public class RoomController {
     @ResponseBody
     public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
-        roomRepository.closeRoom(UUID.fromString(linkId));
+        roomRepository.closeRoom(UUID.fromString(linkId), LocalDateTime.now(Clock.systemUTC()));
     }
 
     /**
