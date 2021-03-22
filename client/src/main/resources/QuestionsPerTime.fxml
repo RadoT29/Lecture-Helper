@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="180.0" prefWidth="353.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.QuestionsPerTimeController">
+    <children>
+        <Label text="Setting questions per time">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+            <VBox.margin>
+                <Insets top="5.0" />
+            </VBox.margin>
+        </Label>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Pane prefHeight="68.0" prefWidth="338.0">
+                    <children>
+                        <CheckBox fx:id="noLimitsCheckBox" layoutX="14.0" layoutY="17.0" mnemonicParsing="false" onAction="#noLimitsCheckBoxMethod" selected="true" text="No limits" />
+                        <CheckBox fx:id="setLimitsCheckBox" layoutX="169.0" layoutY="17.0" mnemonicParsing="false" onAction="#setLimitsCheckBoxMethod" text="Set limits" />
+                    </children>
+                </Pane>
+            </children>
+        </HBox>
+        <HBox fx:id="constraintsHBox" prefHeight="92.0" prefWidth="444.0" spacing="15.0" visible="false">
+            <children>
+                <Label text="Number of questions">
+                    <HBox.margin>
+                        <Insets top="5.0" />
+                    </HBox.margin>
+                </Label>
+                <TextField fx:id="linkModeratorBox" editable="false" prefHeight="26.0" prefWidth="49.0">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </TextField>
+                <Label text="per">
+                    <HBox.margin>
+                        <Insets top="5.0" />
+                    </HBox.margin>
+                </Label>
+                <TextField prefHeight="26.0" prefWidth="48.0" />
+                <Label text="minute/s">
+                    <HBox.margin>
+                        <Insets top="5.0" />
+                    </HBox.margin>
+                </Label>
+            </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Pane prefHeight="5.0" prefWidth="246.0">
+                    <children>
+                        <Button fx:id="setQuestionsPerTimeButton" layoutX="155.0" layoutY="14.0" mnemonicParsing="false" onAction="#setConstraints" prefHeight="26.0" prefWidth="45.0" text="Set" />
+                    </children>
+                </Pane>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+    </padding>
+</VBox>
