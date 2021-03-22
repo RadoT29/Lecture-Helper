@@ -46,16 +46,17 @@ public class UserController {
             if (room.getLinkIdModerator().compareTo(UUID.fromString(roomLink)) == 0) {
                 Moderator moderator = new Moderator(room);
                 moderatorRepository.save(moderator);
-                System.out.println("Moderator created @ Room" + moderator.getRoomId().getId() + ":" +
-                        "\n\tUser id: " + moderator.getId() +
-                        "\n\tUser name: " + moderator.getName());
+                System.out.println("Moderator created @ Room "
+                        + moderator.getRoomId().getId() + ":"
+                        + "\n\tUser id: " + moderator.getId()
+                        + "\n\tUser name: " + moderator.getName());
                 return moderator;
             } else if (room.getLinkIdStudent().compareTo(UUID.fromString(roomLink)) == 0) {
                 Student student = new Student(room);
                 studentRepository.save(student);
-                System.out.println("Moderator created @ Room" + student.getRoomId() + ":" +
-                        "\n\tUser id: " + student.getId() +
-                        "\n\tUser name: " + student.getName());
+                System.out.println("Moderator created @ Room" + student.getRoomId() + ":"
+                        + "\n\tUser id: " + student.getId()
+                        + "\n\tUser name: " + student.getName());
                 return student;
             }
             return null;

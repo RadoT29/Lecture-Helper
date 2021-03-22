@@ -89,11 +89,11 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink); // Finds the room associated with the link
         question.setRoom(room);
         questionRepository.save(question); //Saves the room on the Database
-        System.out.println("Question created: " +
-                "\n\tQuestion id: " + question.getId() +
-                "\n\tRoom id: " + question.getRoom().getId() +
-                "\n\tUser id: " + question.getUser().getId() +
-                "\n\tQuestion: " + question.getQuestionText());
+        System.out.println("Question created: "
+                + "\n\tQuestion id: " + question.getId()
+                + "\n\tRoom id: " + question.getRoom().getId()
+                + "\n\tUser id: " + question.getUser().getId()
+                + "\n\tQuestion: " + question.getQuestionText());
     }
 
 
@@ -108,7 +108,8 @@ public class QuestionService {
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
-        System.out.println("Question " + question.getId() + "(room: " + question.getRoom().getName() + ") was deleted by a moderator");
+        System.out.println("Question " + question.getId() + "(room: "
+                + question.getRoom().getName() + ") was deleted by a moderator");
     }
 
     /**
@@ -123,7 +124,8 @@ public class QuestionService {
         Question question = questionRepository.getOne(questionId);
         //delete question
         questionRepository.deleteSingular(questionId, userId);
-        System.out.println("Question " + question.getId() + "(room: " + question.getRoom().getName() + ") was deleted by creator");
+        System.out.println("Question " + question.getId()
+                + "(room: " + question.getRoom().getName() + ") was deleted by creator");
     }
 
 
@@ -169,7 +171,8 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink);
 
         questionRepository.clearQuestions(room.getId());
-        System.out.println("All questions from room " + room.getId() + "(name: " + room.getName() + ") were deleted");
+        System.out.println("All questions from room " + room.getId()
+                + "(name: " + room.getName() + ") were deleted");
     }
 
 

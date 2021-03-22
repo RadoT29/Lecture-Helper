@@ -26,11 +26,11 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         Room room = new Room(name);
         roomRepository.save(room);
-        System.out.println("Room created:" +
-                            "\n\tRoom id: " + room.getId() +
-                            "\n\tRoom name: " + room.getName() +
-                            "\n\tStudent link:" + room.getLinkIdStudent() +
-                            "\n\tModerator link:" + room.getLinkIdModerator());
+        System.out.println("Room created:"
+                            + "\n\tRoom id: " + room.getId()
+                            + "\n\tRoom name: " + room.getName()
+                            + "\n\tStudent link:" + room.getLinkIdStudent()
+                            + "\n\tModerator link:" + room.getLinkIdModerator());
         return room;
     }
 
@@ -45,12 +45,11 @@ public class RoomController {
     public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
-        if (room.getLinkIdModerator().toString().equals(linkId)){
+        if (room.getLinkIdModerator().toString().equals(linkId)) {
             roomRepository.closeRoom(room.getId());
-            System.out.println("Room " + room.getId() + "(name: " + room.getName() + ") was closed for students");
-        }
-        else {
-            System.out.println("Someone tried to close room " + room.getId() + "(name: " + room.getName() + ") with a student link");
+        } else {
+            System.out.println("Someone tried to close room " + room.getId()
+                    + "(name: " + room.getName() + ") with a student link");
 
         }
 
@@ -92,7 +91,8 @@ public class RoomController {
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
             roomRepository.kickAllStudents(room.getId());
-            System.out.println("Room " + room.getId() + "(name: " + room.getName() + ") had all students kicked out");
+            System.out.println("Room " + room.getId()
+                    + "(name: " + room.getName() + ") had all students kicked out");
         }
     }
 }
