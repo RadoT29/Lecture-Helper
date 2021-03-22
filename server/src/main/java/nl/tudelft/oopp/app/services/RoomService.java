@@ -48,6 +48,9 @@ public class RoomService {
      * @param room Room to be updated
      */
     public void updateIsOpen(Room room) {
+        if (room == null) {
+            return;
+        }
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         //room should be open and hasn't been closed yet
         if (!room.getIsOpen()
