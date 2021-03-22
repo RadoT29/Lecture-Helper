@@ -36,4 +36,8 @@ public class RoomService {
         UUID toCheck = UUID.fromString(link);
         return  roomRepository.findByLink(UUID.fromString(link));
     }
+
+    public void putConstraints(String roomLink, int numQuestions, int minutes){
+        roomRepository.putConstraints(UUID.fromString(roomLink),numQuestions,minutes);
+    }
 }

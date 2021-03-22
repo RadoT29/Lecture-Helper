@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.controllers;
 
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
+import nl.tudelft.oopp.app.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ import java.util.UUID;
 public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private RoomService roomService;
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -81,5 +85,13 @@ public class RoomController {
     @ResponseBody
     public void kickAllStudent(@PathVariable String linkId) {
         roomRepository.kickAllStudents(UUID.fromString(linkId));
+    }
+
+    @PutMapping(path = "/setConstraints/{roomLink}/{numQuestions}/{minutes}")
+    @ResponseBody
+    public void putConstraints(@PathVariable String roomLink,
+                               @PathVariable String numQuestions,
+                               @PathVariable String minutes) {
+        roomService.putConstraints(roomLink, Integer.parseInt(numQuestions), Integer.parseInt(minutes));
     }
 }
