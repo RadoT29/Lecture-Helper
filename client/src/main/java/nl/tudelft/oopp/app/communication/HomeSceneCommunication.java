@@ -60,6 +60,7 @@ public class HomeSceneCommunication {
      * @return a list questions
      */
     public static List<Question> getQuestions() {
+        System.out.println("http://localhost:8080/questions/refresh/" + session.getRoomLink());
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/refresh/" + session.getRoomLink()))
                 .build();
