@@ -15,6 +15,7 @@ import nl.tudelft.oopp.app.models.Session;
 import java.awt.*;
 import java.io.IOException;
 import java.util.PriorityQueue;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This class contains the code that is run when the IO objects in the Home page are utilized.
@@ -80,6 +81,17 @@ public class HomeSceneController {
     public void refresh() {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.getQuestions());
+        loadQuestions();
+    }
+
+    /**
+     * This method is constantly called by a thread and refreshes the page.
+     * @throws ExecutionException - may be thrown.
+     * @throws InterruptedException - may be thrown.
+     */
+    public void constantRefresh() throws ExecutionException, InterruptedException {
+        questions = new PriorityQueue<>();
+        questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
     }
 
@@ -188,7 +200,5 @@ public class HomeSceneController {
 
         }
     }
-
-
 
 }
