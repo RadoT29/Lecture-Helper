@@ -127,4 +127,19 @@ public class QuestionController {
     }
 
 
+    /**
+     * Receives a POST request from the client.
+     * calls questionService to change the text of a question
+     * @param questionId String from PathVariable, id of the question to be modified
+     * @param newText String from RequestBody, new text for the question
+     */
+    @PostMapping("/edit/{questionId}")
+    @ResponseBody
+    public void editQuestionText(@PathVariable String questionId,
+                                 @RequestBody String newText) {
+        long questionId2 = Long.parseLong(questionId);
+        //remove quotation marks from the newText
+        newText = newText.substring(1, newText.length() - 1);
+        questionService.editQuestionText(questionId2, newText);
+    }
 }

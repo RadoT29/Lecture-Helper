@@ -99,7 +99,7 @@ public class QuestionService {
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
-        //delete upVvotes
+        //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
@@ -163,4 +163,13 @@ public class QuestionService {
         questionRepository.clearQuestions(room.getId());
     }
 
+
+    /**
+     * Calls questionRepository to edit the text of a question.
+     * @param questionId long the id of the question to be modified
+     * @param newText String new question text
+     */
+    public void editQuestionText(long questionId, String newText) {
+        questionRepository.editQuestionText(questionId, newText);
+    }
 }
