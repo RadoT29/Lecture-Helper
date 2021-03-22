@@ -1,11 +1,14 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.models.Session;
 import javafx.scene.control.TextField;
@@ -46,12 +49,16 @@ public class QuestionsPerTimeController {
         constraintsHBox.setVisible(true);
     }
 
-    public void setConstraints() {
+    public void setConstraints(ActionEvent actionEvent) {
         if (noLimitsCheckBox.isSelected()) {
             //int a =Integer.MAX_VALUE;
             HomeSceneCommunication.setQuestionsPerTime(Integer.MAX_VALUE,Integer.MAX_VALUE, session.getRoomLink());
         } else if (setLimitsCheckBox.isSelected()) {
             HomeSceneCommunication.setQuestionsPerTime(Integer.parseInt(questionsField.getText()),Integer.parseInt(minutesField.getText()), session.getRoomLink());
+        }
+        Window window =   ((Node)(actionEvent.getSource())).getScene().getWindow();
+        if (window instanceof Stage){
+            ((Stage) window).close();
         }
 
     }
