@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,11 +34,15 @@ public class SplashSceneController {
     @FXML
     private Button enterRoomButton;
     @FXML
+    private Button scheduleRoomButton;
+    @FXML
     private Label invalidRoomLink;
     @FXML
     private Label invalidRoomName;
     @FXML
     private Label invalidNickName;
+    @FXML
+    private Label scheduleRoomFail;
 
     /**
      * Handles clicking the button.
@@ -156,6 +161,19 @@ public class SplashSceneController {
         stage.centerOnScreen();
         stage.show();
 
+    }
+
+    /**
+     * handles click on the scheduleRoomButton.
+     * tries to load scheduleRoomScene
+     * if fails the message under the button is shown
+     */
+    public void scheduleRoom() {
+        try {
+            ScheduleRoomSceneController.init();
+        } catch (IOException e) {
+            scheduleRoomFail.setVisible(true);
+        }
     }
 
 
