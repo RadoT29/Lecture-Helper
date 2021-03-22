@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -121,7 +122,30 @@ public class HomeSceneCommunication {
         }
     }
 
+    /**
+     * Sends a request to get all questions from a room.
+     * @param roomLink - the link for the room.
+     * @return - A List of all questions.
+     * @throws InterruptedException - Thrown when a thread is waiting and is interrupted.
+     */
+    public static List<Question> constantlyGetQuestions(String roomLink)
+            throws InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/constant/" + roomLink))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return List.of();
+        }
 
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+    }
 
 }
 
