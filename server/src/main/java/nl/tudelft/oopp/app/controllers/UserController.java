@@ -115,12 +115,12 @@ public class UserController {
                                   @PathVariable("roomLink") String roomLink) {
 
         Room room = roomService.getByLink(roomLink);
-        if (room.getInterval() == Integer.MAX_VALUE
+        if (room.getTimeInterval() == Integer.MAX_VALUE
                 || room.getNumberQuestionsInterval() == Integer.MAX_VALUE) {
             return true;
         }
         LocalDateTime time = LocalDateTime.now();
-        time = time.minusMinutes(room.getInterval());
+        time = time.minusMinutes(room.getTimeInterval());
         List<Question> questions = questionService
                 .questionsByUserIdRoomIdInterval(userId, room.getId(), time);
 
