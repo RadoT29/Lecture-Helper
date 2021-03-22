@@ -32,7 +32,7 @@
                         <Insets top="5.0" />
                     </HBox.margin>
                 </Label>
-                <TextField fx:id="linkModeratorBox" editable="false" prefHeight="26.0" prefWidth="49.0">
+                <TextField fx:id="questionsField" prefHeight="26.0" prefWidth="49.0">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
@@ -42,7 +42,7 @@
                         <Insets top="5.0" />
                     </HBox.margin>
                 </Label>
-                <TextField prefHeight="26.0" prefWidth="48.0" />
+                <TextField fx:id="minutesField"  prefHeight="26.0" prefWidth="48.0" />
                 <Label text="minute/s">
                     <HBox.margin>
                         <Insets top="5.0" />

@@ -57,6 +57,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
+      <Button fx:id="setConstraintsButton" mnemonicParsing="false" onAction="#openConstraintsScene" text="Set constraints" />
             <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                 <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                     <VBox.margin>
