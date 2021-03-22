@@ -1,22 +1,24 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
-import nl.tudelft.oopp.app.models.*;
-import nl.tudelft.oopp.app.communication.ServerCommunication;
-
+import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
@@ -157,6 +159,14 @@ public class SplashSceneController {
         }
 
         Stage stage = (Stage) setNick.getScene().getWindow();
+
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.8;

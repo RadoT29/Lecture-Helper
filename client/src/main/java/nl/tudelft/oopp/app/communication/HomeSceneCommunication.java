@@ -7,6 +7,7 @@ import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -28,7 +29,6 @@ public class HomeSceneCommunication {
      * This method makes a POST Request on the server with the question object as body
      * and the roomLink and userId as path variables
      * so that the question is associated with the right room and user.
-     *
      * @param question the question to be saved on the database
      */
 
@@ -60,7 +60,6 @@ public class HomeSceneCommunication {
     /**
      * Gets list of questions from the server specific to this room link.
      * (all of the questions user's IDs and room ID are already set to zero)
-     *
      * @return a list questions
      */
     public static List<Question> getQuestions() {
@@ -85,7 +84,6 @@ public class HomeSceneCommunication {
     /**
      * GET request to get the id of the question that was just created and sent to
      * the server. So to have store its ID locally.
-     *
      * @return a String questionID
      */
     public static Long getSingleQuestion() {
@@ -109,7 +107,6 @@ public class HomeSceneCommunication {
     /**
      * Method to send a DELETE request to the server
      * so to delete all of the questions created so far in a particular room.
-     *
      * @param roomLink - Link of the room from which the request was made from
      */
     public static void clearQuestions(String roomLink) {
@@ -126,6 +123,31 @@ public class HomeSceneCommunication {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sends a request to get all questions from a room.
+     * @param roomLink - the link for the room.
+     * @return - A List of all questions.
+     * @throws InterruptedException - Thrown when a thread is waiting and is interrupted.
+     */
+    public static List<Question> constantlyGetQuestions(String roomLink)
+            throws InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/constant/" + roomLink))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
     public static void banUserForThatRoom(String questionId, String roomLink) {
@@ -179,7 +201,5 @@ public class HomeSceneCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
-
-
 }
 

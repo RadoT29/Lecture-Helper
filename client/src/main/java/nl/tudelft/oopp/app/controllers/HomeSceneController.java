@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,7 +16,10 @@ import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.PriorityQueue;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This class contains the code that is run when the IO objects in the Home page are utilized.
@@ -31,6 +35,41 @@ public class HomeSceneController {
     private VBox questionBox;
 
     protected PriorityQueue<Question> questions;
+
+
+    /**
+     * This method initializes the thread,
+     * which is responsible for constantly refreshing the questions.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
+    public void initialize(URL url, ResourceBundle rb) {
+
+        // This thread will periodically refresh the content of the question queue.
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!(Thread.interrupted())) {
+                    try {
+                        Platform.runLater(() -> {
+                            try {
+                                constantRefresh();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
 
     /**
      * Pressing the sendButton will send all the text in the questionInput
@@ -93,6 +132,17 @@ public class HomeSceneController {
     }
 
     /**
+     * This method is constantly called by a thread and refreshes the page.
+     * @throws ExecutionException - may be thrown.
+     * @throws InterruptedException - may be thrown.
+     */
+    public void constantRefresh() throws ExecutionException, InterruptedException {
+        questions = new PriorityQueue<>();
+        questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
+        loadQuestions();
+    }
+
+    /**
      * loads questions in the question box in the correct format.
      */
     public void loadQuestions() {
@@ -118,11 +168,10 @@ public class HomeSceneController {
 
     /**
      * creates a node for a question.
-     *
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
-     *                     or one of the fields that should be changed where not found
+     *      or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
         // load the question to a newNode and set it's homeSceneController to this
@@ -164,11 +213,10 @@ public class HomeSceneController {
     }
 
     /**
-     * finds the question by the id and deletes it from the scene.
-     * (this method will probably be deleted once we implement the real-time updates)
-     *
-     * @param id the id of the question to be deleted
-     **/
+    * finds the question by the id and deletes it from the scene.
+    * (this method will probably be deleted once we implement the real-time updates)
+    * @param id the id of the question to be deleted
+    **/
     public void deleteQuestionFromScene(String id) {
         Node q = questionBox.lookup("#" + id);
         questionBox.getChildren().remove(q);
@@ -178,9 +226,8 @@ public class HomeSceneController {
      * Method to check whether the Question that is being created has been
      * written by the student in the session (so that the dismiss button
      * will be shown - if it does not correspond it won't show).
-     *
      * @param newQuestion - Node of the new question created
-     * @param question    - the object of the new question created
+     * @param question - the object of the new question created
      */
     public void checkForQuestion(Node newQuestion, Question question) {
         if (!session.getIsModerator()) {
@@ -200,6 +247,7 @@ public class HomeSceneController {
 
         }
     }
+
 
 
 }
