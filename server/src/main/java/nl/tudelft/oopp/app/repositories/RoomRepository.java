@@ -27,6 +27,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Transactional
     @Query("UPDATE Room r SET r.isOpen=true, r.permission=true WHERE r.id=?1")
     void openRoom(long roomId);
+
     @Query("SELECT u FROM Room u WHERE u.linkIdStudent=?1 OR u.linkIdModerator=?1")
     Room findByLink(UUID link);
 }
