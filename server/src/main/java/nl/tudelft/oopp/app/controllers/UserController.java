@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.controllers;
 
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.repositories.ModeratorRepository;
+import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
 import nl.tudelft.oopp.app.services.RoomService;
@@ -24,6 +25,8 @@ import java.util.UUID;
 @Controller
 public class UserController {
     @Autowired
+    private RoomRepository roomRepository;
+    @Autowired
     private RoomService roomService;
     @Autowired
     private ModeratorRepository moderatorRepository;
@@ -44,21 +47,26 @@ public class UserController {
     @ResponseBody
     public User roomExists(@PathVariable String roomLink) {
         try {
-            Room room = roomService.getByLink(roomLink);
+            Room room = roomRepository.findByLink(UUID.fromString(roomLink));
             if (room.getLinkIdModerator().compareTo(UUID.fromString(roomLink)) == 0) {
-                System.out.println("A moderator is created!");
                 Moderator moderator = new Moderator(room);
                 moderatorRepository.save(moderator);
+                System.out.println("Moderator created @ Room "
+                        + moderator.getRoomId().getId() + ":"
+                        + "\n\tUser id: " + moderator.getId()
+                        + "\n\tUser name: " + moderator.getName());
                 return moderator;
             } else if (room.getLinkIdStudent().compareTo(UUID.fromString(roomLink)) == 0) {
-                System.out.println("A student is created!");
                 Student student = new Student(room);
                 studentRepository.save(student);
+                System.out.println("Moderator created @ Room" + student.getRoomId() + ":"
+                        + "\n\tUser id: " + student.getId()
+                        + "\n\tUser name: " + student.getName());
                 return student;
             }
             return null;
         } catch (IllegalArgumentException exception) {
-            System.out.println("No room exists");
+            System.out.println("Invalid room link entered: " + roomLink);
             return null;
         } catch (NullPointerException exception) {
             return null;

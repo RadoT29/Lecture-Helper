@@ -27,7 +27,6 @@ public class QuestionService {
 
     /**
      * This constructor injects all the dependencies needed by the class.
-     *
      * @param questionRepository the Question Repository
      * @param roomService        class that handles rooms services
      * @param userService        class that handles user services
@@ -49,7 +48,6 @@ public class QuestionService {
 
     /**
      * gets all questions from the room.
-     *
      * @param roomLinkString a room link
      * @return list of questions from the room.
      *      Questions have to roomId and UserId changed to 0.
@@ -67,7 +65,6 @@ public class QuestionService {
 
     /**
      * Get the last added question by user that created the request.
-     *
      * @param roomLink - the room link
      * @param userId   - the users Id
      * @return list of questions from the room.
@@ -81,9 +78,9 @@ public class QuestionService {
     }
 
 
+
     /**
      * This method gets the correct Room and User associated with the question that has been sent.
-     *
      * @param roomLink the roomLink where the question has been asked
      * @param userId   the id of the user who asked the question
      * @param question the question that has been asked
@@ -94,21 +91,27 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink); // Finds the room associated with the link
         question.setRoom(room);
         questionRepository.save(question); //Saves the room on the Database
-        System.out.println("Question saved!");
+        System.out.println("Question created: "
+                + "\n\tQuestion id: " + question.getId()
+                + "\n\tRoom id: " + question.getRoom().getId()
+                + "\n\tUser id: " + question.getUser().getId()
+                + "\n\tQuestion: " + question.getQuestionText());
     }
 
 
     /**
      * calls the questionRepository to delete the question from the database.
      * calls the upvoteRepository to delete the upVotes related to that question
-     *
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
-        //delete upVvotes
+        Question question = questionRepository.getOne(questionId);
+        //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
+        System.out.println("Question " + question.getId() + "(room: "
+                + question.getRoom().getName() + ") was deleted by a moderator");
     }
 
     /**
@@ -116,19 +119,20 @@ public class QuestionService {
      * user that sent the request (thus 2 parameters), only if so the question will
      * be deleted.
      * calls questionRepository to execute DELETE query
-     *
      * @param questionId - Id of the question to delete
      * @param userId     - Id of the student attempting to delete
      */
     public void dismissSingular(long questionId, long userId) {
+        Question question = questionRepository.getOne(questionId);
         //delete question
         questionRepository.deleteSingular(questionId, userId);
+        System.out.println("Question " + question.getId()
+                + "(room: " + question.getRoom().getName() + ") was deleted by creator");
     }
 
 
     /**
      * Method add an upvote on the server side.
-     *
      * @param questionId - Id of the question upvote to be added
      * @param userId     - Id of user making the change
      */
@@ -147,7 +151,6 @@ public class QuestionService {
 
     /**
      * Method to delete the upvote on the server side.
-     *
      * @param questionId - Id of the question upvote to be deleted
      * @param userId     - Id of user making the change
      */
@@ -170,6 +173,8 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink);
 
         questionRepository.clearQuestions(room.getId());
+        System.out.println("All questions from room " + room.getId()
+                + "(name: " + room.getName() + ") were deleted");
     }
 
     public Long findUserByQuestionId(String questionId) {
@@ -184,4 +189,13 @@ public class QuestionService {
                 .questionsByUserIdRoomIdInterval(Long.parseLong(userId), roomId, time);
     }
 
+
+    /**
+     * Calls questionRepository to edit the text of a question.
+     * @param questionId long the id of the question to be modified
+     * @param newText String new question text
+     */
+    public void editQuestionText(long questionId, String newText) {
+        questionRepository.editQuestionText(questionId, newText);
+    }
 }

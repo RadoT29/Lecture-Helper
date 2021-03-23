@@ -106,6 +106,32 @@ public class QuestionCommunication {
         }
     }
 
+    /**
+     * Sends a POST request to the server to edit the text of a specific question.
+     * New text is sent in the request body.
+     * @param questionId String - id of the question to be modified
+     * @param newText String - new text for the question
+     */
+    public static void editQuestionText(String questionId, String newText) {
+        String requestBody = gson.toJson(newText);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/questions/edit/" + questionId))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .setHeader("Content-Type", "text/plain")
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 
 }

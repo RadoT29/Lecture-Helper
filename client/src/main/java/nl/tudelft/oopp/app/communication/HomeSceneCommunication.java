@@ -21,7 +21,7 @@ import java.util.List;
 public class HomeSceneCommunication {
 
     private static Gson gson = new Gson();
-    private static Session session = Session.getInstance();
+    private static Session session;
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
@@ -34,6 +34,7 @@ public class HomeSceneCommunication {
 
     public static void postQuestion(Question question) {
         String requestBody = gson.toJson(question);
+        session = Session.getInstance();
 
         //Creates a new POST Request at the link question/roomLink/userId
         // with the Question object as body
@@ -63,6 +64,8 @@ public class HomeSceneCommunication {
      * @return a list questions
      */
     public static List<Question> getQuestions() {
+        session = Session.getInstance();
+        System.out.println("http://localhost:8080/questions/refresh/" + session.getRoomLink());
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/refresh/" + session.getRoomLink()))
                 .build();
@@ -87,6 +90,7 @@ public class HomeSceneCommunication {
      * @return a String questionID
      */
     public static Long getSingleQuestion() {
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/getOneQuestion/" + session.getRoomLink() + "/" + session.getUserId()))
                 .build();

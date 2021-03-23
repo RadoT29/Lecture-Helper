@@ -30,6 +30,11 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         Room room = new Room(name);
         roomRepository.save(room);
+        System.out.println("Room created:"
+                            + "\n\tRoom id: " + room.getId()
+                            + "\n\tRoom name: " + room.getName()
+                            + "\n\tStudent link:" + room.getLinkIdStudent()
+                            + "\n\tModerator link:" + room.getLinkIdModerator());
         return room;
     }
 
@@ -43,7 +48,15 @@ public class RoomController {
     @ResponseBody
     public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
-        roomRepository.closeRoom(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        if (room.getLinkIdModerator().toString().equals(linkId)) {
+            roomRepository.closeRoom(room.getId());
+        } else {
+            System.out.println("Someone tried to close room " + room.getId()
+                    + "(name: " + room.getName() + ") with a student link");
+
+        }
+
     }
 
     /**
@@ -55,7 +68,7 @@ public class RoomController {
     @GetMapping("isOpenById/{linkId}")
     @ResponseBody
     public boolean isClose(@PathVariable String linkId) {
-        Room room = roomRepository.isClose(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
         return room.getIsOpen();
     }
 
@@ -68,9 +81,7 @@ public class RoomController {
     @GetMapping("hasStudentPermission/{linkId}")
     @ResponseBody
     public boolean hasStudentPermission(@PathVariable String linkId) {
-        System.out.println(linkId);
-        Room room = roomRepository.permission(UUID.fromString(linkId));
-        return room.getPermission();
+        return roomRepository.findByLink(UUID.fromString(linkId)).getPermission();
     }
 
     /**
@@ -81,7 +92,12 @@ public class RoomController {
     @PutMapping("kickAllStudents/{linkId}")
     @ResponseBody
     public void kickAllStudent(@PathVariable String linkId) {
-        roomRepository.kickAllStudents(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        if (room.getLinkIdModerator().toString().equals(linkId)) {
+            roomRepository.kickAllStudents(room.getId());
+            System.out.println("Room " + room.getId()
+                    + "(name: " + room.getName() + ") had all students kicked out");
+        }
     }
 
     /**
