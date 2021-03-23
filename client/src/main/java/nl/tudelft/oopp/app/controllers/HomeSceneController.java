@@ -35,6 +35,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class HomeSceneController {
 
+    private boolean interruptThread = false;
+    private boolean openOne = true;
+
     Session session = Session.getInstance();
 
     @FXML
@@ -71,7 +74,12 @@ public class HomeSceneController {
                                 closeWindow();
                             }
                         });
+
                         Thread.sleep(2000);
+                        if (interruptThread) {
+                            Thread.currentThread().interrupt();
+                            break;
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -83,6 +91,8 @@ public class HomeSceneController {
     }
 
     public void closeWindow() {
+        interruptThread = true;
+        if (!openOne) return;
         Parent loader = null;
         try {
             loader = new FXMLLoader(getClass().getResource("/splashScene.fxml")).load();
@@ -96,6 +106,7 @@ public class HomeSceneController {
 
         linkStage.setScene(scene);
         linkStage.show();
+        openOne = false;
 
     }
 
@@ -170,9 +181,12 @@ public class HomeSceneController {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
-//        ServerCommunication.hasStudentPermission(session.getRoomLink());
-//        ServerCommunication.isTheRoomClosed(session.getRoomLink());
-//        SplashCommunication.isIPBanned(session.getRoomLink());
+        if (!session.getIsModerator()) {
+            ServerCommunication.hasStudentPermission(session.getRoomLink());
+        }
+
+        ServerCommunication.isTheRoomClosed(session.getRoomLink());
+        SplashCommunication.isIPBanned(session.getRoomLink());
     }
 
     /**
