@@ -45,7 +45,7 @@ public class QuestionService {
     }
 
     /**
-     * gets all questions from the room.
+     * Gets all questions from the room.
      * @param roomLinkString a room link
      * @return list of questions from the room.
      *      Questions have to roomId and UserId changed to 0.
@@ -78,7 +78,7 @@ public class QuestionService {
 
 
     /**
-     * This method gets the correct Room and User associated with the question that has been sent.
+     * This method sets the correct Room and User associated with the question that has been sent.
      * @param roomLink the roomLink where the question has been asked
      * @param userId the id of the user who asked the question
      * @param question the question that has been asked
@@ -89,7 +89,6 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink); // Finds the room associated with the link
         question.setRoom(room);
         questionRepository.save(question); //Saves the room on the Database
-        System.out.println("Question saved!");
     }
 
 
