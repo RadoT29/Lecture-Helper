@@ -34,6 +34,9 @@ public class RoomTestMock {
     @Mock
     private RoomRepository repository;
 
+    @Mock
+    private RoomService roomServiceMock;
+
     @InjectMocks
     private RoomController roomController;
 
@@ -77,6 +80,7 @@ public class RoomTestMock {
     @Test
     public void testMethodIsClose() {
         Room room = new Room("My room");
+        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
         when(repository.isClose(room.getLinkIdModerator())).thenReturn(room);
         assertEquals(true, roomController.isClose(String.valueOf(room.getLinkIdModerator())));
     }
@@ -88,6 +92,7 @@ public class RoomTestMock {
     public void testMethodIsCloseClosedRoom() {
         Room room = new Room("My room");
         room.setIsOpen(false);
+        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
         when(repository.isClose(room.getLinkIdModerator())).thenReturn(room);
         assertEquals(false, roomController.isClose(String.valueOf(room.getLinkIdModerator())));
     }
@@ -98,6 +103,7 @@ public class RoomTestMock {
     @Test
     public void testMethodGetPermission() {
         Room room = new Room("My room");
+        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
         when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
         assertEquals(true, roomController.hasStudentPermission(
                 String.valueOf(room.getLinkIdModerator())));
@@ -110,6 +116,7 @@ public class RoomTestMock {
     public void testMethodGetPermissionFalse() {
         Room room = new Room("My room");
         room.setPermission(false);
+        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
         when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
         assertEquals(false, roomController.hasStudentPermission(
                 String.valueOf(room.getLinkIdModerator())));

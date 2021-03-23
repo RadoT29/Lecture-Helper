@@ -66,7 +66,7 @@ public class RoomTest {
         Room room2 = new Room("New room");
         roomRepository.save(room);
         roomRepository.save(room2);
-        roomRepository.closeRoom(room.getLinkIdModerator(), LocalDateTime.now(Clock.systemUTC()));
+        roomRepository.closeRoom(room.getId(), LocalDateTime.now(Clock.systemUTC()));
         assertEquals(true, room2.getIsOpen());
     }
 

@@ -57,7 +57,8 @@ public class RoomController {
     @ResponseBody
     public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
-        roomRepository.closeRoom(UUID.fromString(linkId), LocalDateTime.now(Clock.systemUTC()));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        roomRepository.closeRoom(room.getId(), LocalDateTime.now(Clock.systemUTC()));
     }
 
     /**
@@ -69,7 +70,7 @@ public class RoomController {
     @GetMapping("isOpenById/{linkId}")
     @ResponseBody
     public boolean isClose(@PathVariable String linkId) {
-        Room room = roomRepository.isClose(UUID.fromString(linkId));
+        Room room = roomService.getByLink(linkId);
         return room.getIsOpen();
     }
 
@@ -82,7 +83,8 @@ public class RoomController {
     @GetMapping("hasStudentPermission/{linkId}")
     @ResponseBody
     public boolean hasStudentPermission(@PathVariable String linkId) {
-        return roomRepository.permission(UUID.fromString(linkId)).getPermission();
+        Room room = roomService.getByLink(linkId);
+        return room.getPermission();
     }
 
     /**
