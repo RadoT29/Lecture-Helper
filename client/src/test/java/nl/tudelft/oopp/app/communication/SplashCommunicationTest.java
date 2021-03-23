@@ -36,7 +36,7 @@ public class SplashCommunicationTest {
         mockServer.stop();
     }
 
-    void mockPostRoom(String roomName){
+    void mockPostRoom(String roomName) {
         mockServer.when(
                 request()
                         .withMethod("POST")
@@ -46,13 +46,15 @@ public class SplashCommunicationTest {
                 .respond(
                         response()
                                 .withStatusCode(200)
-                                .withBody("{\n  \"id\": 2,\n  \"name\": \"" + roomName + "\",\n  " +
-                                        "\"linkIdStudent\": \"f71b9850-a0b1-4ec6-b85e-ba4fffeaa7c9\",\n  " +
-                                        "\"linkIdModerator\": \"bea8d9bc-a3fd-4070-9dae-d4ceadfad3a6\",\n  " +
-                                        "\"isOpen\": true,\n  \"permission\": true,\n  \"createdAt\": " +
-                                        "\"2021-03-22T14:58:31.109+0000\",\n  \"updatedAt\": " +
-                                        "\"2021-03-22T14:58:31.109+0000\"\n}")
-                );
+                                .withBody("{\n  \"id\": 2,\n  \"name\": \"" + roomName + "\",\n  "
+                                        + "\"linkIdStudent\": \""
+                                        + "f71b9850-a0b1-4ec6-b85e-ba4fffeaa7c9\",\n  "
+                                        + "\"linkIdModerator\": \""
+                                        + "bea8d9bc-a3fd-4070-9dae-d4ceadfad3a6\",\n  "
+                                        + "\"isOpen\": true,\n  \"permission\": true,\n  \""
+                                        + "createdAt\": \"2021-03-22T14:58:31.109+0000"
+                                        + "\",\n  \"updatedAt\": \""
+                                        + "2021-03-22T14:58:31.109+0000\"\n}"));
     }
 
     @Test
@@ -72,7 +74,7 @@ public class SplashCommunicationTest {
         assertNotNull(room.getLinkIdStudent());
     }
 
-    void mockCheckRoom(String roomLink, String roomName){
+    void mockCheckRoom(String roomLink, String roomName) {
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -81,17 +83,18 @@ public class SplashCommunicationTest {
                 .respond(
                         response()
                                 .withStatusCode(200)
-                                .withBody("{\n  \"id\": 1,\n  \"name\": \"Anonymous\",\n  " +
-                                        "\"isModerator\": false,\n  \"roomId\": {\n    \"id\": 1,\n    " +
-                                        "\"name\": \"" + roomName + "\",\n    \"linkIdStudent\": " +
-                                        "\"" + roomLink + "\",\n    " +
-                                        "\"linkIdModerator\": \"" + roomLink + "\"," +
-                                        "\n    \"isOpen\": true,\n    \"permission\": true,\n    " +
-                                        "\"createdAt\": \"2021-03-22T16:56:05.303+0000\",\n    " +
-                                        "\"updatedAt\": \"2021-03-22T16:56:05.303+0000\"\n  },\n  " +
-                                        "\"createdAt\": \"2021-03-22T16:56:16.630+0000\",\n  \"updatedAt\": " +
-                                        "\"2021-03-22T16:56:16.630+0000\"\n}")
-                );
+                                .withBody("{\n  \"id\": 1,\n  \"name\": \"Anonymous\",\n  "
+                                        + "\"isModerator\": false,\n  \"roomId\": {\n    \""
+                                        + "id\": 1,\n    \"name\": \"" + roomName + "\","
+                                        + "\n    \"linkIdStudent\": \"" + roomLink + "\","
+                                        + "\n    \"linkIdModerator\": \"" + roomLink + ""
+                                        + "\",\n    \"isOpen\": true,\n    \"permission\""
+                                        + ": true,\n    \"createdAt\": \""
+                                        + "2021-03-22T16:56:05.303+0000\",\n    \"updatedAt"
+                                        + "\": \"2021-03-22T16:56:05.303+0000\"\n  },\n  "
+                                        + "\"createdAt\": \""
+                                        + "2021-03-22T16:56:16.630+0000\",\n  \"updatedAt\": "
+                                        + "\"2021-03-22T16:56:16.630+0000\"\n}"));
     }
 
     @Test

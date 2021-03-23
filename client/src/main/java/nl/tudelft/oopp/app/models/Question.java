@@ -36,10 +36,16 @@ public class Question implements Comparable<Question> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Question question = (Question) o;
-        return Objects.equals(room, question.room) && Objects.equals(user, question.user) && Objects.equals(questionText, question.questionText);
+        return Objects.equals(room, question.room)
+                && Objects.equals(user, question.user)
+                && Objects.equals(questionText, question.questionText);
     }
 
 }
