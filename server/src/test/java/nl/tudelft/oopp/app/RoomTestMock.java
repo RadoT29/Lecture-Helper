@@ -16,12 +16,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest
@@ -112,6 +113,67 @@ public class RoomTestMock {
         when(repository.permission(room.getLinkIdModerator())).thenReturn(room);
         assertEquals(false, roomController.hasStudentPermission(
                 String.valueOf(room.getLinkIdModerator())));
+    }
+
+    /**
+     * tests if updateIsOpen changes the IsOpen boolean to true when the room should be open.
+     */
+    @Test
+    public void updateIsOpenTrueTest() {
+        //new room with startDate in the past
+        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).minusHours(1));
+        assertFalse(room.getIsOpen());
+        doNothing().when(repository).openRoom(room.getId());
+        roomService.updateIsOpen(room);
+        assertTrue(room.getIsOpen());
+    }
+
+    /**
+     * tests if updateIsOpen does not change the IsOpen boolean to true
+     * when the room should be still closed.
+     */
+    @Test
+    public void updateIsOpenFalseText() {
+        //new room with startDate in the future
+        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).plusMinutes(1));
+        assertFalse(room.getIsOpen());
+        doNothing().when(repository).openRoom(room.getId());
+        roomService.updateIsOpen(room);
+        assertFalse(room.getIsOpen());
+    }
+
+    /**
+     * tests if updateIsOpen does not reopen the room after it's closed.
+     */
+    @Test
+    public void updateIsOpenText() {
+        //new room with startDate in the past
+        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()));
+
+        //close the room
+        room.setEndDate(LocalDateTime.now(Clock.systemUTC()));
+        room.setIsOpen(false);
+
+        roomService.updateIsOpen(room);
+        assertFalse(room.getIsOpen());
+    }
+
+    /**
+     * checks if the room is scheduled correctly.
+     */
+    @Test
+    public void scheduleRoomTest() {
+        LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
+        Room expected = new Room("Room", now);
+
+        when(repository.save(any(Room.class))).thenReturn(expected);
+        Room actual = roomService.scheduleRoom("Room", now.toString());
+
+        //we set the same links, because they are generated while creating the object
+        expected.setLinkIdModerator(actual.getLinkIdModerator());
+        expected.setLinkIdStudent(actual.getLinkIdStudent());
+
+        assertEquals(expected, actual);
     }
 
 }
