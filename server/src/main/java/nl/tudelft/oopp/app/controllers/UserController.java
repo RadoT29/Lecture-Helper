@@ -26,6 +26,8 @@ public class UserController {
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
+    private RoomService roomService;
+    @Autowired
     private ModeratorRepository moderatorRepository;
     @Autowired
     private StudentRepository studentRepository;
