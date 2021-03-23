@@ -94,7 +94,7 @@ public class HomeSceneController {
      * When this method is called it:
      * 1. set the boolean variable interruptThread = true
      * which afterwards interrupts the thread
-     * 2. Open the 
+     * 2. Open the Splash Scene and should close the current one
      */
     public void closeWindow() {
         interruptThread = true;
@@ -181,8 +181,11 @@ public class HomeSceneController {
     /**
      * This method is constantly called by a thread and refreshes the page.
      *
-     * @throws ExecutionException   - may be thrown.
-     * @throws InterruptedException - may be thrown.
+     * @throws ExecutionException           - may be thrown.
+     * @throws InterruptedException         - may be thrown.
+     * @throws NoStudentPermissionException - may be thrown
+     * @throws RoomIsClosedException        - may be thrown
+     * @throws AccessDeniedException        - may be thrown
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
@@ -194,7 +197,10 @@ public class HomeSceneController {
         }
 
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
-        SplashCommunication.isIPBanned(session.getRoomLink());
+        if (!session.getIsModerator()) {
+            SplashCommunication.isIPBanned(session.getRoomLink());
+        }
+
     }
 
     /**

@@ -33,6 +33,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r Set r.numberQuestionsInterval=?2, r.timeInterval=?3 where r.linkIdStudent=?1 or r.linkIdModerator=?1")
+    @Query(value = "UPDATE Room r Set r.numberQuestionsInterval=?2,r.timeInterval=?3"
+            + "where r.linkIdStudent=?1 or r.linkIdModerator=?1")
     void putConstraints(UUID roomLink, int numQuestions, int minutes);
 }

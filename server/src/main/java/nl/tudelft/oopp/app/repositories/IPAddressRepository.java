@@ -12,10 +12,10 @@ public interface IPAddressRepository extends JpaRepository<IPAddress, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE IPAddress ip set ip.access=false where ip.roomId.id=?1 and ip.userId.id=?2")
-    public void banUserForRoom(long roomId, long userId);
+    @Query("UPDATE IPAddress ip set ip.access=false where ip.roomId.id=?1 and ip.userId.id=?2")
+    void banUserForRoom(long roomId, long userId);
 
     @Query(value = "SELECT ip.access from IPAddress ip where ip.ipAddress=?1 and ip.roomId.id=?2")
-    public List<Boolean> checkForIPBan(String iPAddress, long roomId);
+    List<Boolean> checkForIpBan(String ipAddress, long roomId);
 
 }

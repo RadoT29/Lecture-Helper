@@ -149,6 +149,11 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         stage.show();
     }
 
+    /**
+     * This method opens the scene where are inserted the
+     * number of questions per time.
+     * @throws IOException - may thrown
+     */
     public void openConstraintsScene() throws IOException {
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();

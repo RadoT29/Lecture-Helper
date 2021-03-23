@@ -77,7 +77,7 @@ public class UserService {
         ipAddressRepository.banUserForRoom(Long.parseLong(roomId), Long.parseLong(userId));
     }
 
-    public List<Boolean> isUserBanned(String ipAddress, Long roomId){
-        return ipAddressRepository.checkForIPBan(ipAddress, roomId);
+    public List<Boolean> isUserBanned(String ipAddress, Long roomId) {
+        return ipAddressRepository.checkForIpBan(ipAddress, roomId);
     }
 }

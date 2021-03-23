@@ -90,7 +90,7 @@ public class SplashSceneController {
             if (!session.getIsModerator()) {
                 SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
-            System.out.println("Is moderator3 "+session.getIsModerator());
+            System.out.println("Is moderator3 " + session.getIsModerator());
             ServerCommunication.isTheRoomClosed(roomLink.getText());
             //System.out.println(roomLink.getText());
 

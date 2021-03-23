@@ -70,9 +70,6 @@ public class RoomController {
     public boolean hasStudentPermission(@PathVariable String linkId) {
         System.out.println(linkId);
         Room room = roomRepository.permission(UUID.fromString(linkId));
-//        if (linkId.equals(room.getLinkIdModerator().toString())) {
-//            return true;
-//        }
         return room.getPermission();
     }
 
@@ -87,11 +84,20 @@ public class RoomController {
         roomRepository.kickAllStudents(UUID.fromString(linkId));
     }
 
+    /**
+     * This method updates the the number of questions which can be send per time.
+     * @param roomLink - the room link after that is found the room id
+     * @param numQuestions - the number of questions
+     * @param minutes - per minutes
+     */
     @PutMapping(path = "/setConstraints/{roomLink}/{numQuestions}/{minutes}")
     @ResponseBody
     public void putConstraints(@PathVariable String roomLink,
                                @PathVariable String numQuestions,
                                @PathVariable String minutes) {
-        roomService.putConstraints(roomLink, Integer.parseInt(numQuestions), Integer.parseInt(minutes));
+        roomService.putConstraints(
+                roomLink, Integer.parseInt(numQuestions),
+                Integer.parseInt(minutes)
+        );
     }
 }

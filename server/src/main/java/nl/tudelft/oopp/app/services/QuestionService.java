@@ -52,7 +52,7 @@ public class QuestionService {
      *
      * @param roomLinkString a room link
      * @return list of questions from the room.
-     * Questions have to roomId and UserId changed to 0.
+     *      Questions have to roomId and UserId changed to 0.
      */
     public List<Question> getAllQuestionsByRoom(String roomLinkString) {
         UUID roomLink = UUID.fromString(roomLinkString);
@@ -71,7 +71,7 @@ public class QuestionService {
      * @param roomLink - the room link
      * @param userId   - the users Id
      * @return list of questions from the room.
-     * Questions have to roomId and UserId changed to 0.
+     *      Questions have to roomId and UserId changed to 0.
      */
     public String getSingleQuestion(String roomLink, String userId) {
         Room room = roomService.getByLink(roomLink);

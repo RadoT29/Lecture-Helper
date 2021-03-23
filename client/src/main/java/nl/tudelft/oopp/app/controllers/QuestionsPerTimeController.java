@@ -37,32 +37,53 @@ public class QuestionsPerTimeController {
 
     //private Stage linkStage;
 
+    /**
+     * When the check box for no limits is clicked these commands are executed.
+     */
     public void noLimitsCheckBoxMethod() {
         setLimitsCheckBox.setSelected(false);
         noLimitsCheckBox.setSelected(true);
         constraintsHBox.setVisible(false);
     }
 
+    /**
+     * When the check box for set limits is clicked these commands are executed.
+     */
     public void setLimitsCheckBoxMethod() {
         noLimitsCheckBox.setSelected(false);
         setLimitsCheckBox.setSelected(true);
         constraintsHBox.setVisible(true);
     }
 
+    /**
+     * This method set the constraints as call the method
+     * setQuestionsPerTime in HomeSceneCommunication
+     * which make the request to the server.
+     * @param actionEvent - the scene event
+     */
     public void setConstraints(ActionEvent actionEvent) {
         if (noLimitsCheckBox.isSelected()) {
             //int a =Integer.MAX_VALUE;
-            HomeSceneCommunication.setQuestionsPerTime(Integer.MAX_VALUE,Integer.MAX_VALUE, session.getRoomLink());
+            HomeSceneCommunication.setQuestionsPerTime(
+                    Integer.MAX_VALUE, Integer.MAX_VALUE, session.getRoomLink());
         } else if (setLimitsCheckBox.isSelected()) {
-            HomeSceneCommunication.setQuestionsPerTime(Integer.parseInt(questionsField.getText()),Integer.parseInt(minutesField.getText()), session.getRoomLink());
+            HomeSceneCommunication
+                    .setQuestionsPerTime(
+                            Integer.parseInt(questionsField.getText()),
+                            Integer.parseInt(minutesField.getText()),
+                            session.getRoomLink());
         }
-        Window window =   ((Node)(actionEvent.getSource())).getScene().getWindow();
-        if (window instanceof Stage){
+        Window window = ((Node) (actionEvent.getSource())).getScene().getWindow();
+        if (window instanceof Stage) {
             ((Stage) window).close();
         }
 
     }
 
+    /**
+     * Open the scene for setting the number of questions per time.
+     * @throws IOException - may thrown
+     */
     public void open() throws IOException {
         Parent loader = new FXMLLoader(getClass().getResource("/QuestionsPerTime.fxml")).load();
 

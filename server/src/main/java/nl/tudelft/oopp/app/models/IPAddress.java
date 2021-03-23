@@ -19,6 +19,13 @@ public class IPAddress {
     @OneToOne
     private User userId;
 
+    /**
+     * Constructor for that class.
+     * @param ipAddress - the ipAddress of the user
+     * @param roomId - the room where the user is
+     * @param userId - the user object/ the user which it is
+     */
+
     public IPAddress(String ipAddress, Room roomId, User userId) {
         this.ipAddress = ipAddress;
         this.access = true;

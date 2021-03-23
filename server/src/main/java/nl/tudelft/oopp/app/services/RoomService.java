@@ -34,10 +34,10 @@ public class RoomService {
      */
     public Room getByLink(String link) {
         UUID toCheck = UUID.fromString(link);
-        return  roomRepository.findByLink(UUID.fromString(link));
+        return roomRepository.findByLink(UUID.fromString(link));
     }
 
-    public void putConstraints(String roomLink, int numQuestions, int minutes){
-        roomRepository.putConstraints(UUID.fromString(roomLink),numQuestions,minutes);
+    public void putConstraints(String roomLink, int numQuestions, int minutes) {
+        roomRepository.putConstraints(UUID.fromString(roomLink), numQuestions, minutes);
     }
 }
