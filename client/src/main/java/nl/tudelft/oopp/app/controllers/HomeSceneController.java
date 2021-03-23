@@ -78,10 +78,16 @@ public class HomeSceneController {
                                 constantRefresh();
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
+                            } catch (Exception e) {
+                                closeWindow();
                             }
                         });
 
                         Thread.sleep(2000);
+                        if (interruptThread) {
+                            Thread.currentThread().interrupt();
+                            break;
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -89,6 +95,33 @@ public class HomeSceneController {
                 }
             }
         }).start();
+
+    }
+
+    /**
+     * When this method is called it:
+     * 1. set the boolean variable interruptThread = true
+     * which afterwards interrupts the thread
+     * 2. Open the Splash Scene and should close the current one
+     */
+
+    public void closeWindow() {
+        interruptThread = true;
+        if (!openOne) {
+            return;
+        }
+        Parent loader = null;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/splashScene.fxml")).load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage linkStage = (Stage) questionInput.getScene().getWindow();
+        Scene scene = new Scene(loader);
+        linkStage.setScene(scene);
+        linkStage.show();
+        openOne = false;
 
     }
 
@@ -158,13 +191,25 @@ public class HomeSceneController {
     /**
      * This method is constantly called by a thread and refreshes the page.
      *
-     * @throws ExecutionException   - may be thrown.
-     * @throws InterruptedException - may be thrown.
+     * @throws ExecutionException           - may be thrown.
+     * @throws InterruptedException         - may be thrown.
+     * @throws NoStudentPermissionException - may be thrown.
+     * @throws RoomIsClosedException        - may be thrown.
+     * @throws AccessDeniedException        - may be thrown.
      */
-    public void constantRefresh() throws ExecutionException, InterruptedException {
+    public void constantRefresh() throws ExecutionException, InterruptedException,
+            NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
+        if (!session.getIsModerator()) {
+            ServerCommunication.hasStudentPermission(session.getRoomLink());
+        }
+
+        ServerCommunication.isTheRoomClosed(session.getRoomLink());
+        if (!session.getIsModerator()) {
+            SplashCommunication.isIpBanned(session.getRoomLink());
+        }
 
 
     }
