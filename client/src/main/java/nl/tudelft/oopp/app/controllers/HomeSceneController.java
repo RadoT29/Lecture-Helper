@@ -131,6 +131,9 @@ public class HomeSceneController {
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
         questionLabel.setText(question.questionText);
 
+        Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
+        nicknameLabel.setText(question.user.getName());
+
         //set the question box size
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.4;

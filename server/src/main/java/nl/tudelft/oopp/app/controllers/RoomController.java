@@ -34,6 +34,14 @@ public class RoomController {
         return room;
     }
 
+
+    @GetMapping("room/name/{roomLink}")
+    @ResponseBody
+    public String getRoomName(@PathVariable String roomLink) {
+        return roomService.getByLink(roomLink).getName();
+    }
+
+
     /**
      * PUT Endpoint close the room.
      *

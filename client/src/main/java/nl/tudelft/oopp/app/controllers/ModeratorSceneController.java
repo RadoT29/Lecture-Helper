@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.Session;
 
 /**

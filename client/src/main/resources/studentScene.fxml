@@ -155,9 +155,24 @@
    </VBox>
    <!-- Here ends the nav Bar -->
    <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <left>
+            <Label fx:id="roomName" text="Room Name" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </Label>
+         </left>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </BorderPane>
       <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
          <content>
-            <VBox fx:id="questionBox" prefHeight="446.0" prefWidth="1100.0" />
+            <VBox fx:id="questionBox" prefHeight="446.0" />
          </content>
       </ScrollPane>
       <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" VBox.vgrow="ALWAYS">

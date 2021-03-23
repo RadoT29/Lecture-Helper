@@ -9,6 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import nl.tudelft.oopp.app.communication.ReactionCommunication;
+import nl.tudelft.oopp.app.models.EmotionReaction;
+import nl.tudelft.oopp.app.models.SpeedReaction;
 
 /**
  * This class controls the Main scene of the Students.
