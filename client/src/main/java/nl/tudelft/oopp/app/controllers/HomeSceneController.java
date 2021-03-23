@@ -47,6 +47,9 @@ public class HomeSceneController {
     @FXML
     private VBox questionBox;
 
+    @FXML
+    private Label passLimitQuestionsLabel;
+
     protected PriorityQueue<Question> questions;
 
     //Parent loader = FXMLLoader.load(getClass().getResource("/studentScene.fxml"));
@@ -97,10 +100,13 @@ public class HomeSceneController {
      */
     public void sendQuestion() {
 
+        passLimitQuestionsLabel.setVisible(false);
         try {
             HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(), session.getRoomLink());
         } catch (OutOfLimitOfQuestionsException exception) {
             System.out.println("Out of limit");
+            passLimitQuestionsLabel.setVisible(true);
+            //passLimitQuestionsLabel.wait(4000);
             questionInput.clear();
             return;
         }
