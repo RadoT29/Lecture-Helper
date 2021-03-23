@@ -12,7 +12,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
+@Repository("UpvoteRepository")
+
 public interface UpvoteRepository extends JpaRepository<Upvote, Long> {
 
     @Query("SELECT u FROM Upvote u WHERE u.user.id=?1 AND u.question.id=?2")

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Setter
@@ -32,4 +33,19 @@ public class Question implements Comparable<Question> {
     public int compareTo(Question o) {
         return o.getUpVotes() - this.getUpVotes();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Question question = (Question) o;
+        return Objects.equals(room, question.room)
+                && Objects.equals(user, question.user)
+                && Objects.equals(questionText, question.questionText);
+    }
+
 }

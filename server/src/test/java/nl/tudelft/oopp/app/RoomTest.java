@@ -63,7 +63,7 @@ public class RoomTest {
         Room room2 = new Room("New room");
         roomRepository.save(room);
         roomRepository.save(room2);
-        roomRepository.closeRoom(room.getLinkIdModerator());
+        roomRepository.closeRoom(room.getId());
         assertEquals(true, room2.getIsOpen());
     }
 
