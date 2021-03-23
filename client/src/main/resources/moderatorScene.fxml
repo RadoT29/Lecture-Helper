@@ -57,7 +57,15 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-      <Button fx:id="setConstraintsButton" mnemonicParsing="false" onAction="#openConstraintsScene" text="Set constraints" />
+      <Button fx:id="setConstraintsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#openConstraintsScene" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+         <VBox.margin>
+            <Insets bottom="2.0" left="35.0" top="30.0" />
+         </VBox.margin></Button>
+      <Label contentDisplay="CENTER" prefWidth="100.0" text="Set questions per time" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System Bold" size="10.0" />
+         </font>
+      </Label>
             <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                 <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                     <VBox.margin>
