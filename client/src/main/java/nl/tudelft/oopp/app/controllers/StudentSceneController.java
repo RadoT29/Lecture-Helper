@@ -24,6 +24,22 @@ public class StudentSceneController extends HomeSceneController implements Initi
     @FXML
     public VBox reactionMenu;
 
+    @FXML
+    public Button fastButton;
+    @FXML
+    public Button okButton;
+    @FXML
+    public Button slowButton;
+
+    @FXML
+    public Button happyButton;
+    @FXML
+    public Button sadButton;
+    @FXML
+    public Button confusedButton;
+
+
+
     private TranslateTransition openSpeedNav;
     private TranslateTransition closeSpeedNav;
     private TranslateTransition closeSpeedFastNav;
@@ -114,6 +130,79 @@ public class StudentSceneController extends HomeSceneController implements Initi
         } else {
             hideReactionBar();
         }
+    }
+
+    /**
+     * This method sends the corresponding SpeedReaction when the fastButton is clicked.
+     */
+    public void tooFast() {
+        ReactionCommunication.postReaction(new SpeedReaction(1));
+
+        // When a reaction is sent, it is disabled so that the same one can't be sent again
+        fastButton.setDisable(true);
+        okButton.setDisable(false);
+        slowButton.setDisable(false);
+    }
+
+
+    /**
+     * This method sends the corresponding SpeedReaction when the okButton is clicked.
+     */
+    public void fastEnough() {
+        ReactionCommunication.postReaction(new SpeedReaction(0));
+
+        // When a reaction is sent, it is disabled so that the same one can't be sent again
+        fastButton.setDisable(false);
+        okButton.setDisable(true);
+        slowButton.setDisable(false);
+    }
+
+    /**
+     * This method sends the corresponding SpeedReaction when the slowButton is clicked.
+     */
+    public void tooSlow() {
+        ReactionCommunication.postReaction(new SpeedReaction(-1));
+
+        // When a reaction is sent, it is disabled so that the same one can't be sent again
+        fastButton.setDisable(false);
+        okButton.setDisable(false);
+        slowButton.setDisable(true);
+    }
+
+    /**
+     * This method sends the corresponding EmotionReaction when the happyButton is clicked.
+     */
+    public void addHappy() {
+        ReactionCommunication.postReaction(new EmotionReaction(1));
+
+        // When a reaction is sent, it is disabled so that the same one can't be sent again
+        happyButton.setDisable(true);
+        sadButton.setDisable(false);
+        confusedButton.setDisable(false);
+    }
+
+    /**
+     * This method sends the corresponding EmotionReaction when the sadButton is clicked.
+     */
+    public void addSad() {
+        ReactionCommunication.postReaction(new EmotionReaction(0));
+
+        // When a reaction is sent, it is disabled so that the same one can't be sent again
+        happyButton.setDisable(false);
+        sadButton.setDisable(true);
+        confusedButton.setDisable(false);
+    }
+
+    /**
+     * This method sends the corresponding EmotionReaction when the confusedButton is clicked.
+     */
+    public void addConfused() {
+        ReactionCommunication.postReaction(new EmotionReaction(-1));
+
+        // When a reaction is sent, it is disabled so that the same one can't be sent again
+        happyButton.setDisable(false);
+        sadButton.setDisable(false);
+        confusedButton.setDisable(true);
     }
 
     /**

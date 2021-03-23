@@ -181,11 +181,6 @@ public class HomeSceneController {
             //If the question was created by user we want disabled to be set as false
             d.setDisable(!createdQuestion);
 
-            //makes button visible
-            if (createdQuestion) {
-                d.setOpacity(1.0);
-            }
-
         }
     }
 
