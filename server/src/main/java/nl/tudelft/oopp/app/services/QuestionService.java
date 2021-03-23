@@ -1,9 +1,7 @@
 package nl.tudelft.oopp.app.services;
 
-import nl.tudelft.oopp.app.models.Question;
-import nl.tudelft.oopp.app.models.Room;
-import nl.tudelft.oopp.app.models.Upvote;
-import nl.tudelft.oopp.app.models.User;
+import nl.tudelft.oopp.app.models.*;
+import nl.tudelft.oopp.app.repositories.AnswerRepository;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.UpvoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ public class QuestionService {
     private RoomService roomService;
     private UserService userService;
     private UpvoteRepository upvoteRepository;
+    private AnswerRepository answerRepository;
 
     /**
      * This constructor injects all the dependencies needed by the class.
@@ -33,11 +32,13 @@ public class QuestionService {
     public QuestionService(QuestionRepository questionRepository,
                            RoomService roomService,
                            UserService userService,
-                           UpvoteRepository upvoteRepository) {
+                           UpvoteRepository upvoteRepository,
+                           AnswerRepository answerRepository) {
         this.questionRepository = questionRepository;
         this.roomService = roomService;
         this.userService = userService;
         this.upvoteRepository = upvoteRepository;
+        this.answerRepository = answerRepository;
     }
 
     public List<Question> getAllQuestions() {
@@ -172,4 +173,43 @@ public class QuestionService {
     public void editQuestionText(long questionId, String newText) {
         questionRepository.editQuestionText(questionId, newText);
     }
+
+
+    /**
+     * Method add an answer on the server side.
+     * Once an answer is added we also set the question as answered
+     * @param questionId - Id of the question upvote to be added
+     * @param userId - Id of user making the change
+     * @param answerText - answer text
+     * @param answerType - type of answer given
+     */
+    public void setAnswered(String answerText,
+                            String questionId,
+                            String userId,
+                            boolean answerType) {
+        long questionId2 = Long.parseLong(questionId);
+
+        Moderator user = (Moderator) userService.getByID(userId);
+        Question question = questionRepository.getOne(questionId2);
+
+        Answer answer = new Answer(answerText, question, user, answerType);
+
+        answerRepository.save(answer);
+        question.setAnswered(true);
+
+    }
+
+
+    /**
+     * Method to check if a question has been set as answered.
+     * @param questionId - question to be checked
+     * @return boolean true if yes false if not
+     */
+    public boolean checkAnswered(String questionId) {
+        long questionId2 = Long.parseLong(questionId);
+
+        return questionRepository.checkAnswered(questionId2);
+
+    }
+
 }

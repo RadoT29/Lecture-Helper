@@ -37,6 +37,8 @@ public class Question {
 
     private String questionText;
 
+    private boolean answered;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

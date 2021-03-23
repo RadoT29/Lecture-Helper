@@ -2,10 +2,14 @@ package nl.tudelft.oopp.app.controllers;
 
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
+import nl.tudelft.oopp.app.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -77,4 +81,27 @@ public class RoomController {
     public void kickAllStudent(@PathVariable String linkId) {
         roomRepository.kickAllStudents(UUID.fromString(linkId));
     }
+
+    /**
+     * GET request for a list with the room updated time and its last modification.
+     *
+     * @param roomLink - the link of the room for which isClose status is requested
+     * @return - date at which the room was created
+     */
+    @GetMapping("room/getRoomTime/{roomLink}")
+    @ResponseBody
+    public List<Date> getRoomTime(@PathVariable String roomLink) {
+        List<Date> times = new ArrayList<Date>();
+        long id = Long.parseLong(roomLink);
+
+        Date createdAt = roomRepository.getRoomTime(id);
+        Date updatedAt = roomRepository.getUpdatedTime(id);
+
+        times.add(createdAt);
+        times.add(updatedAt);
+
+        return times;
+    }
+
+
 }

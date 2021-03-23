@@ -142,4 +142,38 @@ public class QuestionController {
         newText = newText.substring(1, newText.length() - 1);
         questionService.editQuestionText(questionId2, newText);
     }
+
+    /**
+     * Receives a POST request from the client with the new answer to be set.
+     * calls set answer to create an instance of the answer.
+     * @param questionId String from PathVariable, id of the question to be answered
+     * @param userId - id of the moderator that set the answer
+     * @param answeredInClass - type of answer created
+     */
+    @PostMapping("/answer/setAsAnswered/{questionId}/{userId}/{answeredInClass}")
+    @ResponseBody
+    public void setAnswered(@PathVariable String questionId,
+                                 @PathVariable String userId,
+                                 @PathVariable boolean answeredInClass) {
+
+        String answerText = "";
+
+        if (answeredInClass) {
+            answerText = "This question was answered during the lecture";
+        }
+
+        questionService.setAnswered(answerText, questionId, userId, answeredInClass);
+
+    }
+
+
+
+    @GetMapping("/answer/checkAnswer/{questionId}")
+    @ResponseBody
+    public boolean checkAnswered(@PathVariable("questionId") String questionId) {
+
+        return questionService.checkAnswered(questionId);
+    }
+
+
 }
