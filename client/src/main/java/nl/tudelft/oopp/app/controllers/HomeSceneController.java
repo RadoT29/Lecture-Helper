@@ -54,7 +54,6 @@ public class HomeSceneController {
     //Window window = ((Node) (loader.getSource())).getScene().getWindow();
 
 
-
     /**
      * This method initializes the thread,
      * which is responsible for constantly refreshing the questions.
@@ -153,11 +152,10 @@ public class HomeSceneController {
     /**
      * This method is constantly called by a thread and refreshes the page.
      *
-     * @throws ExecutionException           - may be thrown.
-     * @throws InterruptedException         - may be thrown.
-
+     * @throws ExecutionException   - may be thrown.
+     * @throws InterruptedException - may be thrown.
      */
-    public void constantRefresh() throws ExecutionException, InterruptedException{
+    public void constantRefresh() throws ExecutionException, InterruptedException {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
