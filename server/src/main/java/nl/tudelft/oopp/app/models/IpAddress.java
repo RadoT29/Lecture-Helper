@@ -4,7 +4,7 @@ package nl.tudelft.oopp.app.models;
 import javax.persistence.*;
 
 @Entity
-public class IPAddress {
+public class IpAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,14 +26,14 @@ public class IPAddress {
      * @param userId - the user object/ the user which it is
      */
 
-    public IPAddress(String ipAddress, Room roomId, User userId) {
+    public IpAddress(String ipAddress, Room roomId, User userId) {
         this.ipAddress = ipAddress;
         this.access = true;
         this.roomId = roomId;
         this.userId = userId;
     }
 
-    public IPAddress() {
+    public IpAddress() {
 
     }
 }

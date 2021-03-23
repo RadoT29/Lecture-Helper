@@ -110,7 +110,7 @@ public class SplashCommunication {
      * @param roomLink - the room id is found later. Check if the user has access for that room
      * @throws AccessDeniedException - if the user is banned this exception is thrown
      */
-    public static void isIPBanned(String roomLink) throws AccessDeniedException {
+    public static void isIpBanned(String roomLink) throws AccessDeniedException {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/room/user/isBanned/" + roomLink)).build();
         HttpResponse<String> response = null;

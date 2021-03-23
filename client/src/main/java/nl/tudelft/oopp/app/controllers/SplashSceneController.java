@@ -95,7 +95,7 @@ public class SplashSceneController {
             //System.out.println(roomLink.getText());
 
             if (!session.getIsModerator()) {
-                SplashCommunication.isIPBanned(roomLink.getText());
+                SplashCommunication.isIpBanned(roomLink.getText());
                 ServerCommunication.hasStudentPermission(roomLink.getText());
             }
 
