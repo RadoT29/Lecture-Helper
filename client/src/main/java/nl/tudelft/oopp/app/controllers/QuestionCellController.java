@@ -3,9 +3,12 @@ package nl.tudelft.oopp.app.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 import nl.tudelft.oopp.app.models.Session;
+
+import java.io.IOException;
 
 public class QuestionCellController {
 
@@ -17,6 +20,12 @@ public class QuestionCellController {
 
     @FXML
     HBox questionCell;
+
+    @FXML
+    Label questionTextLabel;
+
+    @FXML
+    Button editButton;
 
 
     private HomeSceneController hsc;
@@ -98,4 +107,27 @@ public class QuestionCellController {
     }
 
 
+    /**
+     * Handles click in the edit button.
+     * Tries to load new edit question scene.
+     */
+    public void editClicked() {
+
+        //get question id
+        String oldText = questionTextLabel.getText();
+        Node question = questionCell.getParent();
+        String id = question.getId();
+
+        //load edit question scene
+        try {
+            EditQuestionSceneController.init(oldText, id, this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refresh() {
+        hsc.refresh();
+    }
 }

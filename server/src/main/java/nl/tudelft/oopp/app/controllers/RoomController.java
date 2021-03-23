@@ -31,6 +31,11 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         Room room = new Room(name);
         roomRepository.save(room);
+        System.out.println("Room created:"
+                            + "\n\tRoom id: " + room.getId()
+                            + "\n\tRoom name: " + room.getName()
+                            + "\n\tStudent link:" + room.getLinkIdStudent()
+                            + "\n\tModerator link:" + room.getLinkIdModerator());
         return room;
     }
 
@@ -58,7 +63,14 @@ public class RoomController {
     public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
-        roomRepository.closeRoom(room.getId(), LocalDateTime.now(Clock.systemUTC()));
+        if (room.getLinkIdModerator().toString().equals(linkId)) {
+            roomRepository.closeRoom(room.getId(), LocalDateTime.now(Clock.systemUTC()));
+        } else {
+            System.out.println("Someone tried to close room " + room.getId()
+                    + "(name: " + room.getName() + ") with a student link");
+
+        }
+
     }
 
     /**
@@ -95,6 +107,11 @@ public class RoomController {
     @PutMapping("kickAllStudents/{linkId}")
     @ResponseBody
     public void kickAllStudent(@PathVariable String linkId) {
-        roomRepository.kickAllStudents(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        if (room.getLinkIdModerator().toString().equals(linkId)) {
+            roomRepository.kickAllStudents(room.getId());
+            System.out.println("Room " + room.getId()
+                    + "(name: " + room.getName() + ") had all students kicked out");
+        }
     }
 }

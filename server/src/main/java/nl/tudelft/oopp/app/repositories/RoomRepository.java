@@ -20,20 +20,13 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.permission=false WHERE r.linkIdModerator=?1")
-    void kickAllStudents(UUID link);
+    @Query(value = "UPDATE Room r SET r.permission=false WHERE r.id=?1")
+    void kickAllStudents(Long id);
 
     @Modifying
     @Transactional
     @Query("UPDATE Room r SET r.isOpen=true, r.permission=true WHERE r.id=?1")
     void openRoom(long roomId);
-
-    @Query(value = "select r from Room r where r.linkIdModerator=?1 OR r.linkIdStudent=?1")
-    Room isClose(UUID link);
-
-    @Query(value = "select r from Room r where r.linkIdModerator=?1 OR r.linkIdStudent=?1")
-    Room permission(UUID link);
-
     @Query("SELECT u FROM Room u WHERE u.linkIdStudent=?1 OR u.linkIdModerator=?1")
     Room findByLink(UUID link);
 }

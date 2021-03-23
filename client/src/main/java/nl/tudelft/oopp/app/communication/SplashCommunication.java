@@ -96,8 +96,10 @@ public class SplashCommunication {
         try {
             // Parses Json response from server.
             User user = gson.fromJson(response.body(), User.class);
+
             // Uses the information received to update the session information.
             session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
+
             //If the link is not valid then no session is started
             // and user should stay on splash screen.
             if (session == null) {

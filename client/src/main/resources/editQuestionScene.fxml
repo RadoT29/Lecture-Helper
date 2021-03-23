@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="169.0" prefWidth="420.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.EditQuestionSceneController">
+   <children>
+      <Button fx:id="okButton" layoutX="299.0" layoutY="125.0" mnemonicParsing="false" onAction="#okClicked" style="-fx-background-color: #ffffff;" text="OK" />
+      <Button fx:id="cancelButton" layoutX="351.0" layoutY="124.0" mnemonicParsing="false" onAction="#cancelClicked" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #ffffff;" text="Cancel" />
+      <TextArea fx:id="editTextArea" layoutX="17.0" layoutY="14.0" prefHeight="95.0" prefWidth="385.0" wrapText="true" />
+   </children>
+</AnchorPane>

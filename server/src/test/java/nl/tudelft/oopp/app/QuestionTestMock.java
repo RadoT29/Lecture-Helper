@@ -10,15 +10,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
+@DataJpaTest
 public class QuestionTestMock {
 
     @InjectMocks
@@ -69,5 +72,19 @@ public class QuestionTestMock {
                         new Question("question2"))
                         .collect(Collectors.toList()));
         assertEquals("question1", questionService.getAllQuestions().get(0).getQuestionText());
+    }
+
+    /**
+     * tests service method for editing question text.
+     */
+    @Test
+    public void editQuestionTest() {
+        Question q = new Question("this will be edited");
+        when(questionRepository.getOne(q.getId())).thenReturn(q);
+        doNothing().when(questionRepository).editQuestionText(q.getId(), "This is edited");
+
+        questionService.editQuestionText(q.getId(), "This is edited");
+        q.setQuestionText("This is edited");
+        assertEquals("This is edited", questionRepository.getOne(q.getId()).getQuestionText());
     }
 }
