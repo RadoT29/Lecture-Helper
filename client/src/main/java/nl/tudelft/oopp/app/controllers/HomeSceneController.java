@@ -90,9 +90,17 @@ public class HomeSceneController {
 
     }
 
+    /**
+     * When this method is called it:
+     * 1. set the boolean variable interruptThread = true
+     * which afterwards interrupts the thread
+     * 2. Open the 
+     */
     public void closeWindow() {
         interruptThread = true;
-        if (!openOne) return;
+        if (!openOne) {
+            return;
+        }
         Parent loader = null;
         try {
             loader = new FXMLLoader(getClass().getResource("/splashScene.fxml")).load();
