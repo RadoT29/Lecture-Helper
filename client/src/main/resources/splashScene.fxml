@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
+<?import java.net.URL?>
 <VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.SplashSceneController">
+    <stylesheets>
+        <URL value="@styles/splashScene.css" />
+        <URL value="@styles/svgIcons.css" />
+    </stylesheets>
     <Button fx:id="logoTUD" maxHeight="192.0" maxWidth="192.0" minHeight="192.0" minWidth="192.0" prefHeight="192.0" prefWidth="192.0">
       <VBox.margin>
          <Insets bottom="106.0" />
       </VBox.margin></Button>
-    <VBox maxHeight="220.0" maxWidth="605.0" minHeight="220.0" minWidth="605.0" prefHeight="220.0" prefWidth="605.0">
+    <VBox maxHeight="287.0" maxWidth="606.0" minHeight="220.0" minWidth="605.0" prefHeight="287.0" prefWidth="606.0">
       <children>
           <Label text="Enter a room">
             <font>
@@ -75,4 +77,17 @@
          </Label>
       </children>
    </VBox>
+   <Button fx:id="scheduleRoomButton" maxHeight="50.0" maxWidth="609.0" minHeight="50.0" minWidth="150.0" onAction="#scheduleRoom" prefHeight="50.0" prefWidth="609.0" style="-fx-background-radius: 5em;" text="schedule a room" textFill="WHITE">
+      <font>
+         <Font name="Roboto" size="16.0" />
+      </font>
+   </Button>
+    <Label fx:id="scheduleRoomFail" text="Sorry, scheduling is not available." visible="false">
+        <VBox.margin>
+            <Insets bottom="40.0" left="5.0" top="5.0" />
+        </VBox.margin>
+        <font>
+            <Font name="System Bold Italic" size="12.0" />
+        </font>
+    </Label>
 </VBox>

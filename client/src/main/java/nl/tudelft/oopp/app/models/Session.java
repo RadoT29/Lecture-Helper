@@ -119,6 +119,10 @@ public final class Session {
         return instance;
     }
 
+    public static void clearSession() {
+        instance = null;
+    }
+
     public boolean getIsModerator() {
         return isModerator;
     }
@@ -168,11 +172,8 @@ public final class Session {
     /**
      * This method resets the session by clearing all the session Data.
      */
-    public void cleanUserSession() {
-        isModerator = false;
-        roomLink = null;
-        roomName = null;
-        userId = null;
+    public static void cleanUserSession() {
+        instance = null;
     }
 }
 

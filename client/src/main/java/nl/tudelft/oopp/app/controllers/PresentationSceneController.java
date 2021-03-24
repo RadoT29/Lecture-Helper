@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.models.Moderator;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -25,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class PresentationSceneController extends HomeSceneController implements Initializable {
+public class PresentationSceneController extends ModeratorSceneController implements Initializable {
     @FXML
     private VBox questionBox;
     @FXML
@@ -83,15 +84,15 @@ public class PresentationSceneController extends HomeSceneController implements 
         stage.show();
     }
 
+
     /**
-    * Method to make it so that when the scene loads
-    * the refresh method is automatically executed.
-    * @param url - url of the scene
-    * @param rb - resource bundle used
-    */
+     * Method to make it so that when the scene loads
+     * the refresh method is automatically executed.
+     * @param url - url of the scene
+     * @param rb - resource bundle used
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        refresh();
     }
 }

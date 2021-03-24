@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -63,7 +66,7 @@ public class RoomTest {
         Room room2 = new Room("New room");
         roomRepository.save(room);
         roomRepository.save(room2);
-        roomRepository.closeRoom(room.getLinkIdModerator());
+        roomRepository.closeRoom(room.getId());
         assertEquals(true, room2.getIsOpen());
     }
 
