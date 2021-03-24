@@ -129,6 +129,7 @@ public class HomeSceneCommunication {
             e.printStackTrace();
         }
     }
+
     /**
      * Sends a request to get all questions from a room.
      * @param roomLink - the link for the room.
