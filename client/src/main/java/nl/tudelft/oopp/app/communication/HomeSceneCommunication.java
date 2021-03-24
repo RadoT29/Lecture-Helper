@@ -2,10 +2,12 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -22,7 +24,7 @@ import java.util.List;
 public class HomeSceneCommunication {
 
     private static Gson gson = new Gson();
-    private static Session session = Session.getInstance();
+    private static Session session;
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
@@ -35,6 +37,7 @@ public class HomeSceneCommunication {
 
     public static void postQuestion(Question question) {
         String requestBody = gson.toJson(question);
+        session = Session.getInstance();
 
         //Creates a new POST Request at the link question/roomLink/userId
         // with the Question object as body
@@ -64,6 +67,8 @@ public class HomeSceneCommunication {
      * @return a list questions
      */
     public static List<Question> getQuestions() {
+        session = Session.getInstance();
+        System.out.println("http://localhost:8080/questions/refresh/" + session.getRoomLink());
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/refresh/" + session.getRoomLink()))
                 .build();
@@ -87,6 +92,7 @@ public class HomeSceneCommunication {
      * @return a String questionID
      */
     public static Long getSingleQuestion() {
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/getOneQuestion/" + session.getRoomLink() + "/" + session.getUserId()))
                 .build();
@@ -196,9 +202,43 @@ public class HomeSceneCommunication {
             e.printStackTrace();
             return List.of();
         }
-        
+
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
 
     }
+
+
+
+    /**
+     * Gets an export of the questions and answers in total.
+     * (all of the questions user's IDs and room ID are already set to zero)
+     * @return a list questions
+     */
+    public static String exportQuestions(String roomLink) {
+        JsonReader reader;
+        String trim;
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/export/" + roomLink))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+
+        return response.body();
+    }
+
+
+
+
+
+
 }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -63,7 +64,6 @@ public class QuestionController {
     public void add(@PathVariable String roomLink,
                     @PathVariable String userId,
                     @RequestBody Question question) {
-        System.out.println("Question arrived on server!");
         questionService.addNewQuestion(roomLink,userId,question);
     }
 
@@ -209,11 +209,19 @@ public class QuestionController {
 
 
 
-    @GetMapping("/answer/checkAnswer/{questionId}")
+    @GetMapping("/answer/checkAnswer/{questionId}/{roomLink}")
     @ResponseBody
-    public boolean checkAnswered(@PathVariable("questionId") String questionId) {
+    public boolean checkAnswered(@PathVariable("questionId") String questionId,
+                                @PathVariable("roomLink") String roomLink) {
 
-        return questionService.checkAnswered(questionId);
+        return questionService.checkAnswered(questionId, roomLink);
+    }
+
+    @GetMapping("/export/{roomLink}")
+    @ResponseBody
+    public String exportQuestions(@PathVariable("roomLink") String roomLink) {
+        return questionService.exportQuestions(roomLink);
+
     }
 
     /**

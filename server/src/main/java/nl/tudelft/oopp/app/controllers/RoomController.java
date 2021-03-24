@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -19,6 +18,8 @@ import java.util.UUID;
 public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private RoomService roomService;
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -30,7 +31,25 @@ public class RoomController {
     public Room getNewRoomLinks(@RequestParam String name) {
         Room room = new Room(name);
         roomRepository.save(room);
+        System.out.println("Room created:"
+                            + "\n\tRoom id: " + room.getId()
+                            + "\n\tRoom name: " + room.getName()
+                            + "\n\tStudent link:" + room.getLinkIdStudent()
+                            + "\n\tModerator link:" + room.getLinkIdModerator());
         return room;
+    }
+
+    /**
+     * GET Endpoint to retrieve a random quote.
+     *
+     * @return randomly selected {@link Room}.
+     */
+    @PostMapping("scheduleRoom")
+    @ResponseBody
+    public Room getScheduledRoomLinks(@RequestParam String name,
+                                      @RequestBody String startDateUtcString) {
+        startDateUtcString = startDateUtcString.substring(1, startDateUtcString.length() - 1);
+        return roomService.scheduleRoom(name, startDateUtcString);
     }
 
     /**
@@ -43,7 +62,15 @@ public class RoomController {
     @ResponseBody
     public void closeRoom(@PathVariable String linkId) {
         //make query and close the room!
-        roomRepository.closeRoom(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        if (room.getLinkIdModerator().toString().equals(linkId)) {
+            roomRepository.closeRoom(room.getId());
+        } else {
+            System.out.println("Someone tried to close room " + room.getId()
+                    + "(name: " + room.getName() + ") with a student link");
+
+        }
+
     }
 
     /**
@@ -55,7 +82,7 @@ public class RoomController {
     @GetMapping("isOpenById/{linkId}")
     @ResponseBody
     public boolean isClose(@PathVariable String linkId) {
-        Room room = roomRepository.isClose(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
         return room.getIsOpen();
     }
 
@@ -68,7 +95,8 @@ public class RoomController {
     @GetMapping("hasStudentPermission/{linkId}")
     @ResponseBody
     public boolean hasStudentPermission(@PathVariable String linkId) {
-        return roomRepository.permission(UUID.fromString(linkId)).getPermission();
+        Room room = roomService.getByLink(linkId);
+        return room.getPermission();
     }
 
     /**
@@ -79,29 +107,11 @@ public class RoomController {
     @PutMapping("kickAllStudents/{linkId}")
     @ResponseBody
     public void kickAllStudent(@PathVariable String linkId) {
-        roomRepository.kickAllStudents(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        if (room.getLinkIdModerator().toString().equals(linkId)) {
+            roomRepository.kickAllStudents(room.getId(), LocalDateTime.now(Clock.systemUTC()));
+            System.out.println("Room " + room.getId()
+                    + "(name: " + room.getName() + ") had all students kicked out");
+        }
     }
-
-    /**
-     * GET request for a list with the room updated time and its last modification.
-     *
-     * @param roomLink - the link of the room for which isClose status is requested
-     * @return - date at which the room was created
-     */
-    @GetMapping("room/getRoomTime/{roomLink}")
-    @ResponseBody
-    public List<Date> getRoomTime(@PathVariable String roomLink) {
-        List<Date> times = new ArrayList<Date>();
-        long id = Long.parseLong(roomLink);
-
-        Date createdAt = roomRepository.getRoomTime(id);
-        Date updatedAt = roomRepository.getUpdatedTime(id);
-
-        times.add(createdAt);
-        times.add(updatedAt);
-
-        return times;
-    }
-
-
 }

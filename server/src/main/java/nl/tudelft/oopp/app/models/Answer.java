@@ -19,12 +19,19 @@ import java.util.Date;
 @Entity
 public class Answer {
 
-    @Column(nullable = true)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "question_sequence",
+            sequenceName = "question_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "question_sequence"
+    )
     private long id;
 
-    private String answer;
+    private String answerText;
     private boolean answeredInClass;
 
     @ManyToOne
@@ -52,7 +59,7 @@ public class Answer {
                   Question question,
                   Moderator moderator,
                   boolean answeredInClass) {
-        this.answer = answerText;
+        this.answerText = answerText;
         this.question = question;
         this.moderator = moderator;
         this.answeredInClass = answeredInClass;

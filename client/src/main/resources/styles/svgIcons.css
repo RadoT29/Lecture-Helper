@@ -92,14 +92,22 @@
     27.3666 27.3668 33.3333 20.0002 33.3333Z"
 }
 
-.answeredIcon{
+.answerIcon{
     -fx-scale-x: 0.4;
     -fx-scale-y: 0.4;
     -fx-background-color: #000;
-    -fill: #000;
     -fx-shape: "M14.9998 26.95L8.04977 20L5.68311 22.35L14.9998 31.6667L34.9998
     11.6667L32.6498 9.31665L14.9998 26.95Z"
 }
+
+.answerIcon.active{
+    -fx-scale-x: 0.4;
+    -fx-scale-y: 0.4;
+    -fx-background-color: #fff;
+    -fx-shape: "M14.9998 26.95L8.04977 20L5.68311 22.35L14.9998 31.6667L34.9998
+    11.6667L32.6498 9.31665L14.9998 26.95Z"
+}
+
 
 .dismissIcon{
     -fx-scale-x: 0.4;

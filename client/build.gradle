@@ -11,6 +11,9 @@ dependencies {
 
     testCompile("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    testCompile("org.mock-server:mockserver-netty:5.11.2")
+    testCompile("org.mock-server:mockserver-client-java:5.11.2")
+//    testImplementation("org.mock-server:mockserver-junit-jupiter:5.11.2")
 
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'

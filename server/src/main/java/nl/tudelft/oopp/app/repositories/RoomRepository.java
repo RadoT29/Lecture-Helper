@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,19 +16,18 @@ import java.util.UUID;
 public interface RoomRepository extends JpaRepository<Room, Long> {
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.linkIdModerator=?1")
-    void closeRoom(UUID link);
+    @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.id=?1")
+    void closeRoom(Long id);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.permission=false WHERE r.linkIdModerator=?1")
-    void kickAllStudents(UUID link);
+    @Query(value = "UPDATE Room r SET r.permission=false, r.endDateForStudents=?2 WHERE r.id=?1")
+    void kickAllStudents(Long id, LocalDateTime endDate);
 
-    @Query(value = "select r from Room r where r.linkIdModerator=?1 OR r.linkIdStudent=?1")
-    Room isClose(UUID link);
-
-    @Query(value = "select r from Room r where r.linkIdModerator=?1 OR r.linkIdStudent=?1")
-    Room permission(UUID link);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Room r SET r.isOpen=true, r.permission=true WHERE r.id=?1")
+    void openRoomForStudents(long roomId);
 
     @Query("SELECT u FROM Room u WHERE u.linkIdStudent=?1 OR u.linkIdModerator=?1")
     Room findByLink(UUID link);
@@ -37,4 +37,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("SELECT r.updatedAt FROM Room r WHERE r.id=?1")
     Date getUpdatedTime(long l);
+
+    @Query("SELECT r.name FROM Room r WHERE r.id=?1")
+    String getRoomName(long roomId);
+
 }
