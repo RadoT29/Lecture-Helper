@@ -13,7 +13,8 @@ import java.util.UUID;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    @Query("SELECT u FROM Question u WHERE u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1")
+    @Query("SELECT u FROM Question u WHERE (u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1)"
+            + " AND u.answered='false'")
     List<Question> findAllByRoomLink(UUID link);
 
     @Transactional
@@ -34,6 +35,18 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT MAX(u.id) FROM Question u WHERE u.room.id=?1 AND u.user.id=?2")
     String getSingularQuestion(long roomId, long userId);
 
-    @Query("SELECT u.answered FROM Question u WHERE u.id=?1")
-    boolean checkAnswered(long questionId);
+    @Query("SELECT u.answered FROM Question u WHERE u.id=?1 AND u.room.id=?2")
+    boolean checkAnswered(long questionId, long roomId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.answered=?2 WHERE u.id=?1")
+    void updateAnswerStatus(long questionId, boolean status);
+
+    @Query("SELECT u.id FROM Question u WHERE u.room.id=?1")
+    List<Long> getAllQuestionIds(long roomId);
+
+
+
+
 }

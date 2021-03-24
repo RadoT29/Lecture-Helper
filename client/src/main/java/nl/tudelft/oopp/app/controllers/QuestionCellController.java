@@ -84,9 +84,10 @@ public class QuestionCellController {
 
         if (upvoteButton.getStyleClass().contains("active")) {
             upvoteButton.getStyleClass().remove("active");
-            System.out.println();
+
         } else {
             upvoteButton.getStyleClass().add("active");
+
         }
 
         hsc.refresh();
@@ -146,16 +147,7 @@ public class QuestionCellController {
         String id = question.getId();
 
         setAnswer(id);
-
-        if (answerButton.getStyleClass().contains("active")) {
-            answerButton.getStyleClass().remove("active");
-            System.out.println();
-
-
-        } else {
-            answerButton.getStyleClass().add("active");
-        }
-
+        answerButton.getStyleClass().add("active");
         hsc.refresh();
     }
 
@@ -172,12 +164,13 @@ public class QuestionCellController {
         Session session = Session.getInstance();
 
         boolean status = QuestionCommunication.checkAnswered(questionId);
+
         if (!status) {
             QuestionCommunication.setAnswered(questionId, true);
         } else {
             System.out.println("This question was already answered");
         }
-        System.out.println("This question was marked as answered");
+
     }
 
 

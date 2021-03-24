@@ -142,11 +142,11 @@ public class QuestionCommunication {
     /**
      * GET request to check if the question has an answer stored on the server.
      *
-     * @return a string with the answer question text
+     * @return a string with true if answered and false if not
      */
     public static boolean checkAnswered(String questionId) {
         HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/questions/answer/checkAnswer/" + questionId))
+                .uri(URI.create("http://localhost:8080/questions/answer/checkAnswer/" + questionId + "/" + session.getRoomLink()))
                 .build();
         HttpResponse<String> response = null;
         try {
