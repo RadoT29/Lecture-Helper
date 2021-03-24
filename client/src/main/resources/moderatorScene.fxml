@@ -12,7 +12,7 @@
          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f05454" height="70.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="90.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          <ScrollPane fx:id="scrollPaneLog" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="560.0" prefWidth="780.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="20.0">
             <content>
-               <VBox fx:id="questionBoxLog" alignment="TOP_CENTER" prefHeight="559.0" prefWidth="800.0" />
+               <VBox fx:id="questionBoxLog" alignment="TOP_CENTER" prefHeight="559.0" prefWidth="800.0" style="-fx-background-color: #DDDDDD;" />
             </content>
          </ScrollPane>
       </children>

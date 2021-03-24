@@ -207,10 +207,10 @@ public class HomeSceneController {
     }
 
     /**
-     *
-     * @param question
-     * @param resource
-     * @return
+     *  Creates a node for a question in the question log scene.
+     * @param question - the question.
+     * @param resource - the question cell.
+     * @return - a Node of the question.
      */
     private Node createQuestionCellLog(Question question, String resource) throws IOException {
 
