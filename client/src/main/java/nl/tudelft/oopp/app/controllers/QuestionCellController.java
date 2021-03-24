@@ -5,10 +5,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
+import nl.tudelft.oopp.app.models.Answer;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.Locale;
 
 public class QuestionCellController {
 
@@ -26,6 +31,9 @@ public class QuestionCellController {
 
     @FXML
     Button editButton;
+
+    @FXML
+    Button answerButton;
 
 
     private HomeSceneController hsc;
@@ -76,9 +84,10 @@ public class QuestionCellController {
 
         if (upvoteButton.getStyleClass().contains("active")) {
             upvoteButton.getStyleClass().remove("active");
-            System.out.println();
+
         } else {
             upvoteButton.getStyleClass().add("active");
+
         }
 
         hsc.refresh();
@@ -126,6 +135,45 @@ public class QuestionCellController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method called when the upvote button is clicked,
+     * it will first get the ID of the question in which the button was clicked.
+     * Then the method will make a call to setUpvote so that the upvote is changed
+     * (based on the users previous actions)
+     */
+    public void answeredClicked() {
+        Node question = questionCell.getParent();
+        String id = question.getId();
+
+        setAnswer(id);
+        answerButton.getStyleClass().add("active");
+        hsc.refresh();
+    }
+
+
+
+    /**
+     * Method to set a question as answered,
+     * It will check if the question selected has been marked as answered
+     * If not a new answer will be created
+     * (through methods established in communication).
+     * @param questionId - QuestionId where answer is being added
+     */
+    public void setAnswer(String questionId) {
+        Session session = Session.getInstance();
+
+        boolean status = QuestionCommunication.checkAnswered(questionId);
+
+        if (!status) {
+            QuestionCommunication.setAnswered(questionId, true);
+        } else {
+            System.out.println("This question was already answered");
+        }
+
+    }
+
+
 
     public void refresh() {
         hsc.refresh();

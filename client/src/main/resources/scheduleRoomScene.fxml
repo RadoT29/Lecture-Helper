@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="349.0" prefWidth="392.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ScheduleRoomSceneController">
+   <children>
+      <Label layoutX="24.0" layoutY="49.0" prefHeight="20.0" prefWidth="78.0" text="Room Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="roomName" layoutX="124.0" layoutY="46.0" prefHeight="26.0" prefWidth="238.0" promptText="Room name" />
+      <Label fx:id="invalidRoomName" layoutX="124.0" layoutY="72.0" prefHeight="18.0" prefWidth="146.0" text="Insert a Room name!" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="72.0" layoutY="116.0" prefHeight="20.0" prefWidth="31.0" text="Time">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="time" layoutX="124.0" layoutY="113.0" prefHeight="26.0" prefWidth="66.0" promptText="hh:mm" />
+      <Label fx:id="invalidTime" layoutX="126.0" layoutY="139.0" prefHeight="54.0" prefWidth="78.0" text="Invalid time format" visible="false" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="useLocalTimeZone" layoutX="211.0" layoutY="113.0" mnemonicParsing="false" onAction="#localTimeZoneChecked" prefHeight="26.0" prefWidth="157.0" selected="true" text="use your local time zone" wrapText="true">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </CheckBox>
+      <Label fx:id="localTimeZone" layoutX="231.0" layoutY="136.0" prefHeight="18.0" prefWidth="126.0">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
+      <ComboBox fx:id="timeZoneComboBox" disable="true" layoutX="210.0" layoutY="158.0" prefHeight="26.0" prefWidth="146.0" promptText="Time zone" />
+      <Label fx:id="invalidTimeZone" layoutX="162.0" layoutY="187.0" prefHeight="26.0" prefWidth="194.0" text="Pick a time zone or use local time" visible="false" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="72.0" layoutY="222.0" prefHeight="20.0" prefWidth="31.0" text="Date" textAlignment="RIGHT">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="date" layoutX="124.0" layoutY="219.0" prefHeight="26.0" prefWidth="238.0" promptText="Date" />
+      <Label fx:id="invalidDate" layoutX="126.0" layoutY="245.0" prefHeight="18.0" prefWidth="146.0" text="Invalid date" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="generateLinksButton" layoutX="186.0" layoutY="276.0" mnemonicParsing="false" onAction="#generateLinks" prefHeight="26.0" prefWidth="101.0" text="Generate links" />
+      <Button layoutX="300.0" onAction="#cancelClicked" layoutY="276.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="Cancel" />
+      <Label fx:id="dateInThePast" layoutX="24.0" layoutY="280.0" prefHeight="18.0" prefWidth="158.0" text="entered date is in the past" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="generateLinksError" layoutX="159.0" layoutY="302.0" prefHeight="18.0" prefWidth="178.0" text="Error, could not generate links" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
