@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 public interface SpeedReactionRepository extends JpaRepository<SpeedReaction, Long> {
 
     @Query("SELECT MAX(u.id) FROM SpeedReaction u WHERE u.room.id=?1 AND u.user.id=?2")
-    Long getReactionIdByRoomLink(long roomId, long userId);
+    Long getReactionIdByRoomAndUserIds(long roomId, long userId);
 
     @Transactional
     @Modifying

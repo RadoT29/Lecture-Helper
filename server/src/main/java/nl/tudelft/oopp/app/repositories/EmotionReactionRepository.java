@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 public interface EmotionReactionRepository extends JpaRepository<EmotionReaction, Long> {
 
     @Query("SELECT MAX(u.id) FROM EmotionReaction u WHERE u.room.id=?1 AND u.user.id=?2")
-    Long getReactionIdByRoomLink(long roomId, long userId);
+    Long getReactionIdByRoomAndUserIds(long roomId, long userId);
 
     @Transactional
     @Modifying

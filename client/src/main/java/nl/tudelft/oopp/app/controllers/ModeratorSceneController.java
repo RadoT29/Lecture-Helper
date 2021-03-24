@@ -121,7 +121,11 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         loadStats();
     }
 
-    private void loadStats() {
+    /**
+     * This method changes the icons that represent the Speed and Emotion Reaction to
+     * match their statistics.
+     */
+    public void loadStats() {
         int emotionStatInt = ReactionCommunication.getReactionStats(false);
         int speedStatInt = ReactionCommunication.getReactionStats(true);
 

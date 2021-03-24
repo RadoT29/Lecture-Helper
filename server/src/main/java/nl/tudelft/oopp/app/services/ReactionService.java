@@ -59,7 +59,7 @@ public class ReactionService {
         if (reaction instanceof SpeedReaction) {
 
             // Looks for a SpeedReaction with the same room and user
-            Long id = speedReactionRepository.getReactionIdByRoomLink(roomId, userId);
+            Long id = speedReactionRepository.getReactionIdByRoomAndUserIds(roomId, userId);
 
             // If reaction is found it gets updated with new value
             if (id != null) {
@@ -73,7 +73,7 @@ public class ReactionService {
         // Checks if reaction is of type SpeedReaction
         } else if (reaction instanceof EmotionReaction) {
             // Looks for a EmotionReaction with the same room and user
-            Long id = emotionReactionRepository.getReactionIdByRoomLink(roomId, userId);
+            Long id = emotionReactionRepository.getReactionIdByRoomAndUserIds(roomId, userId);
 
             // If reaction is found it gets updated with new value
             if (id != null) {

@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.models.Moderator;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -25,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class PresentationSceneController extends HomeSceneController implements Initializable {
+public class PresentationSceneController extends ModeratorSceneController implements Initializable {
     @FXML
     private VBox questionBox;
     @FXML

@@ -31,6 +31,22 @@ public class Reaction {
     private LocalDateTime updatedAt;
 
 
+    /**
+     * This constructor is used for testing purposes.
+     * @param value the value of the reaction
+     * @param room the room associated to the reaction
+     * @param user the user associated to the reaction
+     */
+    public Reaction(int value, Room room, User user) {
+        this.value = value;
+        this.room = room;
+        this.user = user;
+    }
+
+    public Reaction(int value) {
+        this.value = value;
+    }
 }
+
 
 
