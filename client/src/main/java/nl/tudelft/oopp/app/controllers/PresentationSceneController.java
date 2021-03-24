@@ -84,4 +84,15 @@ public class PresentationSceneController extends ModeratorSceneController implem
         stage.show();
     }
 
+
+    /**
+     * Method to make it so that when the scene loads
+     * the refresh method is automatically executed.
+     * @param url - url of the scene
+     * @param rb - resource bundle used
+     */
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    }
 }
