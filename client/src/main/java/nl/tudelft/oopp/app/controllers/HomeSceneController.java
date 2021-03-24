@@ -31,10 +31,11 @@ public class HomeSceneController {
     private TextField questionInput;
 
     @FXML
-    private VBox questionBox;
+    protected VBox questionBox;
 
     protected PriorityQueue<Question> questions;
 
+    protected boolean keepRequesting;
 
     /**
      * This method initializes the thread,
@@ -43,13 +44,19 @@ public class HomeSceneController {
      * @param rb - Provides any needed resources.
      */
     public void initialize(URL url, ResourceBundle rb) {
+        callRequestingThread();
+    }
 
-        // This thread will periodically refresh the content of the question queue.
+    /**
+     * This thread will periodically refresh the content of the question queue.
+     */
+    public void callRequestingThread() {
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (!(Thread.interrupted())) {
+                keepRequesting = true;
+                while (keepRequesting) {
                     try {
                         Platform.runLater(() -> {
                             try {
@@ -67,7 +74,6 @@ public class HomeSceneController {
                 }
             }
         }).start();
-
     }
 
     /**
@@ -142,7 +148,6 @@ public class HomeSceneController {
         if (session.getIsModerator()) {
             resource = "/questionCellModerator.fxml";
         }
-
         questionBox.getChildren().clear();
         int count = 1;
         while (!questions.isEmpty()) {
