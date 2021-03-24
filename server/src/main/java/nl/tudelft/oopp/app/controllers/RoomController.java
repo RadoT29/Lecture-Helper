@@ -92,7 +92,7 @@ public class RoomController {
     @GetMapping("isOpenById/{linkId}")
     @ResponseBody
     public boolean isClose(@PathVariable String linkId) {
-        Room room = roomService.getByLink(linkId);
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
         return room.getIsOpen();
     }
 

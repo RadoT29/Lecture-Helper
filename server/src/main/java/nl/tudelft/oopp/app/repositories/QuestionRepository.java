@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +15,8 @@ import java.util.UUID;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    @Query("SELECT u FROM Question u WHERE u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1")
+    @Query("SELECT u FROM Question u WHERE (u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1)"
+            + " AND u.answered='false'")
     List<Question> findAllByRoomLink(UUID link);
 
     @Transactional
@@ -34,5 +36,22 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT MAX(u.id) FROM Question u WHERE u.room.id=?1 AND u.user.id=?2")
     String getSingularQuestion(long roomId, long userId);
+
+    @Query("SELECT u.answered FROM Question u WHERE u.id=?1 AND u.room.id=?2")
+    boolean checkAnswered(long questionId, long roomId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.answered=?2 WHERE u.id=?1")
+    void updateAnswerStatus(long questionId, boolean status);
+
+    @Query("SELECT u.id FROM Question u WHERE u.room.id=?1")
+    List<Long> getAllQuestionIds(long roomId);
+
+    @Query("SELECT u.questionText FROM Question u WHERE u.id=?1")
+    String getQuestionText(long questionId);
+
+    @Query("SELECT u.createdAt FROM Question u WHERE u.id=?1")
+    LocalDateTime getQuestionTime(long questionId);
 
 }

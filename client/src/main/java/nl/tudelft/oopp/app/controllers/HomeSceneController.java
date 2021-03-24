@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,7 +15,12 @@ import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.PriorityQueue;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This class contains the code that is run when the IO objects in the Home page are utilized.
@@ -30,6 +36,41 @@ public class HomeSceneController {
     private VBox questionBox;
 
     protected PriorityQueue<Question> questions;
+
+
+    /**
+     * This method initializes the thread,
+     * which is responsible for constantly refreshing the questions.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
+    public void initialize(URL url, ResourceBundle rb) {
+
+        // This thread will periodically refresh the content of the question queue.
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!(Thread.interrupted())) {
+                    try {
+                        Platform.runLater(() -> {
+                            try {
+                                constantRefresh();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
 
     /**
      * Pressing the sendButton will send all the text in the questionInput
@@ -80,6 +121,17 @@ public class HomeSceneController {
     public void refresh() {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.getQuestions());
+        loadQuestions();
+    }
+
+    /**
+     * This method is constantly called by a thread and refreshes the page.
+     * @throws ExecutionException - may be thrown.
+     * @throws InterruptedException - may be thrown.
+     */
+    public void constantRefresh() throws ExecutionException, InterruptedException {
+        questions = new PriorityQueue<>();
+        questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
     }
 
@@ -186,6 +238,27 @@ public class HomeSceneController {
 
         }
     }
+
+
+    /**
+     * Get the Date in which the room was created.
+     * @return Date - at which room was created
+     */
+    public Date retrieveRoomTime() {
+        Date roomDate = HomeSceneCommunication.getRoomTime().get(0);
+        return roomDate;
+    }
+
+    /**
+     * Get the Date in which the room was last modified.
+     * @return Date - at which room was last modified
+     */
+    public Date retrieveModifiedTime() {
+        Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
+        return roomDate;
+    }
+
+
 
 
 
