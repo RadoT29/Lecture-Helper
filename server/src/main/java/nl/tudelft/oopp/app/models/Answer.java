@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 
 import java.util.Date;
-import java.util.UUID;
 
 @Setter
 @Getter

@@ -16,6 +16,10 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT u FROM Question u WHERE u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1")
     List<Question> findAllByRoomLink(UUID link);
 
+    @Query("SELECT u FROM Question u WHERE "
+            + "(u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1) AND u.answered = true")
+    List<Question> findAllAnsweredByRoomLink(UUID link);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Question u WHERE u.id=?1 AND u.user.id=?2")
@@ -36,4 +40,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT u.answered FROM Question u WHERE u.id=?1")
     boolean checkAnswered(long questionId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.answered=?2 WHERE u.id=?1")
+    void updateAnsweredStatus(long questionId, boolean answered);
 }

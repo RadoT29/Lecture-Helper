@@ -102,6 +102,8 @@ public class QuestionService {
     public void dismissQuestion(long questionId) {
         //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
+        //delete answer
+        answerRepository.deleteByQuestionID(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
     }
@@ -160,7 +162,10 @@ public class QuestionService {
      */
     public void clearQuestions(String roomLink) {
         Room room = roomService.getByLink(roomLink);
-
+        List<Question> qs = questionRepository.findAllByRoomLink(room.getLinkIdModerator());
+        for (Question q : qs) {
+            answerRepository.deleteByQuestionID(q.getId());
+        }
         questionRepository.clearQuestions(room.getId());
     }
 
@@ -196,6 +201,7 @@ public class QuestionService {
 
         answerRepository.save(answer);
         question.setAnswered(true);
+        questionRepository.updateAnsweredStatus(question.getId(),true);
 
     }
 
@@ -210,6 +216,22 @@ public class QuestionService {
 
         return questionRepository.checkAnswered(questionId2);
 
+    }
+
+    /**
+     * Gets all answered questions.
+     * @param roomLinkString - the room link.
+     * @return - a list of questions.
+     */
+    public List<Question> getAllAnsweredQuestions(String roomLinkString) {
+        UUID roomLink = UUID.fromString(roomLinkString);
+        List<Question> result = questionRepository.findAllAnsweredByRoomLink(roomLink);
+        for (Question q : result) {
+            q.getRoom().setId(0);
+            q.getUser().setId(0);
+        }
+
+        return result;
     }
 
 }

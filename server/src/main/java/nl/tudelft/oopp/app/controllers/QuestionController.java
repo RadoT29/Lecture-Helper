@@ -146,6 +146,25 @@ public class QuestionController {
         return deferredResult;
     }
 
+    /**
+     * Gets all questions in a room and sends them to client.
+     * The function is asynchronous.
+     * @return - Other.
+     */
+    @GetMapping("/log/{roomLink}")
+    @ResponseBody
+    public DeferredResult<List<Question>>
+        sendAllAnsweredQuestionsAsync(@PathVariable String roomLink) {
+        Long timeOut = 100000L;
+        String timeOutResp = "Time out.";
+        DeferredResult<List<Question>> deferredResult = new DeferredResult<>(timeOut,timeOutResp);
+        CompletableFuture.runAsync(() -> {
+            List<Question> newQuestions = questionService.getAllAnsweredQuestions(roomLink);
+            deferredResult.setResult(newQuestions);
+        });
+
+        return deferredResult;
+    }
 
 
 
