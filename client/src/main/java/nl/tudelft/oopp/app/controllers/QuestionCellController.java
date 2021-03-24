@@ -27,6 +27,9 @@ public class QuestionCellController {
     HBox questionCell;
 
     @FXML
+    HBox questionLogCell;
+
+    @FXML
     Label questionTextLabel;
 
     @FXML
@@ -68,6 +71,17 @@ public class QuestionCellController {
         hsc.deleteQuestionFromScene(id);
 
         hsc.refresh();
+    }
+
+    /**
+     * Delete a question. This is done from the Question log ScrollPane.
+     */
+    public void deleteFromLog() {
+
+        Node question = questionLogCell.getParent();
+        String id = question.getId();
+        QuestionCommunication.dismissQuestion(Long.parseLong(id));
+        hsc.deleteQuestionFromScene(id);
     }
 
     /**

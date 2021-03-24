@@ -35,9 +35,14 @@ public class HomeSceneController {
     @FXML
     private VBox questionBox;
 
+    @FXML
+    private VBox questionBoxLog;
+
     protected PriorityQueue<Question> questions;
 
     protected boolean keepRequesting;
+
+    protected boolean keepRequestingLog;
 
     /**
      * This method initializes the thread,
@@ -63,6 +68,35 @@ public class HomeSceneController {
                         Platform.runLater(() -> {
                             try {
                                 constantRefresh();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * This thread will periodically refresh the content of the question queue.
+     */
+    public void callRequestingLogThread() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                keepRequestingLog = true;
+                while (keepRequestingLog) {
+                    try {
+                        Platform.runLater(() -> {
+                            try {
+                                constantRefreshLog();
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -139,6 +173,61 @@ public class HomeSceneController {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
+    }
+
+    /**
+     * This method is constantly called by a thread and refreshes the page.
+     * @throws ExecutionException - may be thrown.
+     * @throws InterruptedException - may be thrown.
+     */
+    public void constantRefreshLog() throws ExecutionException, InterruptedException {
+        questions = new PriorityQueue<>();
+        questions.addAll(HomeSceneCommunication
+                .constantlyGetAnsweredQuestions(session.getRoomLink()));
+        loadAnsweredQuestions();
+    }
+
+    /**
+     * Loads all answered questions in the question log.
+     */
+    public void loadAnsweredQuestions() {
+
+        questionBoxLog.getChildren().clear();
+        int count = 1;
+        while (!questions.isEmpty()) {
+            Question question = questions.poll();
+            try {
+                questionBoxLog.getChildren()
+                        .add(createQuestionCellLog(question, "/questionCellQuestionLog.fxml"));
+            } catch (IOException e) {
+                questionBoxLog.getChildren().add(
+                        new Label("Something went wrong while loading this question"));
+            }
+        }
+    }
+
+    /**
+     *
+     * @param question
+     * @param resource
+     * @return
+     */
+    private Node createQuestionCellLog(Question question, String resource) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Node newQuestion = loader.load();
+        QuestionCellController qsc = loader.getController();
+        qsc.setHomeScene(this);
+        newQuestion.setId(question.getId() + "");
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabelLog");
+        questionLabel.setText(question.questionText);
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
+        return newQuestion;
     }
 
     /**

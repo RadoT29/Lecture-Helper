@@ -167,13 +167,14 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             keepRequesting = false;
             mainBox.setVisible(false);
             mainBoxLog.setVisible(true);
+            callRequestingLogThread();
 
         } else {
             questionButton.getStyleClass().remove("menuBtnWhite");
             questionButton.getStyleClass().add("menuBtnBlack");
+            keepRequestingLog = false;
             mainBoxLog.setVisible(false);
             mainBox.setVisible(true);
-
             callRequestingThread();
         }
     }
