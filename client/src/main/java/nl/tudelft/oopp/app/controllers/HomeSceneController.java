@@ -117,8 +117,16 @@ public class HomeSceneController {
         }
 
         Stage linkStage = (Stage) questionInput.getScene().getWindow();
-        Scene scene = new Scene(loader);
+        //Scene scene = new Scene(loader);
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
+
+        Scene scene = new Scene(loader, width, height);
+
         linkStage.setScene(scene);
+        linkStage.centerOnScreen();
         linkStage.show();
         openOne = false;
 
