@@ -15,18 +15,18 @@ import java.util.UUID;
 public interface RoomRepository extends JpaRepository<Room, Long> {
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.isOpen=false, r.endDate=?2 WHERE r.id=?1")
-    void closeRoom(Long id, LocalDateTime endDate);
+    @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.id=?1")
+    void closeRoom(Long id);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.permission=false WHERE r.id=?1")
-    void kickAllStudents(Long id);
+    @Query(value = "UPDATE Room r SET r.permission=false, r.endDateForStudents=?2 WHERE r.id=?1")
+    void kickAllStudents(Long id, LocalDateTime endDate);
 
     @Modifying
     @Transactional
     @Query("UPDATE Room r SET r.isOpen=true, r.permission=true WHERE r.id=?1")
-    void openRoom(long roomId);
+    void openRoomForStudents(long roomId);
 
     @Query("SELECT u FROM Room u WHERE u.linkIdStudent=?1 OR u.linkIdModerator=?1")
     Room findByLink(UUID link);

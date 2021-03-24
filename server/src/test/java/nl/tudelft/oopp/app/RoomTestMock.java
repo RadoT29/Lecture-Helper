@@ -117,7 +117,7 @@ public class RoomTestMock {
         Room room = new Room("My room");
         room.setPermission(false);
         when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
-        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
         assertEquals(false, roomController.hasStudentPermission(
                 String.valueOf(room.getLinkIdModerator())));
     }
@@ -129,10 +129,10 @@ public class RoomTestMock {
     public void updateIsOpenTrueTest() {
         //new room with startDate in the past
         Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).minusHours(1));
-        assertFalse(room.getIsOpen());
-        doNothing().when(repository).openRoom(room.getId());
-        roomService.updateIsOpen(room);
-        assertTrue(room.getIsOpen());
+        assertFalse(room.getPermission());
+        doNothing().when(repository).openRoomForStudents(room.getId());
+        roomService.updatePermision(room);
+        assertTrue(room.getPermission());
     }
 
     /**
@@ -143,10 +143,10 @@ public class RoomTestMock {
     public void updateIsOpenFalseText() {
         //new room with startDate in the future
         Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).plusMinutes(1));
-        assertFalse(room.getIsOpen());
-        doNothing().when(repository).openRoom(room.getId());
-        roomService.updateIsOpen(room);
-        assertFalse(room.getIsOpen());
+        assertFalse(room.getPermission());
+        doNothing().when(repository).openRoomForStudents(room.getId());
+        roomService.updatePermision(room);
+        assertFalse(room.getPermission());
     }
 
     /**
@@ -158,11 +158,11 @@ public class RoomTestMock {
         Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()));
 
         //close the room
-        room.setEndDate(LocalDateTime.now(Clock.systemUTC()));
-        room.setIsOpen(false);
+        room.setEndDateForStudents(LocalDateTime.now(Clock.systemUTC()));
+        room.setPermission(false);
 
-        roomService.updateIsOpen(room);
-        assertFalse(room.getIsOpen());
+        roomService.updatePermision(room);
+        assertFalse(room.getPermission());
     }
 
     /**

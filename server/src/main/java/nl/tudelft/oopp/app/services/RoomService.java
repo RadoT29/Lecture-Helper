@@ -38,7 +38,7 @@ public class RoomService {
     public Room getByLink(String link) {
         UUID toCheck = UUID.fromString(link);
         Room room = roomRepository.findByLink(UUID.fromString(link));
-        updateIsOpen(room);
+        updatePermision(room);
         return room;
     }
 
@@ -47,19 +47,18 @@ public class RoomService {
      * and the room hasn't been closed yet (endDate is null).
      * @param room Room to be updated
      */
-    public void updateIsOpen(Room room) {
+    public void updatePermision(Room room) {
         if (room == null) {
             return;
         }
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         //room should be open and hasn't been closed yet
-        if (!room.getIsOpen()
+        if (!room.getPermission()
                 && now.isAfter(room.getStartDate())
-                && room.getEndDate() == null) {
-            //update in the database (isOpen = true and permission=true)
-            roomRepository.openRoom(room.getId());
+                && room.getEndDateForStudents() == null) {
+            //update in the database (permission=true)
+            roomRepository.openRoomForStudents(room.getId());
             //update object
-            room.setIsOpen(true);
             room.setPermission(true);
         }
     }

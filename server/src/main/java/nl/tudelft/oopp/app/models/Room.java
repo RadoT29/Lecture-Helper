@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.app.models;
 
 import lombok.*;
-import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -38,7 +37,7 @@ public class Room {
 
     private LocalDateTime startDate;
 
-    private LocalDateTime endDate;
+    private LocalDateTime endDateForStudents;
 
     @CreationTimestamp
     private Date createdAt;
@@ -68,7 +67,7 @@ public class Room {
         this.name = name;
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
-        this.isOpen = false;
+        this.isOpen = true;
         this.startDate = startDate;
         this.permission = false;
     }
@@ -97,19 +96,4 @@ public class Room {
         this.permission = permission;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
 }

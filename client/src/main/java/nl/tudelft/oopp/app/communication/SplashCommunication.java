@@ -97,6 +97,7 @@ public class SplashCommunication {
             // Parses Json response from server.
             User user = gson.fromJson(response.body(), User.class);
 
+            Session.clearSession();
             // Uses the information received to update the session information.
             session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
 

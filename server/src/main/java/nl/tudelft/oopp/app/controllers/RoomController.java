@@ -64,7 +64,7 @@ public class RoomController {
         //make query and close the room!
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
-            roomRepository.closeRoom(room.getId(), LocalDateTime.now(Clock.systemUTC()));
+            roomRepository.closeRoom(room.getId());
         } else {
             System.out.println("Someone tried to close room " + room.getId()
                     + "(name: " + room.getName() + ") with a student link");
@@ -109,7 +109,7 @@ public class RoomController {
     public void kickAllStudent(@PathVariable String linkId) {
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
-            roomRepository.kickAllStudents(room.getId());
+            roomRepository.kickAllStudents(room.getId(), LocalDateTime.now(Clock.systemUTC()));
             System.out.println("Room " + room.getId()
                     + "(name: " + room.getName() + ") had all students kicked out");
         }
