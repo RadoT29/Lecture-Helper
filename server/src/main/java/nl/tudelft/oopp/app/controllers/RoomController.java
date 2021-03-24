@@ -2,10 +2,13 @@ package nl.tudelft.oopp.app.controllers;
 
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
+import nl.tudelft.oopp.app.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -15,6 +18,8 @@ import java.util.UUID;
 public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private RoomService roomService;
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -32,6 +37,19 @@ public class RoomController {
                             + "\n\tStudent link:" + room.getLinkIdStudent()
                             + "\n\tModerator link:" + room.getLinkIdModerator());
         return room;
+    }
+
+    /**
+     * GET Endpoint to retrieve a random quote.
+     *
+     * @return randomly selected {@link Room}.
+     */
+    @PostMapping("scheduleRoom")
+    @ResponseBody
+    public Room getScheduledRoomLinks(@RequestParam String name,
+                                      @RequestBody String startDateUtcString) {
+        startDateUtcString = startDateUtcString.substring(1, startDateUtcString.length() - 1);
+        return roomService.scheduleRoom(name, startDateUtcString);
     }
 
     /**
@@ -64,7 +82,7 @@ public class RoomController {
     @GetMapping("isOpenById/{linkId}")
     @ResponseBody
     public boolean isClose(@PathVariable String linkId) {
-        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        Room room = roomService.getByLink(linkId);
         return room.getIsOpen();
     }
 
@@ -77,7 +95,8 @@ public class RoomController {
     @GetMapping("hasStudentPermission/{linkId}")
     @ResponseBody
     public boolean hasStudentPermission(@PathVariable String linkId) {
-        return roomRepository.findByLink(UUID.fromString(linkId)).getPermission();
+        Room room = roomService.getByLink(linkId);
+        return room.getPermission();
     }
 
     /**
@@ -90,7 +109,7 @@ public class RoomController {
     public void kickAllStudent(@PathVariable String linkId) {
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
-            roomRepository.kickAllStudents(room.getId());
+            roomRepository.kickAllStudents(room.getId(), LocalDateTime.now(Clock.systemUTC()));
             System.out.println("Room " + room.getId()
                     + "(name: " + room.getName() + ") had all students kicked out");
         }
