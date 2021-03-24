@@ -8,7 +8,6 @@ import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 import nl.tudelft.oopp.app.models.User;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

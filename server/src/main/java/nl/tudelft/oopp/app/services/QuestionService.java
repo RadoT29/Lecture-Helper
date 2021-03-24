@@ -56,8 +56,9 @@ public class QuestionService {
     }
 
     /**
+     * Gets all questions from the room.
      * gets all questions from the room.
-     *Questions have to roomId and UserId changed to 0.
+     * Questions have the roomId and UserId changed to 0.
      * @param roomLinkString a room link
      * @return list of questions from the room.
      *
@@ -92,8 +93,7 @@ public class QuestionService {
 
 
     /**
-     * This method gets the correct Room and User associated with the question that has been sent.
-     *
+     * This method sets the correct Room and User associated with the question that has been sent.
      * @param roomLink the roomLink where the question has been asked
      * @param userId   the id of the user who asked the question
      * @param question the question that has been asked

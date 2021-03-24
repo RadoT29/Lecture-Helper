@@ -20,9 +20,16 @@ import java.util.UUID;
 @Entity
 public class Answer {
 
-    @Column(nullable = true)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "question_sequence",
+            sequenceName = "question_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "question_sequence"
+    )
     private long id;
 
     private String answerText;

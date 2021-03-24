@@ -91,6 +91,7 @@ public class SplashSceneController {
             //This method checks if the link inserted corresponds
             // to a Student one, Moderator one or if it is invalid.
             SplashCommunication.checkForRoom(roomLink.getText());
+
             //Gets the session with the updated information
             Session session = Session.getInstance();
             if (!session.getIsModerator()) {
@@ -100,10 +101,16 @@ public class SplashSceneController {
             ServerCommunication.isTheRoomClosed(roomLink.getText());
             //System.out.println(roomLink.getText());
 
+            ServerCommunication.isTheRoomClosed(session.getRoomLink());
+            System.out.println("Is moderator " + session.getIsModerator());
+
             if (!session.getIsModerator()) {
                 SplashCommunication.isIpBanned(roomLink.getText());
                 ServerCommunication.hasStudentPermission(roomLink.getText());
             }
+
+            ServerCommunication.getRoomName();
+
 
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
@@ -112,6 +119,7 @@ public class SplashSceneController {
             double height = screenSize.getHeight() * 0.8;
 
             Scene scene = new Scene(loader, width, height);
+
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
@@ -179,6 +187,11 @@ public class SplashSceneController {
         double height = screenSize.getHeight() * 0.8;
 
         Scene scene = new Scene(loader, width, height);
+
+        // Sets the room name
+        Label roomLabel = (Label) scene.lookup("#roomName");
+        roomLabel.setText(session.getRoomName());
+
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();

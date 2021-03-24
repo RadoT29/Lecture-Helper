@@ -24,6 +24,7 @@ import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalTime;
 import java.util.Date;
 import java.net.URL;
@@ -53,10 +54,6 @@ public class HomeSceneController {
     private Label passLimitQuestionsLabel;
 
     protected PriorityQueue<Question> questions;
-
-    //Parent loader = FXMLLoader.load(getClass().getResource("/studentScene.fxml"));
-
-    //Window window = ((Node) (loader.getSource())).getScene().getWindow();
 
 
     /**
@@ -264,6 +261,9 @@ public class HomeSceneController {
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
         questionLabel.setText(question.questionText);
 
+        Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
+        nicknameLabel.setText(question.user.getName());
+
         //set the question box size
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.4;
@@ -301,7 +301,6 @@ public class HomeSceneController {
      * Method to check whether the Question that is being created has been
      * written by the student in the session (so that the dismiss button
      * will be shown - if it does not correspond it won't show).
-     *
      * @param newQuestion - Node of the new question created
      * @param question    - the object of the new question created
      */
@@ -323,6 +322,7 @@ public class HomeSceneController {
 
         }
     }
+
 
     /**
      * Get the Date in which the room was created.

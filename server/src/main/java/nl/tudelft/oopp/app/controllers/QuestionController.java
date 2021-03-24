@@ -143,8 +143,10 @@ public class QuestionController {
             List<Question> newQuestions = questionService.getAllQuestionsByRoom(roomLink);
             deferredResult.setResult(newQuestions);
         });
+
         return deferredResult;
     }
+
 
     /**
      * Receives a POST request from the client.

@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.Session;
 
 /**
@@ -32,6 +33,11 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public VBox mainMenu;
     @FXML
     public VBox slidingMenu;
+    @FXML
+    public Button speedStat;
+    @FXML
+    public Button emotionStat;
+
 
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
@@ -114,6 +120,36 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      */
     public void refresh() {
         super.refresh();
+        loadStats();
+    }
+
+    /**
+     * This method changes the icons that represent the Speed and Emotion Reaction to
+     * match their statistics.
+     */
+    public void loadStats() {
+        int emotionStatInt = ReactionCommunication.getReactionStats(false);
+        int speedStatInt = ReactionCommunication.getReactionStats(true);
+
+        System.out.println("emotion = " + emotionStatInt);
+        System.out.println("speed = " + speedStatInt);
+        if (emotionStatInt == 1) {
+            emotionStat.getStyleClass().set(1, "happyButton");
+            System.out.println(emotionStat.getStyleClass());
+        } else if (emotionStatInt == -1) {
+            emotionStat.getStyleClass().set(1,"confusedButton");
+        } else {
+            emotionStat.getStyleClass().set(1,"sadButton");
+        }
+
+        if (speedStatInt == 1) {
+            speedStat.getStyleClass().set(1,"fastButton");
+        } else if (speedStatInt == -1) {
+            speedStat.getStyleClass().set(1,"slowButton");
+        } else {
+            speedStat.getStyleClass().set(1,"okButton");
+        }
+
     }
 
     /**
