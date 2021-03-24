@@ -190,5 +190,29 @@ public class QuestionCommunication {
 
     }
 
+    /**
+     * Makes a request to store the answer in the repository.
+     * @param questionId - the question id.
+     * @param newText - the answer.
+     * @param userId - the user id.
+     */
+    public static void addAnswerText(String questionId, String newText, String userId) {
 
+        String requestBody = gson.toJson(newText);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/questions/setAnswer/" + questionId + "/user/" + userId))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .setHeader("Content-Type", "text/plain")
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

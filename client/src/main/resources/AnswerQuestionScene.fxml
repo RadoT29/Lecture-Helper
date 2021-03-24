@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="215.0" prefWidth="450.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.AnswerSceneController">
+    <children>
+        <Button fx:id="confirmButton" layoutX="354.0" layoutY="175.0" mnemonicParsing="false" onAction="#confirm" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #ffffff;" text="Confirm" />
+        <Button fx:id="exitButton" layoutX="384.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #ffffff;" text="Exit" />
+        <TextArea fx:id="editTextArea" layoutX="32.0" layoutY="46.0" prefHeight="120.0" prefWidth="385.0" wrapText="true" />
+    </children>
+</AnchorPane>

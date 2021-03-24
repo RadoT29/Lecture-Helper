@@ -33,6 +33,9 @@ public class QuestionCellController {
     Label questionTextLabel;
 
     @FXML
+    Label questionTextLabelLog;
+
+    @FXML
     Button editButton;
 
     @FXML
@@ -143,6 +146,25 @@ public class QuestionCellController {
         //load edit question scene
         try {
             EditQuestionSceneController.init(oldText, id, this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Create an answer from the log scene.
+     */
+    public void answerFromLog() {
+        String oldAnswer = questionTextLabelLog.getText();
+        Node question = questionLogCell.getParent();
+        String id = question.getId();
+        Session session = Session.getInstance();
+
+        String userId = session.getUserId();
+
+        try {
+            AnswerSceneController.initialize(oldAnswer, id, userId, this);
 
         } catch (IOException e) {
             e.printStackTrace();

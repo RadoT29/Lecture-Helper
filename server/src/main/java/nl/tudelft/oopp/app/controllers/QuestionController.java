@@ -216,5 +216,22 @@ public class QuestionController {
         return questionService.checkAnswered(questionId);
     }
 
+    /**
+     * Saves a new answer.
+     * @param questionId - the question id.
+     * @param userId - the user id.
+     * @param newText - the text.
+     */
+    @PostMapping("/setAnswer/{questionId}/user/{userId}")
+    @ResponseBody
+    public void setAnswerText(@PathVariable String questionId,
+                              @PathVariable String userId,
+                              @RequestBody String newText) {
+
+        //remove quotation marks from the newText
+        newText = newText.substring(1, newText.length() - 1);
+        questionService.setAnswered(newText,questionId,userId,true);
+    }
+
 
 }

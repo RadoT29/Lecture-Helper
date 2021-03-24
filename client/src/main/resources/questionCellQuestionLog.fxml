@@ -40,7 +40,7 @@
                      </padding>
                   </Label>
                         <HBox alignment="BASELINE_RIGHT">
-                        <Button fx:id="answerButtonLog" layoutX="596.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="33.0" prefWidth="76.0" style="-fx-background-color: transparent; -fx-border-color: #0066A2; -fx-border-width: 2.5;" styleClass="answerButton" text="Answer" textAlignment="CENTER" textFill="#0066a2">
+                        <Button fx:id="answerButtonLog" layoutX="596.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#answerFromLog" prefHeight="33.0" prefWidth="76.0" style="-fx-background-color: transparent; -fx-border-color: #0066A2; -fx-border-width: 2.5;" styleClass="answerButton" text="Answer" textAlignment="CENTER" textFill="#0066a2">
                             <HBox.margin>
                                 <Insets bottom="10.0" left="5.0" right="20.0" />
                             </HBox.margin>
