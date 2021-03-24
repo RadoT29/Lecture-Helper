@@ -2,9 +2,11 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
+import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -148,6 +150,39 @@ public class HomeSceneCommunication {
         }
         return gson.fromJson(response.body(), new TypeToken<List<Date>>(){}.getType());
     }
+
+
+    /**
+     * Gets an export of the questions and answers in total.
+     * (all of the questions user's IDs and room ID are already set to zero)
+     * @return a list questions
+     */
+    public static String exportQuestions(String roomLink) {
+        JsonReader reader;
+        String trim;
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/export/" + roomLink))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            trim = response.body();
+            System.out.println(trim);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+
+        return response.body();
+    }
+
+
+
+
 
 
 
