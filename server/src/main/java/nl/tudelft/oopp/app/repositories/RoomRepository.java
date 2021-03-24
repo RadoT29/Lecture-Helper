@@ -37,4 +37,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("SELECT r.updatedAt FROM Room r WHERE r.id=?1")
     Date getUpdatedTime(long l);
+
+    @Query("SELECT r.name FROM Room r WHERE r.id=?1")
+    String getRoomName(long roomId);
+
 }

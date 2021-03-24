@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,10 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT u.id FROM Question u WHERE u.room.id=?1")
     List<Long> getAllQuestionIds(long roomId);
 
+    @Query("SELECT u.questionText FROM Question u WHERE u.id=?1")
+    String getQuestionText(long questionId);
 
-
+    @Query("SELECT u.createdAt FROM Question u WHERE u.id=?1")
+    LocalDateTime getQuestionTime(long questionId);
 
 }

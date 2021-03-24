@@ -25,7 +25,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String answer;
+    private String answerText;
     private boolean answeredInClass;
 
     @ManyToOne
@@ -53,7 +53,7 @@ public class Answer {
                   Question question,
                   Moderator moderator,
                   boolean answeredInClass) {
-        this.answer = answerText;
+        this.answerText = answerText;
         this.question = question;
         this.moderator = moderator;
         this.answeredInClass = answeredInClass;
