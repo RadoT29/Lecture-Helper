@@ -57,7 +57,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
                 closeFastNav.play();
             }
         });
-
+        super.initialize(url,rb);
         refresh();
     }
 
