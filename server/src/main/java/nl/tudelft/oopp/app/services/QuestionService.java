@@ -101,7 +101,11 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink); // Finds the room associated with the link
         question.setRoom(room);
         questionRepository.save(question); //Saves the room on the Database
-        System.out.println("Question saved!");
+        System.out.println("Question created: "
+                + "\n\tQuestion id: " + question.getId()
+                + "\n\tRoom id: " + question.getRoom().getId()
+                + "\n\tUser id: " + question.getUser().getId()
+                + "\n\tQuestion: " + question.getQuestionText());
     }
 
 
@@ -112,10 +116,13 @@ public class QuestionService {
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
+        Question question = questionRepository.getOne(questionId);
         //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
+        System.out.println("Question " + question.getId() + "(room: "
+                + question.getRoom().getName() + ") was deleted by a moderator");
     }
 
     /**
@@ -128,8 +135,11 @@ public class QuestionService {
      * @param userId     - Id of the student attempting to delete
      */
     public void dismissSingular(long questionId, long userId) {
+        Question question = questionRepository.getOne(questionId);
         //delete question
         questionRepository.deleteSingular(questionId, userId);
+        System.out.println("Question " + question.getId()
+                + "(room: " + question.getRoom().getName() + ") was deleted by creator");
     }
 
 
@@ -177,6 +187,8 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink);
 
         questionRepository.clearQuestions(room.getId());
+        System.out.println("All questions from room " + room.getId()
+                + "(name: " + room.getName() + ") were deleted");
     }
 
 

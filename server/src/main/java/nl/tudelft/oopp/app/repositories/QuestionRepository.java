@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
+@Repository("QuestionRepository")
+
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT u FROM Question u WHERE (u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1)"

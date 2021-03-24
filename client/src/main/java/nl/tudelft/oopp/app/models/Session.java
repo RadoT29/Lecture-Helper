@@ -119,6 +119,10 @@ public final class Session {
         return instance;
     }
 
+    public static void clearSession() {
+        instance = null;
+    }
+
     public boolean getIsModerator() {
         return isModerator;
     }

@@ -62,7 +62,6 @@ public class QuestionController {
     public void add(@PathVariable String roomLink,
                     @PathVariable String userId,
                     @RequestBody Question question) {
-        System.out.println("Question arrived on server!");
         questionService.addNewQuestion(roomLink,userId,question);
     }
 
