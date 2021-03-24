@@ -300,7 +300,7 @@ public class QuestionService {
             }
 
         }
-        System.out.println(log);
+
         return log;
 
     }

@@ -170,8 +170,6 @@ public class HomeSceneCommunication {
         HttpResponse<String> response = null;
         try {
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
-            trim = response.body();
-            System.out.println(trim);
 
         } catch (Exception e) {
             e.printStackTrace();
