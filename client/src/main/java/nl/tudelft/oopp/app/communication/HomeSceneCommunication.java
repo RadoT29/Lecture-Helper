@@ -10,6 +10,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -143,9 +145,37 @@ public class HomeSceneCommunication {
             e.printStackTrace();
             return List.of();
         }
-
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
+
+
+    /**
+     * When changing timezones there are no changes to the minute pointers
+     * These only change in the hours pointers
+     * These can be used to understand when the timestamps of the room
+     * That being said we can retrieve the room createdAt and the
+     * UpdatedAt times to understand if the room has been open for more than an hour.
+     * @return a Date with the creation time
+     */
+    public static List<Date> getRoomTime() {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/room/getRoomTime/" + session.getRoomLink()))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return gson.fromJson(response.body(), new TypeToken<List<Date>>(){}.getType());
+    }
+
+
+
 
 }
 

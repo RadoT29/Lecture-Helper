@@ -16,6 +16,8 @@ import nl.tudelft.oopp.app.models.Session;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -31,7 +33,7 @@ public class HomeSceneController {
     private TextField questionInput;
 
     @FXML
-    protected VBox questionBox;
+    private VBox questionBox;
 
     protected PriorityQueue<Question> questions;
 
@@ -148,6 +150,7 @@ public class HomeSceneController {
         if (session.getIsModerator()) {
             resource = "/questionCellModerator.fxml";
         }
+
         questionBox.getChildren().clear();
         int count = 1;
         while (!questions.isEmpty()) {
@@ -243,5 +246,28 @@ public class HomeSceneController {
 
         }
     }
+
+
+    /**
+     * Get the Date in which the room was created.
+     * @return Date - at which room was created
+     */
+    public Date retrieveRoomTime() {
+        Date roomDate = HomeSceneCommunication.getRoomTime().get(0);
+        return roomDate;
+    }
+
+    /**
+     * Get the Date in which the room was last modified.
+     * @return Date - at which room was last modified
+     */
+    public Date retrieveModifiedTime() {
+        Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
+        return roomDate;
+    }
+
+
+
+
 
 }
