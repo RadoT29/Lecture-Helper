@@ -2,6 +2,8 @@ package nl.tudelft.oopp.app.controllers;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -129,6 +131,34 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
 
         refresh();
     }
+
+    /**
+     * When the export questions is clicked it will send a request to get a
+     * String with all the questions and their respective answers
+     * it will then create a new text file inside the repository with these.
+     */
+    public void exportQuestionsClicked() {
+        Session session = Session.getInstance();
+        String exported = "Nothing has been added";
+        if (session.getIsModerator()) {
+            exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
+        }
+
+        try {
+            FileWriter file = new FileWriter(new File("ExportedQuestions"
+                                                    + session.getRoomName() + ".txt"));
+            file.write(exported);
+            file.close();
+
+        } catch (IOException e) {
+            System.out.print("Impossible to find file");
+            e.printStackTrace();
+        }
+        refresh();
+    }
+
+
+
 
     /**
      * Method to load the presentation mode scene.
