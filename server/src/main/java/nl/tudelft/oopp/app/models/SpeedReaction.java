@@ -13,7 +13,7 @@ public class SpeedReaction extends Reaction {
         super(value, room, user);
     }
 
-    public SpeedReaction(int value){
+    public SpeedReaction(int value) {
         super(value);
     }
 }
