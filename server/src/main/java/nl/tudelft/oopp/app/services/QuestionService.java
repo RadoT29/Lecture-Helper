@@ -5,12 +5,14 @@ import nl.tudelft.oopp.app.repositories.AnswerRepository;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.repositories.UpvoteRepository;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,6 +89,7 @@ public class QuestionService {
         return questionRepository.getSingularQuestion(room.getId(), user.getId());
 
     }
+
 
 
     /**
@@ -189,6 +192,18 @@ public class QuestionService {
         questionRepository.clearQuestions(room.getId());
         System.out.println("All questions from room " + room.getId()
                 + "(name: " + room.getName() + ") were deleted");
+    }
+
+    public Long findUserByQuestionId(String questionId) {
+        return questionRepository.getUserByQuestionId(Long.valueOf(questionId)).getId();
+    }
+
+    public List<Question> questionsByUserIdRoomIdInterval(
+            String userId,
+            long roomId,
+            LocalDateTime time) {
+        return questionRepository
+                .questionsByUserIdRoomIdInterval(Long.parseLong(userId), roomId, time);
     }
 
 

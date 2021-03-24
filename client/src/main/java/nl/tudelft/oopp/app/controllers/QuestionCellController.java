@@ -10,6 +10,7 @@ import nl.tudelft.oopp.app.communication.QuestionCommunication;
 import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
+import nl.tudelft.oopp.app.models.User;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -43,9 +44,9 @@ public class QuestionCellController {
     }
 
     /**
-    * dismisses the question.
-    * deletes the database from the database and remove it from the screen
-    **/
+     * dismisses the question.
+     * deletes the database from the database and remove it from the screen
+     **/
     public void dismissClicked() {
         //get the id of the question to be deleted
         Node question = questionCell.getParent();
@@ -98,6 +99,7 @@ public class QuestionCellController {
      * It will check if the question selected has been upVoted by the user
      * If so the upVote will be decremented, if not it will be incremented
      * (through methods established in Session).
+     *
      * @param questionId - QuestionId where upvote is being added
      */
     public void setUpvote(String questionId) {
@@ -113,6 +115,17 @@ public class QuestionCellController {
             QuestionCommunication.upVoteQuestion(questionId);
         }
 
+    }
+
+    /**
+     * Method for blocking students by IP.
+     */
+    public void blockUser() {
+        Node question = questionCell.getParent();
+        //User user = (User) question.getUserData();
+        System.out.println(question.getId());
+        Session session = Session.getInstance();
+        HomeSceneCommunication.banUserForThatRoom(question.getId(), session.getRoomLink());
     }
 
 

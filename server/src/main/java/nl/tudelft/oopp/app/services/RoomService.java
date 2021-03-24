@@ -75,4 +75,8 @@ public class RoomService {
         roomRepository.save(room);
         return room;
     }
+
+    public void putConstraints(String roomLink, int numQuestions, int minutes) {
+        roomRepository.putConstraints(UUID.fromString(roomLink), numQuestions, minutes);
+    }
 }

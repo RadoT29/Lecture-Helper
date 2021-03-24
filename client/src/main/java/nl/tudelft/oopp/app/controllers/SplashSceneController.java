@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
@@ -46,6 +48,7 @@ public class SplashSceneController {
     @FXML
     private Label scheduleRoomFail;
 
+
     /**
      * Handles clicking the button.
      * @throws IOException Is thrown if loader fails.
@@ -65,7 +68,7 @@ public class SplashSceneController {
 
         //Creates a popup with the links
         LinkController linkController = new LinkController();
-        linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
+        linkController.getLinks(room.linkIdStudent.toString(), room.linkIdModerator.toString());
 
 
     }
@@ -77,8 +80,7 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
-
-        // Cannot enter rooms with empty links
+        Session.cleanUserSession();
         if (roomLink.getText().equals("")) {
             invalidRoomLink.setText("Insert a Room Link!");
             invalidRoomLink.setVisible(true);
@@ -92,11 +94,19 @@ public class SplashSceneController {
 
             //Gets the session with the updated information
             Session session = Session.getInstance();
+            if (!session.getIsModerator()) {
+                SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
+            }
+            System.out.println("Is moderator3 " + session.getIsModerator());
+            ServerCommunication.isTheRoomClosed(roomLink.getText());
+            //System.out.println(roomLink.getText());
+
             ServerCommunication.isTheRoomClosed(session.getRoomLink());
             System.out.println("Is moderator " + session.getIsModerator());
 
             if (!session.getIsModerator()) {
-                ServerCommunication.hasStudentPermission(session.getRoomLink());
+                SplashCommunication.isIpBanned(roomLink.getText());
+                ServerCommunication.hasStudentPermission(roomLink.getText());
             }
 
             ServerCommunication.getRoomName();
@@ -125,7 +135,11 @@ public class SplashSceneController {
         } catch (NoStudentPermissionException exception) {
             invalidRoomLink.setText("No student permission to the Room!");
             invalidRoomLink.setVisible(true);
+        } catch (AccessDeniedException exception) {
+            invalidRoomLink.setText("Access denied!");
+            invalidRoomLink.setVisible(true);
         }
+
 
     }
 
@@ -152,6 +166,7 @@ public class SplashSceneController {
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
         if (session.getIsModerator()) {
+
             loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         } else {
             loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();

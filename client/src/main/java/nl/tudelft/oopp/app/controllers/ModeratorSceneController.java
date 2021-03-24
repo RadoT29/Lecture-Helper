@@ -7,12 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -63,8 +63,8 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
                 closeFastNav.play();
             }
         });
-
-        super.initialize(url, rb);
+        super.initialize(url,rb);
+        refresh();
     }
 
     /**
@@ -213,5 +213,16 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    /**
+     * This method opens the scene where are inserted the
+     * number of questions per time.
+     * @throws IOException - may thrown
+     */
+    public void openConstraintsScene() throws IOException {
+        QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
+        questionsPerTimeController.open();
+
     }
 }

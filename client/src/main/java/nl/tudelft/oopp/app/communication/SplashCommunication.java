@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
@@ -76,6 +78,7 @@ public class SplashCommunication {
     /**
      * Checks whether the user is a Student or a Moderator
      * and creates a session based on this credentials.
+     *
      * @throws NoSuchRoomException - throws this exception if the room link is wrong
      */
     public static void checkForRoom(String roomLink) throws NoSuchRoomException {
@@ -98,8 +101,9 @@ public class SplashCommunication {
 
             Session.clearSession();
             // Uses the information received to update the session information.
+            System.out.println("Is moderator1 " + user.getIsModerator());
             session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
-
+            System.out.println("Is moderator2 " + session.getIsModerator());
             //If the link is not valid then no session is started
             // and user should stay on splash screen.
             if (session == null) {
@@ -112,5 +116,49 @@ public class SplashCommunication {
 
     }
 
+    /**
+     * This method makes a request to the server to save the request/user Ip.
+     * @param userId - the user id
+     * @param roomLink - the room link
+     */
+    public static void saveStudentIp(String userId, String roomLink) {
+        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/room/user/saveIP/" + userId + "/" + roomLink)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
+    /**
+     * This method makes request to the server if the user is banned.
+     * @param roomLink - the room id is found later. Check if the user has access for that room
+     * @throws AccessDeniedException - if the user is banned this exception is thrown
+     */
+    public static void isIpBanned(String roomLink) throws AccessDeniedException {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/room/user/isBanned/" + roomLink)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        boolean result = gson.fromJson(response.body(), Boolean.class);
+        if (!result) {
+            throw new AccessDeniedException();
+        }
+        System.out.println("access granted!");
+    }
 
 }
