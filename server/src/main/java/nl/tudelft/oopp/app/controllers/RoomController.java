@@ -21,8 +21,6 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @Autowired
-    private RoomService roomService;
 
     /**
      * GET Endpoint to retrieve a random quote.
