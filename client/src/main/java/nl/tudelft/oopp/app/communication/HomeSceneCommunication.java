@@ -33,7 +33,6 @@ public class HomeSceneCommunication {
      * so that the question is associated with the right room and user.
      * @param question the question to be saved on the database
      */
-
     public static void postQuestion(Question question) {
         String requestBody = gson.toJson(question);
         session = Session.getInstance();

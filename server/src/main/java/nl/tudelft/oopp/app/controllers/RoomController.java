@@ -16,10 +16,12 @@ import java.util.UUID;
  */
 @Controller
 public class RoomController {
+
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
     private RoomService roomService;
+
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -38,6 +40,14 @@ public class RoomController {
                             + "\n\tModerator link:" + room.getLinkIdModerator());
         return room;
     }
+
+
+    @GetMapping("room/name/{roomLink}")
+    @ResponseBody
+    public String getRoomName(@PathVariable String roomLink) {
+        return roomService.getByLink(roomLink).getName();
+    }
+
 
     /**
      * GET Endpoint to retrieve a random quote.
