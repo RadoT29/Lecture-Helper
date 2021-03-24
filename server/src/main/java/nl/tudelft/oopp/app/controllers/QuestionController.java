@@ -5,9 +5,11 @@ import nl.tudelft.oopp.app.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * This class handles all the Endpoints related to the questions.
@@ -124,6 +126,25 @@ public class QuestionController {
     @ResponseBody
     public void clearQuestions(@PathVariable ("roomLink") String roomLink) {
         questionService.clearQuestions(roomLink);
+    }
+
+    /**
+     * Gets all questions in a room and sends them to client.
+     * The function is asynchronous.
+     * @return - Other.
+     */
+    @GetMapping("/constant/{roomLink}")
+    @ResponseBody
+    public DeferredResult<List<Question>> sendAllQuestionsAsync(@PathVariable String roomLink) {
+        Long timeOut = 100000L;
+        String timeOutResp = "Time out.";
+        DeferredResult<List<Question>> deferredResult = new DeferredResult<>(timeOut,timeOutResp);
+        CompletableFuture.runAsync(() -> {
+            List<Question> newQuestions = questionService.getAllQuestionsByRoom(roomLink);
+            deferredResult.setResult(newQuestions);
+        });
+
+        return deferredResult;
     }
 
 

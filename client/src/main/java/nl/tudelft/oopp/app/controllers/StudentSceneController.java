@@ -59,6 +59,8 @@ public class StudentSceneController extends HomeSceneController implements Initi
                 closeReactionFastNav.play();
             }
         });
+
+        super.initialize(url,rb);
     }
 
     /**
