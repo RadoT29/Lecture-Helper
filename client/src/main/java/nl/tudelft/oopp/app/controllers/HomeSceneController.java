@@ -24,6 +24,8 @@ import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.Date;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.PriorityQueue;
@@ -240,11 +242,10 @@ public class HomeSceneController {
 
     /**
      * creates a node for a question.
-     *
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
-     *                     or one of the fields that should be changed where not found
+     *      or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
         // load the question to a newNode and set it's homeSceneController to this
@@ -321,8 +322,28 @@ public class HomeSceneController {
             }
 
         }
-
     }
+
+    /**
+     * Get the Date in which the room was created.
+     * @return Date - at which room was created
+     */
+    public Date retrieveRoomTime() {
+        Date roomDate = HomeSceneCommunication.getRoomTime().get(0);
+        return roomDate;
+    }
+
+    /**
+     * Get the Date in which the room was last modified.
+     * @return Date - at which room was last modified
+     */
+    public Date retrieveModifiedTime() {
+        Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
+        return roomDate;
+    }
+
+
+
 
 
 }

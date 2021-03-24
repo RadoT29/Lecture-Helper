@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -37,12 +39,18 @@ public class Room {
 
     private int timeInterval = Integer.MAX_VALUE;
 
+    private LocalDateTime startDate;
+
+    private LocalDateTime endDateForStudents;
+
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;
 
+    //    public Room() {
+    //    }
 
     /**
      * Create a new Room instance.
@@ -52,7 +60,20 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
+        this.startDate = LocalDateTime.now(Clock.systemUTC());
         this.permission = true;
+    }
+
+    /**
+     * Create a new Room instance (for creating room in advance).
+     */
+    public Room(String name, LocalDateTime startDate) {
+        this.name = name;
+        this.linkIdStudent = UUID.randomUUID();
+        this.linkIdModerator = UUID.randomUUID();
+        this.isOpen = true;
+        this.startDate = startDate;
+        this.permission = false;
     }
 
     public void setLinkIdModerator() {
@@ -78,4 +99,5 @@ public class Room {
     public void setPermission(boolean permission) {
         this.permission = permission;
     }
+
 }
