@@ -4,7 +4,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -29,6 +29,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public VBox mainMenu;
     @FXML
     public VBox slidingMenu;
+    @FXML
+    public Button questionButton;
+    @FXML
+    public AnchorPane mainBox;
+    @FXML
+    public AnchorPane mainBoxLog;
 
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
@@ -46,13 +52,15 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         openNav.setToX(slidingMenu.getTranslateX() - slidingMenu.getWidth());
         closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
         closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
-
+        mainBoxLog.setVisible(false);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 closeFastNav.setToX(-(slidingMenu.getWidth()));
                 closeFastNav.play();
             }
+
+
         });
 
         super.initialize(url, rb);
@@ -146,5 +154,27 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    /**
+     * Transitions from Main question scene to Question log and vice versa.
+     */
+    public void controlQuestionLog() {
+
+        if (questionButton.getStyleClass().contains("menuBtnBlack")) {
+            questionButton.getStyleClass().remove("menuBtnBlack");
+            questionButton.getStyleClass().add("menuBtnWhite");
+            keepRequesting = false;
+            mainBox.setVisible(false);
+            mainBoxLog.setVisible(true);
+
+        } else {
+            questionButton.getStyleClass().remove("menuBtnWhite");
+            questionButton.getStyleClass().add("menuBtnBlack");
+            mainBoxLog.setVisible(false);
+            mainBox.setVisible(true);
+
+            callRequestingThread();
+        }
     }
 }
