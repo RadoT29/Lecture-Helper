@@ -21,43 +21,26 @@ public class BanCommunication {
 
     /**
      * This method makes a request to the server to save the request/user Ip.
-     * @param userId - the user id
+     *
+     * @param userId   - the user id
      * @param roomLink - the room link
      */
     public static void saveStudentIp(String userId, String roomLink) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room/user/saveIP/" + userId + "/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
+        postRequestResponse("http://localhost:8080/room/user/saveIP/" + userId + "/" + roomLink);
+//        if (response.statusCode() != 200) {
+//            System.out.println("Status: " + response.statusCode());
+//        }
     }
+
 
     /**
      * This method makes request to the server if the user is banned.
+     *
      * @param roomLink - the room id is found later. Check if the user has access for that room
      * @throws AccessDeniedException - if the user is banned this exception is thrown
      */
     public static void isIpBanned(String roomLink) throws AccessDeniedException {
-        HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/room/user/isBanned/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        System.out.println(response.body());
-        boolean result = gson.fromJson(response.body(), Boolean.class);
+        boolean result = getRequestResponse("http://localhost:8080/room/user/isBanned/" + roomLink);
         if (result) {
             throw new AccessDeniedException();
         }
@@ -68,71 +51,74 @@ public class BanCommunication {
      * By given question id and room link this request bans users by IP address
      * On the server side by the question id is found the user id,
      * and that user is banned for that specific room.
+     *
      * @param questionId - the id of the question
-     * @param roomLink - the moderator link of the room. With that is found the room id
+     * @param roomLink   - the moderator link of the room. With that is found the room id
      */
     public static void banUserForThatRoom(String questionId, String roomLink) {
-        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room/user/banUserRoom/" + questionId + "/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
+        putRequestResponse("http://localhost:8080/room/user/banUserRoom/" + questionId + "/" + roomLink);
     }
 
     /**
      * This method makes request to the server if the user is banned.
+     *
      * @param roomLink - the room id is found later. Check if the user has access for that room
      * @throws AccessDeniedException - if the user is banned this exception is thrown
      */
     public static void isIpWarned(String roomLink) throws UserWarnedException {
-        HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/room/user/isWarned/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        System.out.println(response.body());
-        boolean result = gson.fromJson(response.body(), Boolean.class);
+        boolean result = getRequestResponse("http://localhost:8080/room/user/isWarned/" + roomLink);
         if (result) {
             session.setWarned(true);
             throw new UserWarnedException();
         }
-
-
     }
 
     /**
      * By given question id and room link this request bans users by IP address
      * On the server side by the question id is found the user id,
      * and that user is banned for that specific room.
+     *
      * @param questionId - the id of the question
-     * @param roomLink - the moderator link of the room. With that is found the room id
+     * @param roomLink   - the moderator link of the room. With that is found the room id
      */
     public static void warnUserForThatRoom(String questionId, String roomLink) {
+
+        putRequestResponse("http://localhost:8080/room/user/warnUserRoom/" + questionId + "/" + roomLink);
+    }
+
+    public static void postRequestResponse(String httpRequest) {
+        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create(httpRequest)).build();
+        HttpResponse<String> response = tryCatchResponse(request);
+    }
+
+    public static boolean getRequestResponse(String httpRequest) {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create(httpRequest)).build();
+        HttpResponse<String> response = tryCatchResponse(request);
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        boolean result = gson.fromJson(response.body(), Boolean.class);
+        return result;
+    }
+
+    public static void putRequestResponse(String httpRequest) {
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room/user/warnUserRoom/" + questionId + "/" + roomLink)).build();
+                .uri(URI.create(httpRequest)).build();
+        HttpResponse<String> response = tryCatchResponse(request);
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
+    public static HttpResponse<String> tryCatchResponse(HttpRequest request) {
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            //return null;
         }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
+        return response;
     }
 }
