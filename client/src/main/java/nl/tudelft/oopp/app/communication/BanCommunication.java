@@ -16,7 +16,7 @@ public class BanCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
-    private static Session session;
+    private static Session session = Session.getInstance();
 
 
     /**

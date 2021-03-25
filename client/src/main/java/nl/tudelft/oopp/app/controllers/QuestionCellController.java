@@ -130,9 +130,7 @@ public class QuestionCellController {
      * Method for blocking students by IP.
      */
     public void blockWarnUser() throws IOException {
-        Node question = questionCell.getParent();
-        //User user = (User) question.getUserData();
-        System.out.println(question.getId());
+
         Session session = Session.getInstance();
         try {
             BanCommunication.isIpWarned(session.getRoomLink());
@@ -145,7 +143,9 @@ public class QuestionCellController {
 
             linkStage.setScene(scene);
             linkStage.show();
+            return;
         }
+        Node question = questionCell.getParent();
         BanCommunication.warnUserForThatRoom(question.getId(), session.getRoomLink());
 
     }
