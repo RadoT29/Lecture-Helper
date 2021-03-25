@@ -6,19 +6,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
-import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
-import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
-import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
+import nl.tudelft.oopp.app.exceptions.*;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -77,6 +76,14 @@ public class HomeSceneController {
                                 constantRefresh();
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
+                            } catch (UserWarnedException e) {
+                                //Pops up a message
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setWidth(900);
+                                alert.setHeight(300);
+                                alert.setTitle("Warning!");
+                                alert.setHeaderText("Banning warning!");
+                                alert.showAndWait();
                             } catch (Exception e) {
                                 closeWindow();
                             }
@@ -203,9 +210,11 @@ public class HomeSceneController {
      * @throws NoStudentPermissionException - may be thrown.
      * @throws RoomIsClosedException        - may be thrown.
      * @throws AccessDeniedException        - may be thrown.
+     * @throws UserWarnedException          - may be thrown.
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
+            NoStudentPermissionException, RoomIsClosedException,
+            AccessDeniedException, UserWarnedException {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
@@ -215,7 +224,11 @@ public class HomeSceneController {
 
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
-            SplashCommunication.isIpBanned(session.getRoomLink());
+            if (!session.isWarned()) {
+                BanCommunication.isIpWarned(session.getRoomLink());
+            } else {
+                BanCommunication.isIpBanned(session.getRoomLink());
+            }
         }
 
 
@@ -247,10 +260,11 @@ public class HomeSceneController {
 
     /**
      * creates a node for a question.
+     *
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
+     *                     or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
         // load the question to a newNode and set it's homeSceneController to this
@@ -309,6 +323,7 @@ public class HomeSceneController {
      * Method to check whether the Question that is being created has been
      * written by the student in the session (so that the dismiss button
      * will be shown - if it does not correspond it won't show).
+     *
      * @param newQuestion - Node of the new question created
      * @param question    - the object of the new question created
      */
@@ -349,9 +364,6 @@ public class HomeSceneController {
         Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
         return roomDate;
     }
-
-
-
 
 
 }

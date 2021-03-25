@@ -1,12 +1,20 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
@@ -36,6 +44,7 @@ public class QuestionCellController {
     @FXML
     Button answerButton;
 
+    Session session = Session.getInstance();
 
     private HomeSceneController hsc;
 
@@ -120,12 +129,25 @@ public class QuestionCellController {
     /**
      * Method for blocking students by IP.
      */
-    public void blockUser() {
+    public void blockWarnUser() throws IOException {
         Node question = questionCell.getParent();
         //User user = (User) question.getUserData();
         System.out.println(question.getId());
         Session session = Session.getInstance();
-        HomeSceneCommunication.banUserForThatRoom(question.getId(), session.getRoomLink());
+        try {
+            BanCommunication.isIpWarned(session.getRoomLink());
+        } catch (UserWarnedException e) {
+            Parent loader = new FXMLLoader(getClass().getResource("/banUserScene.fxml")).load();
+
+            Stage linkStage = new Stage();
+
+            Scene scene = new Scene(loader);
+
+            linkStage.setScene(scene);
+            linkStage.show();
+        }
+        BanCommunication.warnUserForThatRoom(question.getId(), session.getRoomLink());
+
     }
 
 
@@ -190,5 +212,20 @@ public class QuestionCellController {
 
     public void refresh() {
         hsc.refresh();
+    }
+
+    public void banUser(ActionEvent event) {
+        Node question = questionCell.getParent();
+        BanCommunication.banUserForThatRoom(question.getId(), session.getRoomLink());
+        close(event);
+    }
+
+    public void close(ActionEvent event) {
+
+        Window window = ((Node) (event.getSource())).getScene().getWindow();
+        if (window instanceof Stage) {
+            ((Stage) window).close();
+        }
+
     }
 }
