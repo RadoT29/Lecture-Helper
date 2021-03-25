@@ -283,7 +283,7 @@ public class HomeSceneController {
 
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + question.getUpVotes());
+        upvoteLabel.setText("+" + getTotalUpVotes(question));
 
         //set upvote button as active or inactive
         Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
@@ -354,7 +354,17 @@ public class HomeSceneController {
     }
 
 
+    /**
+     * Method to get the moderator upVotes with extra value.
+     * @param question - question to retrieve upVotes from
+     * @return number of upVotes
+     */
+    public int getTotalUpVotes(Question question) {
+        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
 
+        int total = question.getUpVotes() + 9 * modUpVotes;
+        return total;
+    }
 
 
 }

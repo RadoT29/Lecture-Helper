@@ -190,5 +190,27 @@ public class QuestionCommunication {
 
     }
 
+    /**
+     * GET request to check if the question has an answer stored on the server.
+     *
+     * @return a string with true if answered and false if not
+     */
+    public static int getModUpVotes(long questionId) {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/upVote/getModUpVotes/" + questionId + "/"
+                        + session.getRoomLink() + "/" + session.getUserId()))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return gson.fromJson(response.body(), int.class);
+    }
+
 
 }
