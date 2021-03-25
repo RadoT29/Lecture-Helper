@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 
 
-<AnchorPane prefHeight="121.0" prefWidth="201.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.QuestionCellController">
+<AnchorPane prefHeight="121.0" prefWidth="201.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.BanUserController">
    <children>
       <VBox layoutY="19.0" prefHeight="102.0" prefWidth="221.0">
          <children>

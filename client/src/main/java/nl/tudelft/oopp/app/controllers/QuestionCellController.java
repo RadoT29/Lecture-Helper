@@ -44,6 +44,8 @@ public class QuestionCellController {
     @FXML
     Button answerButton;
 
+    String questionId;
+
     Session session = Session.getInstance();
 
     private HomeSceneController hsc;
@@ -130,22 +132,26 @@ public class QuestionCellController {
      * Method for blocking students by IP.
      */
     public void blockWarnUser() throws IOException {
-
+        Node question = questionCell.getParent();
+        questionId = question.getId();
+        System.out.println("Question Id: "+questionId);
         Session session = Session.getInstance();
         try {
             BanCommunication.isIpWarned(session.getRoomLink());
         } catch (UserWarnedException e) {
-            Parent loader = new FXMLLoader(getClass().getResource("/banUserScene.fxml")).load();
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/banUserScene.fxml"));
             Stage linkStage = new Stage();
+            Scene scene = new Scene(loader.load());
 
-            Scene scene = new Scene(loader);
+            //FXMLLoader banLoader =loader;
+            BanUserController banUserController = loader.getController();
+            banUserController.initData(questionId);
 
             linkStage.setScene(scene);
             linkStage.show();
             return;
         }
-        Node question = questionCell.getParent();
+
         BanCommunication.warnUserForThatRoom(question.getId(), session.getRoomLink());
 
     }
@@ -187,12 +193,12 @@ public class QuestionCellController {
     }
 
 
-
     /**
      * Method to set a question as answered,
      * It will check if the question selected has been marked as answered
      * If not a new answer will be created
      * (through methods established in communication).
+     *
      * @param questionId - QuestionId where answer is being added
      */
     public void setAnswer(String questionId) {
@@ -209,23 +215,8 @@ public class QuestionCellController {
     }
 
 
-
     public void refresh() {
         hsc.refresh();
     }
 
-    public void banUser(ActionEvent event) {
-        Node question = questionCell.getParent();
-        BanCommunication.banUserForThatRoom(question.getId(), session.getRoomLink());
-        close(event);
-    }
-
-    public void close(ActionEvent event) {
-
-        Window window = ((Node) (event.getSource())).getScene().getWindow();
-        if (window instanceof Stage) {
-            ((Stage) window).close();
-        }
-
-    }
 }
