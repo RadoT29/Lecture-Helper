@@ -40,4 +40,8 @@ public interface UpvoteRepository extends JpaRepository<Upvote, Long> {
     @Query("DELETE FROM Upvote u JOIN Question q ON u.Question.id = q.id WHERE q.Room.id=?1" )
     void clearAllUpVotes(long roomId);*/
 
+    @Query("SELECT u.id FROM Upvote u WHERE u.question.id=?1 AND u.question.room.id=?2 "
+            + "AND u.user.isModerator= 'true'")
+    List<Long> getModUpVotes(long questionId, long roomId, long userId);
+
 }

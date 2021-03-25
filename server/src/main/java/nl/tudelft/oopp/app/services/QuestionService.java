@@ -334,6 +334,23 @@ public class QuestionService {
         return time;
     }
 
+    /**
+     * Method that will make the connection to the database and retrieve the final upVotes.
+     * @param questionId - question to retrieve from
+     * @param roomLink - room where request came from
+     * @param userId - user in question
+     * @return number of upvotes
+     */
+    public int getModUpVotes(String questionId, String roomLink, String userId) {
+        long questionId2 = Long.parseLong(questionId);
+        Room room = roomService.getByLink(roomLink);
+        long roomId = room.getId();
+        long userId2 = Long.parseLong(userId);
+
+        List<Long> totalUpVotes = upvoteRepository.getModUpVotes(questionId2, roomId, userId2);
+        return totalUpVotes.size();
+
+    }
 
 
 }
