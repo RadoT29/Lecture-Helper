@@ -116,13 +116,13 @@ public class QuestionService {
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
-        Question question = questionRepository.getOne(questionId);
         //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
         //delete answer
         answerRepository.deleteByQuestionID(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
+        Question question = questionRepository.getOne(questionId);
         System.out.println("Question " + question.getId() + "(room: "
                 + question.getRoom().getName() + ") was deleted by a moderator");
     }

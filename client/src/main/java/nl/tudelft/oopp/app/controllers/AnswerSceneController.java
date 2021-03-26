@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 
 import java.io.IOException;
@@ -22,11 +23,6 @@ public class AnswerSceneController {
     private String questionId;
     private String oldAnswer;
     private String userId;
-    private QuestionCellController qcc;
-
-    public void setQcc(QuestionCellController qcc) {
-        this.qcc = qcc;
-    }
 
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
@@ -41,32 +37,33 @@ public class AnswerSceneController {
     }
 
     /**
-     * Loades new answer window for the clicked question.
+     * Loads new answer window for the clicked question.
      * @param oldAnswer String old text of the question, to be edited
      * @throws IOException when the loader fails
      */
     public static void initialize(
-            String oldAnswer, String questionId, String userId, QuestionCellController qcc)
+            String oldAnswer, String questionId, String userId)
             throws IOException {
 
+        //Load scene.
         FXMLLoader loader = new FXMLLoader(AnswerSceneController
                 .class.getResource("/AnswerQuestionScene.fxml"));
         Parent parent = loader.load();
         Scene scene = new Scene(parent);
-        AnswerSceneController aqc = loader.<AnswerSceneController>getController();
+        AnswerSceneController aqc = loader.getController();
 
         //set the fields for the newly created scene
         aqc.setQuestionId(questionId);
         aqc.setOldText(oldAnswer);
-        aqc.setQcc(qcc);
         aqc.setUserId(userId);
 
-        //put current questionText in the text area
+        //put current answerText in the text area
         TextArea textArea = (TextArea) scene.lookup("#editTextArea");
         textArea.setText(oldAnswer);
 
         Stage stage = new Stage();
         stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
 
     }
@@ -87,15 +84,10 @@ public class AnswerSceneController {
 
         //if the text has changed
         if (!newText.equals(oldAnswer)) {
-            QuestionCommunication.addAnswerText(questionId, newText, userId);
+            QuestionCommunication.addAnswerText(questionId, newText, userId);   
         }
 
-
-        //close the window
         Stage stage = (Stage) editTextArea.getScene().getWindow();
         stage.close();
-
-        //refresh the page
-        qcc.refresh();
     }
 }

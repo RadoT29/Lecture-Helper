@@ -193,7 +193,6 @@ public class HomeSceneController {
     public void loadAnsweredQuestions() {
 
         questionBoxLog.getChildren().clear();
-        int count = 1;
         while (!questions.isEmpty()) {
             Question question = questions.poll();
             try {
@@ -221,6 +220,8 @@ public class HomeSceneController {
         newQuestion.setId(question.getId() + "");
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabelLog");
         questionLabel.setText(question.questionText);
+        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
+        answerLabel.setText(question.answerText);
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.4;

@@ -33,7 +33,7 @@ public class QuestionCellController {
     Label questionTextLabel;
 
     @FXML
-    Label questionTextLabelLog;
+    Label answerTextLabel;
 
     @FXML
     Button editButton;
@@ -157,7 +157,7 @@ public class QuestionCellController {
      * Create an answer from the log scene.
      */
     public void answerFromLog() {
-        String oldAnswer = questionTextLabelLog.getText();
+        String oldAnswer = answerTextLabel.getText();
         Node question = questionLogCell.getParent();
         String id = question.getId();
         Session session = Session.getInstance();
@@ -165,7 +165,7 @@ public class QuestionCellController {
         String userId = session.getUserId();
 
         try {
-            AnswerSceneController.initialize(oldAnswer, id, userId, this);
+            AnswerSceneController.initialize(oldAnswer, id, userId);
 
         } catch (IOException e) {
             e.printStackTrace();
