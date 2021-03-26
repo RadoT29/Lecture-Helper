@@ -1,18 +1,18 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -73,7 +73,41 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
 
         });
 
+        callSuperInitializeAndUpdateStats(url, rb);
+    }
+
+    /**
+     * Calls the initialize of HomeSceneController.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
+    public void callSuperInitializeAndUpdateStats(URL url, ResourceBundle rb) {
         super.initialize(url, rb);
+        updateStats();
+    }
+
+    /**
+     * This method calls a thread to keep refreshing the reaction status.
+     */
+    public void updateStats() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                keepRequestingLog = true;
+                while (keepRequestingLog) {
+                    try {
+                        Platform.runLater(() -> {
+                            loadStats();
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     /**
