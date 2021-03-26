@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +13,7 @@ import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 import nl.tudelft.oopp.app.models.User;
 
+import java.awt.*;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Locale;
@@ -38,9 +40,42 @@ public class QuestionCellController {
 
 
     private HomeSceneController hsc;
+    private Question question;
 
     public void setHomeScene(HomeSceneController hsc) {
         this.hsc = hsc;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public static Node init(Question question, String resource, HomeSceneController hsc)
+            throws IOException {
+        FXMLLoader loader = new FXMLLoader(EditQuestionSceneController
+                .class.getResource(resource));
+        // load the question to a newNode and set it's homeSceneController to this
+        Node newQuestion = loader.load();
+        QuestionCellController qsc = loader.getController();
+        qsc.setHomeScene(hsc);
+
+        //set the node id to the question id
+        newQuestion.setId(question.getId() + ""); //to deleted
+        qsc.setQuestion(question);
+
+        //set the question text
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
+        questionLabel.setText(question.questionText);
+
+        //set the upvote count
+        Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
+        upvoteLabel.setText("+" + question.getUpVotes());
+
+        return newQuestion;
     }
 
     /**
@@ -49,8 +84,7 @@ public class QuestionCellController {
      **/
     public void dismissClicked() {
         //get the id of the question to be deleted
-        Node question = questionCell.getParent();
-        String id = question.getId();
+        String id = question.getId() + "";
         Session session = Session.getInstance();
 
         if (session.getIsModerator()) {
@@ -65,8 +99,6 @@ public class QuestionCellController {
             QuestionCommunication.dismissSingular(Long.parseLong(id), Long.parseLong(user));
         }
 
-        //remove the database from the screen
-        hsc.deleteQuestionFromScene(id);
 
         hsc.refresh();
     }
@@ -78,6 +110,7 @@ public class QuestionCellController {
      * (based on the users previous actions)
      */
     public void upvoteClicked() {
+        //!
         Node question = questionCell.getParent();
         String id = question.getId();
 
@@ -121,6 +154,7 @@ public class QuestionCellController {
      * Method for blocking students by IP.
      */
     public void blockUser() {
+        //!
         Node question = questionCell.getParent();
         //User user = (User) question.getUserData();
         System.out.println(question.getId());
@@ -137,8 +171,7 @@ public class QuestionCellController {
 
         //get question id
         String oldText = questionTextLabel.getText();
-        Node question = questionCell.getParent();
-        String id = question.getId();
+        String id = question.getId() + "";
 
         //load edit question scene
         try {
@@ -156,6 +189,7 @@ public class QuestionCellController {
      * (based on the users previous actions)
      */
     public void answeredClicked() {
+        //!
         Node question = questionCell.getParent();
         String id = question.getId();
 

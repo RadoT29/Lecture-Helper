@@ -232,12 +232,11 @@ public class HomeSceneController {
         }
 
         questionBox.getChildren().clear();
-        int count = 1;
         while (!questions.isEmpty()) {
             Question question = questions.poll();
             try {
                 questionBox.getChildren()
-                        .add(createQuestionCell(question, resource));
+                        .add(QuestionCellController.init(question, resource, this));
             } catch (IOException e) {
                 questionBox.getChildren().add(
                         new Label("Something went wrong while loading this question"));
@@ -245,65 +244,7 @@ public class HomeSceneController {
         }
     }
 
-    /**
-     * creates a node for a question.
-     * @param resource String the path to the resource with the question format
-     * @return Node that is ready to be displayed
-     * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
-     */
-    protected Node createQuestionCell(Question question, String resource) throws IOException {
-        // load the question to a newNode and set it's homeSceneController to this
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
-        Node newQuestion = loader.load();
-        QuestionCellController qsc = loader.getController();
-        qsc.setHomeScene(this);
 
-        //set the node id to the question id
-        newQuestion.setId(question.getId() + "");
-
-        //Check if the question loaded was created by the session's user
-        checkForQuestion(newQuestion, question);
-
-        //set the question text
-        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
-        questionLabel.setText(question.questionText);
-
-        Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
-        nicknameLabel.setText(question.user.getName());
-
-        //set the question box size
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.4;
-        questionLabel.setPrefWidth(width);
-        questionLabel.setMaxWidth(width);
-
-        //set the upvote count
-        Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + question.getUpVotes());
-
-        //set upvote button as active or inactive
-        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
-        boolean isActive = session.getUpVotedQuestions()
-                .contains(String.valueOf(question.getId()));
-        if (isActive) {
-            upvoteButton.getStyleClass().add("active");
-        }
-
-
-        return newQuestion;
-    }
-
-    /**
-     * finds the question by the id and deletes it from the scene.
-     * (this method will probably be deleted once we implement the real-time updates)
-     *
-     * @param id the id of the question to be deleted
-     **/
-    public void deleteQuestionFromScene(String id) {
-        Node q = questionBox.lookup("#" + id);
-        questionBox.getChildren().remove(q);
-    }
 
     /**
      * Method to check whether the Question that is being created has been
