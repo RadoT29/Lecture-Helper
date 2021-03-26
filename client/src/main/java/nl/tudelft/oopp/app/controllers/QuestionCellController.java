@@ -120,7 +120,7 @@ public class QuestionCellController {
         Node question = questionLogCell.getParent();
         String id = question.getId();
         QuestionCommunication.dismissQuestion(Long.parseLong(id));
-        hsc.deleteQuestionFromScene(id);
+     //   hsc.deleteQuestionFromScene(id);
     }
 
     /**
