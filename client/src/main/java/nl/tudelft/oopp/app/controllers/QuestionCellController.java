@@ -71,6 +71,9 @@ public class QuestionCellController {
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
         questionLabel.setText(question.questionText);
 
+        Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
+        nicknameLabel.setText(question.user.getName());
+        
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
         upvoteLabel.setText("+" + question.getUpVotes());
