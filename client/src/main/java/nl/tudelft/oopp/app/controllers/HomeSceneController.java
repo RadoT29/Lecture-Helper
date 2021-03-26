@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -54,6 +55,13 @@ public class HomeSceneController {
     private VBox questionBoxLog;
 
     @FXML
+    public Button questionButton;
+    @FXML
+    public AnchorPane mainBox;
+    @FXML
+    public AnchorPane mainBoxLog;
+
+    @FXML
     private Label passLimitQuestionsLabel;
 
     protected PriorityQueue<Question> questions;
@@ -70,6 +78,8 @@ public class HomeSceneController {
      * @param rb  - Provides any needed resources.
      */
     public void initialize(URL url, ResourceBundle rb) {
+        mainBoxLog.setVisible(false);
+
         callRequestingThread();
     }
 
@@ -387,7 +397,28 @@ public class HomeSceneController {
         return roomDate;
     }
 
+    /**
+     * Transitions from Main question scene to Question log and vice versa.
+     */
+    public void controlQuestionLog() {
 
+        if (questionButton.getStyleClass().contains("menuBtnBlack")) {
+            questionButton.getStyleClass().remove("menuBtnBlack");
+            questionButton.getStyleClass().add("menuBtnWhite");
+            keepRequesting = false;
+            mainBox.setVisible(false);
+            mainBoxLog.setVisible(true);
+            callRequestingLogThread();
+
+        } else {
+            questionButton.getStyleClass().remove("menuBtnWhite");
+            questionButton.getStyleClass().add("menuBtnBlack");
+            keepRequestingLog = false;
+            mainBoxLog.setVisible(false);
+            mainBox.setVisible(true);
+            callRequestingThread();
+        }
+    }
 
 
 
