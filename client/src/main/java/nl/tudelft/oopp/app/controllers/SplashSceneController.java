@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
@@ -47,6 +48,7 @@ public class SplashSceneController {
     @FXML
     private Label scheduleRoomFail;
 
+
     /**
      * Handles clicking the button.
      * @throws IOException Is thrown if loader fails.
@@ -66,7 +68,7 @@ public class SplashSceneController {
 
         //Creates a popup with the links
         LinkController linkController = new LinkController();
-        linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
+        linkController.getLinks(room.linkIdStudent.toString(), room.linkIdModerator.toString());
 
 
     }
@@ -78,8 +80,7 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
-
-        // Cannot enter rooms with empty links
+        Session.cleanUserSession();
         if (roomLink.getText().equals("")) {
             invalidRoomLink.setText("Insert a Room Link!");
             invalidRoomLink.setVisible(true);
@@ -90,13 +91,26 @@ public class SplashSceneController {
             //This method checks if the link inserted corresponds
             // to a Student one, Moderator one or if it is invalid.
             SplashCommunication.checkForRoom(roomLink.getText());
+
             //Gets the session with the updated information
             Session session = Session.getInstance();
+            if (!session.getIsModerator()) {
+                SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
+            }
+            System.out.println("Is moderator3 " + session.getIsModerator());
+            ServerCommunication.isTheRoomClosed(roomLink.getText());
+            //System.out.println(roomLink.getText());
+
             ServerCommunication.isTheRoomClosed(session.getRoomLink());
             System.out.println("Is moderator " + session.getIsModerator());
+
             if (!session.getIsModerator()) {
-                ServerCommunication.hasStudentPermission(session.getRoomLink());
+                SplashCommunication.isIpBanned(roomLink.getText());
+                ServerCommunication.hasStudentPermission(roomLink.getText());
             }
+
+            ServerCommunication.getRoomName();
+
 
             Parent loader = new FXMLLoader(getClass().getResource("/nickName.fxml")).load();
             Stage stage = (Stage) enterRoomButton.getScene().getWindow();
@@ -105,6 +119,7 @@ public class SplashSceneController {
             double height = screenSize.getHeight() * 0.8;
 
             Scene scene = new Scene(loader, width, height);
+
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
@@ -119,6 +134,9 @@ public class SplashSceneController {
 
         } catch (NoStudentPermissionException exception) {
             invalidRoomLink.setText("No student permission to the Room!");
+            invalidRoomLink.setVisible(true);
+        } catch (AccessDeniedException exception) {
+            invalidRoomLink.setText("Access denied!");
             invalidRoomLink.setVisible(true);
         }
 
@@ -148,6 +166,7 @@ public class SplashSceneController {
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
         if (session.getIsModerator()) {
+
             loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         } else {
             loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
@@ -168,6 +187,11 @@ public class SplashSceneController {
         double height = screenSize.getHeight() * 0.8;
 
         Scene scene = new Scene(loader, width, height);
+
+        // Sets the room name
+        Label roomLabel = (Label) scene.lookup("#roomName");
+        roomLabel.setText(session.getRoomName());
+
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();

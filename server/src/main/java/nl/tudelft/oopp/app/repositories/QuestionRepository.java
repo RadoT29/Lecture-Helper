@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.repositories;
 
 import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -70,4 +71,10 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT u.createdAt FROM Question u WHERE u.id=?1")
     LocalDateTime getQuestionTime(long questionId);
 
+    @Query(value = "SELECT u.user from Question u where u.id=?1")
+    User getUserByQuestionId(Long questionId);
+
+    @Query(value = "SELECT q FROM Question q "
+            + "where q.user.id=?1 and q.room.id=?2 and q.createdAt>=?3")
+    List<Question> questionsByUserIdRoomIdInterval(long userId, long roomId, LocalDateTime time);
 }

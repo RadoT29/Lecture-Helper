@@ -5,12 +5,14 @@ import nl.tudelft.oopp.app.repositories.AnswerRepository;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.repositories.UpvoteRepository;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,8 +56,9 @@ public class QuestionService {
     }
 
     /**
+     * Gets all questions from the room.
      * gets all questions from the room.
-     *Questions have to roomId and UserId changed to 0.
+     * Questions have the roomId and UserId changed to 0.
      * @param roomLinkString a room link
      * @return list of questions from the room.
      *
@@ -88,9 +91,9 @@ public class QuestionService {
     }
 
 
+
     /**
-     * This method gets the correct Room and User associated with the question that has been sent.
-     *
+     * This method sets the correct Room and User associated with the question that has been sent.
      * @param roomLink the roomLink where the question has been asked
      * @param userId   the id of the user who asked the question
      * @param question the question that has been asked
@@ -193,6 +196,18 @@ public class QuestionService {
         questionRepository.clearQuestions(room.getId());
         System.out.println("All questions from room " + room.getId()
                 + "(name: " + room.getName() + ") were deleted");
+    }
+
+    public Long findUserByQuestionId(String questionId) {
+        return questionRepository.getUserByQuestionId(Long.valueOf(questionId)).getId();
+    }
+
+    public List<Question> questionsByUserIdRoomIdInterval(
+            String userId,
+            long roomId,
+            LocalDateTime time) {
+        return questionRepository
+                .questionsByUserIdRoomIdInterval(Long.parseLong(userId), roomId, time);
     }
 
 

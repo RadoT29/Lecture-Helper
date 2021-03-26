@@ -16,10 +16,12 @@ import java.util.UUID;
  */
 @Controller
 public class RoomController {
+
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
     private RoomService roomService;
+
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -38,6 +40,14 @@ public class RoomController {
                             + "\n\tModerator link:" + room.getLinkIdModerator());
         return room;
     }
+
+
+    @GetMapping("room/name/{roomLink}")
+    @ResponseBody
+    public String getRoomName(@PathVariable String roomLink) {
+        return roomService.getByLink(roomLink).getName();
+    }
+
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -113,5 +123,22 @@ public class RoomController {
             System.out.println("Room " + room.getId()
                     + "(name: " + room.getName() + ") had all students kicked out");
         }
+    }
+
+    /**
+     * This method updates the the number of questions which can be send per time.
+     * @param roomLink - the room link after that is found the room id
+     * @param numQuestions - the number of questions
+     * @param minutes - per minutes
+     */
+    @PutMapping(path = "/setConstraints/{roomLink}/{numQuestions}/{minutes}")
+    @ResponseBody
+    public void putConstraints(@PathVariable String roomLink,
+                               @PathVariable String numQuestions,
+                               @PathVariable String minutes) {
+        roomService.putConstraints(
+                roomLink, Integer.parseInt(numQuestions),
+                Integer.parseInt(minutes)
+        );
     }
 }

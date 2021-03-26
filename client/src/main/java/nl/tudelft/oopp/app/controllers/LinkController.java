@@ -43,6 +43,7 @@ public class LinkController {
 
         linkStage.setScene(scene);
         linkStage.show();
+
     }
 
     /**

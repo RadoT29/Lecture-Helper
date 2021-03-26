@@ -92,3 +92,14 @@
     -fx-border-radius: 50 50 50 50;
     -fx-background-radius: 50 50 50 50;
 }
+
+.button:disabled {
+    -fx-background-color: white;
+    -fx-opacity: 1.0;
+}
+
+#dismissButton:disabled {
+    -fx-opacity: 0;
+}
+
+
