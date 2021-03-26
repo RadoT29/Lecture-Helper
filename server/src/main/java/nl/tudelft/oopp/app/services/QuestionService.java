@@ -228,8 +228,11 @@ public class QuestionService {
         Answer answer = new Answer(answerText, question, user, answerType);
 
         answerRepository.save(answer);
-        question.setAnswered(true);
-        questionRepository.updateAnsweredStatus(question.getId(),true);
+
+        if (!question.isAnswered()) {
+            questionRepository.updateAnsweredStatus(question.getId(), true);
+        }
+        questionRepository.setAnswer(questionId2, answer.getAnswerText());
 
     }
 

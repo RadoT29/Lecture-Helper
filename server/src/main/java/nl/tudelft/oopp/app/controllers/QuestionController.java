@@ -238,7 +238,7 @@ public class QuestionController {
 
         //remove quotation marks from the newText
         newText = newText.substring(1, newText.length() - 1);
-        questionService.setAnswered(newText,questionId,userId,true);
+        questionService.setAnswered(newText,questionId,userId,false);
     }
 
 
