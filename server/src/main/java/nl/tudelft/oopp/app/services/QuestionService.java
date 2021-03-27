@@ -335,5 +335,7 @@ public class QuestionService {
     }
 
 
-
+    public Question findByQuestionId(long questionId) {
+        return questionRepository.findById(questionId).get();
+    }
 }
