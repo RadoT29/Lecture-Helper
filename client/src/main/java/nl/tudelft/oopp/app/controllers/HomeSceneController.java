@@ -49,10 +49,10 @@ public class HomeSceneController {
     private TextField questionInput;
 
     @FXML
-    private VBox questionBox;
+    protected VBox questionBox;
 
     @FXML
-    private VBox questionBoxLog;
+    protected VBox questionBoxLog;
 
     @FXML
     public Button questionButton;
@@ -78,7 +78,6 @@ public class HomeSceneController {
      * @param rb  - Provides any needed resources.
      */
     public void initialize(URL url, ResourceBundle rb) {
-        mainBoxLog.setVisible(false);
 
         callRequestingThread();
     }
@@ -307,7 +306,7 @@ public class HomeSceneController {
      * @param resource - the question cell.
      * @return - a Node of the question.
      */
-    private Node createQuestionCellLog(Question question, String resource) throws IOException {
+    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Node newQuestion = loader.load();

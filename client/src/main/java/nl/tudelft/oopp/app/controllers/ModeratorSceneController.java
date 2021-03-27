@@ -13,15 +13,18 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 /**
@@ -58,6 +61,8 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
         closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
+        mainBoxLog.setVisible(false);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -88,8 +93,8 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         new Thread(new Runnable() {
             @Override
             public void run() {
-                keepRequestingLog = true;
-                while (keepRequestingLog) {
+                keepRequesting = true;
+                while (keepRequesting) {
                     try {
                         Platform.runLater(() -> {
                             loadStats();
@@ -262,5 +267,19 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();
 
+    }
+
+    @Override
+    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
+        Node newQuestion = super.createQuestionCellLog(question,resource);
+        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
+
+        if (!answerLabel.getText().equals("This question was answered during the lecture")) {
+            Button answerButtonLog = (Button) newQuestion.lookup("#answerButtonLog");
+            answerButtonLog.getStyleClass().remove("answerButton");
+            answerButtonLog.getStyleClass().add("editButton");
+            answerButtonLog.setText("Edit");
+        }
+        return newQuestion;
     }
 }

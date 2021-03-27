@@ -86,7 +86,6 @@ public class AnswerSceneController {
         if (!newText.equals(oldAnswer)) {
             QuestionCommunication.addAnswerText(questionId, newText, userId);   
         }
-
         Stage stage = (Stage) editTextArea.getScene().getWindow();
         stage.close();
     }

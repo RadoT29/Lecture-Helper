@@ -44,6 +44,9 @@ public class QuestionCellController {
     @FXML
     Button answerButton;
 
+    @FXML
+    Button answerButtonLog;
+
 
     private HomeSceneController hsc;
     private Question question;

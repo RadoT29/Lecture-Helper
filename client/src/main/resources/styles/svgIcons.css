@@ -143,10 +143,12 @@
     -fx-background-color: transparent;
     -fx-border-color: #00917C;
     -fx-border-width: 2.5;
+    -fx-text-fill: #00917C;
 }
 
 .answerButton {
     -fx-background-color: transparent;
     -fx-border-color:  #0066A2;
     -fx-border-width: 2.5;
+    -fx-text-fill: #0066A2;
 }
