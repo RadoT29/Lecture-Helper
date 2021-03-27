@@ -239,15 +239,16 @@ public class QuestionService {
 
         Moderator user = (Moderator) userService.getByID(userId);
         Question question = questionRepository.getOne(questionId2);
-
         Answer answer = new Answer(answerText, question, user, answerType);
 
-        answerRepository.save(answer);
-
-        if (!question.isAnswered()) {
+        if (answerType) {
             questionRepository.updateAnsweredStatus(question.getId(), true);
+            answerRepository.save(answer);
+        } else {
+            answerRepository.deleteByQuestionID(questionId2);
+            answerRepository.save(answer);
         }
-        questionRepository.setAnswer(questionId2, answer.getAnswerText());
+        questionRepository.setAnswer(questionId2, answerText);
 
     }
 
