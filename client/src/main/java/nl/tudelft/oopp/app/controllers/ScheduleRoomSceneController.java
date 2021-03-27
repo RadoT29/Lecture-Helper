@@ -1,14 +1,13 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.InvalidInputException;
 import nl.tudelft.oopp.app.models.Room;
 
 import java.io.IOException;
@@ -55,7 +54,6 @@ public class ScheduleRoomSceneController {
                 .class.getResource("/scheduleRoomScene.fxml"));
         Parent parent = loader.load();
         Scene scene = new Scene(parent);
-        ScheduleRoomSceneController src = loader.<ScheduleRoomSceneController>getController();
 
         Label localTimeZone = (Label) scene.lookup("#localTimeZone");
         localTimeZone.setText(ZoneId.systemDefault().toString());
@@ -64,143 +62,6 @@ public class ScheduleRoomSceneController {
         stage.setTitle("Schedule a room");
         stage.setScene(scene);
         stage.show();
-    }
-
-    /**
-     * checks if the user input in all the fields in the scene is valid
-     * and if everything is valid the link scene is loaded.
-     * otherwise a warning message appears where the mistake was found
-     */
-    public void generateLinks() {
-
-        clearWarningLabels();
-
-        // Cannot create rooms with empty names
-        if (roomName.getText().equals("")) {
-            invalidRoomName.setVisible(true);
-            return;
-        }
-
-        //get entered date and time in local timeZone
-        String timeString = time.getText();
-        LocalTime localTime = getTimeFromString(timeString);
-        LocalDate localDate = date.getValue();
-
-        if (localTime == null) {
-            invalidTime.setVisible(true);
-            return;
-        }
-        if (localDate == null) {
-            invalidDate.setVisible(true);
-            return;
-        }
-
-        LocalDateTime localStartDate = LocalDateTime.of(localDate, localTime);
-
-        // get time zone for the retrieved time and date
-        ZoneId selectedTimeZone = getSelectedTimeZone();
-        if (selectedTimeZone == null) {
-            invalidTimeZone.setVisible(true);
-            return;
-        }
-
-        //localStartDate with the selected time zone
-        ZonedDateTime zonedStartDate = localStartDate.atZone(selectedTimeZone);
-
-        //startDate in UTC and check if the date is not in the past
-        ZonedDateTime utcStartDate = zonedStartDate.withZoneSameInstant(ZoneId.of("UTC"));
-        if (utcStartDate.isBefore(ZonedDateTime.now(ZoneId.of("UTC")))) {
-            dateInThePast.setVisible(true);
-            return;
-        }
-
-        //Creates a popup with the links
-        LinkController linkController = new LinkController();
-        Room room = SplashCommunication.scheduleRoom(roomName.getText(),
-                utcStartDate.toLocalDateTime());
-        try {
-            linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
-        } catch (IOException e) {
-            generateLinksError.setVisible(true);
-        }
-
-        // Close if success
-        Stage stage = (Stage) roomName.getScene().getWindow();
-        stage.close();
-
-    }
-
-    /**
-     * Handles click on 'Cancel' button.
-     * closes the schedule window.
-     */
-    public void cancelClicked() {
-        Stage stage = (Stage) roomName.getScene().getWindow();
-        stage.close();
-    }
-
-    /**
-     * sets all warning labels to invisible.
-     */
-    public void clearWarningLabels() {
-        invalidDate.setVisible(false);
-        invalidRoomName.setVisible(false);
-        invalidTime.setVisible(false);
-        invalidTimeZone.setVisible(false);
-        dateInThePast.setVisible(false);
-        generateLinksError.setVisible((false));
-    }
-
-    /**
-     * reads the selected time zone basing on user input in the scene.
-     * if useLocalTimeZone is selected uses system's default time zone
-     * else if no time zone is selected in the comboBox displays a warning message
-     * if a time zone is selected returns that one
-     * @return ZoneId picked by the user
-     */
-    public ZoneId getSelectedTimeZone() {
-        //local time zone
-        ZoneId selectedTimeZone = ZoneId.systemDefault();
-
-        //use chosen time zone
-        if (!useLocalTimeZone.isSelected()) {
-            String timeZoneText = (String) timeZoneComboBox.getValue();
-            if (timeZoneText == null) {
-                return null;
-            }
-            // change to the opposite (idk why, but for some reasons it works the other way around)
-            if (timeZoneText.contains("+")) {
-                timeZoneText = timeZoneText.replace("+", "-");
-            } else {
-                timeZoneText = timeZoneText.replace("-", "+");
-            }
-            selectedTimeZone = ZoneId.of(timeZoneText);
-        }
-        System.out.println("Selected time zone: " + selectedTimeZone);
-        return selectedTimeZone;
-    }
-
-    /**
-     * transforms a String representation of time in format "HH:mm"
-     * (first H zero does not have to be included)
-     * into LocalTime.
-     * @param timeString String representation of time "HH:mm"
-     * @return LocalTime retrieved from the timeString
-     */
-    public LocalTime getTimeFromString(String timeString) {
-        if (timeString.length() < 4) {
-            return null;
-        }
-        if (timeString.charAt(1) == ':') {
-            timeString = "0" + timeString;
-        }
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        try {
-            return LocalTime.parse(timeString, dtf);
-        } catch (Exception e) {
-            invalidTime.setVisible(true);
-            return null;
-        }
     }
 
     /**
@@ -224,11 +85,147 @@ public class ScheduleRoomSceneController {
         Set<String> allZones = ZoneId.getAvailableZoneIds();
         List<String> zoneList = new ArrayList<>(allZones);
         Collections.sort(zoneList);
-        LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         for (String s : zoneList) {
             if ((s.contains("GMT-") || s.contains("GMT+"))) {
                 timeZoneComboBox.getItems().add(s);
             }
         }
     }
+
+    /**
+     * Handles click on 'Cancel' button.
+     * closes the schedule window.
+     */
+    public void cancelClicked() {
+        Stage stage = (Stage) roomName.getScene().getWindow();
+        stage.close();
+    }
+
+    /**
+     * sets all warning labels to invisible.
+     */
+    public void hideWarningLabels() {
+        invalidDate.setVisible(false);
+        invalidRoomName.setVisible(false);
+        invalidTime.setVisible(false);
+        invalidTimeZone.setVisible(false);
+        dateInThePast.setVisible(false);
+        generateLinksError.setVisible((false));
+    }
+
+    /**
+     * checks if the user input in all the fields in the scene is valid
+     * and if everything is valid the link scene is loaded.
+     * otherwise a warning message appears where the mistake was found
+     */
+    public void generateLinks() {
+        hideWarningLabels();
+        // Cannot create rooms with empty names
+        try {
+            if (roomName.getText().equals("")) {
+                throw new InvalidInputException(invalidRoomName);
+            }
+            LocalDateTime startDateUtc = getStartDateInUtc();
+            //Creates a popup with the links
+            LinkController linkController = new LinkController();
+            Room room = SplashCommunication.scheduleRoom(roomName.getText(), startDateUtc);
+            if (room == null) {
+                throw new NullPointerException();
+            }
+            linkController.getLinks(room.linkIdStudent.toString(),room.linkIdModerator.toString());
+        } catch (InvalidInputException | NullPointerException e) {
+            return;
+        } catch (IOException e) {
+            generateLinksError.setVisible(true);
+            return;
+        }
+        // Close if success
+        Stage stage = (Stage) roomName.getScene().getWindow();
+        stage.close();
+    }
+
+    /**
+     * reads user's input in the fields related to the date and time.
+     * using that input generates a startDateUtc
+     * @return LocalDateTime picked by the user and transformed to the UTC time zone
+     * @throws InvalidInputException if user's input is invalid
+     */
+    private LocalDateTime getStartDateInUtc() throws InvalidInputException {
+        //get entered date and time in local timeZone
+        LocalTime localTime = getTimeFromString(time.getText());
+        LocalDate localDate = date.getValue();
+
+        if (localDate == null) {
+            throw new InvalidInputException(invalidDate);
+        }
+        //entered date time (without time zone)
+        LocalDateTime localStartDate = LocalDateTime.of(localDate, localTime);
+
+        // get time zone for the retrieved time and date
+        ZoneId selectedTimeZone = getSelectedTimeZone();
+
+        //localStartDate with the selected time zone
+        ZonedDateTime zonedStartDate = localStartDate.atZone(selectedTimeZone);
+
+        //startDate in UTC and check if the date is not in the past
+        ZonedDateTime startDateUtc = zonedStartDate.withZoneSameInstant(ZoneId.of("UTC"));
+        if (startDateUtc.isBefore(ZonedDateTime.now(ZoneId.of("UTC")))) {
+            throw new InvalidInputException(dateInThePast);
+        }
+        return startDateUtc.toLocalDateTime();
+    }
+
+
+
+    /**
+     * reads the selected time zone basing on user input in the scene.
+     * if useLocalTimeZone is selected uses system's default time zone
+     * else if no time zone is selected in the comboBox displays a warning message
+     * if a time zone is selected returns that one
+     * @return ZoneId picked by the user
+     * @throws InvalidInputException user has not picked a timeZone correctly
+     */
+    public ZoneId getSelectedTimeZone() throws InvalidInputException {
+        //local time zone
+        ZoneId selectedTimeZone = ZoneId.systemDefault();
+        if (useLocalTimeZone.isSelected()) {
+            return selectedTimeZone;
+        }
+        // use a chosen timezone
+        try {
+            String timeZoneText = timeZoneComboBox.getValue();
+            // change to the opposite (idk why, but for some reasons it works the other way around)
+            if (timeZoneText.contains("+")) {
+                timeZoneText = timeZoneText.replace("+", "-");
+            } else {
+                timeZoneText = timeZoneText.replace("-", "+");
+            }
+            selectedTimeZone = ZoneId.of(timeZoneText);
+            return selectedTimeZone;
+        } catch (Exception e) {
+            throw new InvalidInputException(invalidTimeZone);
+        }
+    }
+
+    /**
+     * transforms a String representation of time in format "HH:mm"
+     * (first H zero does not have to be included)
+     * into LocalTime.
+     * @param timeString String representation of time "HH:mm"
+     * @return LocalTime retrieved from the timeString
+     * @throws InvalidInputException if timeString is in incorrect format
+     */
+    public LocalTime getTimeFromString(String timeString) throws InvalidInputException {
+        try {
+            if (timeString.charAt(1) == ':') {
+                timeString = "0" + timeString;
+            }
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+            return LocalTime.parse(timeString, dtf);
+        } catch (Exception e) {
+            throw new InvalidInputException(invalidTime);
+        }
+    }
+
+
 }
