@@ -35,6 +35,10 @@ public class Room {
 
     private boolean permission;
 
+    private int numberQuestionsInterval = Integer.MAX_VALUE;
+
+    private int timeInterval = Integer.MAX_VALUE;
+
     private LocalDateTime startDate;
 
     private LocalDateTime endDateForStudents;

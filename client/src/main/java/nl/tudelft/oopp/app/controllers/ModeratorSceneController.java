@@ -2,6 +2,8 @@ package nl.tudelft.oopp.app.controllers;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.Session;
 
 /**
@@ -30,6 +33,11 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public VBox mainMenu;
     @FXML
     public VBox slidingMenu;
+    @FXML
+    public Button speedStat;
+    @FXML
+    public Button emotionStat;
+
 
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
@@ -55,7 +63,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
                 closeFastNav.play();
             }
         });
-
+        super.initialize(url,rb);
         refresh();
     }
 
@@ -112,6 +120,36 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      */
     public void refresh() {
         super.refresh();
+        loadStats();
+    }
+
+    /**
+     * This method changes the icons that represent the Speed and Emotion Reaction to
+     * match their statistics.
+     */
+    public void loadStats() {
+        int emotionStatInt = ReactionCommunication.getReactionStats(false);
+        int speedStatInt = ReactionCommunication.getReactionStats(true);
+
+        System.out.println("emotion = " + emotionStatInt);
+        System.out.println("speed = " + speedStatInt);
+        if (emotionStatInt == 1) {
+            emotionStat.getStyleClass().set(1, "happyButton");
+            System.out.println(emotionStat.getStyleClass());
+        } else if (emotionStatInt == -1) {
+            emotionStat.getStyleClass().set(1,"confusedButton");
+        } else {
+            emotionStat.getStyleClass().set(1,"sadButton");
+        }
+
+        if (speedStatInt == 1) {
+            speedStat.getStyleClass().set(1,"fastButton");
+        } else if (speedStatInt == -1) {
+            speedStat.getStyleClass().set(1,"slowButton");
+        } else {
+            speedStat.getStyleClass().set(1,"okButton");
+        }
+
     }
 
     /**
@@ -131,6 +169,34 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     }
 
     /**
+     * When the export questions is clicked it will send a request to get a
+     * String with all the questions and their respective answers
+     * it will then create a new text file inside the repository with these.
+     */
+    public void exportQuestionsClicked() {
+        Session session = Session.getInstance();
+        String exported = "Nothing has been added";
+        if (session.getIsModerator()) {
+            exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
+        }
+
+        try {
+            FileWriter file = new FileWriter(new File("ExportedQuestions"
+                                                    + session.getRoomName() + ".txt"));
+            file.write(exported);
+            file.close();
+
+        } catch (IOException e) {
+            System.out.print("Impossible to find file");
+            e.printStackTrace();
+        }
+        refresh();
+    }
+
+
+
+
+    /**
      * Method to load the presentation mode scene.
      * Makes the scene smaller so it takes less space on the lecturer screen
      * @throws IOException if it cant load the fxml file
@@ -147,5 +213,16 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    /**
+     * This method opens the scene where are inserted the
+     * number of questions per time.
+     * @throws IOException - may thrown
+     */
+    public void openConstraintsScene() throws IOException {
+        QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
+        questionsPerTimeController.open();
+
     }
 }

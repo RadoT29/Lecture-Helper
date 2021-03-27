@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.app.services;
 
+import nl.tudelft.oopp.app.models.IpAddress;
+import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.User;
+import nl.tudelft.oopp.app.repositories.IpAddressRepository;
 import nl.tudelft.oopp.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +20,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private IpAddressRepository ipAddressRepository;
+
     /**
      * Gets all users in the application.
+     *
      * @return - a list of all users.
      */
     public List<User> findAll() {
@@ -27,6 +34,7 @@ public class UserService {
 
     /**
      * Gets the number of users in the application.
+     *
      * @return - their count.
      */
     public long count() {
@@ -35,7 +43,8 @@ public class UserService {
 
     /**
      * Updates a user's name.
-     * @param userId - user's id.
+     *
+     * @param userId   - user's id.
      * @param userName - name of user.
      */
     public void update(long userId, String userName) {
@@ -44,6 +53,7 @@ public class UserService {
 
     /**
      * This method finds a User in the Database from the givenID.
+     *
      * @param userID the User to be found
      * @return The User Object with the associated userId
      */
@@ -55,5 +65,18 @@ public class UserService {
             System.out.println("User not found");
             return null;
         }
+    }
+
+    public void saveStudentIp(String ipAddress, User userId, Room roomLink) {
+        IpAddress ipAddressObj = new IpAddress(ipAddress, roomLink, userId);
+        ipAddressRepository.save(ipAddressObj);
+    }
+
+    public void banUserForThatRoom(String userId, String roomId) {
+        ipAddressRepository.banUserForRoom(Long.parseLong(roomId), Long.parseLong(userId));
+    }
+
+    public List<Boolean> isUserBanned(String ipAddress, Long roomId) {
+        return ipAddressRepository.checkForIpBan(ipAddress, roomId);
     }
 }
