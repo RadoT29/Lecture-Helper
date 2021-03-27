@@ -12,6 +12,8 @@ import org.mockserver.client.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.Parameter;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -123,5 +125,40 @@ public class SplashCommunicationTest {
         Session session = Session.getInstance();
 
         assertNull(session);
+    }
+
+    void mockPostScheduleRoom(String roomName, LocalDateTime startDate) {
+        mockServer.when(
+                request()
+                        .withMethod("POST")
+                        .withPath("/scheduleRoom")
+                        .withQueryStringParameter("name", roomName)
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("\"" + startDate.toString() + "\"")
+        )
+                .respond(
+                        response()
+                                .withStatusCode(200)
+                                .withBody("{\n  \"id\": 2,\n  \"name\": \"" + roomName + "\",\n  "
+                                        + "\"linkIdStudent\": \""
+                                        + "f71b9850-a0b1-4ec6-b85e-ba4fffeaa7c9\",\n  "
+                                        + "\"linkIdModerator\": \""
+                                        + "bea8d9bc-a3fd-4070-9dae-d4ceadfad3a6\",\n  "
+                                        + "\"isOpen\": true,\n  \"permission\": false,\n  "
+                                        + "\"startDate\":\"" + startDate.toString() + "\",\n  "
+                                        + "\"endDateForStudents\":null,\n  \""
+                                        + "createdAt\": \"2021-03-22T14:58:31.109+0000"
+                                        + "\",\n  \"updatedAt\": \""
+                                        + "2021-03-22T14:58:31.109+0000\"\n}"));
+    }
+
+    @Test
+    void shouldScheduleARoomWithPermissionFalse() {
+        String roomName = "Room Name";
+        LocalDateTime startDate = LocalDateTime.now(Clock.systemUTC()).plusHours(1);
+        mockPostScheduleRoom(roomName, startDate);
+        Room room = SplashCommunication.scheduleRoom(roomName, startDate);
+        assertEquals(room.getName(), roomName);
+        assertFalse(room.isPermission());
     }
 }
