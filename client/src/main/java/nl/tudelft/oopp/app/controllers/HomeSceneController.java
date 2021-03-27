@@ -13,12 +13,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import nl.tudelft.oopp.app.communication.BanCommunication;
-import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
-import nl.tudelft.oopp.app.communication.ServerCommunication;
-import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.*;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
@@ -218,12 +216,10 @@ public class HomeSceneController {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
-        if (!session.getIsModerator()) {
-            ServerCommunication.hasStudentPermission(session.getRoomLink());
-        }
-
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
+            ServerCommunication.hasStudentPermission(session.getRoomLink());
+            QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
             if (!session.isWarned()) {
                 BanCommunication.isIpWarned(session.getRoomLink());
             } else {
@@ -349,6 +345,7 @@ public class HomeSceneController {
 
     /**
      * Get the Date in which the room was created.
+     *
      * @return Date - at which room was created
      */
     public Date retrieveRoomTime() {
@@ -358,11 +355,35 @@ public class HomeSceneController {
 
     /**
      * Get the Date in which the room was last modified.
+     *
      * @return Date - at which room was last modified
      */
     public Date retrieveModifiedTime() {
         Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
         return roomDate;
+    }
+
+    public static void questionUpdatePopUp(QuestionsUpdate result) {
+
+        //String[] updateInformation = result.split("/");
+        String additionalText = "";
+
+        String text = "";
+        if (result.getStatusQuestion() == -1) {
+            text = "Your question has been discarded!";
+            additionalText = "Your question: \"" + result.getQuestionText() + "\" has been discarded!";
+        } else if (result.getStatusQuestion() == 0) {
+            text = "Your question has been marked as answered!";
+            additionalText = "Your question: \"" + result.getQuestionText() + "\" has been marked as answered!";
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setWidth(900);
+        alert.setHeight(300);
+        alert.setTitle("Update on your question!");
+        alert.setHeaderText(text);
+        alert.setContentText(additionalText);
+        alert.showAndWait();
+
     }
 
 
