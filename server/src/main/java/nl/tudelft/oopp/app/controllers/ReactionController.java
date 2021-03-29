@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * This class handles all the Endpoints related to the reactions.
  */
@@ -82,5 +84,16 @@ public class ReactionController {
 
         return reactionService.getEmotionStat(roomLink);
 
+    }
+
+    /**
+     * returs the counts of each emotion reaction in the room.
+     * @param roomLink roomLink of the room we want reaction inforamtion of
+     * @return a list of counts where index 0 - confused, 1 - sad, 2 - happy
+     */
+    @GetMapping("counts/emotion/{roomLink}")
+    @ResponseBody
+    public List<Integer> getEmotionCounts(@PathVariable String roomLink) {
+        return reactionService.getEmotionCounts(roomLink);
     }
 }

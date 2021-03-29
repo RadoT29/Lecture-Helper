@@ -110,34 +110,34 @@ public class ReactionCommunication {
      *      or the list from the server was not of size 3.
      */
     public static List<Integer> getAllReactionCount() {
-//        session = session.getInstance();
-//
-//        HttpRequest request = HttpRequest.newBuilder().GET()
-//                .uri(URI.create("http://localhost:8080/reactions/counts/emotion/"
-//                        + session.getRoomLink()))
-//                .build();
-//
-//        System.out.println("Sending request: " + request.toString());
-//
-//        HttpResponse<String> response = null;
-//
-//        try {
-//            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//            if (response.statusCode() != 200) {
-//                System.out.println("Status: " + response.statusCode());
-//            }
-//        } catch (Exception e) {
-//            return List.of(0, 0, 0);
-//            e.printStackTrace();
-//        }
-//
-//        List<Integer> result = gson.fromJson(response.body(), new TypeToken<List<Integer>>() {
-//        }.getType());
-//        if (result.size() != 3) {
-//            return List.of(0, 0, 0);
-//        }
-//        return result;
-        return List.of(30, 40, 100);
+        session = Session.getInstance();
+
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/reactions/counts/emotion/"
+                        + session.getRoomLink()))
+                .build();
+
+        System.out.println("Sending request: " + request.toString());
+
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(0, 0, 0);
+        }
+
+        List<Integer> result = gson.fromJson(response.body(), new TypeToken<List<Integer>>() {
+        }.getType());
+        if (result.size() != 3) {
+            return List.of(0, 0, 0);
+        }
+        return result;
+//        return List.of(30, 40, 100);
     }
 
 }

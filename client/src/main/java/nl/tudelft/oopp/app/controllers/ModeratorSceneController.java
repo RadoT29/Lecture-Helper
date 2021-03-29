@@ -124,6 +124,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void refresh() {
         super.refresh();
         loadStats();
+        reactionController.update();
     }
 
     /**
