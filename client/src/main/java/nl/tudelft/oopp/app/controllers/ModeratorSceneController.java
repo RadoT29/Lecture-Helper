@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,10 +11,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -36,9 +35,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     @FXML
     public Button speedStat;
     @FXML
-    public Button emotionStat;
+    public HBox emotionReactions;
+    @FXML
+    public Button moreReactionButton;
 
 
+    private ModeratorReactionController reactionController;
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
     private TranslateTransition closeFastNav;
@@ -64,6 +66,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             }
         });
         super.initialize(url,rb);
+        reactionController = new ModeratorReactionController(emotionReactions);
         refresh();
     }
 
@@ -128,19 +131,9 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      * match their statistics.
      */
     public void loadStats() {
-        int emotionStatInt = ReactionCommunication.getReactionStats(false);
         int speedStatInt = ReactionCommunication.getReactionStats(true);
 
-        System.out.println("emotion = " + emotionStatInt);
         System.out.println("speed = " + speedStatInt);
-        if (emotionStatInt == 1) {
-            emotionStat.getStyleClass().set(1, "happyButton");
-            System.out.println(emotionStat.getStyleClass());
-        } else if (emotionStatInt == -1) {
-            emotionStat.getStyleClass().set(1,"confusedButton");
-        } else {
-            emotionStat.getStyleClass().set(1,"sadButton");
-        }
 
         if (speedStatInt == 1) {
             speedStat.getStyleClass().set(1,"fastButton");
@@ -223,6 +216,24 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void openConstraintsScene() throws IOException {
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();
+
+    }
+
+    /**
+     * handles click on moreReactionButton.
+     * shows/hides the emotion reactions on the screen
+     * and changes the button to + or -
+     */
+    public void moreReactionsClicked() {
+        if (!emotionReactions.isVisible()) {
+            //display emotion reactions
+            moreReactionButton.getStyleClass().set(1, "hideButton");
+            reactionController.showEmotion();
+        } else {
+            //hide emotion reactions
+            moreReactionButton.getStyleClass().set(1, "expandButton");
+            reactionController.hideEmotion();
+        }
 
     }
 }
