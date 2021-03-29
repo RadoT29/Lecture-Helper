@@ -21,17 +21,24 @@ import static org.mockserver.model.HttpResponse.response;
 public class HomeSceneCommunicationTest {
     private ClientAndServer mockServer;
 
+    /**Start the mock server before each test.
+     */
     @BeforeEach
     public void startMockServer() {
         mockServer = startClientAndServer(8080);
     }
 
+    /**Close the mock server after each test so they are completely isolated.
+     * Clear the sessions singleton for the same reason.
+     */
     @AfterEach
     public void stopMockServer() {
         Session.clearSession();
         mockServer.stop();
     }
 
+    /**Test if HomeSceneCommunication.postQuestion sends a post question request to the right path.
+     */
     @Test
     void shouldSendQuestionRequest() {
         String roomLink = UUID.randomUUID().toString();
@@ -47,7 +54,8 @@ public class HomeSceneCommunicationTest {
                 .withPath(path));
     }
 
-
+    /**Method to set the mock server for the proper request/response.
+     */
     void mockGetQuestions(
             List<Question> questions, String roomLink, String roomName, String userId
     ) {
@@ -64,6 +72,8 @@ public class HomeSceneCommunicationTest {
                                                 questions, roomLink, roomName, userId)));
     }
 
+    /**Test if HomeSceneCommunication.getQuestions() return the questions
+     */
     @Test
     void shouldGetQuestions() {
         String roomLink = UUID.randomUUID().toString();
@@ -86,6 +96,8 @@ public class HomeSceneCommunicationTest {
         assertEquals(retrievedQuestions.get(0).getRoom().getLinkIdModerator().toString(), roomLink);
     }
 
+    /**Method to set the mock server for the proper request/response.
+     */
     void mockGetSingleQuestion(String roomLink, String userId, Long questionId) {
         mockServer.when(
                 request()
@@ -98,6 +110,8 @@ public class HomeSceneCommunicationTest {
                                 .withBody(questionId.toString()));
     }
 
+    /**Test if HomeSceneCommunication.getSingleQuestion() return the question from the user
+     */
     @Test
     void shouldGetSingleQuestions() {
         String roomLink = UUID.randomUUID().toString();
@@ -114,6 +128,9 @@ public class HomeSceneCommunicationTest {
         assertEquals(questionId, receivedLong);
     }
 
+    /**Test if HomeSceneCommunication.clearQuestions sends
+     *  a delete questions request to the right path.
+     */
     @Test
     void shouldSendClearQuestionsRequest() {
         String roomLink = UUID.randomUUID().toString();
