@@ -217,5 +217,11 @@ public class StudentSceneController extends HomeSceneController implements Initi
         super.refresh();
     }
 
+
+    @Override
+    public void closeWindow() {
+        super.closeWindow();
+        StudentFeedbackSceneController.init();
+    }
 }
 
