@@ -1,20 +1,12 @@
 package nl.tudelft.oopp.app.communication;
 
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
-import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockserver.client.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
-import org.mockserver.model.Parameter;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
@@ -46,15 +38,7 @@ public class SplashCommunicationTest {
                 .respond(
                         response()
                                 .withStatusCode(200)
-                                .withBody("{\n  \"id\": 2,\n  \"name\": \"" + roomName + "\",\n  "
-                                        + "\"linkIdStudent\": \""
-                                        + "f71b9850-a0b1-4ec6-b85e-ba4fffeaa7c9\",\n  "
-                                        + "\"linkIdModerator\": \""
-                                        + "bea8d9bc-a3fd-4070-9dae-d4ceadfad3a6\",\n  "
-                                        + "\"isOpen\": true,\n  \"permission\": true,\n  \""
-                                        + "createdAt\": \"2021-03-22T14:58:31.109+0000"
-                                        + "\",\n  \"updatedAt\": \""
-                                        + "2021-03-22T14:58:31.109+0000\"\n}"));
+                                .withBody(CommuncationResponses.postRoomBodyResponse(roomName)));
     }
 
     @Test
@@ -83,18 +67,8 @@ public class SplashCommunicationTest {
                 .respond(
                         response()
                                 .withStatusCode(200)
-                                .withBody("{\n  \"id\": 1,\n  \"name\": \"Anonymous\",\n  "
-                                        + "\"isModerator\": false,\n  \"roomId\": {\n    \""
-                                        + "id\": 1,\n    \"name\": \"" + roomName + "\","
-                                        + "\n    \"linkIdStudent\": \"" + roomLink + "\","
-                                        + "\n    \"linkIdModerator\": \"" + roomLink + ""
-                                        + "\",\n    \"isOpen\": true,\n    \"permission\""
-                                        + ": true,\n    \"createdAt\": \""
-                                        + "2021-03-22T16:56:05.303+0000\",\n    \"updatedAt"
-                                        + "\": \"2021-03-22T16:56:05.303+0000\"\n  },\n  "
-                                        + "\"createdAt\": \""
-                                        + "2021-03-22T16:56:16.630+0000\",\n  \"updatedAt\": "
-                                        + "\"2021-03-22T16:56:16.630+0000\"\n}"));
+                                .withBody(CommuncationResponses
+                                        .checkRoomBodyResponse(roomName, roomLink)));
     }
 
     @Test
