@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import com.google.gson.stream.JsonReader;
+import nl.tudelft.oopp.app.models.Feedback;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -287,15 +288,6 @@ public class HomeSceneCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-    }
-
-    /**
-     * Sends POST request with feedback given by a user.
-     * @param roomLink String roomLink of a room to add comment to
-     * @param comment String text of the comment
-     */
-    public static void sendFeedback(String roomLink, String comment) {
-        System.out.print("Sending feedback: " + comment);
     }
 }
 

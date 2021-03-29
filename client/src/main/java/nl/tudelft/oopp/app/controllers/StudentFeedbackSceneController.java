@@ -6,7 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.app.communication.FeedbackCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.models.Feedback;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.io.IOException;
@@ -67,7 +69,8 @@ public class StudentFeedbackSceneController {
 
         //if the text has changed
         if (!comment.equals("")) {
-            HomeSceneCommunication.sendFeedback(session.getRoomLink(), comment);
+            Feedback feedback = new Feedback(comment);
+            FeedbackCommunication.sendFeedback(session.getRoomLink(), feedback);
         }
 
         //close the window

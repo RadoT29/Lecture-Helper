@@ -4,10 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Setter
@@ -15,6 +12,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
+
+@Entity
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
