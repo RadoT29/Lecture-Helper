@@ -194,8 +194,6 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     }
 
 
-
-
     /**
      * Method to load the presentation mode scene.
      * Makes the scene smaller so it takes less space on the lecturer screen
@@ -208,6 +206,20 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.65;
         double height = screenSize.getHeight() * 0.6;
+
+        Scene scene = new Scene(loader, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    public void goToPolls() throws IOException {
+        Parent loader = new FXMLLoader(getClass().getResource("/pollModeratorScene.fxml")).load();
+        Stage stage = (Stage) mainMenu.getScene().getWindow();
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
 
         Scene scene = new Scene(loader, width, height);
         stage.setScene(scene);

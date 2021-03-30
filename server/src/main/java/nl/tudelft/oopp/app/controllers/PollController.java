@@ -46,11 +46,24 @@ public class PollController {
         pollModeratorService.updateAndOpenPoll(roomLink, pollId, poll);
     }
 
-    @PatchMapping("/{roomLink}/{pollId}")
+    @PutMapping("/{roomLink}/{pollId}/close")
     @ResponseBody
     public void closePoll(@PathVariable String roomLink,
                          @PathVariable Long pollId) {
         pollModeratorService.closePoll(roomLink, pollId);
     }
 
+    @GetMapping("/constant/{roomLink}")
+    @ResponseBody
+    public DeferredResult<List<Poll>> sendAllPollsAsync(@PathVariable String roomLink) {
+        Long timeOut = 100000L;
+        String timeOutResp = "Time out.";
+        DeferredResult<List<Poll>> deferredResult = new DeferredResult<>(timeOut,timeOutResp);
+        CompletableFuture.runAsync(() -> {
+            List<Poll> newQuestions = pollModeratorService.getPolls(roomLink);
+            deferredResult.setResult(newQuestions);
+        });
+
+        return deferredResult;
+    }
 }

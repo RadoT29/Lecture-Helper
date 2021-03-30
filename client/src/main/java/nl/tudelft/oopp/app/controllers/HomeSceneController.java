@@ -140,7 +140,7 @@ public class HomeSceneController {
      */
     public void sendQuestion() {
 
-        passLimitQuestionsLabel.setVisible(false);
+        //passLimitQuestionsLabel.setVisible(false);
         try {
             HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(), session.getRoomLink());
         } catch (OutOfLimitOfQuestionsException exception) {
@@ -349,8 +349,6 @@ public class HomeSceneController {
         Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
         return roomDate;
     }
-
-
 
 
 
