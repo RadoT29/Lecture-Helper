@@ -14,6 +14,7 @@ public class Room {
     public UUID linkIdStudent;
     public UUID linkIdModerator;
     public boolean isOpen;
+    public boolean permission;
 
     public Room(String name) {
         this.name = name;

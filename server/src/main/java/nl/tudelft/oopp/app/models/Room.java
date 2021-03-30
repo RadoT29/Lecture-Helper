@@ -33,6 +33,8 @@ public class Room {
 
     private boolean isOpen;
 
+    public boolean permission;
+
     private int numberQuestionsInterval = Integer.MAX_VALUE;
 
     private int timeInterval = Integer.MAX_VALUE;
@@ -58,6 +60,7 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
+        this.permission = true;
         this.startDate = LocalDateTime.now(Clock.systemUTC());
     }
 
@@ -69,6 +72,7 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
+        this.permission = false;
         this.startDate = startDate;
     }
 

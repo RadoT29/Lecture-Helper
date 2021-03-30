@@ -54,12 +54,11 @@ public class RoomService {
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         //room should be open and hasn't been closed yet
         if (!room.getIsOpen()
-                && now.isAfter(room.getStartDate())
-                && room.getEndDateForStudents() == null) {
+                && now.isAfter(room.getStartDate())) {
             //update in the database (permission=true)
             roomRepository.openRoomForStudents(room.getId());
             //update object
-            room.setIsOpen(true);
+            room.setPermission(true);
         }
     }
 
