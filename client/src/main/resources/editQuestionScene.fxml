@@ -8,5 +8,14 @@
       <Button fx:id="okButton" layoutX="299.0" layoutY="125.0" mnemonicParsing="false" onAction="#okClicked" style="-fx-background-color: #ffffff;" text="OK" />
       <Button fx:id="cancelButton" layoutX="351.0" layoutY="124.0" mnemonicParsing="false" onAction="#cancelClicked" prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #ffffff;" text="Cancel" />
       <TextArea fx:id="editTextArea" layoutX="17.0" layoutY="14.0" prefHeight="95.0" prefWidth="385.0" wrapText="true" />
+      <HBox fx:id="starBox" layoutX="17.0" layoutY="119.0" minHeight="30.0" minWidth="142.5" visible="false">
+         <children>
+            <Button fx:id="starOne" minHeight="28.5" minWidth="30.0" mnemonicParsing="false" onAction="#starClicked" styleClass="starEmpty" stylesheets="@styles/svgIcons.css" userData="1" />
+            <Button fx:id="starTwo" minHeight="28.5" minWidth="30.0" mnemonicParsing="false" onAction="#starClicked" styleClass="starEmpty" stylesheets="@styles/svgIcons.css" userData="2" />
+            <Button fx:id="starThree" layoutX="40.0" layoutY="10.0" minHeight="28.5" minWidth="30.0" mnemonicParsing="false" onAction="#starClicked" styleClass="starEmpty" stylesheets="@styles/svgIcons.css" userData="3" />
+            <Button fx:id="starFour" layoutX="71.0" layoutY="10.0" minHeight="28.5" minWidth="30.0" mnemonicParsing="false" onAction="#starClicked" styleClass="starEmpty" stylesheets="@styles/svgIcons.css" userData="4" />
+            <Button fx:id="starFive" layoutX="101.0" layoutY="10.0" minHeight="28.5" minWidth="30.0" mnemonicParsing="false" onAction="#starClicked" styleClass="starEmpty" stylesheets="@styles/svgIcons.css" userData="5" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

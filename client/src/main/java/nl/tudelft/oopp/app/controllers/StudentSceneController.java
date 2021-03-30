@@ -223,5 +223,12 @@ public class StudentSceneController extends HomeSceneController implements Initi
         super.closeWindow();
         StudentFeedbackSceneController.init();
     }
+
+    /**
+     * for tests.
+     */
+    public void showFeedback() {
+        StudentFeedbackSceneController.init();
+    }
 }
 

@@ -8,10 +8,12 @@ import lombok.Setter;
 public class Feedback {
     public long id;
     public Room room;
+    public int rating;
     public String comment;
 
-    public Feedback(String comment) {
+    public Feedback(String comment, int rating) {
         this.comment = comment;
+        this.rating = rating;
     }
 
 

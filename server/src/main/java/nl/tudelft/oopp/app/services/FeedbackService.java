@@ -30,6 +30,7 @@ public class FeedbackService {
         feedbackRepository.save(feedback);
         System.out.print("Feedback added: "
                 + "\n\tRoom id: " + room.getId()
-                + "\n\tComment: " + feedback.getComment());
+                + "\n\tRating: " + feedback.getRating()
+                + "\n\tComment: " + feedback.getComment() + "\n");
     }
 }

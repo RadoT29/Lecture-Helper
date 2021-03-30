@@ -19,6 +19,7 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String comment;
+    private int rating;
     @ManyToOne
     private Room room;
     @CreationTimestamp
