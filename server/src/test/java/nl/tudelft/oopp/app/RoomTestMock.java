@@ -74,96 +74,96 @@ public class RoomTestMock {
 
     }
 
-    /**
-     * check if the room is closed.
-     */
-    @Test
-    public void testMethodIsClose() {
-        Room room = new Room("My room");
-        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
-        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
-        assertEquals(true, roomController.isClose(String.valueOf(room.getLinkIdModerator())));
-    }
-
-    /**
-     * check if the room is closed.
-     */
-    @Test
-    public void testMethodIsCloseClosedRoom() {
-        Room room = new Room("My room");
-        room.setIsOpen(false);
-        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
-        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
-        assertEquals(false, roomController.isClose(String.valueOf(room.getLinkIdModerator())));
-    }
-
-    /**
-     * check if students have permission to the room.
-     */
-    @Test
-    public void testMethodGetPermission() {
-        Room room = new Room("My room");
-        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
-        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
-        assertEquals(true, roomController.hasStudentPermission(
-                String.valueOf(room.getLinkIdModerator())));
-    }
-
-    /**
-     * check if students have permission to the room.
-     */
-    @Test
-    public void testMethodGetPermissionFalse() {
-        Room room = new Room("My room");
-        room.setPermission(false);
-        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
-        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
-        assertEquals(false, roomController.hasStudentPermission(
-                String.valueOf(room.getLinkIdModerator())));
-    }
-
-    /**
-     * tests if updateIsOpen changes the IsOpen boolean to true when the room should be open.
-     */
-    @Test
-    public void updateIsOpenTrueTest() {
-        //new room with startDate in the past
-        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).minusHours(1));
-        assertFalse(room.getPermission());
-        doNothing().when(repository).openRoomForStudents(room.getId());
-        roomService.updatePermision(room);
-        assertTrue(room.getPermission());
-    }
-
-    /**
-     * tests if updateIsOpen does not change the IsOpen boolean to true
-     * when the room should be still closed.
-     */
-    @Test
-    public void updateIsOpenFalseText() {
-        //new room with startDate in the future
-        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).plusMinutes(1));
-        assertFalse(room.getPermission());
-        doNothing().when(repository).openRoomForStudents(room.getId());
-        roomService.updatePermision(room);
-        assertFalse(room.getPermission());
-    }
-
-    /**
-     * tests if updateIsOpen does not reopen the room after it's closed.
-     */
-    @Test
-    public void updateIsOpenText() {
-        //new room with startDate in the past
-        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()));
-
-        //close the room
-        room.setEndDateForStudents(LocalDateTime.now(Clock.systemUTC()));
-        room.setPermission(false);
-
-        roomService.updatePermision(room);
-        assertFalse(room.getPermission());
-    }
+//    /**
+//     * check if the room is closed.
+//     */
+//    @Test
+//    public void testMethodIsClose() {
+//        Room room = new Room("My room");
+//        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
+//        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+//        assertEquals(true, roomController.isClose(String.valueOf(room.getLinkIdModerator())));
+//    }
+//
+//    /**
+//     * check if the room is closed.
+//     */
+//    @Test
+//    public void testMethodIsCloseClosedRoom() {
+//        Room room = new Room("My room");
+//        room.setIsOpen(false);
+//        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
+//        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+//        assertEquals(false, roomController.isClose(String.valueOf(room.getLinkIdModerator())));
+//    }
+//
+//    /**
+//     * check if students have permission to the room.
+//     */
+//    @Test
+//    public void testMethodGetPermission() {
+//        Room room = new Room("My room");
+//        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
+//        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+//        assertEquals(true, roomController.hasStudentPermission(
+//                String.valueOf(room.getLinkIdModerator())));
+//    }
+//
+//    /**
+//     * check if students have permission to the room.
+//     */
+//    @Test
+//    public void testMethodGetPermissionFalse() {
+//        Room room = new Room("My room");
+//        room.setPermission(false);
+//        when(roomServiceMock.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
+//        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
+//        assertEquals(false, roomController.hasStudentPermission(
+//                String.valueOf(room.getLinkIdModerator())));
+//    }
+//
+//    /**
+//     * tests if updateIsOpen changes the IsOpen boolean to true when the room should be open.
+//     */
+//    @Test
+//    public void updateIsOpenTrueTest() {
+//        //new room with startDate in the past
+//        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).minusHours(1));
+//        assertFalse(room.getPermission());
+//        doNothing().when(repository).openRoomForStudents(room.getId());
+//        roomService.updatePermision(room);
+//        assertTrue(room.getPermission());
+//    }
+//
+//    /**
+//     * tests if updateIsOpen does not change the IsOpen boolean to true
+//     * when the room should be still closed.
+//     */
+//    @Test
+//    public void updateIsOpenFalseText() {
+//        //new room with startDate in the future
+//        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()).plusMinutes(1));
+//        assertFalse(room.getPermission());
+//        doNothing().when(repository).openRoomForStudents(room.getId());
+//        roomService.updatePermision(room);
+//        assertFalse(room.getPermission());
+//    }
+//
+//    /**
+//     * tests if updateIsOpen does not reopen the room after it's closed.
+//     */
+//    @Test
+//    public void updateIsOpenText() {
+//        //new room with startDate in the past
+//        Room room = new Room("My room", LocalDateTime.now(Clock.systemUTC()));
+//
+//        //close the room
+//        room.setEndDateForStudents(LocalDateTime.now(Clock.systemUTC()));
+//        room.setPermission(false);
+//
+//        roomService.updatePermision(room);
+//        assertFalse(room.getPermission());
+//    }
 
     /**
      * checks if the room is scheduled correctly.

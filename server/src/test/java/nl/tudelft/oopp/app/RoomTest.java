@@ -57,17 +57,17 @@ public class RoomTest {
     }
 
 
-    /**
-     * Check if the other room on the repository is still open.
-     */
-    @Test
-    public void closeRoomFalse() {
-        Room room = new Room("My room");
-        Room room2 = new Room("New room");
-        roomRepository.save(room);
-        roomRepository.save(room2);
-        roomRepository.closeRoom(room.getId());
-        assertEquals(true, room2.getIsOpen());
-    }
+//    /**
+//     * Check if the other room on the repository is still open.
+//     */
+//    @Test
+//    public void closeRoomFalse() {
+//        Room room = new Room("My room");
+//        Room room2 = new Room("New room");
+//        roomRepository.save(room);
+//        roomRepository.save(room2);
+//        roomRepository.closeRoom(room.getId());
+//        assertEquals(true, room2.getIsOpen());
+//    }
 
 }

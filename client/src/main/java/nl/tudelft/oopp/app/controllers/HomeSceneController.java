@@ -11,28 +11,22 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
-import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalTime;
 import java.util.Date;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class contains the code that is run when the IO objects in the Home page are utilized.
@@ -174,17 +168,17 @@ public class HomeSceneController {
     public void closeRoom() {
         Session session = Session.getInstance();
         String linkId = session.getRoomLink();
-        ServerCommunication.closeRoom(linkId);
+        ServerCommunication.closeRoomStudents(linkId);
     }
 
-    /**
-     * kick all students.
-     */
-    public void kickAllStudents() {
-        Session session = Session.getInstance();
-        String linkId = session.getRoomLink();
-        ServerCommunication.kickAllStudents(linkId);
-    }
+//    /**
+//     * kick all students.
+//     */
+//    public void kickAllStudents() {
+//        Session session = Session.getInstance();
+//        String linkId = session.getRoomLink();
+//        ServerCommunication.kickAllStudents(linkId);
+//    }
 
     /**
      * fill in the priority queue and and load them on the screen.
@@ -201,19 +195,18 @@ public class HomeSceneController {
      * @throws ExecutionException           - may be thrown.
      * @throws InterruptedException         - may be thrown.
      * @throws NoStudentPermissionException - may be thrown.
-     * @throws RoomIsClosedException        - may be thrown.
      * @throws AccessDeniedException        - may be thrown.
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
+            NoStudentPermissionException, AccessDeniedException {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
         if (!session.getIsModerator()) {
-            ServerCommunication.hasStudentPermission(session.getRoomLink());
+            ServerCommunication.isRoomClosedStudents(session.getRoomLink());
         }
 
-        ServerCommunication.isTheRoomClosed(session.getRoomLink());
+        //ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
             SplashCommunication.isIpBanned(session.getRoomLink());
         }

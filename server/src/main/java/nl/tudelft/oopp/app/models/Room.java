@@ -33,8 +33,6 @@ public class Room {
 
     private boolean isOpen;
 
-    private boolean permission;
-
     private int numberQuestionsInterval = Integer.MAX_VALUE;
 
     private int timeInterval = Integer.MAX_VALUE;
@@ -61,7 +59,6 @@ public class Room {
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
         this.startDate = LocalDateTime.now(Clock.systemUTC());
-        this.permission = true;
     }
 
     /**
@@ -73,7 +70,6 @@ public class Room {
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
         this.startDate = startDate;
-        this.permission = false;
     }
 
     public void setLinkIdModerator() {
@@ -90,14 +86,6 @@ public class Room {
 
     public void setIsOpen(boolean isOpen) {
         this.isOpen = isOpen;
-    }
-
-    public boolean getPermission() {
-        return permission;
-    }
-
-    public void setPermission(boolean permission) {
-        this.permission = permission;
     }
 
 }

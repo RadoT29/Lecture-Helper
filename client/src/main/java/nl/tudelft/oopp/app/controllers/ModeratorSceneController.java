@@ -100,12 +100,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         super.closeRoom();
     }
 
-    /**
-     * kick all students.
-     */
-    public void kickAllStudents() {
-        super.kickAllStudents();
-    }
+//    /**
+//     * kick all students.
+//     */
+//    public void kickAllStudents() {
+//        super.kickAllStudents();
+//    }
 
     /**
      * Pressing the sendButton will send all the text in the questionInput

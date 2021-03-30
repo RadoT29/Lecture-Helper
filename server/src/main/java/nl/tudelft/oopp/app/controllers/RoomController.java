@@ -62,39 +62,39 @@ public class RoomController {
         return roomService.scheduleRoom(name, startDateUtcString);
     }
 
-    /**
-     * PUT Endpoint close the room.
-     *
-     * @param linkId - name of the room
-     */
-    //@RequestMapping("")
-    @PutMapping("closeRoomById/{linkId}")
-    @ResponseBody
-    public void closeRoom(@PathVariable String linkId) {
-        //make query and close the room!
-        Room room = roomRepository.findByLink(UUID.fromString(linkId));
-        if (room.getLinkIdModerator().toString().equals(linkId)) {
-            roomRepository.closeRoom(room.getId());
-        } else {
-            System.out.println("Someone tried to close room " + room.getId()
-                    + "(name: " + room.getName() + ") with a student link");
+//    /**
+//     * PUT Endpoint close the room.
+//     *
+//     * @param linkId - name of the room
+//     */
+//    //@RequestMapping("")
+//    @PutMapping("closeRoomForStudents/{linkId}")
+//    @ResponseBody
+//    public void closeRoom(@PathVariable String linkId) {
+//        //make query and close the room!
+//        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+//        if (room.getLinkIdModerator().toString().equals(linkId)) {
+//            roomRepository.closeRoomStudents(room.getId(),LocalDateTime.now(Clock.systemUTC()));
+//        } else {
+//            System.out.println("Someone tried to close room " + room.getId()
+//                    + "(name: " + room.getName() + ") with a student link");
+//
+//        }
+//
+//    }
 
-        }
-
-    }
-
-    /**
-     * Get end point. Receive a request for if the room is open
-     *
-     * @param linkId - the link of the room for which isClose status is requested
-     * @return - true if the room is still open, otherwise false
-     */
-    @GetMapping("isOpenById/{linkId}")
-    @ResponseBody
-    public boolean isClose(@PathVariable String linkId) {
-        Room room = roomRepository.findByLink(UUID.fromString(linkId));
-        return room.getIsOpen();
-    }
+//    /**
+//     * Get end point. Receive a request for if the room is open
+//     *
+//     * @param linkId - the link of the room for which isClose status is requested
+//     * @return - true if the room is still open, otherwise false
+//     */
+//    @GetMapping("isOpenById/{linkId}")
+//    @ResponseBody
+//    public boolean isClose(@PathVariable String linkId) {
+//        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+//        return room.getIsOpen();
+//    }
 
     /**
      * Get end point. Receive a request for if the students have permission to the room
@@ -106,7 +106,7 @@ public class RoomController {
     @ResponseBody
     public boolean hasStudentPermission(@PathVariable String linkId) {
         Room room = roomService.getByLink(linkId);
-        return room.getPermission();
+        return room.getIsOpen();
     }
 
     /**
@@ -114,12 +114,12 @@ public class RoomController {
      *
      * @param linkId - name of the room
      */
-    @PutMapping("kickAllStudents/{linkId}")
+    @PutMapping("closeRoomForStudents/{linkId}")
     @ResponseBody
     public void kickAllStudent(@PathVariable String linkId) {
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
-            roomRepository.kickAllStudents(room.getId(), LocalDateTime.now(Clock.systemUTC()));
+            roomRepository.closeRoomStudents(room.getId(), LocalDateTime.now(Clock.systemUTC()));
             System.out.println("Room " + room.getId()
                     + "(name: " + room.getName() + ") had all students kicked out");
         }
