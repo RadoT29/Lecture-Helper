@@ -19,12 +19,23 @@ public class BanUserController {
         this.questionId = questionId;
     }
 
+    /**
+     * This method ban a user, as calling BanCommunication.banUserForThatRoom
+     * which makes a request to the server.
+     *
+     * @param event - the fxml object event
+     */
     public void banUser(ActionEvent event) {
         //Node question = questionCell.getParent();
         BanCommunication.banUserForThatRoom(questionId, session.getRoomLink());
         close(event);
     }
 
+    /**
+     * This method closes the BanUserScene.
+     *
+     * @param event - the fxml object event
+     */
     public void close(ActionEvent event) {
 
         Window window = ((Node) (event.getSource())).getScene().getWindow();

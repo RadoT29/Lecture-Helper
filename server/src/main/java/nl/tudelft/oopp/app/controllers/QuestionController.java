@@ -230,10 +230,18 @@ public class QuestionController {
 
     }
 
+    /**
+     * Method returns an updateQuestion object
+     * containing data for the question update.
+     *
+     * @param userId   - user id
+     * @param roomLink - room link
+     * @return - the update question info as status and question text.
+     */
     @GetMapping(path = "/updateOnQuestion/{userId}/{roomLink}")
     @ResponseBody
     public QuestionsUpdate updateOnQuestion(@PathVariable("userId") String userId,
-                                   @PathVariable("roomLink") String roomLink) {
+                                            @PathVariable("roomLink") String roomLink) {
         Long idUser = Long.valueOf(userId);
         Long idRoom = roomService.getByLink(roomLink).getId();
         QuestionsUpdate update = questionsUpdateService.findUpdate(idUser, idRoom);
@@ -241,8 +249,6 @@ public class QuestionController {
             return null;
         }
         questionsUpdateService.deleteUpdate(update.getId(), idUser, idRoom);
-
-        //String text = update.getStatusQuestion() + "/" + update.getQuestionText() + "/" + update.getAnswerText();
 
         return update;
     }

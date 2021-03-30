@@ -134,7 +134,7 @@ public class QuestionCellController {
     public void blockWarnUser() throws IOException {
         Node question = questionCell.getParent();
         questionId = question.getId();
-        System.out.println("Question Id: "+questionId);
+        System.out.println("Question Id: " + questionId);
         Session session = Session.getInstance();
         try {
             BanCommunication.isIpWarned(session.getRoomLink());

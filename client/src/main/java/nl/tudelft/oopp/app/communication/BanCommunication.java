@@ -27,9 +27,6 @@ public class BanCommunication {
      */
     public static void saveStudentIp(String userId, String roomLink) {
         postRequestResponse("http://localhost:8080/room/user/saveIP/" + userId + "/" + roomLink);
-//        if (response.statusCode() != 200) {
-//            System.out.println("Status: " + response.statusCode());
-//        }
     }
 
 
@@ -86,12 +83,22 @@ public class BanCommunication {
         putRequestResponse("http://localhost:8080/room/user/warnUserRoom/" + questionId + "/" + roomLink);
     }
 
+    /**
+     * This method creates post requests to the server.
+     *
+     * @param httpRequest - the request string
+     */
     public static void postRequestResponse(String httpRequest) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create(httpRequest)).build();
         HttpResponse<String> response = tryCatchResponse(request);
     }
 
+    /**
+     * This method creates get requests to the server.
+     *
+     * @param httpRequest - the request string
+     */
     public static boolean getRequestResponse(String httpRequest) {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create(httpRequest)).build();
@@ -103,6 +110,11 @@ public class BanCommunication {
         return result;
     }
 
+    /**
+     * This method creates put requests to the server.
+     *
+     * @param httpRequest - the request string
+     */
     public static void putRequestResponse(String httpRequest) {
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create(httpRequest)).build();
@@ -112,6 +124,12 @@ public class BanCommunication {
         }
     }
 
+    /**
+     * This method catch an exception in the response.
+     *
+     * @param request - httpRequest
+     * @return - the response of the server
+     */
     public static HttpResponse<String> tryCatchResponse(HttpRequest request) {
         HttpResponse<String> response = null;
         try {

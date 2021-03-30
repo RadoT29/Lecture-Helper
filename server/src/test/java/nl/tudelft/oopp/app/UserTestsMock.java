@@ -83,7 +83,7 @@ public class UserTestsMock {
         when(ipAddressRepository.checkForIpBan("2020", 3))
                 .thenReturn(Stream.of(1, 1)
                         .collect(Collectors.toList()));
-        Assertions.assertTrue(userService.isUserBanned("2020", 3L).contains(-1));
+        Assertions.assertTrue(userService.isUserBanned("2020", 3L).contains(1));
     }
 
     /**

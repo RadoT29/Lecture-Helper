@@ -23,12 +23,6 @@ public class QuestionsUpdate {
     @ManyToOne
     private Room room;
 
-//    @ManyToOne
-//    private Question question;
-//
-//    @ManyToOne
-//    private Answer answer;
-
     private String questionText;
 
     private String answerText;
@@ -40,12 +34,15 @@ public class QuestionsUpdate {
     private int statusQuestion;
 
 
-
+    /**
+     * Constructor for QuestionsUpdate class.
+     * @param user - the user object
+     * @param room - the room object
+     * @param statusQuestion - the status of the update
+     */
     public QuestionsUpdate(User user, Room room, int statusQuestion) {
         this.user = user;
         this.room = room;
-//        this.question = null;
-//        this.answer = null;
         this.statusQuestion = statusQuestion;
         this.questionText = "";
         this.answerText = "";

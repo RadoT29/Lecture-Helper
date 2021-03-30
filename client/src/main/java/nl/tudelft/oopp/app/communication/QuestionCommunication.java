@@ -193,6 +193,12 @@ public class QuestionCommunication {
 
     }
 
+    /**
+     * This method creates request to the server
+     * for questions updates of the specific user.
+     * @param userId - the user id
+     * @param roomLink - the roomLink
+     */
     public static void updatesOnQuestions(String userId, String roomLink) {
 
         HttpRequest request = HttpRequest.newBuilder().GET()
@@ -208,7 +214,7 @@ public class QuestionCommunication {
             System.out.println("Status: " + response.statusCode());
         }
         QuestionsUpdate result = gson.fromJson(response.body(), QuestionsUpdate.class);
-        System.out.println("Result is "+result);
+        System.out.println("Result is " + result);
         if (result != null) {
             HomeSceneController.questionUpdatePopUp(result);
         }

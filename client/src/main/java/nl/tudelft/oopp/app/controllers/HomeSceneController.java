@@ -363,6 +363,15 @@ public class HomeSceneController {
         return roomDate;
     }
 
+    /**
+     * On each 2seconds the client side of the app asks the server for
+     * questions update about this user. If there is a one, this method
+     * is called the QuestionCommunication class and executed here.
+     * @param result - depending of the update, the result has -1 for
+     *               question discarded ot 0 for question marked of the
+     *               as answered. Depending on that a pop up appears and
+     *               notifies the user for its question update.
+     */
     public static void questionUpdatePopUp(QuestionsUpdate result) {
 
         //String[] updateInformation = result.split("/");
@@ -371,10 +380,12 @@ public class HomeSceneController {
         String text = "";
         if (result.getStatusQuestion() == -1) {
             text = "Your question has been discarded!";
-            additionalText = "Your question: \"" + result.getQuestionText() + "\" has been discarded!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been discarded!";
         } else if (result.getStatusQuestion() == 0) {
             text = "Your question has been marked as answered!";
-            additionalText = "Your question: \"" + result.getQuestionText() + "\" has been marked as answered!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been marked as answered!";
         }
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setWidth(900);
