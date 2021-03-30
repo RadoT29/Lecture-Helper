@@ -29,6 +29,7 @@ public class PollOption {
     )
     private long id;
 
+    @Getter(value = AccessLevel.NONE)
     @ManyToOne
     private Poll poll;
 
@@ -42,7 +43,8 @@ public class PollOption {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public PollOption(String optionText, boolean isCorrect) {
+    public PollOption(Poll poll, String optionText, boolean isCorrect) {
+        this.poll = poll;
         this.optionText = optionText;
         this.isCorrect = isCorrect;
     }
