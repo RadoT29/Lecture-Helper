@@ -43,7 +43,9 @@ public class PollAnswer {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public PollAnswer(boolean isMarked) {
+    public PollAnswer(Student student, PollOption pollOption, boolean isMarked) {
+        this.student = student;
+        this.pollOption = pollOption;
         this.isMarked = isMarked;
     }
 
