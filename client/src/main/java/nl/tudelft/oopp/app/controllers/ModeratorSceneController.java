@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -223,6 +223,19 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void openConstraintsScene() throws IOException {
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();
+
+    }
+
+    /**
+     * shows feedback from students in the scene.
+     */
+    public void showFeedback() {
+        try {
+            ViewFeedbackSceneController.init();
+        } catch (IOException e) {
+            return;
+        }
+
 
     }
 }

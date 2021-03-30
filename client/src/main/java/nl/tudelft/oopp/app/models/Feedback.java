@@ -17,4 +17,7 @@ public class Feedback {
     }
 
 
+    public String toString() {
+        return "Stars: " + rating + "/5\n\n" + comment;
+    }
 }

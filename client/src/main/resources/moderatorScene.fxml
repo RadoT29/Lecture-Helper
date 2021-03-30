@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorSceneController">
+<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorSceneController">
         <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="clearQuestionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
@@ -33,7 +27,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack" onAction="#exportQuestionsClicked">
+            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exportQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2.0" left="35.0" top="20.0" />
                 </VBox.margin>
@@ -183,6 +177,7 @@
                      </HBox.margin>
                   </Button>
                   <Button fx:id="emotionStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="happyButton" />
+                  <Button fx:id="showFeedback" alignment="CENTER_RIGHT" layoutX="60.0" layoutY="10.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#showFeedback" styleClass="feedbackButton" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="10.0" top="5.0" />

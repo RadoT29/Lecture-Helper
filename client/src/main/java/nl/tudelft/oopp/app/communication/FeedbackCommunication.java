@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FeedbackCommunication {
 
@@ -43,5 +45,18 @@ public class FeedbackCommunication {
             e.printStackTrace();
         }
 
+    }
+
+    public static List<Feedback> getFeedback() {
+        List<Feedback> list = new ArrayList<>();
+        list.add(new Feedback("This is a very nice comment about this room.", 5));
+        list.add(new Feedback("This is a very long comment about the room, helloAn administrator can see the history of activities" +
+                "Persistent database" +
+                "Students can give feedback" +
+                "Moderators see the statistics of the feedback" +
+                "The name of the user who asked a question is displayed" +
+                "Students can only send a limited amount of questions " +
+                "Moderators can ban users by their IP ", 3));
+        return list;
     }
 }
