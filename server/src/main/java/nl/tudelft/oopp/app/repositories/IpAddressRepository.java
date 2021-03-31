@@ -15,6 +15,11 @@ public interface IpAddressRepository extends JpaRepository<IpAddress, Long> {
     @Query("UPDATE IpAddress ip set ip.access=false where ip.roomId.id=?1 and ip.userId.id=?2")
     void banUserForRoom(long roomId, long userId);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE IpAddress ip set ip.access=true where ip.roomId.id=?1")
+    void unbanAllUsersForRoom(long roomId);
+
     @Query(value = "SELECT ip.access from IpAddress ip where ip.ipAddress=?1 and ip.roomId.id=?2")
     List<Boolean> checkForIpBan(String ipAddress, long roomId);
 

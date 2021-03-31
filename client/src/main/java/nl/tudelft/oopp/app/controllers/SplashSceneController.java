@@ -2,12 +2,10 @@ package nl.tudelft.oopp.app.controllers;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -88,6 +86,12 @@ public class SplashSceneController {
         }
 
         try {
+            if (roomLink.getText().equals("admin")) {
+                AdminPasswordController
+                        .enterPasswordAdmin((Stage) enterRoomButton.getScene().getWindow());
+                return;
+            }
+
             //This method checks if the link inserted corresponds
             // to a Student one, Moderator one or if it is invalid.
             SplashCommunication.checkForRoom(roomLink.getText());
@@ -97,7 +101,7 @@ public class SplashSceneController {
             if (!session.getIsModerator()) {
                 SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
-            System.out.println("Is moderator3 " + session.getIsModerator());
+            System.out.println("Is moderator " + session.getIsModerator());
             ServerCommunication.isTheRoomClosed(roomLink.getText());
             //System.out.println(roomLink.getText());
 

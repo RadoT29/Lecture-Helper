@@ -282,7 +282,6 @@ public class QuestionService {
 
     }
 
-
     /**
      * Method where all the questions ans answers are retrieved from the database.
      *
