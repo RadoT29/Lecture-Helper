@@ -402,6 +402,7 @@ public class HomeSceneController {
         alert.showAndWait();
 
     }
+
     /**
      * Method to get the moderator upVotes with extra value.
      * @param question - question to retrieve upVotes from
