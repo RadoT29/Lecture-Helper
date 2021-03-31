@@ -11,7 +11,9 @@ import javafx.stage.StageStyle;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 
 import java.io.IOException;
+import lombok.Setter;
 
+@Setter
 public class AnswerSceneController {
 
     @FXML
@@ -24,17 +26,6 @@ public class AnswerSceneController {
     private String oldAnswer;
     private String userId;
 
-    public void setQuestionId(String questionId) {
-        this.questionId = questionId;
-    }
-
-    public void setOldText(String oldAnswer) {
-        this.oldAnswer = oldAnswer;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     /**
      * Loads new answer window for the clicked question.
