@@ -137,7 +137,6 @@ public class ReactionCommunication {
             return List.of(0, 0, 0);
         }
         return result;
-//        return List.of(30, 40, 100);
     }
 
 }

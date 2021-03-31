@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -20,6 +22,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Session;
 
 /**
@@ -236,5 +241,14 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             reactionController.hideEmotion();
         }
 
+    }
+
+    @Override
+    public void constantRefresh() throws ExecutionException,
+            InterruptedException, NoStudentPermissionException,
+            RoomIsClosedException, AccessDeniedException {
+        super.constantRefresh();
+        loadStats();
+        reactionController.update();
     }
 }
