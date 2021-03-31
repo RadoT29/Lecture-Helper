@@ -198,7 +198,7 @@ public class QuestionCommunication {
     public static int getModUpVotes(long questionId) {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/upVote/getModUpVotes/" + questionId + "/"
-                        + session.getRoomLink() + "/" + session.getUserId()))
+                        + session.getRoomLink()))
                 .build();
         HttpResponse<String> response = null;
         try {

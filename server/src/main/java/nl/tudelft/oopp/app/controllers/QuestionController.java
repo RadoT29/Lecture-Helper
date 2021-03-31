@@ -21,6 +21,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+
     @Autowired
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
@@ -215,12 +216,11 @@ public class QuestionController {
     }
 
 
-    @GetMapping("/upVote/getModUpVotes/{questionId}/{roomLink}/{userId}")
+    @GetMapping("/upVote/getModUpVotes/{questionId}/{roomLink}")
     @ResponseBody
     public int getModUpVotes(@PathVariable("questionId") String questionId,
-                                @PathVariable("roomLink") String roomLink,
-                                @PathVariable("userId") String userId) {
-        return questionService.getModUpVotes(questionId, roomLink, userId);
+                                @PathVariable("roomLink") String roomLink) {
+        return questionService.getModUpVotes(questionId, roomLink);
 
     }
 

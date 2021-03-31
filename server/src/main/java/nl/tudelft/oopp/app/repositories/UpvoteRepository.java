@@ -42,6 +42,6 @@ public interface UpvoteRepository extends JpaRepository<Upvote, Long> {
 
     @Query("SELECT u.id FROM Upvote u WHERE u.question.id=?1 AND u.question.room.id=?2 "
             + "AND u.user.isModerator= 'true'")
-    List<Long> getModUpVotes(long questionId, long roomId, long userId);
+    List<Long> getModUpVotes(long questionId, long roomId);
 
 }
