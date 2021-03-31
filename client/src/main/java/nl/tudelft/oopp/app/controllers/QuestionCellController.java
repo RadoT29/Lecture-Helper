@@ -75,10 +75,10 @@ public class QuestionCellController {
 
     /**
      * This method initializes a question cell.
-     * @param question - a question.
-     * @param resource - the fxml file.
-     * @param hsc - the controller, from which the method is called.
-     * @return - a visual representation of the question cell.
+     * @param question -  the question.
+     * @param resource - the fxml file of the cell.
+     * @param hsc - the controller, from which the method was called.
+     * @return - A visual representation of the question.
      * @throws IOException - may be thrown.
      */
     public static Node init(Question question, String resource, HomeSceneController hsc)

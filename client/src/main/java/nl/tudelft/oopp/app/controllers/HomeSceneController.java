@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -52,6 +53,10 @@ public class HomeSceneController {
 
     @FXML
     private TextField questionInput;
+    @FXML
+    private Button sendButton;
+    @FXML
+    private HBox textBox;
 
     @FXML
     protected VBox questionBox;
@@ -67,6 +72,21 @@ public class HomeSceneController {
     public AnchorPane mainBoxLog;
 
     @FXML
+    public AnchorPane pane;
+
+    @FXML
+    public Button settingsButton;
+
+    @FXML
+    public Label logLabel;
+
+    @FXML
+    public Label settingsLabel;
+
+    @FXML
+    public Label roomName;
+
+    @FXML
     private Label passLimitQuestionsLabel;
 
     protected PriorityQueue<Question> questions;
@@ -74,6 +94,8 @@ public class HomeSceneController {
     protected boolean keepRequesting;
 
     protected boolean keepRequestingLog;
+
+    protected boolean darkTheme;
 
     /**
      * This method initializes the thread,
@@ -459,26 +481,66 @@ public class HomeSceneController {
         return total;
     }
 
+    public String buttonColour;
+
     /**
      * Transitions from Main question scene to Question log and vice versa.
      */
     public void controlQuestionLog() {
-
-        if (questionButton.getStyleClass().contains("menuBtnBlack")) {
-            questionButton.getStyleClass().remove("menuBtnBlack");
-            questionButton.getStyleClass().add("menuBtnWhite");
+        if (mainBox.isVisible()) {
+            questionButton.setStyle("-fx-background-color: white");
             keepRequesting = false;
             mainBox.setVisible(false);
             mainBoxLog.setVisible(true);
             callRequestingLogThread();
-
         } else {
-            questionButton.getStyleClass().remove("menuBtnWhite");
-            questionButton.getStyleClass().add("menuBtnBlack");
+            if (buttonColour == null) {
+                buttonColour = "black";
+            }
+            questionButton.setStyle("-fx-background-color:" + buttonColour);
             keepRequestingLog = false;
             mainBoxLog.setVisible(false);
             mainBox.setVisible(true);
             callRequestingThread();
+        }
+    }
+
+    /**
+     * This method opens the settings window.
+     * @throws IOException - may be thrown.
+     */
+    public void openSettings() throws IOException {
+        SettingsController.initialize(this, darkTheme);
+    }
+
+    /**
+     * This method changes the colour of the common objects in the main scenes.
+     * @param mode - indicates if it's a darkTheme or not.
+     * @param buttonColour - the colour of the buttons.
+     * @param menuColour - the colour of the menu background.
+     * @param textColour - the colour of the labels in the menu.
+     * @param inputColour - the colour of the input box.
+     * @param backgroundColour - the background colour.
+     */
+    public void changeTheme(
+            boolean mode, String buttonColour, String menuColour,
+             String textColour, String inputColour, String backgroundColour) {
+        if (mode) {
+            darkTheme = true;
+        } else {
+            darkTheme = false;
+        }
+        this.buttonColour = buttonColour;
+        pane.setStyle("-fx-background-color:" + backgroundColour);
+        sendButton.setStyle("-fx-background-color:" + inputColour);
+        questionInput.setStyle("-fx-text-fill:" + inputColour);
+        textBox.setStyle("-fx-background-color: transparent; -fx-border-color:" + inputColour);
+        logLabel.setStyle("-fx-text-fill:" + textColour);
+        settingsLabel.setStyle("-fx-text-fill:" + textColour);
+        roomName.setStyle("-fx-text-fill:" + textColour);
+        settingsButton.setStyle("-fx-background-color:" + buttonColour);
+        if (mainBoxLog.isVisible()) {
+            questionButton.setStyle("-fx-background-color: white");
         }
     }
 

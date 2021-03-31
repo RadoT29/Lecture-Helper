@@ -89,18 +89,27 @@ public class SplashSceneController {
         }
 
         try {
+            if (roomLink.getText().equals("admin")) {
+                AdminPasswordController
+                        .enterPasswordAdmin((Stage) enterRoomButton.getScene().getWindow());
+                return;
+            }
+
             //This method checks if the link inserted corresponds
             // to a Student one, Moderator one or if it is invalid.
             SplashCommunication.checkForRoom(roomLink.getText());
+
             //Gets the session with the updated information
             Session session = Session.getInstance();
             if (!session.getIsModerator()) {
                 BanCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
+            System.out.println("Is moderator " + session.getIsModerator());
             ServerCommunication.isTheRoomClosed(roomLink.getText());
             //System.out.println(roomLink.getText());
 
             ServerCommunication.isTheRoomClosed(session.getRoomLink());
+            System.out.println("Is moderator " + session.getIsModerator());
 
             if (!session.getIsModerator()) {
                 BanCommunication.isIpBanned(roomLink.getText());

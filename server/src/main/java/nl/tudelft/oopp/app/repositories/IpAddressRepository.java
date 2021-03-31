@@ -20,6 +20,11 @@ public interface IpAddressRepository extends JpaRepository<IpAddress, Long> {
 
     @Modifying
     @Transactional
+    @Query("UPDATE IpAddress ip set ip.status=1 where ip.roomId.id=?1")
+    void unbanAllUsersForRoom(long roomId);
+
+    @Modifying
+    @Transactional
     @Query("UPDATE IpAddress ip set ip.status=0 where ip.roomId.id=?1 and ip.userId.id=?2")
     void warnUserForRoom(long parseLong, long parseLong1);
 
