@@ -12,5 +12,5 @@ public class PollAnswer {
     public long id;
     public Student student;
     public PollOption pollOption;
-    public boolean isMarked;
+    public boolean marked;
 }

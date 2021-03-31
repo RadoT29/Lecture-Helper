@@ -16,13 +16,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import nl.tudelft.oopp.app.communication.PollCommunication;
-import nl.tudelft.oopp.app.communication.ReactionCommunication;
-import nl.tudelft.oopp.app.communication.ServerCommunication;
-import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.*;
 
 import java.awt.*;
@@ -366,21 +364,22 @@ public class StudentPollSceneController implements Initializable {
 
             List<PollAnswer> pollAnswers = PollCommunication.getAnswers(poll.id);
 
-            if (pollAnswers.isEmpty()) {
-                for (PollOption pollOption :
-                        poll.getPollOptions()) {
+            boolean unanswered = pollAnswers.isEmpty();
+            for (PollOption pollOption :
+                    poll.getPollOptions()) {
+                if (unanswered) {
                     pollOptionBox.getChildren().add(
                             createPollUnansweredCell(pollOption, optionCount));
-                    resultBox.getChildren().add(new Label("Option " + optionCount
-                            + ":     " + pollOption.getScoreRate()));
-                    optionCount++;
                 }
+                resultBox.getChildren().add(new Label("Option " + optionCount
+                        + ":     " + pollOption.getScoreRate()));
+                optionCount++;
             }
+
+            optionCount = 1;
             for (PollAnswer pollAnswer :
                     pollAnswers) {
                 pollOptionBox.getChildren().add(createPollAnswerCell(pollAnswer, optionCount));
-                resultBox.getChildren().add(new Label("Option " + optionCount
-                        + ":     " + pollAnswer.getPollOption().getScoreRate()));
                 optionCount++;
             }
 
@@ -440,17 +439,20 @@ public class StudentPollSceneController implements Initializable {
      * @throws AccessDeniedException        - may be thrown.
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
+            NoStudentPermissionException, RoomIsClosedException,
+            AccessDeniedException, UserWarnedException {
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.constantlyGetPolls(session.getRoomLink()));
         loadPolls();
-        if (!session.getIsModerator()) {
-            ServerCommunication.hasStudentPermission(session.getRoomLink());
-        }
-
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
-            SplashCommunication.isIpBanned(session.getRoomLink());
+            ServerCommunication.hasStudentPermission(session.getRoomLink());
+            QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
+            if (!session.isWarned()) {
+                BanCommunication.isIpWarned(session.getRoomLink());
+            } else {
+                BanCommunication.isIpBanned(session.getRoomLink());
+            }
         }
 
 
