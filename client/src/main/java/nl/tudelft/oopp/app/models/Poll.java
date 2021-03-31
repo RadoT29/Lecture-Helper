@@ -16,7 +16,7 @@ public class Poll {
     public Room room;
     public List<PollOption> pollOptions;
     public String question;
-    public boolean isOpen = false;
-    public boolean isFinished = false;
-    public Duration timeLimit = null;
+    public boolean open;
+    public boolean finished;
+    public Duration timeLimit;
 }

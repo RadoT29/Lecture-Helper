@@ -32,7 +32,7 @@ public class PollAnswer {
     @ManyToOne
     private Student student;
 
-    @Getter(value = AccessLevel.NONE)
+    //@Getter(value = AccessLevel.NONE)
     @ManyToOne
     private PollOption pollOption;
 

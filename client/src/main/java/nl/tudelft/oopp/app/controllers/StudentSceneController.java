@@ -223,6 +223,10 @@ public class StudentSceneController extends HomeSceneController implements Initi
         super.refresh();
     }
 
+    /**
+     * Method to load the poll scene.
+     * @throws IOException if it cant load the fxml file
+     */
     public void goToPolls() throws IOException {
         Parent loader = new FXMLLoader(getClass().getResource("/studentPollScene.fxml")).load();
         Stage stage = (Stage) reactionMenu.getScene().getWindow();

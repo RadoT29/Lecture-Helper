@@ -21,11 +21,6 @@ public class PollCommunication {
 
     private static Session session = Session.getInstance();
 
-    /**
-     * GET request to check if the question has an answer stored on the server.
-     *
-     * @return a string with true if answered and false if not
-     */
     public static List<Poll> getPolls() {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink()))
@@ -122,7 +117,7 @@ public class PollCommunication {
     //Student routes
     public static List<PollAnswer> getAnswers(long pollId) {
         HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/polls/answer" + session.getUserId() + '/' + pollId))
+                .uri(URI.create("http://localhost:8080/polls/answer/" + session.getUserId() + '/' + pollId))
                 .build();
         HttpResponse<String> response = null;
         try {

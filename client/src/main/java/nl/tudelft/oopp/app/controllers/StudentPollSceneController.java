@@ -33,9 +33,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
-/**
- * This class controls the Main scene of the Students.
- */
 public class StudentPollSceneController implements Initializable {
 
     @FXML
@@ -248,71 +245,120 @@ public class StudentPollSceneController implements Initializable {
     }
 
     //Poll stuff
-    protected Node createPollOptionCell(PollOption pollOption, boolean isFinished) throws IOException {
-        // load the poll to a newNode and set it's homeSceneController to this
+    protected Node createPollAnswerCell(PollAnswer pollAnswer, int optionCount) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/studentPollAnswerCell.fxml"));
+        Node newPollAnswer = loader.load();
+
+        newPollAnswer.setId("" + pollAnswer.getId());
+
+        Label optionNumber = (Label) newPollAnswer.lookup("#optionNumber");
+        Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
+        Label correctLabel = (Label) newPollAnswer.lookup("#correct");
+        Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
+
+        optionNumber.setText("Option " + optionCount);
+        optionLabel.setText(pollAnswer.getPollOption().getOptionText());
+        correctLabel.setText("This option was "
+                + (pollAnswer.getPollOption().isCorrect() ? "correct" : "wrong"));
+
+        scoredLabel.setText("And you answered "
+                + (pollAnswer.getPollOption().isCorrect() == pollAnswer.isMarked()
+                ? "correctly" : "wrong :("));
+
+        return newPollAnswer;
+    }
+
+    protected Node createPollUnansweredCell(PollOption pollOption, int optionCount) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/studentPollAnswerCell.fxml"));
+        Node newPollAnswer = loader.load();
+
+        newPollAnswer.setId("" + pollOption.getId());
+
+        Label optionNumber = (Label) newPollAnswer.lookup("#optionNumber");
+        Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
+        Label correctLabel = (Label) newPollAnswer.lookup("#correct");
+        Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
+
+        optionNumber.setText("Option " + optionCount);
+        optionLabel.setText(pollOption.getOptionText());
+        correctLabel.setText("This option was "
+                + (pollOption.isCorrect() ? "correct" : "wrong"));
+
+        scoredLabel.setText("You have not answered this poll in time");
+
+        return newPollAnswer;
+    }
+
+    protected Node createPollOptionCell(PollOption pollOption) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/studentPollOptionCell.fxml"));
         Node newPollOption = loader.load();
 
-        //set the node id to the poll id
         newPollOption.setId("" + pollOption.getId());
 
-        //set the poll text
         Label optionLabel = (Label) newPollOption.lookup("#optionText");
         optionLabel.setText(pollOption.getOptionText());
 
-        if(isFinished) {
-            CheckBox optionIsCorrect = (CheckBox) newPollOption.lookup("#isCorrect");
-            optionIsCorrect.setDisable(true);
-            if (pollOption.isCorrect()) {
-                newPollOption.getStyleClass().add("highlighted");
-            }
-        }
         return newPollOption;
     }
 
 
-    /**
-     * creates a node for a question.
-     * @param resource String the path to the resource with the question format
-     * @return Node that is ready to be displayed
-     * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
-     */
     protected Node createPollCell(Poll poll, String resource) throws IOException {
-        // load the poll to a newNode and set it's homeSceneController to this
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Node newPoll = loader.load();
         StudentPollCellController qsc = loader.getController();
         qsc.setHomeScene(this);
 
-        //set the node id to the poll id
         newPoll.setId("" + poll.getId());
 
-        //set the poll text
         Label questionlabel = (Label) newPoll.lookup("#questionText");
         questionlabel.setText(poll.getQuestion());
 
 
-        //set the question box size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.4;
         questionlabel.setPrefWidth(width);
         questionlabel.setMaxWidth(width);
 
         VBox pollOptionBox = (VBox) newPoll.lookup("#pollOptionBox");
+        VBox resultBox = (VBox) newPoll.lookup("#resultBox");
 
-        for (PollOption pollOption :
-                poll.getPollOptions()) {
-            pollOptionBox.getChildren().add(createPollOptionCell(pollOption, poll.isFinished()));
+        int optionCount = 1;
+        if (poll.isFinished()) {
+
+            List<PollAnswer> pollAnswers = PollCommunication.getAnswers(poll.id);
+
+            if (pollAnswers.isEmpty()) {
+                for (PollOption pollOption :
+                        poll.getPollOptions()) {
+                    pollOptionBox.getChildren().add(createPollUnansweredCell(pollOption, optionCount));
+                    resultBox.getChildren().add(new Label("Option " + optionCount
+                            + ":     " + pollOption.getScoreRate()));
+                    optionCount++;
+                }
+            }
+            for (PollAnswer pollAnswer :
+                    pollAnswers) {
+                pollOptionBox.getChildren().add(createPollAnswerCell(pollAnswer, optionCount));
+                resultBox.getChildren().add(new Label("Option " + optionCount
+                        + ":     " + pollAnswer.getPollOption().getScoreRate()));
+                optionCount++;
+            }
+
+            Button submitAnswer = (Button) newPoll.lookup("#submitAnswer");
+            submitAnswer.setVisible(false);
+        } else {
+
+            for (PollOption pollOption :
+                    poll.getPollOptions()) {
+                pollOptionBox.getChildren().add(createPollOptionCell(pollOption));
+                optionCount++;
+            }
+
         }
 
         return newPoll;
     }
 
-
-    /**
-     * loads questions in the question box in the correct format.
-     */
     public void loadPolls() {
 
         String resource = "/studentPollCell.fxml";
@@ -325,38 +371,25 @@ public class StudentPollSceneController implements Initializable {
         pollBox.getChildren().clear();
         for (Poll poll :
                 polls) {
-            try {
-                if (poll.isOpen()) {
+            if (poll.isOpen()) {
+                try {
                     pollBox.getChildren()
                             .add(createPollCell(poll, resource));
+                } catch (IOException e) {
+                    System.out.println(e);
+                    pollBox.getChildren().add(
+                            new Label("Something went wrong while loading this poll"));
                 }
-            } catch (IOException e) {
-                System.out.println(e);
-                pollBox.getChildren().add(
-                        new Label("Something went wrong while loading this poll"));
             }
         }
     }
 
-
-    /**
-     * fill in the priority queue and and load them on the screen.
-     */
     public void refresh() {
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.getPolls());
         loadPolls();
     }
 
-    /**
-     * This method is constantly called by a thread and refreshes the page.
-     *
-     * @throws ExecutionException           - may be thrown.
-     * @throws InterruptedException         - may be thrown.
-     * @throws NoStudentPermissionException - may be thrown.
-     * @throws RoomIsClosedException        - may be thrown.
-     * @throws AccessDeniedException        - may be thrown.
-     */
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
         polls = new ArrayList<>();

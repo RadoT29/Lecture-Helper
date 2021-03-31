@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * This class handles all the Endpoints related to the questions.
+ * This class handles all the Endpoints related to the polls.
  */
 
 @Controller

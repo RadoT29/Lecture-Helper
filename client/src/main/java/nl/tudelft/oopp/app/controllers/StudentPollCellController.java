@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.app.communication.PollCommunication;
@@ -25,7 +26,7 @@ public class StudentPollCellController {
     private VBox pollOptionBox;
 
     @FXML
-    private VBox pollBox;
+    private HBox pollBox;
 
 
     private StudentPollSceneController hsc;

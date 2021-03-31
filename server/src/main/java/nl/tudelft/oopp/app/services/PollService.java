@@ -22,8 +22,33 @@ public class PollService {
     private RoomService roomService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoomRepository roomRepository;
+
+    public List<Poll> getPolls(String roomLinkString) {
+        UUID roomLink = UUID.fromString(roomLinkString);
+        List<Poll> polls = pollRepository.findAllByRoomLink(roomLink);
+        for (Poll poll :
+                polls) {
+            for (PollOption pollOption :
+                    poll.getPollOptions()) {
+
+                int answerCount = pollAnswerRepository
+                        .countByPollOptionId(pollOption.getId());
+                int markedCount = pollAnswerRepository
+                        .countMarkedByPollOptionId(pollOption.getId());
+
+                if (answerCount == 0) {
+                    pollOption.setScoreRate(-1);
+
+                } else if (pollOption.isCorrect()) {
+                    pollOption.setScoreRate((float)markedCount / answerCount);
+                } else {
+                    pollOption.setScoreRate(1 - (float)markedCount / answerCount);
+                }
+            }
+        }
+
+        return polls;
+    }
 
     private boolean isModerator(String roomLink) {
         Room room = roomService.getByLink(roomLink);

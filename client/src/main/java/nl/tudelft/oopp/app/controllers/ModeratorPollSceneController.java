@@ -36,9 +36,6 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * This class contains the code that is run when the IO objects in the Home page are utilized.
- */
 public class ModeratorPollSceneController implements Initializable {
 
     Session session = Session.getInstance();
@@ -238,14 +235,11 @@ public class ModeratorPollSceneController implements Initializable {
 
     //Poll stuff
     protected Node createPollOptionCell(PollOption pollOption, int optionCount) throws IOException {
-        // load the poll to a newNode and set it's homeSceneController to this
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/moderatorPollOptionCell.fxml"));
         Node newPollOption = loader.load();
 
-        //set the node id to the poll id
         newPollOption.setId("" + optionCount);
 
-        //set the poll text
         TextArea questionTextArea = (TextArea) newPollOption.lookup("#optionText");
         Text questionLabel = (Text) newPollOption.lookup("#optionLabel");
         CheckBox optionIsCorrect = (CheckBox) newPollOption.lookup("#isCorrect");
@@ -253,61 +247,39 @@ public class ModeratorPollSceneController implements Initializable {
         questionLabel.setText("Option " + optionCount);
         optionIsCorrect.setSelected(pollOption.isCorrect());
 
-
-        //set the question box size
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        double width = screenSize.getWidth() * 0.4;
-//        questionTextArea.setPrefWidth(width);
-//        questionTextArea.setMaxWidth(width);
-
         return newPollOption;
     }
 
-
-    /**
-     * creates a node for a question.
-     * @param resource String the path to the resource with the question format
-     * @return Node that is ready to be displayed
-     * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
-     */
     protected Node createPollCell(Poll poll, String resource) throws IOException {
-        // load the poll to a newNode and set it's homeSceneController to this
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Node newPoll = loader.load();
         ModeratorPollCellController qsc = loader.getController();
         qsc.setHomeScene(this);
 
-        //set the node id to the poll id
         newPoll.setId("" + poll.getId());
 
-        //set the poll text
         TextArea questionTextArea = (TextArea) newPoll.lookup("#questionText");
         questionTextArea.setText(poll.getQuestion());
 
-
-        //set the question box size
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.4;
-        questionTextArea.setPrefWidth(width);
-        questionTextArea.setMaxWidth(width);
-
         VBox pollOptionBox = (VBox) newPoll.lookup("#pollOptionBox");
+        VBox resultBox = (VBox) newPoll.lookup("#resultBox");
 
         int optionCount = 1;
         for (PollOption pollOption :
                 poll.getPollOptions()) {
             pollOptionBox.getChildren().add(createPollOptionCell(pollOption, optionCount));
+
+            if (poll.isFinished()) {
+                resultBox.getChildren().add(new Label("Option " + optionCount
+                        + ":     " + pollOption.getScoreRate()));
+            }
+
             optionCount++;
         }
 
         return newPoll;
     }
 
-
-    /**
-     * loads questions in the question box in the correct format.
-     */
     public void loadPolls() {
 
         String resource = "/moderatorPollCell.fxml";
@@ -330,25 +302,12 @@ public class ModeratorPollSceneController implements Initializable {
         }
     }
 
-
-    /**
-     * fill in the priority queue and and load them on the screen.
-     */
     public void refresh() {
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.getPolls());
         loadPolls();
     }
 
-    /**
-     * This method is constantly called by a thread and refreshes the page.
-     *
-     * @throws ExecutionException           - may be thrown.
-     * @throws InterruptedException         - may be thrown.
-     * @throws NoStudentPermissionException - may be thrown.
-     * @throws RoomIsClosedException        - may be thrown.
-     * @throws AccessDeniedException        - may be thrown.
-     */
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
         polls = new ArrayList<>();

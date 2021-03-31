@@ -23,4 +23,10 @@ public interface PollAnswerRepository extends JpaRepository<PollAnswer, Long> {
 
     @Query("SELECT p FROM PollAnswer p WHERE (p.pollOption.poll.id=?1 and p.student.id=?2)")
     List<PollAnswer> findAnswersByUserAndPollId(long pollId, long userId);
+
+    @Query("SELECT count(p) FROM PollAnswer p WHERE (p.pollOption.id=?1)")
+    int countByPollOptionId(long pollOptionId);
+
+    @Query("SELECT count(p) FROM PollAnswer p WHERE (p.pollOption.id=?1 and p.isMarked=true)")
+    int countMarkedByPollOptionId(long pollOptionId);
 }

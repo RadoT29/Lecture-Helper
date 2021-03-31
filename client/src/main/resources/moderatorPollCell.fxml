@@ -15,27 +15,38 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
    </padding>
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" fx:id="pollBox">
+      <HBox fx:id="pollBox" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <VBox prefHeight="241.0" prefWidth="496.0">
+            <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="67.0" stroke="BLACK" strokeType="INSIDE" width="769.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question" />
-                  <TextArea fx:id="questionText" prefHeight="93.0" prefWidth="769.0">
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin></TextArea>
+                  <VBox prefHeight="241.0" prefWidth="496.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="67.0" stroke="BLACK" strokeType="INSIDE" width="769.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question" />
+                        <TextArea fx:id="questionText" prefHeight="93.0" prefWidth="769.0">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </TextArea>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="pollOptionBox" prefHeight="200.0" prefWidth="100.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button mnemonicParsing="false" onMouseClicked="#addOption" text="Add option" />
+                        <Button mnemonicParsing="false" onMouseClicked="#sendPoll" text="Open poll" />
+                        <Button mnemonicParsing="false" onMouseClicked="#closePoll" text="Close poll" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <VBox fx:id="pollOptionBox" prefHeight="200.0" prefWidth="100.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#addOption" text="Add option" />
-                  <Button mnemonicParsing="false" text="Open poll" onMouseClicked="#sendPoll" />
-                  <Button mnemonicParsing="false" text="Close poll" onMouseClicked="#closePoll" />
-               </children>
-            </HBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" fx:id="resultBox">
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="67.0" stroke="BLACK" strokeType="INSIDE" width="120.0" />
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>

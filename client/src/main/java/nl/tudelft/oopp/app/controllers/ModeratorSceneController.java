@@ -211,6 +211,10 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         stage.show();
     }
 
+    /**
+     * Method to load the poll scene.
+     * @throws IOException if it cant load the fxml file
+     */
     public void goToPolls() throws IOException {
         Parent loader = new FXMLLoader(getClass().getResource("/moderatorPollScene.fxml")).load();
         Stage stage = (Stage) mainMenu.getScene().getWindow();

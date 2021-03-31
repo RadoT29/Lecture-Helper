@@ -12,4 +12,5 @@ public class PollOption {
     public long id;
     public String optionText;
     public boolean correct;
+    public double scoreRate;
 }
