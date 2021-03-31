@@ -1,13 +1,20 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
@@ -47,6 +54,9 @@ public class QuestionCellController {
     @FXML
     Button answerButtonLog;
 
+    String questionId;
+
+    Session session = Session.getInstance();
 
     private HomeSceneController hsc;
     private Question question;
@@ -65,10 +75,10 @@ public class QuestionCellController {
 
     /**
      * This method initializes a question cell.
-     * @param question - a question.
-     * @param resource - the fxml file.
-     * @param hsc - the controller, from which the method is called.
-     * @return - a visual representation of the question cell.
+     * @param question -  the question.
+     * @param resource - the fxml file of the cell.
+     * @param hsc - the controller, from which the method was called.
+     * @return - A visual representation of the question.
      * @throws IOException - may be thrown.
      */
     public static Node init(Question question, String resource, HomeSceneController hsc)
@@ -90,7 +100,7 @@ public class QuestionCellController {
 
         Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
         nicknameLabel.setText(question.user.getName());
-        
+
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
         upvoteLabel.setText("+" + question.getUpVotes());
@@ -183,14 +193,31 @@ public class QuestionCellController {
 
     /**
      * Method for blocking students by IP.
+     * @throws IOException - may throw
      */
-    public void blockUser() {
-        //!
+    public void blockWarnUser() throws IOException {
         Node question = questionCell.getParent();
-        //User user = (User) question.getUserData();
-        System.out.println(question.getId());
+        questionId = question.getId();
+        System.out.println("Question Id: " + questionId);
         Session session = Session.getInstance();
-        HomeSceneCommunication.banUserForThatRoom(question.getId(), session.getRoomLink());
+        try {
+            BanCommunication.isIpWarned(session.getRoomLink());
+        } catch (UserWarnedException e) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/banUserScene.fxml"));
+            Stage linkStage = new Stage();
+            Scene scene = new Scene(loader.load());
+
+            //FXMLLoader banLoader =loader;
+            BanUserController banUserController = loader.getController();
+            banUserController.initData(questionId);
+
+            linkStage.setScene(scene);
+            linkStage.show();
+            return;
+        }
+
+        BanCommunication.warnUserForThatRoom(question.getId(), session.getRoomLink());
+
     }
 
 
@@ -239,7 +266,6 @@ public class QuestionCellController {
      * (based on the users previous actions)
      */
     public void answeredClicked() {
-        //!
         Node question = questionCell.getParent();
         String id = question.getId();
 
@@ -264,6 +290,7 @@ public class QuestionCellController {
 
         if (!status) {
             QuestionCommunication.setAnswered(questionId, true);
+            QuestionCommunication.setAnsweredUpdate(questionId);
         } else {
             System.out.println("This question was already answered");
         }

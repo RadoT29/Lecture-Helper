@@ -49,7 +49,7 @@ public class QuestionControllerTest {
         questionController.setAnswerText(questionId, userId, answerText);
         verify(questionServiceMock,times(1))
                 .setAnswered(answerTextService,
-                questionId, userId, false);
+                        questionId, userId, false);
     }
 
     /**

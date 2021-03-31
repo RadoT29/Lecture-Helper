@@ -65,7 +65,7 @@ public class ServerCommunication {
         System.out.println(response.body());
         boolean result = gson.fromJson(response.body(), Boolean.class);
         if (!result) {
-            throw new RoomIsClosedException();
+            throw new RoomIsClosedException("The room is closed for students");
         }
         return result;
     }

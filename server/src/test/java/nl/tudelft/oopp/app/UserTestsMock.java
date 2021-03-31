@@ -69,9 +69,9 @@ public class UserTestsMock {
     @Test
     public void userIsNotBanned() {
         when(ipAddressRepository.checkForIpBan("2020", 3))
-                .thenReturn(Stream.of(Boolean.TRUE, Boolean.TRUE)
+                .thenReturn(Stream.of(1, 1)
                         .collect(Collectors.toList()));
-        Assertions.assertFalse(userService.isUserBanned("2020", 3L).contains(false));
+        Assertions.assertFalse(userService.isUserBanned("2020", 3L).contains(-1));
     }
 
     /**
@@ -81,9 +81,9 @@ public class UserTestsMock {
     @Test
     public void userIsBanned() {
         when(ipAddressRepository.checkForIpBan("2020", 3))
-                .thenReturn(Stream.of(Boolean.TRUE, Boolean.FALSE)
+                .thenReturn(Stream.of(1, 1)
                         .collect(Collectors.toList()));
-        Assertions.assertTrue(userService.isUserBanned("2020", 3L).contains(false));
+        Assertions.assertTrue(userService.isUserBanned("2020", 3L).contains(1));
     }
 
     /**
@@ -128,5 +128,25 @@ public class UserTestsMock {
         assertTrue(userController.canAskQuestion(
                 String.valueOf(1),room.getLinkIdStudent().toString()));
     }
+
+
+    //    /**
+    //     * This method tests if the user is in limit of allowed questions to ask.
+    //     */
+    //    @Test
+    //    public void canUserAskQuestion() {
+    //        Room room = new Room("my room");
+    //        room.setNumberQuestionsInterval(9);
+    //        room.setTimeInterval(3);
+    //        LocalDateTime localDateTime = LocalDateTime.now();
+    //        when(roomService.getByLink(room.getLinkIdStudent().toString())).thenReturn(room);
+    //        when(questionService2.questionsByUserIdRoomIdInterval(String.valueOf(2L),
+    //        room.getId(), localDateTime))
+    //                .thenReturn(Stream.of(new Question(), new Question(), new Question())
+    //                        .collect(Collectors.toList()));
+    //        assertTrue(userController.canAskQuestion(
+    //                String.valueOf(1),room.getLinkIdStudent().toString()));
+    //    }
+
 
 }
