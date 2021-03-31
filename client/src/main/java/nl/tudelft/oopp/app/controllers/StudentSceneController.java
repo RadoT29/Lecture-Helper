@@ -232,6 +232,20 @@ public class StudentSceneController extends HomeSceneController implements Initi
         return newQuestion;
     }
 
+
+    @Override
+    public void closeWindow() {
+        super.closeWindow();
+        StudentFeedbackSceneController.init();
+    }
+
+    /**
+     * for tests.
+     */
+    public void showFeedback() {
+        StudentFeedbackSceneController.init();
+    }
+
     @Override
     public void changeTheme(
             boolean mode, String buttonColour, String menuColour, String textColour,

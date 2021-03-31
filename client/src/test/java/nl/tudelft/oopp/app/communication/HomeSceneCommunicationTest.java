@@ -21,17 +21,24 @@ import static org.mockserver.model.HttpResponse.response;
 public class HomeSceneCommunicationTest {
     private ClientAndServer mockServer;
 
+    /**Start the mock server before each test.
+     */
     @BeforeEach
     public void startMockServer() {
         mockServer = startClientAndServer(8080);
     }
 
+    /**Close the mock server after each test so they are completely isolated.
+     * Clear the sessions singleton for the same reason.
+     */
     @AfterEach
     public void stopMockServer() {
         Session.clearSession();
         mockServer.stop();
     }
 
+    /**Test if HomeSceneCommunication.postQuestion sends a post question request to the right path.
+     */
     @Test
     void shouldSendQuestionRequest() {
         String roomLink = UUID.randomUUID().toString();
@@ -47,7 +54,8 @@ public class HomeSceneCommunicationTest {
                 .withPath(path));
     }
 
-
+    /**Method to set the mock server for the proper request/response.
+     */
     void mockGetQuestions(
             List<Question> questions, String roomLink, String roomName, String userId
     ) {
@@ -60,60 +68,12 @@ public class HomeSceneCommunicationTest {
                 .respond(
                         response()
                                 .withStatusCode(200)
-                                .withBody("[{\n    \"id\": 1,\n    \"upVotes\": 0,"
-                                        + "\n    \n\"room\": {\n      \"id\": 0,\n      \"name"
-                                        + "\": \"\n" + roomName + "\",\n      \"linkIdStudent\": \""
-                                        + roomLink + "\",\n      \n\"linkIdModerator\": \""
-                                        + roomLink + "\",\n      \n\"isOpen\": true,\n      "
-                                        + "\"permission\": true,\n\n      \"createdAt\": "
-                                        + "\n\"2021-03-22T17:38:34.544+0000\",\n      "
-                                        + "\"updatedAt\": \n\"2021-03-22T17:38:34.544+0000\""
-                                        + "\n    },\n    \"user\": {\n      \n\"id\": "
-                                        + userId + ",\n      \"name\": \"mod01\",\n      "
-                                        + "\"isModerator\": true,\n      \n\"roomId\": {\n        "
-                                        + "\"id\": 0,\n        \"name\": \"roomdo\","
-                                        + "\n        \n\"linkIdStudent\": \""
-                                        + roomLink + "\",\n        \n\"linkIdModerator\": \""
-                                        + roomLink + "\",\n        \n\"isOpen\": true,\n        "
-                                        + "\"permission\": true,\n        \"createdAt\": \n"
-                                        + "\"2021-03-22T17:38:34.544+0000\",\n        "
-                                        + "\"updatedAt\": \n\"2021-03-22T17:38:34.544+0000\""
-                                        + "\n      },\n      \"createdAt\": \n\""
-                                        + "2021-03-22T17:38:41.188+0000\",\n      \"updatedAt"
-                                        + "\": \n\"2021-03-22T17:38:41.188+0000\"\n    },\n    "
-                                        + "\"questionText\": \n\""
-                                        + questions.get(0).getQuestionText()
-                                        + "\",\n    \"createdAt\": \""
-                                        + "2021-03-22T18:38:52.1034\",\n    \n\"updatedAt\": \""
-                                        + "2021-03-22T18:38:52.10343\"\n  },\n{\n    \"id\": 1,"
-                                        + "\n    \"upVotes\": 0,\n    \n\"room\": {\n      \"id\""
-                                        + ": 0,\n      \"name\": \"" + roomName + "\",\n    "
-                                        + "\"linkIdStudent\": \""
-                                        + roomLink + "\",\n      \n\"linkIdModerator\": \""
-                                        + roomLink + "\",\n      \n\"isOpen\": true,\n      "
-                                        + "\"permission\": true,\n      \"createdAt\": \n\""
-                                        + "2021-03-22T17:38:34.544+0000\",\n      \"updatedAt\": "
-                                        + "\n\"2021-03-22T17:38:34.544+0000\"\n    },"
-                                        + "\n    \"user\": {\n      \n\"id\": " + userId
-                                        + ",\n      \"name\": \"mod01\",\n      \"isModerator\""
-                                        + ": true,\n      \n\"roomId\": {\n        \"id"
-                                        + "\": 0,\n        \"name\": \"roomdo\",\n        "
-                                        + "\n\"linkIdStudent\": \""
-                                        + roomLink + "\",\n        \n\"linkIdModerator\": \""
-                                        + roomLink + "\",\n        \n\"isOpen\": true,\n        "
-                                        + "\"permission\": true,\n        \"createdAt\": \n\""
-                                        + "2021-03-22T17:38:34.544+0000\",\n        "
-                                        + "\"updatedAt\": \n\"2021-03-22T17:38:34.544+0000\""
-                                        + "\n      },\n      \"createdAt\": \n\""
-                                        + "2021-03-22T17:38:41.188+0000\",\n      \"updatedAt\""
-                                        + ": \n\"2021-03-22T17:38:41.188+0000\"\n    },\n    \""
-                                        + "questionText\": \n\""
-                                        + questions.get(1).getQuestionText()
-                                        + "\",\n    \"createdAt\": \""
-                                        + "2021-03-22T18:38:52.1034\",\n    \n\"updatedAt\": \""
-                                        + "2021-03-22T18:38:52.10343\"\n  }]"));
+                                .withBody(CommuncationResponses.getQuestionsBodyResponse(
+                                                questions, roomLink, roomName, userId)));
     }
 
+    /**Test if HomeSceneCommunication.getQuestions() return the questions
+     */
     @Test
     void shouldGetQuestions() {
         String roomLink = UUID.randomUUID().toString();
@@ -136,6 +96,8 @@ public class HomeSceneCommunicationTest {
         assertEquals(retrievedQuestions.get(0).getRoom().getLinkIdModerator().toString(), roomLink);
     }
 
+    /**Method to set the mock server for the proper request/response.
+     */
     void mockGetSingleQuestion(String roomLink, String userId, Long questionId) {
         mockServer.when(
                 request()
@@ -148,6 +110,8 @@ public class HomeSceneCommunicationTest {
                                 .withBody(questionId.toString()));
     }
 
+    /**Test if HomeSceneCommunication.getSingleQuestion() return the question from the user
+     */
     @Test
     void shouldGetSingleQuestions() {
         String roomLink = UUID.randomUUID().toString();
@@ -164,6 +128,9 @@ public class HomeSceneCommunicationTest {
         assertEquals(questionId, receivedLong);
     }
 
+    /**Test if HomeSceneCommunication.clearQuestions sends
+     *  a delete questions request to the right path.
+     */
     @Test
     void shouldSendClearQuestionsRequest() {
         String roomLink = UUID.randomUUID().toString();

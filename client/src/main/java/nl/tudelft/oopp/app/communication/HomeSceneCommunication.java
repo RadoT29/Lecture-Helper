@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import com.google.gson.stream.JsonReader;
+import nl.tudelft.oopp.app.models.Feedback;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
