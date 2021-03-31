@@ -75,6 +75,7 @@
                                 </HBox.margin>
                             </Button>
                             <Button fx:id="emotionStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="happyButton" />
+                            <Button fx:id="showFeedback" alignment="CENTER_RIGHT" layoutX="60.0" layoutY="10.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#showFeedback" styleClass="feedbackButton" />
                         </children>
                         <BorderPane.margin>
                             <Insets bottom="10.0" top="5.0" />

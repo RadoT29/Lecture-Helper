@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -281,5 +282,18 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             answerButtonLog.setText("Edit");
         }
         return newQuestion;
+    }
+
+    /**
+     * shows feedback from students in the scene.
+     */
+    public void showFeedback() {
+        try {
+            ViewFeedbackSceneController.init();
+        } catch (IOException e) {
+            return;
+        }
+
+
     }
 }
