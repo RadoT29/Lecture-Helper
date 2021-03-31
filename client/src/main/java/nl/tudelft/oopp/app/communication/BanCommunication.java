@@ -39,7 +39,7 @@ public class BanCommunication {
     public static void isIpBanned(String roomLink) throws AccessDeniedException {
         boolean result = getRequestResponse("http://localhost:8080/room/user/isBanned/" + roomLink);
         if (result) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException("This user ip is banned for that room");
         }
         System.out.println("access granted!");
     }
@@ -66,7 +66,7 @@ public class BanCommunication {
         boolean result = getRequestResponse("http://localhost:8080/room/user/isWarned/" + roomLink);
         if (result) {
             session.setWarned(true);
-            throw new UserWarnedException();
+            throw new UserWarnedException("User is warned for misbehaving");
         }
     }
 

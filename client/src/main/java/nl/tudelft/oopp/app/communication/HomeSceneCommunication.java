@@ -240,7 +240,8 @@ public class HomeSceneCommunication {
         System.out.println(response.body());
         boolean result = gson.fromJson(response.body(), Boolean.class);
         if (!result) {
-            throw new OutOfLimitOfQuestionsException();
+            throw new OutOfLimitOfQuestionsException("The user has passed the"
+                    + "limit of questions for the set time");
         }
 
     }

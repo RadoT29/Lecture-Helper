@@ -108,10 +108,10 @@ public class SplashCommunication {
             // and user should stay on splash screen.
             if (session == null) {
                 System.out.println("Insert valid link");
-                throw new NoSuchRoomException();
+                throw new NoSuchRoomException("Room with that link does not exist");
             }
         } catch (Exception e) {
-            throw new NoSuchRoomException();
+            throw new NoSuchRoomException("Room with that link does not exist");
         }
 
     }
