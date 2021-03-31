@@ -153,3 +153,31 @@
     -fx-shape: "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12
     2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
 }
+
+.editButton {
+    -fx-background-color: transparent;
+    -fx-border-color: #00917C;
+    -fx-border-width: 2.5;
+    -fx-text-fill: #00917C;
+}
+
+.answerButton {
+    -fx-background-color: transparent;
+    -fx-border-color:  #0066A2;
+    -fx-border-width: 2.5;
+    -fx-text-fill: #0066A2;
+}
+
+.exitButton {
+    -fx-background-color: #17AEDA;
+    -fx-shape: "M29 2.51786L26.4821 0L16.5 9.98214L6.51786 0L4 2.51786L13.9821 12.5L4 22.4821L6.51786 25L16.5 15.0179L26.4821 25L29 22.4821L19.0179 12.5L29 2.51786Z";
+    -fx-effect: dropshadow(gaussian , rgba(0,0,0,0.4) , 1,0,1,1 );
+}
+
+.confirmButton {
+    -fx-border-color: #17AEDA;
+    -fx-border-style: dashed;
+    -fx-border-width: 2.5;
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian , rgba(0,0,0,0.4) , 1,0,1,1 );
+}

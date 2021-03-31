@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -53,13 +54,26 @@ public class HomeSceneController {
     private TextField questionInput;
 
     @FXML
-    private VBox questionBox;
+    protected VBox questionBox;
+
+    @FXML
+    protected VBox questionBoxLog;
+
+    @FXML
+    public Button questionButton;
+    @FXML
+    public AnchorPane mainBox;
+    @FXML
+    public AnchorPane mainBoxLog;
 
     @FXML
     private Label passLimitQuestionsLabel;
 
     protected PriorityQueue<Question> questions;
 
+    protected boolean keepRequesting;
+
+    protected boolean keepRequestingLog;
 
     /**
      * This method initializes the thread,
@@ -70,12 +84,19 @@ public class HomeSceneController {
      */
     public void initialize(URL url, ResourceBundle rb) {
 
-        // This thread will periodically refresh the content of the question queue.
+        callRequestingThread();
+    }
+
+    /**
+     * This thread will periodically refresh the content of the question queue.
+     */
+    public void callRequestingThread() {
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (!(Thread.interrupted())) {
+                keepRequesting = true;
+                while (keepRequesting) {
                     try {
                         Platform.runLater(() -> {
                             try {
@@ -107,7 +128,35 @@ public class HomeSceneController {
                 }
             }
         }).start();
+    }
 
+    /**
+     * This thread will periodically refresh the content of the question queue.
+     */
+    public void callRequestingLogThread() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                keepRequestingLog = true;
+                while (keepRequestingLog) {
+                    try {
+                        Platform.runLater(() -> {
+                            try {
+                                constantRefreshLog();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     /**
@@ -241,6 +290,62 @@ public class HomeSceneController {
     }
 
     /**
+     * This method is constantly called by a thread and refreshes the page.
+     * @throws ExecutionException - may be thrown.
+     * @throws InterruptedException - may be thrown.
+     */
+    public void constantRefreshLog() throws ExecutionException, InterruptedException {
+        questions = new PriorityQueue<>();
+        questions.addAll(HomeSceneCommunication
+                .constantlyGetAnsweredQuestions(session.getRoomLink()));
+        loadAnsweredQuestions();
+    }
+
+    /**
+     * Loads all answered questions in the question log.
+     */
+    public void loadAnsweredQuestions() {
+
+        questionBoxLog.getChildren().clear();
+        while (!questions.isEmpty()) {
+            Question question = questions.poll();
+            try {
+                questionBoxLog.getChildren()
+                        .add(createQuestionCellLog(question, "/questionCellQuestionLog.fxml"));
+            } catch (IOException e) {
+                questionBoxLog.getChildren().add(
+                        new Label("Something went wrong while loading this question"));
+            }
+        }
+    }
+
+    /**
+     *  Creates a node for a question in the question log scene.
+     * @param question - the question.
+     * @param resource - the question cell.
+     * @return - a Node of the question.
+     */
+    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Node newQuestion = loader.load();
+        QuestionCellController qsc = loader.getController();
+        qsc.setHomeScene(this);
+        newQuestion.setId(question.getId() + "");
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabelLog");
+        questionLabel.setText(question.questionText);
+        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
+        answerLabel.setText(question.answerText);
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
+        return newQuestion;
+    }
+
+    /**
      * loads questions in the question box in the correct format.
      */
     public void loadQuestions() {
@@ -251,77 +356,16 @@ public class HomeSceneController {
         }
 
         questionBox.getChildren().clear();
-        int count = 1;
         while (!questions.isEmpty()) {
             Question question = questions.poll();
             try {
                 questionBox.getChildren()
-                        .add(createQuestionCell(question, resource));
+                        .add(QuestionCellController.init(question, resource, this));
             } catch (IOException e) {
                 questionBox.getChildren().add(
                         new Label("Something went wrong while loading this question"));
             }
         }
-    }
-
-    /**
-     * creates a node for a question.
-     * @param resource String the path to the resource with the question format
-     * @return Node that is ready to be displayed
-     * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
-     */
-    protected Node createQuestionCell(Question question, String resource) throws IOException {
-        // load the question to a newNode and set it's homeSceneController to this
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
-        Node newQuestion = loader.load();
-        QuestionCellController qsc = loader.getController();
-        qsc.setHomeScene(this);
-
-        //set the node id to the question id
-        newQuestion.setId(question.getId() + "");
-
-        //Check if the question loaded was created by the session's user
-        checkForQuestion(newQuestion, question);
-
-        //set the question text
-        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
-        questionLabel.setText(question.questionText);
-
-        Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
-        nicknameLabel.setText(question.user.getName());
-
-        //set the question box size
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.4;
-        questionLabel.setPrefWidth(width);
-        questionLabel.setMaxWidth(width);
-
-        //set the upvote count
-        Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + getTotalUpVotes(question));
-
-        //set upvote button as active or inactive
-        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
-        boolean isActive = session.getUpVotedQuestions()
-                .contains(String.valueOf(question.getId()));
-        if (isActive) {
-            upvoteButton.getStyleClass().add("active");
-        }
-
-
-        return newQuestion;
-    }
-
-    /**
-     * finds the question by the id and deletes it from the scene.
-     * (this method will probably be deleted once we implement the real-time updates)
-     *
-     * @param id the id of the question to be deleted
-     **/
-    public void deleteQuestionFromScene(String id) {
-        Node q = questionBox.lookup("#" + id);
-        questionBox.getChildren().remove(q);
     }
 
     /**
@@ -413,6 +457,29 @@ public class HomeSceneController {
 
         int total = question.getUpVotes() + 9 * modUpVotes;
         return total;
+    }
+
+    /**
+     * Transitions from Main question scene to Question log and vice versa.
+     */
+    public void controlQuestionLog() {
+
+        if (questionButton.getStyleClass().contains("menuBtnBlack")) {
+            questionButton.getStyleClass().remove("menuBtnBlack");
+            questionButton.getStyleClass().add("menuBtnWhite");
+            keepRequesting = false;
+            mainBox.setVisible(false);
+            mainBoxLog.setVisible(true);
+            callRequestingLogThread();
+
+        } else {
+            questionButton.getStyleClass().remove("menuBtnWhite");
+            questionButton.getStyleClass().add("menuBtnBlack");
+            keepRequestingLog = false;
+            mainBoxLog.setVisible(false);
+            mainBox.setVisible(true);
+            callRequestingThread();
+        }
     }
 
 }

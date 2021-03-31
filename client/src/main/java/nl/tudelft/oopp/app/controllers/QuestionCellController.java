@@ -20,6 +20,7 @@ import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 import nl.tudelft.oopp.app.models.User;
 
+import java.awt.*;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Locale;
@@ -36,7 +37,13 @@ public class QuestionCellController {
     HBox questionCell;
 
     @FXML
+    HBox questionLogCell;
+
+    @FXML
     Label questionTextLabel;
+
+    @FXML
+    Label answerTextLabel;
 
     @FXML
     Button editButton;
@@ -44,14 +51,61 @@ public class QuestionCellController {
     @FXML
     Button answerButton;
 
+    @FXML
+    Button answerButtonLog;
+
     String questionId;
 
     Session session = Session.getInstance();
 
     private HomeSceneController hsc;
+    private Question question;
 
     public void setHomeScene(HomeSceneController hsc) {
         this.hsc = hsc;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    /**
+     * This method initializes a question cell.
+     * @param question - a question.
+     * @param resource - the fxml file.
+     * @param hsc - the controller, from which the method is called.
+     * @return - a visual representation of the question cell.
+     * @throws IOException - may be thrown.
+     */
+    public static Node init(Question question, String resource, HomeSceneController hsc)
+            throws IOException {
+        FXMLLoader loader = new FXMLLoader(EditQuestionSceneController
+                .class.getResource(resource));
+        // load the question to a newNode and set it's homeSceneController to this
+        Node newQuestion = loader.load();
+        QuestionCellController qsc = loader.getController();
+        qsc.setHomeScene(hsc);
+
+        //set the node id to the question id
+        newQuestion.setId(question.getId() + ""); //to deleted
+        qsc.setQuestion(question);
+
+        //set the question text
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
+        questionLabel.setText(question.questionText);
+
+        Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
+        nicknameLabel.setText(question.user.getName());
+
+        //set the upvote count
+        Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
+        upvoteLabel.setText("+" + question.getUpVotes());
+
+        return newQuestion;
     }
 
     /**
@@ -60,8 +114,7 @@ public class QuestionCellController {
      **/
     public void dismissClicked() {
         //get the id of the question to be deleted
-        Node question = questionCell.getParent();
-        String id = question.getId();
+        String id = question.getId() + "";
         Session session = Session.getInstance();
 
         if (session.getIsModerator()) {
@@ -76,10 +129,19 @@ public class QuestionCellController {
             QuestionCommunication.dismissSingular(Long.parseLong(id), Long.parseLong(user));
         }
 
-        //remove the database from the screen
-        hsc.deleteQuestionFromScene(id);
 
         hsc.refresh();
+    }
+
+    /**
+     * Delete a question. This is done from the Question log ScrollPane.
+     */
+    public void deleteFromLog() {
+
+        Node question = questionLogCell.getParent();
+        String id = question.getId();
+        QuestionCommunication.dismissQuestion(Long.parseLong(id));
+        //hsc.deleteQuestionFromScene(id);
     }
 
     /**
@@ -89,6 +151,7 @@ public class QuestionCellController {
      * (based on the users previous actions)
      */
     public void upvoteClicked() {
+        //!
         Node question = questionCell.getParent();
         String id = question.getId();
 
@@ -165,12 +228,30 @@ public class QuestionCellController {
 
         //get question id
         String oldText = questionTextLabel.getText();
-        Node question = questionCell.getParent();
-        String id = question.getId();
+        String id = question.getId() + "";
 
         //load edit question scene
         try {
             EditQuestionSceneController.init(oldText, id, this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Create an answer from the log scene.
+     */
+    public void answerFromLog() {
+        String oldAnswer = answerTextLabel.getText();
+        Node question = questionLogCell.getParent();
+        String id = question.getId();
+        Session session = Session.getInstance();
+
+        String userId = session.getUserId();
+
+        try {
+            AnswerSceneController.initialize(oldAnswer, id, userId);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -193,12 +274,12 @@ public class QuestionCellController {
     }
 
 
+
     /**
      * Method to set a question as answered,
      * It will check if the question selected has been marked as answered
      * If not a new answer will be created
      * (through methods established in communication).
-     *
      * @param questionId - QuestionId where answer is being added
      */
     public void setAnswer(String questionId) {
@@ -215,8 +296,8 @@ public class QuestionCellController {
     }
 
 
+
     public void refresh() {
         hsc.refresh();
     }
-
 }

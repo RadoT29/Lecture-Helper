@@ -1,16 +1,20 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.SpeedReaction;
 
 /**
@@ -42,7 +46,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
     public Button confusedButton;
 
 
-
     private TranslateTransition openSpeedNav;
     private TranslateTransition closeSpeedNav;
     private TranslateTransition closeSpeedFastNav;
@@ -68,6 +71,8 @@ public class StudentSceneController extends HomeSceneController implements Initi
         openReactionNav.setToX(reactionMenu.getTranslateX() - reactionMenu.getWidth());
         closeReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
         closeReactionFastNav = new TranslateTransition(Duration.millis(.1), reactionMenu);
+
+        mainBoxLog.setVisible(false);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -210,11 +215,22 @@ public class StudentSceneController extends HomeSceneController implements Initi
         confusedButton.setDisable(true);
     }
 
+
     /**
-     * fill in the priority queue and and load them on the screen.
+     *  Creates a node for a question in the question log scene.
+     * @param question - the question.
+     * @param resource - the question cell.
+     * @return - a Node of the question.
      */
-    public void refresh() {
-        super.refresh();
+    @Override
+    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
+
+        Node newQuestion = super.createQuestionCellLog(question, resource);
+
+        HBox buttonBox = (HBox) newQuestion.lookup("#buttonBox");
+        buttonBox.setVisible(false);
+
+        return newQuestion;
     }
 
 
