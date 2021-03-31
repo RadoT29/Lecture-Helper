@@ -30,10 +30,7 @@ public class FeedbackController {
     @ResponseBody
     public void addFeedback(@PathVariable String roomLink,
                             @RequestBody Feedback feedback) {
-        if (feedback.getComment().length() < 255) {
-            feedbackService.addFeedback(roomLink, feedback);
-        }
-
+        feedbackService.addFeedback(roomLink, feedback);
     }
 
 
