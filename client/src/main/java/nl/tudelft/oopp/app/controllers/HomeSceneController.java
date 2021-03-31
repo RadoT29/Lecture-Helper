@@ -232,7 +232,6 @@ public class HomeSceneController {
         }
 
         questionBox.getChildren().clear();
-        int count = 1;
         while (!questions.isEmpty()) {
             Question question = questions.poll();
             try {
@@ -253,6 +252,7 @@ public class HomeSceneController {
      *      or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
+
         // load the question to a newNode and set it's homeSceneController to this
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Node newQuestion = loader.load();
