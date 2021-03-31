@@ -96,16 +96,9 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     /**
      * close the room.
      */
-    public void closeRoom() {
-        super.closeRoom();
+    public void closeOpenRoom() {
+        super.closeOpenRoom();
     }
-
-//    /**
-//     * kick all students.
-//     */
-//    public void kickAllStudents() {
-//        super.kickAllStudents();
-//    }
 
     /**
      * Pressing the sendButton will send all the text in the questionInput

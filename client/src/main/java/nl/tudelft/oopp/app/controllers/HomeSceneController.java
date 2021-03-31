@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
@@ -46,6 +47,12 @@ public class HomeSceneController {
 
     @FXML
     private Label passLimitQuestionsLabel;
+
+    @FXML
+    private Button closeOpenRoomButton;
+
+    @FXML
+    private Label closeOpenRoomLabel;
 
     protected PriorityQueue<Question> questions;
 
@@ -164,21 +171,31 @@ public class HomeSceneController {
 
     /**
      * close the room.
+     * true/exception for close
+     * false for open
      */
-    public void closeRoom() {
-        Session session = Session.getInstance();
+    public void closeOpenRoom() {
+        //Session session = Session.getInstance();
         String linkId = session.getRoomLink();
-        ServerCommunication.closeRoomStudents(linkId);
+        try {
+            ServerCommunication.isRoomOpenStudents(linkId);
+            changeImageCloseRoomButton();
+            ServerCommunication.closeRoomStudents(linkId);
+
+        } catch (NoStudentPermissionException exception) {
+            changeImageOpenRoomButton();
+            ServerCommunication.openRoomStudents(linkId);
+        }
     }
 
-//    /**
-//     * kick all students.
-//     */
-//    public void kickAllStudents() {
-//        Session session = Session.getInstance();
-//        String linkId = session.getRoomLink();
-//        ServerCommunication.kickAllStudents(linkId);
-//    }
+    //    /**
+    //     * kick all students.
+    //     */
+    //    public void kickAllStudents() {
+    //        Session session = Session.getInstance();
+    //        String linkId = session.getRoomLink();
+    //        ServerCommunication.kickAllStudents(linkId);
+    //    }
 
     /**
      * fill in the priority queue and and load them on the screen.
@@ -203,15 +220,52 @@ public class HomeSceneController {
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
         if (!session.getIsModerator()) {
-            ServerCommunication.isRoomClosedStudents(session.getRoomLink());
+            ServerCommunication.isRoomOpenStudents(session.getRoomLink());
+        }
+        if (session.getIsModerator()) {
+            String linkId = session.getRoomLink();
+            try {
+                ServerCommunication.isRoomOpenStudents(linkId);
+                changeImageOpenRoomButton();
+            } catch (NoStudentPermissionException exception) {
+                changeImageCloseRoomButton();
+            }
         }
 
         //ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
             SplashCommunication.isIpBanned(session.getRoomLink());
         }
+    }
 
+    /**
+     * change the image of the closeOpenRoomButton
+     * to open room image.
+     */
+    public void changeImageCloseRoomButton() {
+        closeOpenRoomButton.setStyle("-fx-shape: \"M184.646,0v21.72H99.704v433.358h31.403V53.123h"
+                + "53.539V492.5l208.15-37.422v-61.235V37.5L184.646,0z M222.938,263.129\n"
+                + "\t\tc-6.997,0-12.67-7.381-12.67-16.486c0-9.104,5.673-16.485,12.67-16.4"
+                + "85s12.67,7.381,12.67,16.485\n"
+                + "\t\tC235.608,255.748,229.935,263.129,222.938,263.129z\"");
+        closeOpenRoomLabel.setText("Open Room");
+    }
 
+    /**
+     * change the image of the closeOpenRoomButton
+     * to close room image.
+     */
+    public void changeImageOpenRoomButton() {
+        closeOpenRoomButton.setStyle("-fx-shape: \"M32.6652 5.44421C17.6121 5.44421 5.44434 17.611"
+                + "9 5.44434 32.6651C5.44434 47.7182 17.6121 59.8859 32.6652 59.8859C47.7183 59.88"
+                + "59 59.886 47.7182 59.886 32.6651C59.886 17.6119 47.7183 5.44421 32.6652 5.44421"
+                + "ZM32.6652 54.4417C20.6608 54.4417 10.8885 44.6694 10.8885 32.6651C10.8885 20.66"
+                + "07 20.6608 10.8884 32.6652 10.8884C44.6696 10.8884 54.4418 20.6607 54.4418 32.6"
+                + "651C54.4418 44.6694 44.6696 54.4417 32.6652 54.4417ZM42.4375 19.0546L32.6652 28"
+                + ".8269L22.8929 19.0546L19.0548 22.8928L28.827 32.6651L19.0548 42.4373L22.8929 46"
+                + ".2755L32.6652 36.5032L42.4375 46.2755L46.2756 42.4373L36.5033 32.6651L46.2756 2"
+                + "2.8928L42.4375 19.0546Z\"");
+        closeOpenRoomLabel.setText("Close Room");
     }
 
     /**
@@ -240,10 +294,11 @@ public class HomeSceneController {
 
     /**
      * creates a node for a question.
+     *
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
+     *                     or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
         // load the question to a newNode and set it's homeSceneController to this
@@ -302,6 +357,7 @@ public class HomeSceneController {
      * Method to check whether the Question that is being created has been
      * written by the student in the session (so that the dismiss button
      * will be shown - if it does not correspond it won't show).
+     *
      * @param newQuestion - Node of the new question created
      * @param question    - the object of the new question created
      */
@@ -327,6 +383,7 @@ public class HomeSceneController {
 
     /**
      * Get the Date in which the room was created.
+     *
      * @return Date - at which room was created
      */
     public Date retrieveRoomTime() {
@@ -336,15 +393,13 @@ public class HomeSceneController {
 
     /**
      * Get the Date in which the room was last modified.
+     *
      * @return Date - at which room was last modified
      */
     public Date retrieveModifiedTime() {
         Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
         return roomDate;
     }
-
-
-
 
 
 }

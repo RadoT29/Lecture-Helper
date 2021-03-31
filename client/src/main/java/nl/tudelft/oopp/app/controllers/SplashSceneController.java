@@ -93,19 +93,9 @@ public class SplashSceneController {
             Session session = Session.getInstance();
             if (!session.getIsModerator()) {
                 SplashCommunication.isIpBanned(roomLink.getText());
-                ServerCommunication.isRoomClosedStudents(roomLink.getText());
+                ServerCommunication.isRoomOpenStudents(roomLink.getText());
                 SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
-//            System.out.println("Is moderator3 " + session.getIsModerator());
-//            ServerCommunication.isTheRoomClosed(roomLink.getText());
-//            //System.out.println(roomLink.getText());
-//
-//            ServerCommunication.isTheRoomClosed(session.getRoomLink());
-//            System.out.println("Is moderator " + session.getIsModerator());
-//
-//            if (!session.getIsModerator()) {
-//
-//            }
 
             ServerCommunication.getRoomName();
 

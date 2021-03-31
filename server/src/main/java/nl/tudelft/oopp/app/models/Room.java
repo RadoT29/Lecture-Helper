@@ -33,7 +33,7 @@ public class Room {
 
     private boolean isOpen;
 
-    public boolean permission;
+    private boolean permission;
 
     private int numberQuestionsInterval = Integer.MAX_VALUE;
 
@@ -82,10 +82,6 @@ public class Room {
 
     public void newLinkIdStudent() {
         this.linkIdStudent = UUID.randomUUID();
-    }
-
-    public boolean getIsOpen() {
-        return isOpen;
     }
 
     public void setIsOpen(boolean isOpen) {

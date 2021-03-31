@@ -45,9 +45,10 @@ public class ServerCommunication {
      *
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
-     * @throws NoStudentPermissionException - throws the exception when is tried to entry in closed room
+     * @throws NoStudentPermissionException - throws the exception when is
+     *      tried to entry in closed room
      */
-    public static boolean isRoomClosedStudents(String linkId) throws NoStudentPermissionException {
+    public static boolean isRoomOpenStudents(String linkId) throws NoStudentPermissionException {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
         HttpResponse<String> response = null;
@@ -62,62 +63,14 @@ public class ServerCommunication {
         }
         System.out.println(response.body());
         boolean result = gson.fromJson(response.body(), Boolean.class);
-        if (!result) {
+        System.out.println("The room is open:" + result);
+        if (result) {
+            return result;
+        } else {
             throw new NoStudentPermissionException();
         }
-        return result;
+
     }
-
-    //    /**
-    //     * .
-    //     * Make a requested if the students has permission to the room
-    //     *
-    //     * @param linkId - link of the room
-    //     * @return boolean true if the room is open, otherwise false
-    //     * @throws NoStudentPermissionException - throws the exception when a student try to entry
-    //     *      in room where all students are kicked
-    //     */
-    //    public static boolean hasStudentPermission(String linkId) throws NoStudentPermissionException {
-    ////        HttpRequest request = HttpRequest.newBuilder().GET()
-    ////                .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
-    ////        HttpResponse<String> response = null;
-    ////        try {
-    ////            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    ////        } catch (Exception e) {
-    ////            e.printStackTrace();
-    ////            //return null;
-    ////        }
-    ////        if (response.statusCode() != 200) {
-    ////            System.out.println("Status: " + response.statusCode());
-    ////        }
-    ////        System.out.println(response.body());
-    ////        boolean result = gson.fromJson(response.body(), Boolean.class);
-    ////        if (!result) {
-    ////            throw new NoStudentPermissionException();
-    ////        }
-    ////        return result;
-    //    }
-
-    //    /**
-    //     * Kick all students.
-    //     *
-    //     * @param linkId - link of the room
-    //     * @throws Exception if communication with the server fails.
-    //     */
-    //    public static void kickAllStudents(String linkId) {
-    ////        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
-    ////                .uri(URI.create("http://localhost:8080/kickAllStudents/" + linkId)).build();
-    ////        HttpResponse<String> response = null;
-    ////        try {
-    ////            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    ////        } catch (Exception e) {
-    ////            e.printStackTrace();
-    ////            //return null;
-    ////        }
-    ////        if (response.statusCode() != 200) {
-    ////            System.out.println("Status: " + response.statusCode());
-    ////        }
-    //    }
 
     /**
      * Sends a request to server to change user's name.
@@ -165,5 +118,24 @@ public class ServerCommunication {
         session = session.getInstance();
         session.setRoomName(response.body());
 
+    }
+
+    /**
+     * This method makes put request to the server to open a room by provided room link.
+     *  @param linkId - the room link
+     */
+    public static void openRoomStudents(String linkId) {
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/openRoomForStudents/" + linkId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
     }
 }
