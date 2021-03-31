@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,11 +9,15 @@ import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
@@ -287,5 +292,24 @@ public class StudentSceneController extends HomeSceneController implements Initi
             }
         }
     }
+
+    /**
+     * Method to load the poll scene.
+     * @throws IOException if it cant load the fxml file
+     */
+    public void goToPolls() throws IOException {
+        Parent loader = new FXMLLoader(getClass().getResource("/studentPollScene.fxml")).load();
+        Stage stage = (Stage) reactionMenu.getScene().getWindow();
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
+
+        Scene scene = new Scene(loader, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
 }
 
