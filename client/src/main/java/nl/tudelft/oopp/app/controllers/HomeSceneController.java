@@ -440,7 +440,7 @@ public class HomeSceneController {
      * questions update for this user. If there is one, this method
      * is called by the QuestionCommunication class.
      * @param result - depending on the update, the result can be -1 for
-     *               question discarded ot 0 for question marked of the
+     *               a question discarded or 0 for question marked
      *               as answered. Depending on that a pop up appears and
      *               notifies the user for its question update.
      */
