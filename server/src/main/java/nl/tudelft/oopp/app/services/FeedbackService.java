@@ -6,6 +6,8 @@ import nl.tudelft.oopp.app.repositories.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FeedbackService {
 
@@ -25,6 +27,7 @@ public class FeedbackService {
      * @param feedback Feedback to be saved
      */
     public void addFeedback(String roomLink, Feedback feedback) {
+        //is student link??
         Room room = roomService.getByLink(roomLink);
         feedback.setRoom(room);
         feedbackRepository.save(feedback);
@@ -32,5 +35,17 @@ public class FeedbackService {
                 + "\n\tRoom id: " + room.getId()
                 + "\n\tRating: " + feedback.getRating()
                 + "\n\tComment: " + feedback.getComment() + "\n");
+    }
+
+
+    /**
+     * finds all feedback for the specified room.
+     * @param roomLink String link of the room
+     * @return List of Feedback
+     */
+    public List<Feedback> getFeedback(String roomLink) {
+        //is moderator link
+        Room room = roomService.getByLink(roomLink);
+        return feedbackRepository.findAllByRoomId(room.getId());
     }
 }

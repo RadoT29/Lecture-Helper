@@ -206,6 +206,4 @@
          </children>
       </VBox>
    </VBox>
-   //for tests.
-   <Button onAction="#showFeedback" layoutX="136.0" layoutY="112.0" mnemonicParsing="false" text="Button" />
    </AnchorPane>

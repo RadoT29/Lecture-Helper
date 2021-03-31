@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.FeedbackCommunication;
 import nl.tudelft.oopp.app.models.Feedback;
 import nl.tudelft.oopp.app.models.Session;
+import nl.tudelft.oopp.app.scenes.LimitedTextArea;
 
 import java.io.IOException;
 
@@ -47,9 +48,9 @@ public class StudentFeedbackSceneController {
             HBox starBox = (HBox) scene.lookup("#starBox");
             starBox.setVisible(true);
             //set promptText in the textArea
-            TextArea textArea = (TextArea) scene.lookup("#editTextArea");
+            LimitedTextArea textArea = (LimitedTextArea) scene.lookup("#editTextArea");
             textArea.setPromptText("What did you think of the room \""
-                    + session.getRoomName() + "\"?");
+                    + session.getRoomName() + "\"? (max 255 characters)");
 
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -75,13 +76,12 @@ public class StudentFeedbackSceneController {
      * otherwise sends a request to post a comment
      */
     public void okClicked() {
-        Session session = Session.getInstance();
         String comment = editTextArea.getText();
 
         //if the text has changed or the rating was chosen
         if (!comment.equals("") || rating != 0) {
             Feedback feedback = new Feedback(comment, rating);
-            FeedbackCommunication.sendFeedback(session.getRoomLink(), feedback);
+            FeedbackCommunication.sendFeedback(feedback);
         }
 
         //close the window

@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.app.models.Feedback;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -8,7 +9,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackCommunication {
@@ -20,10 +20,9 @@ public class FeedbackCommunication {
 
     /**
      * Sends POST request with feedback given by a user.
-     * @param roomLink String roomLink of a room to add comment to
      * @param feedback Feedback feedback given by the user
      */
-    public static void sendFeedback(String roomLink, Feedback feedback) {
+    public static void sendFeedback(Feedback feedback) {
         String requestBody = gson.toJson(feedback);
         session = Session.getInstance();
 
@@ -47,16 +46,26 @@ public class FeedbackCommunication {
 
     }
 
+
+    /**
+     * sends a GET request to the server to get the feedback for the current room.
+     * @return list of Feedback or an empty list if the communication with the server fails
+     */
     public static List<Feedback> getFeedback() {
-        List<Feedback> list = new ArrayList<>();
-        list.add(new Feedback("This is a very nice comment about this room.", 5));
-        list.add(new Feedback("This is a very long comment about the room, helloAn administrator can see the history of activities" +
-                "Persistent database" +
-                "Students can give feedback" +
-                "Moderators see the statistics of the feedback" +
-                "The name of the user who asked a question is displayed" +
-                "Students can only send a limited amount of questions " +
-                "Moderators can ban users by their IP ", 3));
-        return list;
+        Session session = Session.getInstance();
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/feedback/view/" + session.getRoomLink()))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+        return gson.fromJson(response.body(), new TypeToken<List<Feedback>>(){}.getType());
     }
 }
