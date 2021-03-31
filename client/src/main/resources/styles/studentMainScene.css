@@ -102,4 +102,11 @@
     -fx-opacity: 0;
 }
 
+#scrollPaneLog > .viewport {
+    -fx-background-color: transparent;
+}
+
+#scrollPaneLog {
+    -fx-background-color: transparent;
+}
 

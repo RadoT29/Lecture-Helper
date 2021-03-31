@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="258.0" prefWidth="556.0" style="-fx-background-color: #17AEDA;" stylesheets="@styles/svgIcons.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.AnswerSceneController">
+    <children>
+      <AnchorPane layoutX="5.0" layoutY="4.0" prefHeight="250.0" prefWidth="546.0" style="-fx-background-color: #ffffff;">
+         <children>
+              <Button fx:id="exitButton" layoutX="518.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exit" prefHeight="13.0" prefWidth="13.0" styleClass="exitButton" />
+              <TextArea fx:id="editTextArea" layoutX="63.0" layoutY="50.0" prefHeight="149.0" prefWidth="419.0" wrapText="true" />
+         </children></AnchorPane>
+        <Button fx:id="confirmButton" layoutX="456.0" layoutY="206.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#confirm" prefHeight="37.0" prefWidth="86.0" styleClass="confirmButton" text="Confirm" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></Button>
+    </children>
+</AnchorPane>

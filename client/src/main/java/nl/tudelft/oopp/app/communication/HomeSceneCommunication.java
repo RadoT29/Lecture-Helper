@@ -16,6 +16,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -158,9 +159,6 @@ public class HomeSceneCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
-
-
-
     /**
      * When changing timezones there are no changes to the minute pointers
      * These only change in the hours pointers
@@ -185,6 +183,33 @@ public class HomeSceneCommunication {
         }
         return gson.fromJson(response.body(), new TypeToken<List<Date>>(){}.getType());
     }
+
+    /**
+     * Sends a request to get all answered questions from a room.
+     * @param roomLink - the room link.
+     * @return - a list of answered questions.
+     * @throws InterruptedException - may be thrown.
+     */
+    public static List<Question> constantlyGetAnsweredQuestions(String roomLink)
+            throws InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/log/" + roomLink))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+
+    }
+
 
 
     /**

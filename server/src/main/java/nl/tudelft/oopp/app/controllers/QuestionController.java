@@ -144,9 +144,29 @@ public class QuestionController {
             List<Question> newQuestions = questionService.getAllQuestionsByRoom(roomLink);
             deferredResult.setResult(newQuestions);
         });
+        return deferredResult;
+    }
+
+    /**
+     * Gets all questions in a room and sends them to client.
+     * The function is asynchronous.
+     * @return - Other.
+     */
+    @GetMapping("/log/{roomLink}")
+    @ResponseBody
+    public DeferredResult<List<Question>>
+        sendAllAnsweredQuestionsAsync(@PathVariable String roomLink) {
+        Long timeOut = 100000L;
+        String timeOutResp = "Time out.";
+        DeferredResult<List<Question>> deferredResult = new DeferredResult<>(timeOut,timeOutResp);
+        CompletableFuture.runAsync(() -> {
+            List<Question> newQuestions = questionService.getAllAnsweredQuestions(roomLink);
+            deferredResult.setResult(newQuestions);
+        });
 
         return deferredResult;
     }
+
 
 
     /**
@@ -213,6 +233,23 @@ public class QuestionController {
     public String exportQuestions(@PathVariable("roomLink") String roomLink) {
         return questionService.exportQuestions(roomLink);
 
+    }
+
+    /**
+     * Saves a new answer.
+     * @param questionId - the question id.
+     * @param userId - the user id.
+     * @param newText - the text.
+     */
+    @PostMapping("/setAnswer/{questionId}/user/{userId}")
+    @ResponseBody
+    public void setAnswerText(@PathVariable String questionId,
+                              @PathVariable String userId,
+                              @RequestBody String newText) {
+
+        //remove quotation marks from the newText
+        newText = newText.substring(1, newText.length() - 1);
+        questionService.setAnswered(newText,questionId,userId,false);
     }
 
 
