@@ -38,6 +38,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public VBox mainMenu;
     @FXML
     public VBox slidingMenu;
+
     @FXML
     public Button speedStat;
     @FXML
@@ -269,17 +270,6 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
 
     }
 
-    /**
-     * shows feedback from students in the scene.
-     */
-    public void showFeedback() {
-        try {
-            ViewFeedbackSceneController.init();
-        } catch (IOException e) {
-            return;
-        }
-    }
-
     @Override
     protected Node createQuestionCellLog(Question question, String resource) throws IOException {
         Node newQuestion = super.createQuestionCellLog(question,resource);
@@ -292,5 +282,18 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             answerButtonLog.setText("Edit");
         }
         return newQuestion;
+    }
+
+    /**
+     * shows feedback from students in the scene.
+     */
+    public void showFeedback() {
+        try {
+            ViewFeedbackSceneController.init();
+        } catch (IOException e) {
+            return;
+        }
+
+
     }
 }
