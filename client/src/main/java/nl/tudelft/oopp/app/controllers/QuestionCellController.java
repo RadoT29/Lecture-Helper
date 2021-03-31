@@ -63,6 +63,14 @@ public class QuestionCellController {
         this.question = question;
     }
 
+    /**
+     * This method initializes a question cell.
+     * @param question - a question.
+     * @param resource - the fxml file.
+     * @param hsc - the controller, from which the method is called.
+     * @return - a visual representation of the question cell.
+     * @throws IOException - may be thrown.
+     */
     public static Node init(Question question, String resource, HomeSceneController hsc)
             throws IOException {
         FXMLLoader loader = new FXMLLoader(EditQuestionSceneController
@@ -123,7 +131,7 @@ public class QuestionCellController {
         Node question = questionLogCell.getParent();
         String id = question.getId();
         QuestionCommunication.dismissQuestion(Long.parseLong(id));
-     //   hsc.deleteQuestionFromScene(id);
+        //hsc.deleteQuestionFromScene(id);
     }
 
     /**
