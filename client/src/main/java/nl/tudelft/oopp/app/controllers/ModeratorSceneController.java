@@ -1,14 +1,17 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,11 +19,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 /**
@@ -33,6 +39,11 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public VBox mainMenu;
     @FXML
     public VBox slidingMenu;
+    @FXML
+    public Label moreOptionsLabel;
+    @FXML
+    public HBox reactionBox;
+
     @FXML
     public Button speedStat;
     @FXML
@@ -56,24 +67,63 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
         closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
+        mainBoxLog.setVisible(false);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 closeFastNav.setToX(-(slidingMenu.getWidth()));
                 closeFastNav.play();
             }
+
+
         });
-        super.initialize(url,rb);
-        refresh();
+
+        callSuperInitializeAndUpdateStats(url, rb);
+    }
+
+    /**
+     * Calls the initialize of HomeSceneController.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
+    public void callSuperInitializeAndUpdateStats(URL url, ResourceBundle rb) {
+        super.initialize(url, rb);
+        updateStats();
+    }
+
+    /**
+     * This method calls a thread to keep refreshing the reaction status.
+     */
+    public void updateStats() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                keepRequesting = true;
+                while (keepRequesting) {
+                    try {
+                        Platform.runLater(() -> {
+                            loadStats();
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     /**
      * This method closes the sliding part of the navigation bar.
      */
     public void hideSlidingBar() {
-
-        menuButton.getStyleClass().remove("menuBtnWhite");
-        menuButton.getStyleClass().add("menuBtnBlack");
+        if (buttonColour == null) {
+            buttonColour = "black";
+        }
+        menuButton.setStyle("-fx-background-color:" + buttonColour);
         closeNav.setToX(-(slidingMenu.getWidth()));
         closeNav.play();
     }
@@ -85,8 +135,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void controlMenu() {
 
         if ((slidingMenu.getTranslateX()) == -(slidingMenu.getWidth())) {
-            menuButton.getStyleClass().remove("menuBtnBlack");
-            menuButton.getStyleClass().add("menuBtnWhite");
+            menuButton.setStyle("-fx-background-color: white");
             openNav.play();
         } else {
             hideSlidingBar();
@@ -194,8 +243,6 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     }
 
 
-
-
     /**
      * Method to load the presentation mode scene.
      * Makes the scene smaller so it takes less space on the lecturer screen
@@ -216,6 +263,24 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     }
 
     /**
+     * Method to load the poll scene.
+     * @throws IOException if it cant load the fxml file
+     */
+    public void goToPolls() throws IOException {
+        Parent loader = new FXMLLoader(getClass().getResource("/moderatorPollScene.fxml")).load();
+        Stage stage = (Stage) mainMenu.getScene().getWindow();
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
+
+        Scene scene = new Scene(loader, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    /**
      * This method opens the scene where are inserted the
      * number of questions per time.
      * @throws IOException - may thrown
@@ -224,5 +289,71 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();
 
+    }
+
+    @Override
+    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
+        Node newQuestion = super.createQuestionCellLog(question,resource);
+        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
+
+        if (!answerLabel.getText().equals("This question was answered during the lecture")) {
+            Button answerButtonLog = (Button) newQuestion.lookup("#answerButtonLog");
+            answerButtonLog.getStyleClass().remove("answerButton");
+            answerButtonLog.getStyleClass().add("editButton");
+            answerButtonLog.setText("Edit");
+        }
+        return newQuestion;
+    }
+
+    /**
+     * shows feedback from students in the scene.
+     */
+    public void showFeedback() {
+        try {
+            ViewFeedbackSceneController.init();
+        } catch (IOException e) {
+            return;
+        }
+
+
+    }
+
+    @Override
+    public void changeTheme(
+            boolean mode, String buttonColour, String menuColour, String textColour,
+            String inputColour, String backgroundColour) {
+
+        for (Node button : reactionBox.getChildren()) {
+            button.setStyle("-fx-background-color:" + buttonColour);
+        }
+        ArrayList<VBox> list = new ArrayList<>();
+        list.add(slidingMenu);
+        list.add(mainMenu);
+        moreOptionsLabel.setStyle("-fx-text-fill:" + textColour);
+        setMenuColour(list, menuColour, buttonColour, textColour);
+
+        super.changeTheme(mode, buttonColour, menuColour,
+                textColour, inputColour, backgroundColour);
+    }
+
+    /**
+     * This method changes the colour of the menu(navigation bar).
+     * @param list - a list of the VBoxes in the menu.
+     * @param menuColour - the colour of the background.
+     * @param buttonColour - the button colour.
+     * @param textColour - the label colour.
+     */
+    public void setMenuColour(ArrayList<VBox> list, String menuColour,
+                              String buttonColour, String textColour) {
+        for (VBox box : list) {
+            box.setStyle("-fx-background-color:" + menuColour);
+            for (Node node : box.getChildren()) {
+                if (node instanceof Button) {
+                    node.setStyle("-fx-background-color:" + buttonColour);
+                } else {
+                    node.setStyle("-fx-text-fill:" + textColour);
+                }
+            }
+        }
     }
 }

@@ -39,6 +39,8 @@ public class Question {
 
     private String questionText;
 
+    private String answerText;
+
     private boolean answered;
     
     //corresponds to the time when it was created after start of the room

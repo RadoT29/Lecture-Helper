@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="19.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorPollCellController">
+   <stylesheets>
+      <URL value="@styles/svgIcons.css" />
+   </stylesheets>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+   </padding>
+   <children>
+      <VBox prefHeight="41.0" prefWidth="698.0">
+         <children>
+            <Label text="Label" fx:id="optionNumber"/>
+            <Label text="Label" fx:id="optionText"/>
+            <Label text="Label" fx:id="correct"/>
+            <Label text="Label" fx:id="scored"/>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
