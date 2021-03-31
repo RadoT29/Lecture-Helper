@@ -1,18 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorSceneController">
-        <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorSceneController">
+   <AnchorPane fx:id="mainBoxLog" layoutX="140.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="860.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <Label fx:id="logLabel" text="Question Log" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <font>
+               <Font name="System Bold" size="24.0" />
+            </font>
+         </Label>
+         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f05454" height="70.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="90.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         <ScrollPane fx:id="scrollPaneLog" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="562.0" prefWidth="831.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0">
+            <content>
+               <VBox fx:id="questionBoxLog" alignment="TOP_CENTER" prefHeight="559.0" prefWidth="800.0" style="-fx-background-color: #DDDDDD; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 0;" />
+            </content>
+            <effect>
+               <DropShadow />
+            </effect>
+         </ScrollPane>
+      </children>
+   </AnchorPane>
+        <AnchorPane fx:id="mainBox" layoutX="140.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="860.0" style="-fx-background-color: transparent;" styleClass="mainBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+            <BorderPane layoutY="1.0" prefHeight="35.0" prefWidth="800.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                <left>
+                    <Label fx:id="roomName" text="Room Name" BorderPane.alignment="TOP_LEFT">
+                        <font>
+                            <Font name="System Bold" size="18.0" />
+                        </font>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+                    </Label>
+                </left>
+                <right>
+                    <HBox fx:id="reactionBox" prefHeight="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <children>
+                        <HBox fx:id="emotionReactions" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <Button fx:id="happyIcon" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="happyButton">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin></Button>
+                        <Label fx:id="happyCount" minHeight="30.0" minWidth="30.0" text="0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Button fx:id="sadIcon" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="sadButton">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin></Button>
+                        <Label fx:id="sadCount" minHeight="30.0" minWidth="30.0" text="0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Button fx:id="confusedIcon" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="confusedButton">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin></Button>
+                        <Label fx:id="confusedCount" minHeight="30.0" minWidth="30.0" text="0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Button fx:id="moreReactionButton" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="18.5" mnemonicParsing="false" onAction="#moreReactionsClicked" styleClass="expandButton" stylesheets="@styles/moderatorMainScene.css">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Button>
+                            <Button fx:id="speedStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="okButton" stylesheets="@styles/moderatorMainScene.css">
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                            </Button>
+                            <Button fx:id="showFeedback" alignment="CENTER_RIGHT" layoutX="60.0" layoutY="10.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#showFeedback" styleClass="feedbackButton" />
+                        </children>
+                        <BorderPane.margin>
+                            <Insets right="10.0" />
+                        </BorderPane.margin>
+                    </HBox>
+                </right>
+                <VBox.margin>
+                    <Insets top="5.0" />
+                </VBox.margin>
+            </BorderPane>
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutY="40.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="780.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
+            <content>
+                <VBox fx:id="questionBox" alignment="TOP_CENTER" prefHeight="498.0" prefWidth="1100.0" style="-fx-background-color: transparent;">
+               <padding>
+                  <Insets top="20.0" />
+               </padding></VBox>
+            </content>
+        </ScrollPane>
+        <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" VBox.vgrow="ALWAYS">
+            <TextField fx:id="questionInput" maxWidth="1.7976931348623157E308" onAction="#sendQuestion" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
+                <font>
+                    <Font name="System Italic" size="12.0" />
+                </font>
+                <HBox.margin>
+                    <Insets right="5.0" />
+                </HBox.margin>
+            </TextField>
+            <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendQuestion" prefHeight="20.0" prefWidth="25.0" styleClass="menuBtnBlack">
+                <HBox.margin>
+                    <Insets bottom="3.0" right="2.0" />
+                </HBox.margin></Button>
+            <VBox.margin>
+                <Insets bottom="50.0" top="100.0" />
+            </VBox.margin>
+        </HBox>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+        </AnchorPane>
+        <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="clearQuestionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
@@ -33,7 +149,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack" onAction="#exportQuestionsClicked">
+            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exportQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2.0" left="35.0" top="20.0" />
                 </VBox.margin>
@@ -73,12 +189,12 @@
          </font>
       </Label>
             <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+                <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openSettings" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                     <VBox.margin>
                         <Insets bottom="2" />
                     </VBox.margin>
                 </Button>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
+                <Label fx:id="settingsLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="10.0" />
                     </font>
@@ -88,7 +204,7 @@
                 </Label>
             </VBox>
         </VBox>
-        <VBox id="vboxNav" fx:id="mainMenu" layoutY="3.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox id="vboxNav" fx:id="mainMenu" layoutY="3.0" prefHeight="600.0" prefWidth="100.0" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="refreshButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#refresh" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
@@ -129,7 +245,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="pollsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="pollsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToPolls" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
                 </VBox.margin>
@@ -139,7 +255,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="questionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="questionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlQuestionLog" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
                 </VBox.margin>
@@ -155,7 +271,7 @@
                         <Insets bottom="2" />
                     </VBox.margin>
                 </Button>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="More Options" textAlignment="CENTER">
+                <Label fx:id="moreOptionsLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="More Options" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="10.0" />
                     </font>
@@ -165,59 +281,5 @@
                 </Label>
             </VBox>
         </VBox>
-    <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
-         <left>
-            <Label fx:id="roomName" text="Room Name" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-         </left>
-         <right>
-            <HBox prefHeight="100.0" spacing="20.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="speedStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="okButton" stylesheets="@styles/moderatorMainScene.css">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="emotionStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="happyButton" />
-               </children>
-               <BorderPane.margin>
-                  <Insets bottom="10.0" top="5.0" />
-               </BorderPane.margin>
-               <padding>
-                  <Insets right="20.0" />
-               </padding>
-            </HBox>
-         </right>
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin>
-      </BorderPane>
-        <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
-            <content>
-                <VBox fx:id="questionBox" prefHeight="446.0" />
-            </content>
-        </ScrollPane>
-        <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
-            <TextField fx:id="questionInput" maxWidth="-Infinity" onAction="#sendQuestion" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
-                <font>
-                    <Font name="System Italic" size="12.0" />
-                </font>
-            <HBox.margin>
-               <Insets right="5.0" />
-            </HBox.margin>
-            </TextField>
-            <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendQuestion" prefHeight="20.0" prefWidth="25.0" styleClass="menuBtnBlack">
-            <HBox.margin>
-               <Insets bottom="3.0" right="2.0" />
-            </HBox.margin></Button>
-         <VBox.margin>
-            <Insets bottom="50.0" top="100.0" />
-         </VBox.margin>
-        </HBox>
-    </VBox>
 
 </AnchorPane>

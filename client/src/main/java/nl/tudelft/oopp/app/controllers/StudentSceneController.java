@@ -1,16 +1,27 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.SpeedReaction;
 
 /**
@@ -26,6 +37,8 @@ public class StudentSceneController extends HomeSceneController implements Initi
     public VBox speedMenu;
     @FXML
     public VBox reactionMenu;
+    @FXML
+    public VBox mainMenu;
 
     @FXML
     public Button fastButton;
@@ -40,7 +53,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
     public Button sadButton;
     @FXML
     public Button confusedButton;
-
 
 
     private TranslateTransition openSpeedNav;
@@ -69,6 +81,8 @@ public class StudentSceneController extends HomeSceneController implements Initi
         closeReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
         closeReactionFastNav = new TranslateTransition(Duration.millis(.1), reactionMenu);
 
+        mainBoxLog.setVisible(false);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -86,8 +100,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
      * This method closes the sliding part of the speed bar.
      */
     public void hideSpeedBar() {
-        speedButton.getStyleClass().remove("speedBtnWhite");
-        speedButton.getStyleClass().add("speedBtnBlack");
+        speedButton.setStyle("-fx-background-color:" + buttonColour);
         closeSpeedNav.setToX(-(speedMenu.getWidth()));
         closeSpeedNav.play();
     }
@@ -101,8 +114,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
             hideReactionBar();
         }
         if ((speedMenu.getTranslateX()) == -(speedMenu.getWidth())) {
-            speedButton.getStyleClass().remove("speedBtnBlack");
-            speedButton.getStyleClass().add("speedBtnWhite");
+            speedButton.setStyle("-fx-background-color: white");
             openSpeedNav.play();
         } else {
             hideSpeedBar();
@@ -113,9 +125,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
      * This method closes the sliding part of the reaction bar.
      */
     public void hideReactionBar() {
-
-        reactionButton.getStyleClass().remove("reactionBtnWhite");
-        reactionButton.getStyleClass().add("reactionBtnBlack");
+        reactionButton.setStyle("-fx-background-color:" + buttonColour);
         closeReactionNav.setToX(-(reactionMenu.getWidth()));
         closeReactionNav.play();
     }
@@ -129,8 +139,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
             hideSpeedBar();
         }
         if ((reactionMenu.getTranslateX()) == -(reactionMenu.getWidth())) {
-            reactionButton.getStyleClass().remove("reactionBtnBlack");
-            reactionButton.getStyleClass().add("reactionBtnWhite");
+            reactionButton.setStyle("-fx-background-color: white");
             openReactionNav.play();
         } else {
             hideReactionBar();
@@ -210,11 +219,96 @@ public class StudentSceneController extends HomeSceneController implements Initi
         confusedButton.setDisable(true);
     }
 
+
     /**
-     * fill in the priority queue and and load them on the screen.
+     *  Creates a node for a question in the question log scene.
+     * @param question - the question.
+     * @param resource - the question cell.
+     * @return - a Node of the question.
      */
-    public void refresh() {
-        super.refresh();
+    @Override
+    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
+
+        Node newQuestion = super.createQuestionCellLog(question, resource);
+
+        HBox buttonBox = (HBox) newQuestion.lookup("#buttonBox");
+        buttonBox.setVisible(false);
+
+        return newQuestion;
+    }
+
+
+    @Override
+    public void closeWindow() {
+        super.closeWindow();
+        StudentFeedbackSceneController.init();
+    }
+
+    /**
+     * for tests.
+     */
+    public void showFeedback() {
+        StudentFeedbackSceneController.init();
+    }
+
+    @Override
+    public void changeTheme(
+            boolean mode, String buttonColour, String menuColour, String textColour,
+            String inputColour, String backgroundColour) {
+        ArrayList<VBox> list = new ArrayList<>();
+        list.add(reactionMenu);
+        list.add(speedMenu);
+        list.add(mainMenu);
+
+        changeMenuColour(mode, menuColour, textColour, list);
+
+        super.changeTheme(mode, buttonColour, menuColour,
+                textColour, inputColour, backgroundColour);
+    }
+
+    /**
+     * This method changes the colour of the menu(navigation bar).
+     * @param mode - current mode.
+     * @param menuColour - background of menu.
+     * @param textColour - colour of labels.
+     * @param list - all the VBoxes, which compose the navigation bar.
+     */
+    public void changeMenuColour(
+            boolean mode, String menuColour, String textColour, ArrayList<VBox> list) {
+        for (VBox box : list) {
+            box.setStyle("-fx-background-color:" + menuColour);
+            for (Node node : box.getChildren()) {
+                if (node instanceof Button) {
+                    if (mode) {
+                        node.getStyleClass().remove("menuBtnBlack");
+                        node.getStyleClass().add("menuBtnBlue");
+                    } else {
+                        node.getStyleClass().removeAll(Collections.singleton("menuBtnBlue"));
+                        node.getStyleClass().add("menuBtnBlack");
+                    }
+                } else {
+                    node.setStyle("-fx-text-fill:" + textColour);
+                }
+            }
+        }
+    }
+
+    /**
+     * Method to load the poll scene.
+     * @throws IOException if it cant load the fxml file
+     */
+    public void goToPolls() throws IOException {
+        Parent loader = new FXMLLoader(getClass().getResource("/studentPollScene.fxml")).load();
+        Stage stage = (Stage) reactionMenu.getScene().getWindow();
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.8;
+        double height = screenSize.getHeight() * 0.8;
+
+        Scene scene = new Scene(loader, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
 }

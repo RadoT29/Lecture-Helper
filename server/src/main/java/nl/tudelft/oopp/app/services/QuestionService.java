@@ -119,11 +119,14 @@ public class QuestionService {
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
-        Question question = questionRepository.getOne(questionId);
         //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
+        //delete answer
+        answerRepository.deleteByQuestionID(questionId);
+        Question question = questionRepository.getOne(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
+
         System.out.println("Question " + question.getId() + "(room: "
                 + question.getRoom().getName() + ") was deleted by a moderator");
     }
@@ -188,7 +191,10 @@ public class QuestionService {
      */
     public void clearQuestions(String roomLink) {
         Room room = roomService.getByLink(roomLink);
-
+        List<Question> qs = questionRepository.findAllByRoomLink(room.getLinkIdModerator());
+        for (Question q : qs) {
+            answerRepository.deleteByQuestionID(q.getId());
+        }
         questionRepository.clearQuestions(room.getId());
         System.out.println("All questions from room " + room.getId()
                 + "(name: " + room.getName() + ") were deleted");
@@ -238,8 +244,14 @@ public class QuestionService {
 
         Answer answer = new Answer(answerText, question, user, answerType);
 
-        answerRepository.save(answer);
-        questionRepository.updateAnswerStatus(questionId2, true);
+        if (answerType) {
+            questionRepository.updateAnsweredStatus(question.getId(), true);
+            answerRepository.save(answer);
+        } else {
+            answerRepository.deleteByQuestionID(questionId2);
+            answerRepository.save(answer);
+        }
+        questionRepository.setAnswer(questionId2, answerText);
 
     }
 
@@ -272,7 +284,6 @@ public class QuestionService {
         return logTemp;
 
     }
-
 
     /**
      * Method where all the questions ans answers are retrieved from the database.
@@ -334,6 +345,41 @@ public class QuestionService {
         return time;
     }
 
+    /**
+     * Method that will make the connection to the database and retrieve the final upVotes.
+     * @param questionId - question to retrieve from
+     * @param roomLink - room where request came from
+     * @return number of upvotes
+     */
+    public int getModUpVotes(String questionId, String roomLink) {
+        long questionId2 = Long.parseLong(questionId);
+        Room room = roomService.getByLink(roomLink);
+        long roomId = room.getId();
+       
 
+        List<Long> totalUpVotes = upvoteRepository.getModUpVotes(questionId2, roomId);
+        return totalUpVotes.size();
+
+    }
+
+    public Question findByQuestionId(long questionId) {
+        return questionRepository.findById(questionId).get();
+    }
+
+    /**
+     * Gets all answered questions.
+     * @param roomLinkString - the room link.
+     * @return - a list of questions.
+     */
+    public List<Question> getAllAnsweredQuestions(String roomLinkString) {
+        UUID roomLink = UUID.fromString(roomLinkString);
+        List<Question> result = questionRepository.findAllAnsweredByRoomLink(roomLink);
+        for (Question q : result) {
+            q.getRoom().setId(0);
+            q.getUser().setId(0);
+        }
+
+        return result;
+    }
 
 }

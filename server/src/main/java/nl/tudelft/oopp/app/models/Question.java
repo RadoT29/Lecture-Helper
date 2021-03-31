@@ -6,8 +6,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -36,6 +34,8 @@ public class Question {
     private User user;
 
     private String questionText;
+
+    private String answerText;
 
     private boolean answered;
 
