@@ -52,7 +52,7 @@
                 <Insets bottom="50.0" top="100.0" />
             </VBox.margin>
         </HBox>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
+            <BorderPane prefHeight="200.0" prefWidth="830.0">
                 <left>
                     <Label fx:id="roomName" text="Room Name" BorderPane.alignment="TOP_LEFT">
                         <font>

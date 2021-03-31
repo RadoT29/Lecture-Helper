@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -30,6 +31,8 @@ public class StudentSceneController extends HomeSceneController implements Initi
     public VBox speedMenu;
     @FXML
     public VBox reactionMenu;
+    @FXML
+    public VBox mainMenu;
 
     @FXML
     public Button fastButton;
@@ -91,8 +94,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
      * This method closes the sliding part of the speed bar.
      */
     public void hideSpeedBar() {
-        speedButton.getStyleClass().remove("speedBtnWhite");
-        speedButton.getStyleClass().add("speedBtnBlack");
+        speedButton.setStyle("-fx-background-color:" + buttonColour);
         closeSpeedNav.setToX(-(speedMenu.getWidth()));
         closeSpeedNav.play();
     }
@@ -106,8 +108,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
             hideReactionBar();
         }
         if ((speedMenu.getTranslateX()) == -(speedMenu.getWidth())) {
-            speedButton.getStyleClass().remove("speedBtnBlack");
-            speedButton.getStyleClass().add("speedBtnWhite");
+            speedButton.setStyle("-fx-background-color: white");
             openSpeedNav.play();
         } else {
             hideSpeedBar();
@@ -118,9 +119,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
      * This method closes the sliding part of the reaction bar.
      */
     public void hideReactionBar() {
-
-        reactionButton.getStyleClass().remove("reactionBtnWhite");
-        reactionButton.getStyleClass().add("reactionBtnBlack");
+        reactionButton.setStyle("-fx-background-color:" + buttonColour);
         closeReactionNav.setToX(-(reactionMenu.getWidth()));
         closeReactionNav.play();
     }
@@ -134,8 +133,7 @@ public class StudentSceneController extends HomeSceneController implements Initi
             hideSpeedBar();
         }
         if ((reactionMenu.getTranslateX()) == -(reactionMenu.getWidth())) {
-            reactionButton.getStyleClass().remove("reactionBtnBlack");
-            reactionButton.getStyleClass().add("reactionBtnWhite");
+            reactionButton.setStyle("-fx-background-color: white");
             openReactionNav.play();
         } else {
             hideReactionBar();
@@ -233,5 +231,27 @@ public class StudentSceneController extends HomeSceneController implements Initi
         return newQuestion;
     }
 
+    @Override
+    public void changeTheme(
+            boolean mode, String buttonColour, String menuColour, String textColour,
+            String inputColour, String backgroundColour) {
+        ArrayList<VBox> list = new ArrayList<>();
+        list.add(reactionMenu);
+        list.add(speedMenu);
+        list.add(mainMenu);
+
+        for (VBox box : list) {
+            box.setStyle("-fx-background-color:" + menuColour);
+            for (Node node : box.getChildren()) {
+                if (node instanceof Button) {
+                    node.setStyle("-fx-background-color:" + buttonColour);
+                } else {
+                    node.setStyle("-fx-text-fill:" + textColour);
+                }
+            }
+        }
+        super.changeTheme(mode, buttonColour, menuColour,
+                textColour, inputColour, backgroundColour);
+    }
 }
 
