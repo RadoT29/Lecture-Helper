@@ -45,7 +45,7 @@ public class AnswerSceneController {
 
         //set the fields for the newly created scene
         aqc.setQuestionId(questionId);
-        aqc.setOldText(oldAnswer);
+        aqc.setOldAnswer(oldAnswer);
         aqc.setUserId(userId);
 
         //put current answerText in the text area
