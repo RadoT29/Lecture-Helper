@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import com.google.gson.stream.JsonReader;
+import nl.tudelft.oopp.app.models.Feedback;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -15,6 +16,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -157,9 +159,6 @@ public class HomeSceneCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
-
-
-
     /**
      * When changing timezones there are no changes to the minute pointers
      * These only change in the hours pointers
@@ -184,6 +183,33 @@ public class HomeSceneCommunication {
         }
         return gson.fromJson(response.body(), new TypeToken<List<Date>>(){}.getType());
     }
+
+    /**
+     * Sends a request to get all answered questions from a room.
+     * @param roomLink - the room link.
+     * @return - a list of answered questions.
+     * @throws InterruptedException - may be thrown.
+     */
+    public static List<Question> constantlyGetAnsweredQuestions(String roomLink)
+            throws InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/questions/log/" + roomLink))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+
+    }
+
 
 
     /**
@@ -210,30 +236,6 @@ public class HomeSceneCommunication {
         }
 
         return response.body();
-    }
-
-
-
-    /**
-     * By given question id and room link this request bans users by IP address
-     * On the server side by the question id is found the user id,
-     * and that user is banned for that specific room.
-     * @param questionId - the id of the question
-     * @param roomLink - the moderator link of the room. With that is found the room id
-     */
-    public static void banUserForThatRoom(String questionId, String roomLink) {
-        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room/user/banUserRoom/" + questionId + "/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
     }
 
     /**
@@ -263,7 +265,8 @@ public class HomeSceneCommunication {
         System.out.println(response.body());
         boolean result = gson.fromJson(response.body(), Boolean.class);
         if (!result) {
-            throw new OutOfLimitOfQuestionsException();
+            throw new OutOfLimitOfQuestionsException("The user has passed the"
+                    + "limit of questions for the set time");
         }
 
     }

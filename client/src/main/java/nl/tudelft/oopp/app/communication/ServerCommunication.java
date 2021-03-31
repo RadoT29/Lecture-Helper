@@ -50,6 +50,36 @@ public class ServerCommunication {
      */
     public static boolean isRoomOpenStudents(String linkId) throws NoStudentPermissionException {
         HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/isOpenById/" + linkId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        boolean result = gson.fromJson(response.body(), Boolean.class);
+        if (!result) {
+            throw new RoomIsClosedException("The room is closed for students");
+        }
+        return result;
+    }
+
+    /**
+     * .
+     * Make a requested if the students has permission to the room
+     *
+     * @param linkId - link of the room
+     * @return boolean true if the room is open, otherwise false
+     * @throws NoStudentPermissionException - throws the exception when a student try to entry
+     *      in room where all students are kicked
+     */
+    public static boolean hasStudentPermission(String linkId) throws NoStudentPermissionException {
+        HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
         HttpResponse<String> response = null;
         try {
