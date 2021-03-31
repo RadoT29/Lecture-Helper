@@ -21,6 +21,10 @@ public final class Session {
     private String userId;
     private List<String> upVotedQuestions;
     private List<String> questionsMade;
+    //status of the student
+    //if the student is warned,
+    //that it will be banned
+    private boolean isWarned;
 
     /**
      * Session constructor.
@@ -40,6 +44,7 @@ public final class Session {
         this.roomName = roomName;
         this.isModerator = isModerator;
         this.userId = userId;
+        this.isWarned = false;
         this.upVotedQuestions = new ArrayList<>();
         this.questionsMade = new ArrayList<>();
 
@@ -59,6 +64,7 @@ public final class Session {
         this.roomLink = roomLink;
         this.userId = userId;
         this.isModerator = isModerator;
+        this.isWarned = false;
         this.upVotedQuestions = new ArrayList<>();
         this.questionsMade = new ArrayList<>();
 
@@ -175,5 +181,6 @@ public final class Session {
     public static void cleanUserSession() {
         instance = null;
     }
+
 }
 

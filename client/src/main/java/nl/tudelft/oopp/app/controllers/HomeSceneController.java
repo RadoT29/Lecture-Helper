@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,6 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import nl.tudelft.oopp.app.communication.*;
+import nl.tudelft.oopp.app.exceptions.*;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
@@ -23,6 +26,7 @@ import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
@@ -121,6 +125,14 @@ public class HomeSceneController {
                                 constantRefresh();
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
+                            } catch (UserWarnedException e) {
+                                //Pops up a message
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setWidth(900);
+                                alert.setHeight(300);
+                                alert.setTitle("Warning!");
+                                alert.setHeaderText("Banning warning!");
+                                alert.showAndWait();
                             } catch (Exception e) {
                                 closeWindow();
                             }
@@ -277,19 +289,23 @@ public class HomeSceneController {
      * @throws NoStudentPermissionException - may be thrown.
      * @throws RoomIsClosedException        - may be thrown.
      * @throws AccessDeniedException        - may be thrown.
+     * @throws UserWarnedException          - may be thrown.
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
+            NoStudentPermissionException, RoomIsClosedException,
+            AccessDeniedException, UserWarnedException {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
-        if (!session.getIsModerator()) {
-            ServerCommunication.hasStudentPermission(session.getRoomLink());
-        }
-
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
-            SplashCommunication.isIpBanned(session.getRoomLink());
+            ServerCommunication.hasStudentPermission(session.getRoomLink());
+            QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
+            if (!session.isWarned()) {
+                BanCommunication.isIpWarned(session.getRoomLink());
+            } else {
+                BanCommunication.isIpBanned(session.getRoomLink());
+            }
         }
 
 
@@ -419,6 +435,39 @@ public class HomeSceneController {
         return roomDate;
     }
 
+    /**
+     * On each 2seconds the client side of the app asks the server for
+     * questions update about this user. If there is a one, this method
+     * is called the QuestionCommunication class and executed here.
+     * @param result - depending of the update, the result has -1 for
+     *               question discarded ot 0 for question marked of the
+     *               as answered. Depending on that a pop up appears and
+     *               notifies the user for its question update.
+     */
+    public static void questionUpdatePopUp(QuestionsUpdate result) {
+
+        //String[] updateInformation = result.split("/");
+        String additionalText = "";
+
+        String text = "";
+        if (result.getStatusQuestion() == -1) {
+            text = "Your question has been discarded!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been discarded!";
+        } else if (result.getStatusQuestion() == 0) {
+            text = "Your question has been marked as answered!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been marked as answered!";
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setWidth(900);
+        alert.setHeight(300);
+        alert.setTitle("Update on your question!");
+        alert.setHeaderText(text);
+        alert.setContentText(additionalText);
+        alert.showAndWait();
+
+    }
 
     /**
      * Method to get the moderator upVotes with extra value.

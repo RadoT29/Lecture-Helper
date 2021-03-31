@@ -62,17 +62,15 @@ public class QuestionsPerTimeController {
      * @param actionEvent - the scene event
      */
     public void setConstraints(ActionEvent actionEvent) {
+
         if (noLimitsCheckBox.isSelected()) {
-            //int a =Integer.MAX_VALUE;
-            HomeSceneCommunication.setQuestionsPerTime(
-                    Integer.MAX_VALUE, Integer.MAX_VALUE, session.getRoomLink());
+            sendAllConstraints(Integer.MAX_VALUE, Integer.MAX_VALUE);
+
         } else if (setLimitsCheckBox.isSelected()) {
-            HomeSceneCommunication
-                    .setQuestionsPerTime(
-                            Integer.parseInt(questionsField.getText()),
-                            Integer.parseInt(minutesField.getText()),
-                            session.getRoomLink());
+            sendAllConstraints(Integer.parseInt(questionsField.getText()),
+                            Integer.parseInt(minutesField.getText()));
         }
+
         Window window = ((Node) (actionEvent.getSource())).getScene().getWindow();
         if (window instanceof Stage) {
             ((Stage) window).close();
@@ -85,13 +83,20 @@ public class QuestionsPerTimeController {
      * @throws IOException - may thrown
      */
     public void open() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/QuestionsPerTime.fxml")).load();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/QuestionsPerTime.fxml"));
+        loader.setController(this);
+        Parent parent = loader.load();
 
         Stage linkStage = new Stage();
 
-        Scene scene = new Scene(loader);
+        Scene scene = new Scene(parent);
 
         linkStage.setScene(scene);
         linkStage.show();
+    }
+
+    public void sendAllConstraints(int numQuestion, int minutes) {
+        HomeSceneCommunication.setQuestionsPerTime(numQuestion,minutes,session.getRoomLink());
     }
 }
