@@ -436,7 +436,7 @@ public class HomeSceneController {
     }
 
     /**
-     * On each 2seconds the client side of the app asks the server for
+     * Every 2 seconds the client side of the app asks the server for a
      * questions update about this user. If there is a one, this method
      * is called the QuestionCommunication class and executed here.
      * @param result - depending of the update, the result has -1 for
