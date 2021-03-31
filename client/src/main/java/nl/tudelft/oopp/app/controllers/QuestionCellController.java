@@ -193,6 +193,7 @@ public class QuestionCellController {
 
     /**
      * Method for blocking students by IP.
+     * @throws IOException - may throw
      */
     public void blockWarnUser() throws IOException {
         Node question = questionCell.getParent();

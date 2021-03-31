@@ -60,7 +60,7 @@ public class BanCommunication {
      * This method makes request to the server if the user is banned.
      *
      * @param roomLink - the room id is found later. Check if the user has access for that room
-     * @throws AccessDeniedException - if the user is banned this exception is thrown
+     * @throws UserWarnedException - if the user is banned this exception is thrown
      */
     public static void isIpWarned(String roomLink) throws UserWarnedException {
         boolean result = getRequestResponse("http://localhost:8080/room/user/isWarned/" + roomLink);
