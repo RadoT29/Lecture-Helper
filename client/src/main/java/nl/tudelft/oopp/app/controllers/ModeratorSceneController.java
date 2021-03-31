@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutionException;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,13 +18,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -47,9 +50,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     @FXML
     public Button speedStat;
     @FXML
-    public Button emotionStat;
+    public HBox emotionReactions;
+    @FXML
+    public Button moreReactionButton;
 
 
+    private ModeratorReactionController reactionController;
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
     private TranslateTransition closeFastNav;
@@ -78,43 +84,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
 
 
         });
+        super.initialize(url,rb);
+        reactionController = new ModeratorReactionController(emotionReactions);
+        refresh();
 
-        callSuperInitializeAndUpdateStats(url, rb);
     }
 
-    /**
-     * Calls the initialize of HomeSceneController.
-     * @param url - The path.
-     * @param rb - Provides any needed resources.
-     */
-    public void callSuperInitializeAndUpdateStats(URL url, ResourceBundle rb) {
-        super.initialize(url, rb);
-        updateStats();
-    }
-
-    /**
-     * This method calls a thread to keep refreshing the reaction status.
-     */
-    public void updateStats() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                keepRequesting = true;
-                while (keepRequesting) {
-                    try {
-                        Platform.runLater(() -> {
-                            loadStats();
-                        });
-
-                        Thread.sleep(2000);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
 
     /**
      * This method closes the sliding part of the navigation bar.
@@ -170,6 +145,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void refresh() {
         super.refresh();
         loadStats();
+        reactionController.update();
     }
 
     /**
@@ -177,19 +153,9 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      * match their statistics.
      */
     public void loadStats() {
-        int emotionStatInt = ReactionCommunication.getReactionStats(false);
         int speedStatInt = ReactionCommunication.getReactionStats(true);
 
-        System.out.println("emotion = " + emotionStatInt);
         System.out.println("speed = " + speedStatInt);
-        if (emotionStatInt == 1) {
-            emotionStat.getStyleClass().set(1, "happyButton");
-            System.out.println(emotionStat.getStyleClass());
-        } else if (emotionStatInt == -1) {
-            emotionStat.getStyleClass().set(1,"confusedButton");
-        } else {
-            emotionStat.getStyleClass().set(1,"sadButton");
-        }
 
         if (speedStatInt == 1) {
             speedStat.getStyleClass().set(1,"fastButton");
@@ -316,6 +282,33 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         }
 
 
+    }
+
+    /**
+     * handles click on moreReactionButton.
+     * shows/hides the emotion reactions on the screen
+     * and changes the button to + or -
+     */
+    public void moreReactionsClicked() {
+        if (!emotionReactions.isVisible()) {
+            //display emotion reactions
+            moreReactionButton.getStyleClass().set(1, "hideButton");
+            reactionController.showEmotion();
+        } else {
+            //hide emotion reactions
+            moreReactionButton.getStyleClass().set(1, "expandButton");
+            reactionController.hideEmotion();
+        }
+
+    }
+
+    @Override
+    public void constantRefresh() throws ExecutionException,
+            InterruptedException, NoStudentPermissionException,
+            RoomIsClosedException, AccessDeniedException, UserWarnedException {
+        super.constantRefresh();
+        loadStats();
+        reactionController.update();
     }
 
     @Override

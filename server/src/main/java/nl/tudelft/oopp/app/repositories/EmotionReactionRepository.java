@@ -22,4 +22,7 @@ public interface EmotionReactionRepository extends JpaRepository<EmotionReaction
 
     @Query("SELECT COUNT(u.value) FROM EmotionReaction u WHERE u.room.id=?1")
     int getEmotionCount(long roomId);
+
+    @Query("SELECT COUNT(u) FROM EmotionReaction u WHERE u.room.id = ?1 AND u.value = ?2")
+    int getEmotionCountOfValue(Long roomId, int value);
 }
