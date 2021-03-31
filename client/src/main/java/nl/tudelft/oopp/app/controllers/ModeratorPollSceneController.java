@@ -331,6 +331,7 @@ public class ModeratorPollSceneController implements Initializable {
      * @throws NoStudentPermissionException - may be thrown.
      * @throws RoomIsClosedException        - may be thrown.
      * @throws AccessDeniedException        - may be thrown.
+     * @throws UserWarnedException          - may be thrown.
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, RoomIsClosedException,
