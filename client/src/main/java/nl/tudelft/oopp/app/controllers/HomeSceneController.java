@@ -364,8 +364,10 @@ public class HomeSceneController {
         QuestionCellController qsc = loader.getController();
         qsc.setHomeScene(this);
         newQuestion.setId(question.getId() + "");
+
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabelLog");
         questionLabel.setText(question.questionText);
+
         Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
         answerLabel.setText(question.answerText);
 

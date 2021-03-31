@@ -369,18 +369,7 @@ public class QuestionService {
 
     }
 
-    /**
-     * Method to set the creation time of the questions (after room created)
-     * **The user and the client might have different timeZones, that being said
-     * firstly we make sure the the user's time is the same as the server's
-     * then we will get the time period between the creation of teh room and the creation 
-     * of the question.
-     * @param questions - List of question Ids
-     * @param roomId - room selected
-     */
-    public void getTimeOfQuestions(List<Long> questions, long roomId) {
-        String currentZone = ZoneId.systemDefault().toString();
-        ZoneId currentZoneId = ZoneId.of(currentZone);
+
     public Question findByQuestionId(long questionId) {
         return questionRepository.findById(questionId).get();
     }
@@ -400,6 +389,21 @@ public class QuestionService {
 
         return result;
     }
+
+
+    /**
+     * Method to set the creation time of the questions (after room created)
+     * **The user and the client might have different timeZones, that being said
+     * firstly we make sure the the user's time is the same as the server's
+     * then we will get the time period between the creation of teh room and the creation
+     * of the question.
+     * @param questions - List of question Ids
+     * @param roomId - room selected
+     */
+    public void getTimeOfQuestions(List<Long> questions, long roomId) {
+        String currentZone = ZoneId.systemDefault().toString();
+        ZoneId currentZoneId = ZoneId.of(currentZone);
+
 
         LocalDateTime roomTime = roomRepository.getRoomTime(roomId);
         

@@ -94,6 +94,10 @@ public class QuestionCellController {
         newQuestion.setId(question.getId() + ""); //to deleted
         qsc.setQuestion(question);
 
+
+        //Check if the question loaded was created by the session's user
+        hsc.checkForQuestion(newQuestion, question);
+
         //set the question text
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
         questionLabel.setText(question.questionText);
@@ -101,12 +105,44 @@ public class QuestionCellController {
         Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
         nicknameLabel.setText(question.user.getName());
 
+        //set the question box size
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + question.getUpVotes());
+        upvoteLabel.setText("+" + getTotalUpVotes(question));
+
+        //set upvote button as active or inactive
+        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
+        boolean isActive = Session.getInstance().getUpVotedQuestions()
+                .contains(String.valueOf(question.getId()));
+        if (isActive) {
+            upvoteButton.getStyleClass().add("active");
+        }
 
         return newQuestion;
     }
+
+    /**
+     * Method to get the moderator upVotes with extra value.
+     * @param question - question to retrieve upVotes from
+     * @return number of upVotes
+     */
+    public static int getTotalUpVotes(Question question) {
+        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
+
+        int total = question.getUpVotes() + 9 * modUpVotes;
+        question.setUpVotesFinal(total);
+
+        return total;
+    }
+
+    public String buttonColour;
+
+
 
     /**
      * dismisses the question.
