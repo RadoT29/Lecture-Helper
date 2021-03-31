@@ -61,11 +61,11 @@ public class PollController {
         pollService.updateAndOpenPoll(roomLink, pollId, poll);
     }
 
-    @PutMapping("/{roomLink}/{pollId}/close")
+    @PutMapping("/{roomLink}/{pollId}/finish")
     @ResponseBody
-    public void closePoll(@PathVariable String roomLink,
-                         @PathVariable Long pollId) {
-        pollService.closePoll(roomLink, pollId);
+    public void finishPoll(@PathVariable String roomLink,
+                           @PathVariable Long pollId) {
+        pollService.finishPoll(roomLink, pollId);
     }
 
     //StudentRoutes

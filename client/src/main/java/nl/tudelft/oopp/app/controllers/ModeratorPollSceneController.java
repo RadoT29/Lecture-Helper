@@ -4,6 +4,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.PollCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
@@ -37,10 +39,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * This class contains the code that is run when the IO objects in the Home page are utilized.
  */
-public class PollSceneController {
-
-    private boolean interruptThread = false;
-    private boolean openOne = true;
+public class ModeratorPollSceneController implements Initializable {
 
     Session session = Session.getInstance();
 
@@ -77,37 +76,20 @@ public class PollSceneController {
      * @param rb  - Provides any needed resources.
      */
     public void initialize(URL url, ResourceBundle rb) {
+        openNav = new TranslateTransition(Duration.millis(100), slidingMenu);
+        openNav.setToX(slidingMenu.getTranslateX() - slidingMenu.getWidth());
+        closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
+        closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
-        // This thread will periodically refresh the content of the question queue.
-
-        new Thread(new Runnable() {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                while (!(Thread.interrupted())) {
-                    try {
-                        Platform.runLater(() -> {
-                            try {
-                                constantRefresh();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (Exception e) {
-                                closeWindow();
-                            }
-                        });
-
-                        Thread.sleep(2000);
-                        if (interruptThread) {
-                            Thread.currentThread().interrupt();
-                            break;
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                closeFastNav.setToX(-(slidingMenu.getWidth()));
+                closeFastNav.play();
             }
-        }).start();
+        });
 
+        refresh();
     }
 
     /**
@@ -118,10 +100,6 @@ public class PollSceneController {
      */
 
     public void closeWindow() {
-        interruptThread = true;
-        if (!openOne) {
-            return;
-        }
         Parent loader = null;
         try {
             loader = new FXMLLoader(getClass().getResource("/splashScene.fxml")).load();
@@ -141,7 +119,6 @@ public class PollSceneController {
         linkStage.setScene(scene);
         linkStage.centerOnScreen();
         linkStage.show();
-        openOne = false;
 
     }
 
@@ -163,133 +140,6 @@ public class PollSceneController {
         ServerCommunication.kickAllStudents(linkId);
     }
 
-    /**
-     * fill in the priority queue and and load them on the screen.
-     */
-    public void refresh() {
-        polls = new ArrayList<>();
-        polls.addAll(PollCommunication.getPolls());
-        loadPolls();
-    }
-
-    /**
-     * This method is constantly called by a thread and refreshes the page.
-     *
-     * @throws ExecutionException           - may be thrown.
-     * @throws InterruptedException         - may be thrown.
-     * @throws NoStudentPermissionException - may be thrown.
-     * @throws RoomIsClosedException        - may be thrown.
-     * @throws AccessDeniedException        - may be thrown.
-     */
-    public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
-        polls = new ArrayList<>();
-        polls.addAll(PollCommunication.constantlyGetPolls(session.getRoomLink()));
-        loadPolls();
-        if (!session.getIsModerator()) {
-            ServerCommunication.hasStudentPermission(session.getRoomLink());
-        }
-
-        ServerCommunication.isTheRoomClosed(session.getRoomLink());
-        if (!session.getIsModerator()) {
-            SplashCommunication.isIpBanned(session.getRoomLink());
-        }
-
-
-    }
-
-    /**
-     * loads questions in the question box in the correct format.
-     */
-    public void loadPolls() {
-
-        String resource = "/pollCellModerator.fxml";
-        if (session.getIsModerator()) {
-            resource = "/pollCellModerator.fxml";
-        }
-
-        polls = PollCommunication.getPolls();
-
-        System.out.println(polls.get(0).toString());
-        pollBox.getChildren().clear();
-        for (Poll poll :
-                polls) {
-            try {
-                pollBox.getChildren()
-                        .add(createPollCell(poll, resource));
-            } catch (IOException e) {
-                pollBox.getChildren().add(
-                        new Label("Something went wrong while loading this poll"));
-            }
-        }
-    }
-
-    /**
-     * creates a node for a question.
-     * @param resource String the path to the resource with the question format
-     * @return Node that is ready to be displayed
-     * @throws IOException if the loader fails
-     *      or one of the fields that should be changed where not found
-     */
-    protected Node createPollCell(Poll poll, String resource) throws IOException {
-        // load the poll to a newNode and set it's homeSceneController to this
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
-        Node newPoll = loader.load();
-        PollCellController qsc = loader.getController();
-        qsc.setHomeScene(this);
-
-        //set the node id to the poll id
-        newPoll.setId("" + poll.getId());
-
-        //set the poll text
-        TextArea questionTextArea = (TextArea) newPoll.lookup("#questionText");
-        System.out.println(poll.toString());
-        questionTextArea.setText(poll.getQuestion());
-
-
-        //set the question box size
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.4;
-        questionTextArea.setPrefWidth(width);
-        questionTextArea.setMaxWidth(width);
-
-        VBox pollOptionBox = (VBox) newPoll.lookup("#pollOptionBox");
-
-        int optionCount = 1;
-        for (PollOption pollOption :
-                poll.getPollOptions()) {
-            pollOptionBox.getChildren().add(createPollOptionCell(pollOption, optionCount));
-            optionCount++;
-        }
-
-        return newPoll;
-    }
-
-    protected Node createPollOptionCell(PollOption pollOption, int optionCount) throws IOException {
-        // load the poll to a newNode and set it's homeSceneController to this
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pollOptionCellModerator.fxml"));
-        Node newPollOption = loader.load();
-
-        //set the node id to the poll id
-        newPollOption.setId("pollOptionId" + optionCount);
-
-        //set the poll text
-        TextArea questionTextArea = (TextArea) newPollOption.lookup("#optionText");
-        Text questionLabel = (Text) newPollOption.lookup("#optionLabel");
-        CheckBox optionIsCorrect = (CheckBox) newPollOption.lookup("#isCorrect");
-        questionTextArea.setText(pollOption.getOptionText());
-        questionLabel.setText("Option " + optionCount);
-        optionIsCorrect.setSelected(pollOption.isCorrect());
-
-
-        //set the question box size
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        double width = screenSize.getWidth() * 0.4;
-//        questionTextArea.setPrefWidth(width);
-//        questionTextArea.setMaxWidth(width);
-
-        return newPollOption;
-    }
 
     /**
      * Method to clear all questions and allow the moderator to reset the room
@@ -333,6 +183,7 @@ public class PollSceneController {
             hideSlidingBar();
         }
     }
+
 
     public void exportQuestionsClicked() {
         Session session = Session.getInstance();
@@ -382,6 +233,136 @@ public class PollSceneController {
     public void openConstraintsScene() throws IOException {
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();
+
+    }
+
+    //Poll stuff
+    protected Node createPollOptionCell(PollOption pollOption, int optionCount) throws IOException {
+        // load the poll to a newNode and set it's homeSceneController to this
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/moderatorPollOptionCell.fxml"));
+        Node newPollOption = loader.load();
+
+        //set the node id to the poll id
+        newPollOption.setId("" + optionCount);
+
+        //set the poll text
+        TextArea questionTextArea = (TextArea) newPollOption.lookup("#optionText");
+        Text questionLabel = (Text) newPollOption.lookup("#optionLabel");
+        CheckBox optionIsCorrect = (CheckBox) newPollOption.lookup("#isCorrect");
+        questionTextArea.setText(pollOption.getOptionText());
+        questionLabel.setText("Option " + optionCount);
+        optionIsCorrect.setSelected(pollOption.isCorrect());
+
+
+        //set the question box size
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        double width = screenSize.getWidth() * 0.4;
+//        questionTextArea.setPrefWidth(width);
+//        questionTextArea.setMaxWidth(width);
+
+        return newPollOption;
+    }
+
+
+    /**
+     * creates a node for a question.
+     * @param resource String the path to the resource with the question format
+     * @return Node that is ready to be displayed
+     * @throws IOException if the loader fails
+     *      or one of the fields that should be changed where not found
+     */
+    protected Node createPollCell(Poll poll, String resource) throws IOException {
+        // load the poll to a newNode and set it's homeSceneController to this
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Node newPoll = loader.load();
+        ModeratorPollCellController qsc = loader.getController();
+        qsc.setHomeScene(this);
+
+        //set the node id to the poll id
+        newPoll.setId("" + poll.getId());
+
+        //set the poll text
+        TextArea questionTextArea = (TextArea) newPoll.lookup("#questionText");
+        questionTextArea.setText(poll.getQuestion());
+
+
+        //set the question box size
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionTextArea.setPrefWidth(width);
+        questionTextArea.setMaxWidth(width);
+
+        VBox pollOptionBox = (VBox) newPoll.lookup("#pollOptionBox");
+
+        int optionCount = 1;
+        for (PollOption pollOption :
+                poll.getPollOptions()) {
+            pollOptionBox.getChildren().add(createPollOptionCell(pollOption, optionCount));
+            optionCount++;
+        }
+
+        return newPoll;
+    }
+
+
+    /**
+     * loads questions in the question box in the correct format.
+     */
+    public void loadPolls() {
+
+        String resource = "/moderatorPollCell.fxml";
+        if (session.getIsModerator()) {
+            resource = "/moderatorPollCell.fxml";
+        }
+
+        polls = PollCommunication.getPolls();
+
+        pollBox.getChildren().clear();
+        for (Poll poll :
+                polls) {
+            try {
+                pollBox.getChildren()
+                        .add(createPollCell(poll, resource));
+            } catch (IOException e) {
+                pollBox.getChildren().add(
+                        new Label("Something went wrong while loading this poll"));
+            }
+        }
+    }
+
+
+    /**
+     * fill in the priority queue and and load them on the screen.
+     */
+    public void refresh() {
+        polls = new ArrayList<>();
+        polls.addAll(PollCommunication.getPolls());
+        loadPolls();
+    }
+
+    /**
+     * This method is constantly called by a thread and refreshes the page.
+     *
+     * @throws ExecutionException           - may be thrown.
+     * @throws InterruptedException         - may be thrown.
+     * @throws NoStudentPermissionException - may be thrown.
+     * @throws RoomIsClosedException        - may be thrown.
+     * @throws AccessDeniedException        - may be thrown.
+     */
+    public void constantRefresh() throws ExecutionException, InterruptedException,
+            NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
+        polls = new ArrayList<>();
+        polls.addAll(PollCommunication.constantlyGetPolls(session.getRoomLink()));
+        loadPolls();
+        if (!session.getIsModerator()) {
+            ServerCommunication.hasStudentPermission(session.getRoomLink());
+        }
+
+        ServerCommunication.isTheRoomClosed(session.getRoomLink());
+        if (!session.getIsModerator()) {
+            SplashCommunication.isIpBanned(session.getRoomLink());
+        }
+
 
     }
 

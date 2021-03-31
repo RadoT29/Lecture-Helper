@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PollCellController {
+public class ModeratorPollCellController {
 
     @FXML
     TextArea questionText;
@@ -27,15 +27,15 @@ public class PollCellController {
     private VBox pollBox;
 
 
-    private PollSceneController hsc;
+    private ModeratorPollSceneController hsc;
 
-    public void setHomeScene(PollSceneController hsc) {
+    public void setHomeScene(ModeratorPollSceneController hsc) {
         this.hsc = hsc;
     }
 
     public void addOption() throws IOException {
         // load the poll to a newNode and set it's homeSceneController to this
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pollOptionCellModerator.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/moderatorPollOptionCell.fxml"));
         Node newPollOption = loader.load();
 
         //set the node id to the poll id
@@ -74,7 +74,7 @@ public class PollCellController {
 
     public void closePoll() {
         long pollId = Long.parseLong(pollBox.getParent().getId());
-        PollCommunication.closePoll(pollId);
+        PollCommunication.finishPoll(pollId);
     }
 
 }

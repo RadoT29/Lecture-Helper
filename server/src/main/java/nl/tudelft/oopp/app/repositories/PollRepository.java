@@ -23,6 +23,6 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Poll p SET p.isOpen=false WHERE p.id=?1")
-    void closePoll(long questionId);
+    @Query("UPDATE Poll p SET p.isFinished=true WHERE p.id=?1")
+    void finishPoll(long questionId);
 }

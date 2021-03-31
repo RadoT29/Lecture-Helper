@@ -41,6 +41,8 @@ public class Poll {
 
     private boolean isOpen = false;
 
+    private boolean isFinished = false;
+
     private Duration timeLimit = null;
 
     @CreationTimestamp

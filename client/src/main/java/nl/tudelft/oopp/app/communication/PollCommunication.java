@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.communication;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.app.models.Poll;
+import nl.tudelft.oopp.app.models.PollAnswer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -42,14 +43,25 @@ public class PollCommunication {
         return polls;
     }
 
+    public static List<Poll> constantlyGetPolls(String roomLink)
+            throws InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/polls/constant/" + roomLink))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+        return gson.fromJson(response.body(), new TypeToken<List<Poll>>(){}.getType());
+    }
 
-
-    /**
-     * Send a POST request to update the answer status of a question.
-     * the boolean createdInclass establishes if the answer was
-     * made in the comments or directly.
-     * @param questionId - question where upvote status is changed
-     */
+    //Moderator routes
     public static long createPoll() {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -89,10 +101,10 @@ public class PollCommunication {
         }
     }
 
-    public static void closePoll(long pollId) {
+    public static void finishPoll(long pollId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink()))
+                .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink() + '/' + pollId + "/finish"))
                 .build();
 
         HttpResponse<String> response = null;
@@ -107,23 +119,42 @@ public class PollCommunication {
         }
     }
 
-    public static List<Poll> constantlyGetPolls(String roomLink)
-            throws InterruptedException {
+    //Student routes
+    public static List<PollAnswer> getAnswers(long pollId) {
         HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/polls/constant/" + roomLink))
+                .uri(URI.create("http://localhost:8080/polls/answer" + session.getUserId() + '/' + pollId))
                 .build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        List<PollAnswer> answers = gson.fromJson(response.body(),
+                new TypeToken<List<PollAnswer>>(){}.getType());
+        return answers;
+    }
+
+    public static void sendAnswers(Poll poll) {
+        System.out.println(gson.toJson(poll));
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(poll)))
+                .uri(URI.create("http://localhost:8080/polls/answer" + '/' + session.getUserId()))
+                .setHeader("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return List.of();
         }
-        return gson.fromJson(response.body(), new TypeToken<List<Poll>>(){}.getType());
     }
-
-
 }

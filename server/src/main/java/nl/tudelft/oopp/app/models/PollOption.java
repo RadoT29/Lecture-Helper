@@ -37,6 +37,9 @@ public class PollOption {
 
     private boolean isCorrect;
 
+    @Transient
+    private double scoreRate;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

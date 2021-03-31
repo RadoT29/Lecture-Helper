@@ -25,11 +25,6 @@ public class PollService {
     @Autowired
     private RoomRepository roomRepository;
 
-    public List<Poll> getPolls(String roomLinkString) {
-        UUID roomLink = UUID.fromString(roomLinkString);
-        return pollRepository.findAllByRoomLink(roomLink);
-    }
-
     private boolean isModerator(String roomLink) {
         Room room = roomService.getByLink(roomLink);
         if (room == null) return false;
@@ -68,9 +63,9 @@ public class PollService {
         this.pollRepository.updateAndOpenPoll(pollId, poll.getQuestion());
     }
 
-    public void closePoll(String roomLink, long pollId) {
+    public void finishPoll(String roomLink, long pollId) {
         if (!isModerator(roomLink)) return;
-        this.pollRepository.closePoll(pollId);
+        this.pollRepository.finishPoll(pollId);
     }
 
     //Student services
