@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.communication.QuestionCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
@@ -188,16 +189,18 @@ public class HomeSceneController {
      * (each client will have these stored locally)
      */
     public void sendQuestion() {
-
-        passLimitQuestionsLabel.setVisible(false);
-        try {
-            HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(), session.getRoomLink());
-        } catch (OutOfLimitOfQuestionsException exception) {
-            System.out.println("Out of limit");
-            passLimitQuestionsLabel.setVisible(true);
-            //passLimitQuestionsLabel.wait(4000);
-            questionInput.clear();
-            return;
+        if (!session.getIsModerator()) {
+            passLimitQuestionsLabel.setVisible(false);
+            try {
+                HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(),
+                                                        session.getRoomLink());
+            } catch (OutOfLimitOfQuestionsException exception) {
+                System.out.println("Out of limit");
+                passLimitQuestionsLabel.setVisible(true);
+                //passLimitQuestionsLabel.wait(4000);
+                questionInput.clear();
+                return;
+            }
         }
         System.out.println("in limit");
         // If input is null, don't send question
@@ -349,8 +352,6 @@ public class HomeSceneController {
         }
     }
 
-
-
     /**
      * Method to check whether the Question that is being created has been
      * written by the student in the session (so that the dismiss button
@@ -396,6 +397,19 @@ public class HomeSceneController {
         return roomDate;
     }
 
+
+    /**
+     * Method to get the moderator upVotes with extra value.
+     * @param question - question to retrieve upVotes from
+     * @return number of upVotes
+     */
+    public int getTotalUpVotes(Question question) {
+        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
+
+        int total = question.getUpVotes() + 9 * modUpVotes;
+        return total;
+    }
+
     /**
      * Transitions from Main question scene to Question log and vice versa.
      */
@@ -418,7 +432,5 @@ public class HomeSceneController {
             callRequestingThread();
         }
     }
-
-
 
 }
