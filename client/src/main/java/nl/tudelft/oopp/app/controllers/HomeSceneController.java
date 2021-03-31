@@ -27,9 +27,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -210,7 +212,15 @@ public class HomeSceneController {
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
         questions = new PriorityQueue<>();
-        questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
+        
+        //used to update the upvotecount locally considering moderator upVotes
+        List<Question> unsortedQuestions =
+                HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink());
+        for (Question q: unsortedQuestions) {
+            q.setUpVotesFinal(getTotalUpVotes(q));
+        }
+        
+        questions.addAll(unsortedQuestions);
         loadQuestions();
         if (!session.getIsModerator()) {
             ServerCommunication.hasStudentPermission(session.getRoomLink());
@@ -363,6 +373,8 @@ public class HomeSceneController {
         int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
 
         int total = question.getUpVotes() + 9 * modUpVotes;
+        question.setUpVotesFinal(total);
+        
         return total;
     }
 
