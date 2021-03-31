@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,6 +28,7 @@ import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
+import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 /**
@@ -37,6 +41,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public VBox mainMenu;
     @FXML
     public VBox slidingMenu;
+
     @FXML
     public Button speedStat;
     @FXML
@@ -63,16 +68,53 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
         closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
+        mainBoxLog.setVisible(false);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 closeFastNav.setToX(-(slidingMenu.getWidth()));
                 closeFastNav.play();
             }
+
+
         });
-        super.initialize(url,rb);
-        reactionController = new ModeratorReactionController(emotionReactions);
-        refresh();
+
+        callSuperInitializeAndUpdateStats(url, rb);
+    }
+
+    /**
+     * Calls the initialize of HomeSceneController.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
+    public void callSuperInitializeAndUpdateStats(URL url, ResourceBundle rb) {
+        super.initialize(url, rb);
+        updateStats();
+    }
+
+    /**
+     * This method calls a thread to keep refreshing the reaction status.
+     */
+    public void updateStats() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                keepRequesting = true;
+                while (keepRequesting) {
+                    try {
+                        Platform.runLater(() -> {
+                            loadStats();
+                        });
+
+                        Thread.sleep(2000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     /**
@@ -222,6 +264,33 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void openConstraintsScene() throws IOException {
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();
+
+    }
+
+    @Override
+    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
+        Node newQuestion = super.createQuestionCellLog(question,resource);
+        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
+
+        if (!answerLabel.getText().equals("This question was answered during the lecture")) {
+            Button answerButtonLog = (Button) newQuestion.lookup("#answerButtonLog");
+            answerButtonLog.getStyleClass().remove("answerButton");
+            answerButtonLog.getStyleClass().add("editButton");
+            answerButtonLog.setText("Edit");
+        }
+        return newQuestion;
+    }
+
+    /**
+     * shows feedback from students in the scene.
+     */
+    public void showFeedback() {
+        try {
+            ViewFeedbackSceneController.init();
+        } catch (IOException e) {
+            return;
+        }
+
 
     }
 

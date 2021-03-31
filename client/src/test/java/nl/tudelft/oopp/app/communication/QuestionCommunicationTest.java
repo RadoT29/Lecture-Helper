@@ -21,17 +21,25 @@ public class QuestionCommunicationTest {
     private ClientAndServer mockServer;
     private Gson gson = new Gson();
 
+    /**Start the mock server before each test.
+     */
     @BeforeEach
     public void startMockServer() {
         mockServer = startClientAndServer(8080);
     }
 
+    /**Close the mock server after each test so they are completely isolated.
+     * Clear the sessions singleton for the same reason.
+     */
     @AfterEach
     public void stopMockServer() {
         Session.clearSession();
         mockServer.stop();
     }
 
+    /**Test if QuestionCommunication.dismissQuestion sends
+     *  a delete question request to the right path.
+     */
     @Test
     void shouldSendDismissQuestionRequest() {
         long questionId = 1L;
@@ -44,6 +52,9 @@ public class QuestionCommunicationTest {
                 .withPath(path));
     }
 
+    /**Test if QuestionCommunication.dismissSingular sends
+     *  a delete question request to the right path.
+     */
     @Test
     void shouldSendDismissQuestionRequestFromStudent() {
         long questionId = 1L;
@@ -57,6 +68,9 @@ public class QuestionCommunicationTest {
                 .withPath(path));
     }
 
+    /**Test if QuestionCommunication.upVoteQuestion sends
+     *  a post upvote request to the right path.
+     */
     @Test
     void shouldSendUpVoteRequest() {
         String roomLink = UUID.randomUUID().toString();
@@ -75,6 +89,9 @@ public class QuestionCommunicationTest {
                 .withPath(path));
     }
 
+    /**Test if QuestionCommunication.deleteUpvote sends
+     *  a delete upvote request to the right path.
+     */
     @Test
     void shouldSendDeleteUpVoteRequest() {
         String roomLink = UUID.randomUUID().toString();
@@ -93,6 +110,9 @@ public class QuestionCommunicationTest {
                 .withPath(path));
     }
 
+    /**Test if QuestionCommunication.editQuestionText sends
+     *  a post edit question request to the right path.
+     */
     @Test
     void shouldSendEditQuestionRequest() {
         String questionId = "1L";

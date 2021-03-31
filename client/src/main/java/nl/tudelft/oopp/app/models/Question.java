@@ -18,6 +18,7 @@ public class Question implements Comparable<Question> {
     public long id;
     public Room room;
     public User user;
+    public String answerText;
     public String questionText;
     public int upVotes;
     //  public LocalDateTime createdAt;

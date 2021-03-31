@@ -21,6 +21,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+
     @Autowired
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
@@ -143,9 +144,29 @@ public class QuestionController {
             List<Question> newQuestions = questionService.getAllQuestionsByRoom(roomLink);
             deferredResult.setResult(newQuestions);
         });
+        return deferredResult;
+    }
+
+    /**
+     * Gets all questions in a room and sends them to client.
+     * The function is asynchronous.
+     * @return - Other.
+     */
+    @GetMapping("/log/{roomLink}")
+    @ResponseBody
+    public DeferredResult<List<Question>>
+        sendAllAnsweredQuestionsAsync(@PathVariable String roomLink) {
+        Long timeOut = 100000L;
+        String timeOutResp = "Time out.";
+        DeferredResult<List<Question>> deferredResult = new DeferredResult<>(timeOut,timeOutResp);
+        CompletableFuture.runAsync(() -> {
+            List<Question> newQuestions = questionService.getAllAnsweredQuestions(roomLink);
+            deferredResult.setResult(newQuestions);
+        });
 
         return deferredResult;
     }
+
 
 
     /**
@@ -188,7 +209,12 @@ public class QuestionController {
     }
 
 
-
+    /**
+     * Receive GET request from client so to chek if a question is answered.
+     * @param questionId - id of question to check
+     * @param roomLink - room where question is
+     * @return - boolean if answered
+     */
     @GetMapping("/answer/checkAnswer/{questionId}/{roomLink}")
     @ResponseBody
     public boolean checkAnswered(@PathVariable("questionId") String questionId,
@@ -197,6 +223,11 @@ public class QuestionController {
         return questionService.checkAnswered(questionId, roomLink);
     }
 
+    /**
+     * receive GET request to export the questions.
+     * @param roomLink - room from where to export
+     * @return String with all the questions and answers (formatted)
+     */
     @GetMapping("/export/{roomLink}")
     @ResponseBody
     public String exportQuestions(@PathVariable("roomLink") String roomLink) {
@@ -204,5 +235,30 @@ public class QuestionController {
 
     }
 
+    /**
+     * Saves a new answer.
+     * @param questionId - the question id.
+     * @param userId - the user id.
+     * @param newText - the text.
+     */
+    @PostMapping("/setAnswer/{questionId}/user/{userId}")
+    @ResponseBody
+    public void setAnswerText(@PathVariable String questionId,
+                              @PathVariable String userId,
+                              @RequestBody String newText) {
+
+        //remove quotation marks from the newText
+        newText = newText.substring(1, newText.length() - 1);
+        questionService.setAnswered(newText,questionId,userId,false);
+    }
+
+
+    @GetMapping("/upVote/getModUpVotes/{questionId}/{roomLink}")
+    @ResponseBody
+    public int getModUpVotes(@PathVariable("questionId") String questionId,
+                                @PathVariable("roomLink") String roomLink) {
+        return questionService.getModUpVotes(questionId, roomLink);
+
+    }
 
 }
