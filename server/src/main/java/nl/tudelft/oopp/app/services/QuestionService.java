@@ -123,9 +123,10 @@ public class QuestionService {
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
         //delete answer
         answerRepository.deleteByQuestionID(questionId);
+        Question question = questionRepository.getOne(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
-        Question question = questionRepository.getOne(questionId);
+
         System.out.println("Question " + question.getId() + "(room: "
                 + question.getRoom().getName() + ") was deleted by a moderator");
     }
@@ -169,6 +170,7 @@ public class QuestionService {
 
     /**
      * Method to delete the upvote on the server side.
+     *
      * @param questionId - Id of the question upvote to be deleted
      * @param userId     - Id of user making the change
      */
@@ -239,6 +241,7 @@ public class QuestionService {
 
         Moderator user = (Moderator) userService.getByID(userId);
         Question question = questionRepository.getOne(questionId2);
+
         Answer answer = new Answer(answerText, question, user, answerType);
 
         if (answerType) {
@@ -359,6 +362,9 @@ public class QuestionService {
 
     }
 
+    public Question findByQuestionId(long questionId) {
+        return questionRepository.findById(questionId).get();
+    }
 
     /**
      * Gets all answered questions.

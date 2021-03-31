@@ -11,7 +11,10 @@ public class IpAddress {
 
     private String ipAddress;
 
-    private boolean access;
+    //status 1 - everything is fine with the user
+    //status 0 - the user is warned
+    //status -1 - user is banned
+    private int status;
 
     @ManyToOne
     private Room roomId;
@@ -28,7 +31,7 @@ public class IpAddress {
 
     public IpAddress(String ipAddress, Room roomId, User userId) {
         this.ipAddress = ipAddress;
-        this.access = true;
+        this.status = 1;
         this.roomId = roomId;
         this.userId = userId;
     }

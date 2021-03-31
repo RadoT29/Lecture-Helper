@@ -108,57 +108,12 @@ public class SplashCommunication {
             // and user should stay on splash screen.
             if (session == null) {
                 System.out.println("Insert valid link");
-                throw new NoSuchRoomException();
+                throw new NoSuchRoomException("Room with that link does not exist");
             }
         } catch (Exception e) {
-            throw new NoSuchRoomException();
+            throw new NoSuchRoomException("Room with that link does not exist");
         }
 
-    }
-
-    /**
-     * This method makes a request to the server to save the request/user Ip.
-     * @param userId - the user id
-     * @param roomLink - the room link
-     */
-    public static void saveStudentIp(String userId, String roomLink) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room/user/saveIP/" + userId + "/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-    }
-
-    /**
-     * This method makes request to the server if the user is banned.
-     * @param roomLink - the room id is found later. Check if the user has access for that room
-     * @throws AccessDeniedException - if the user is banned this exception is thrown
-     */
-    public static void isIpBanned(String roomLink) throws AccessDeniedException {
-        HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/room/user/isBanned/" + roomLink)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        System.out.println(response.body());
-        boolean result = gson.fromJson(response.body(), Boolean.class);
-        if (!result) {
-            throw new AccessDeniedException();
-        }
-        System.out.println("access granted!");
     }
 
 }
