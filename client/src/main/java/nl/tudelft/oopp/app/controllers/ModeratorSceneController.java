@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,7 +19,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -80,43 +78,12 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
 
 
         });
+        super.initialize(url,rb);
+        reactionController = new ModeratorReactionController(emotionReactions);
+        refresh();
 
-        callSuperInitializeAndUpdateStats(url, rb);
     }
 
-    /**
-     * Calls the initialize of HomeSceneController.
-     * @param url - The path.
-     * @param rb - Provides any needed resources.
-     */
-    public void callSuperInitializeAndUpdateStats(URL url, ResourceBundle rb) {
-        super.initialize(url, rb);
-        updateStats();
-    }
-
-    /**
-     * This method calls a thread to keep refreshing the reaction status.
-     */
-    public void updateStats() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                keepRequesting = true;
-                while (keepRequesting) {
-                    try {
-                        Platform.runLater(() -> {
-                            loadStats();
-                        });
-
-                        Thread.sleep(2000);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
 
     /**
      * This method closes the sliding part of the navigation bar.

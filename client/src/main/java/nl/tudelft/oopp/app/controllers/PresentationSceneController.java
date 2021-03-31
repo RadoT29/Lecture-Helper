@@ -94,6 +94,5 @@ public class PresentationSceneController extends ModeratorSceneController implem
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        super.callSuperInitializeAndUpdateStats(url, rb);
     }
 }
