@@ -28,6 +28,7 @@ import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -288,7 +289,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     @Override
     public void constantRefresh() throws ExecutionException,
             InterruptedException, NoStudentPermissionException,
-            RoomIsClosedException, AccessDeniedException {
+            RoomIsClosedException, AccessDeniedException, UserWarnedException {
         super.constantRefresh();
         loadStats();
         reactionController.update();
