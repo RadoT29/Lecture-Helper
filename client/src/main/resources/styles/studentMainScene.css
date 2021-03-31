@@ -50,27 +50,20 @@
     -fx-shape: "M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z";
 }
 
-.speedBtnWhite {
-    -fx-background-color: white;
-}
-
-.speedBtnBlack {
-    -fx-background-color: black;
-}
-
-.reactionBtnWhite {
-    -fx-background-color: white;
-}
-
-.reactionBtnBlack {
-    -fx-background-color: black;
-}
-
 .menuBtnBlack {
     -fx-background-color: black;
 }
 
-.textField {
+.menuBtnWhite {
+    -fx-background-color: white;
+}
+
+.menuBtnBlue {
+    -fx-background-color: #17AEDA;
+}
+
+#questionInput {
+    -fx-background-color: transparent;
     -fx-focus-color: transparent;
     -fx-text-box-border: transparent;
 }
@@ -107,6 +100,14 @@
 }
 
 #scrollPaneLog {
+    -fx-background-color: transparent;
+}
+
+#scrollPane > .viewport {
+    -fx-background-color: transparent;
+}
+
+#scrollPane {
     -fx-background-color: transparent;
 }
 
