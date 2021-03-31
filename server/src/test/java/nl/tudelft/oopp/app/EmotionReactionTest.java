@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 public class EmotionReactionTest {
@@ -95,6 +96,27 @@ public class EmotionReactionTest {
                 .getOne(emotionReactionBeforeDb.getId());
         assertEquals(emotionReactionAfterDb.getUser(), mod);
         assertEquals(emotionReactionAfterDb.getUser().getName(), "Natalia");
+
+    }
+
+    /**
+     * test if the repository returns correct count of the emotion reaction
+     * of a specific value for a specific room.
+     */
+    @Test
+    public void getEmotionCountOfValueTest() {
+        Room room = new Room("The room");
+        roomRepository.save(room);
+
+        //A emotionReaction has a user associated to it.
+        Moderator mod = new Moderator("Natalia", room);
+        moderatorRepository.save(mod);
+
+        EmotionReaction emotionReactionBeforeDb = new EmotionReaction(0,room, mod);
+        emotionReactionRepository.save(emotionReactionBeforeDb);
+
+        assertEquals(1, emotionReactionRepository
+                .getEmotionCountOfValue(room.getId(), emotionReactionBeforeDb.getValue()));
 
     }
 

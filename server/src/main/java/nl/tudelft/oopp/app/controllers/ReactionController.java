@@ -87,8 +87,8 @@ public class ReactionController {
     }
 
     /**
-     * returs the counts of each emotion reaction in the room.
-     * @param roomLink roomLink of the room we want reaction inforamtion of
+     * returns the counts of each emotion reaction in the room.
+     * @param roomLink roomLink of the room we want reaction information of
      * @return a list of counts where index 0 - confused, 1 - sad, 2 - happy
      */
     @GetMapping("counts/emotion/{roomLink}")
