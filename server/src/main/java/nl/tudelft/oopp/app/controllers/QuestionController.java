@@ -21,6 +21,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+
     @Autowired
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
@@ -188,7 +189,12 @@ public class QuestionController {
     }
 
 
-
+    /**
+     * Receive GET request from client so to chek if a question is answered.
+     * @param questionId - id of question to check
+     * @param roomLink - room where question is
+     * @return - boolean if answered
+     */
     @GetMapping("/answer/checkAnswer/{questionId}/{roomLink}")
     @ResponseBody
     public boolean checkAnswered(@PathVariable("questionId") String questionId,
@@ -197,6 +203,11 @@ public class QuestionController {
         return questionService.checkAnswered(questionId, roomLink);
     }
 
+    /**
+     * receive GET request to export the questions.
+     * @param roomLink - room from where to export
+     * @return String with all the questions and answers (formatted)
+     */
     @GetMapping("/export/{roomLink}")
     @ResponseBody
     public String exportQuestions(@PathVariable("roomLink") String roomLink) {
@@ -204,5 +215,13 @@ public class QuestionController {
 
     }
 
+
+    @GetMapping("/upVote/getModUpVotes/{questionId}/{roomLink}")
+    @ResponseBody
+    public int getModUpVotes(@PathVariable("questionId") String questionId,
+                                @PathVariable("roomLink") String roomLink) {
+        return questionService.getModUpVotes(questionId, roomLink);
+
+    }
 
 }
