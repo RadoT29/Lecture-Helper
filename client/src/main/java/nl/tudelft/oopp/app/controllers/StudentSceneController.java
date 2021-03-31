@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -240,18 +241,37 @@ public class StudentSceneController extends HomeSceneController implements Initi
         list.add(speedMenu);
         list.add(mainMenu);
 
+        changeMenuColour(mode, menuColour, textColour, list);
+
+        super.changeTheme(mode, buttonColour, menuColour,
+                textColour, inputColour, backgroundColour);
+    }
+
+    /**
+     * This method changes the colour of the menu(navigation bar).
+     * @param mode - current mode.
+     * @param menuColour - background of menu.
+     * @param textColour - colour of labels.
+     * @param list - all the VBoxes, which compose the navigation bar.
+     */
+    public void changeMenuColour(
+            boolean mode, String menuColour, String textColour, ArrayList<VBox> list) {
         for (VBox box : list) {
             box.setStyle("-fx-background-color:" + menuColour);
             for (Node node : box.getChildren()) {
                 if (node instanceof Button) {
-                    node.setStyle("-fx-background-color:" + buttonColour);
+                    if (mode) {
+                        node.getStyleClass().remove("menuBtnBlack");
+                        node.getStyleClass().add("menuBtnBlue");
+                    } else {
+                        node.getStyleClass().removeAll(Collections.singleton("menuBtnBlue"));
+                        node.getStyleClass().add("menuBtnBlack");
+                    }
                 } else {
                     node.setStyle("-fx-text-fill:" + textColour);
                 }
             }
         }
-        super.changeTheme(mode, buttonColour, menuColour,
-                textColour, inputColour, backgroundColour);
     }
 }
 
