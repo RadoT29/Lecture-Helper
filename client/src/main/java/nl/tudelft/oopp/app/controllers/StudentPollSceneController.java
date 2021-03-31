@@ -230,6 +230,10 @@ public class StudentPollSceneController implements Initializable {
         confusedButton.setDisable(true);
     }
 
+    /**
+     * will be removed with refactoring.
+     * @throws IOException k
+     */
     public void goToPolls() throws IOException {
         Parent loader = new FXMLLoader(getClass().getResource("/studentPollScene.fxml")).load();
         Stage stage = (Stage) reactionMenu.getScene().getWindow();
@@ -245,6 +249,16 @@ public class StudentPollSceneController implements Initializable {
     }
 
     //Poll stuff
+
+    /**
+     * Create the poll options to fill the poll cell.
+     * This is for options that were already answered and the poll closed.
+     * The correct answers and the answered answers are reveled.
+     * @param pollAnswer option data
+     * @param optionCount place in the option order
+     * @return a node to be loaded with the proper format and data
+     * @throws IOException when the fxml file is not found
+     */
     protected Node createPollAnswerCell(PollAnswer pollAnswer, int optionCount) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/studentPollAnswerCell.fxml"));
         Node newPollAnswer = loader.load();
@@ -252,15 +266,16 @@ public class StudentPollSceneController implements Initializable {
         newPollAnswer.setId("" + pollAnswer.getId());
 
         Label optionNumber = (Label) newPollAnswer.lookup("#optionNumber");
-        Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
-        Label correctLabel = (Label) newPollAnswer.lookup("#correct");
-        Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
-
         optionNumber.setText("Option " + optionCount);
+
+        Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
         optionLabel.setText(pollAnswer.getPollOption().getOptionText());
+
+        Label correctLabel = (Label) newPollAnswer.lookup("#correct");
         correctLabel.setText("This option was "
                 + (pollAnswer.getPollOption().isCorrect() ? "correct" : "wrong"));
 
+        Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
         scoredLabel.setText("And you answered "
                 + (pollAnswer.getPollOption().isCorrect() == pollAnswer.isMarked()
                 ? "correctly" : "wrong :("));
@@ -268,27 +283,46 @@ public class StudentPollSceneController implements Initializable {
         return newPollAnswer;
     }
 
-    protected Node createPollUnansweredCell(PollOption pollOption, int optionCount) throws IOException {
+    /**
+     * Create the poll options to fill the poll cell.
+     * This is for options that were not answered and the poll closed.
+     * The correct answers are reveled.
+     * @param pollOption option data
+     * @param optionCount place in the option order
+     * @return a node to be loaded with the proper format and data
+     * @throws IOException when the fxml file is not found
+     */
+    protected Node createPollUnansweredCell(
+            PollOption pollOption,
+            int optionCount) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/studentPollAnswerCell.fxml"));
         Node newPollAnswer = loader.load();
 
         newPollAnswer.setId("" + pollOption.getId());
 
         Label optionNumber = (Label) newPollAnswer.lookup("#optionNumber");
-        Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
-        Label correctLabel = (Label) newPollAnswer.lookup("#correct");
-        Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
-
         optionNumber.setText("Option " + optionCount);
+
+        Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
         optionLabel.setText(pollOption.getOptionText());
+
+        Label correctLabel = (Label) newPollAnswer.lookup("#correct");
         correctLabel.setText("This option was "
                 + (pollOption.isCorrect() ? "correct" : "wrong"));
 
+        Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
         scoredLabel.setText("You have not answered this poll in time");
 
         return newPollAnswer;
     }
 
+    /**
+     * Create the poll options to fill the poll cell.
+     * This are the options that can still be answered
+     * @param pollOption option data
+     * @return a node to be loaded with the proper format and data
+     * @throws IOException when the fxml file is not found
+     */
     protected Node createPollOptionCell(PollOption pollOption) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/studentPollOptionCell.fxml"));
         Node newPollOption = loader.load();
@@ -301,9 +335,14 @@ public class StudentPollSceneController implements Initializable {
         return newPollOption;
     }
 
-
-    protected Node createPollCell(Poll poll, String resource) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+    /**
+     * Create a new poll cell for a poll with its data.
+     * @param poll the poll to load the cell
+     * @return a node to be loaded with the proper format and data
+     * @throws IOException when the fxml file is not found
+     */
+    protected Node createPollCell(Poll poll) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/studentPollCell.fxml"));
         Node newPoll = loader.load();
         StudentPollCellController qsc = loader.getController();
         qsc.setHomeScene(this);
@@ -330,7 +369,8 @@ public class StudentPollSceneController implements Initializable {
             if (pollAnswers.isEmpty()) {
                 for (PollOption pollOption :
                         poll.getPollOptions()) {
-                    pollOptionBox.getChildren().add(createPollUnansweredCell(pollOption, optionCount));
+                    pollOptionBox.getChildren().add(
+                            createPollUnansweredCell(pollOption, optionCount));
                     resultBox.getChildren().add(new Label("Option " + optionCount
                             + ":     " + pollOption.getScoreRate()));
                     optionCount++;
@@ -359,13 +399,10 @@ public class StudentPollSceneController implements Initializable {
         return newPoll;
     }
 
+    /**
+     * Load polls to the scene, creating new nodes for the poll box.
+     */
     public void loadPolls() {
-
-        String resource = "/studentPollCell.fxml";
-        if (session.getIsModerator()) {
-            resource = "/studentPollCell.fxml";
-        }
-
         polls = PollCommunication.getPolls();
 
         pollBox.getChildren().clear();
@@ -374,7 +411,7 @@ public class StudentPollSceneController implements Initializable {
             if (poll.isOpen()) {
                 try {
                     pollBox.getChildren()
-                            .add(createPollCell(poll, resource));
+                            .add(createPollCell(poll));
                 } catch (IOException e) {
                     System.out.println(e);
                     pollBox.getChildren().add(
@@ -384,12 +421,24 @@ public class StudentPollSceneController implements Initializable {
         }
     }
 
+    /**
+     * Update the polls list and load them to the scene.
+     */
     public void refresh() {
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.getPolls());
         loadPolls();
     }
 
+    /**
+     * This method is constantly called by a thread and refreshes the page.
+     *
+     * @throws ExecutionException           - may be thrown.
+     * @throws InterruptedException         - may be thrown.
+     * @throws NoStudentPermissionException - may be thrown.
+     * @throws RoomIsClosedException        - may be thrown.
+     * @throws AccessDeniedException        - may be thrown.
+     */
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
         polls = new ArrayList<>();

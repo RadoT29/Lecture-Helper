@@ -23,6 +23,13 @@ public class PollService {
     @Autowired
     private UserService userService;
 
+    /**
+     * Get all the polls for a given room.
+     * Calculate and set the options scored rate,
+     * that is how much % of the answers were right.
+     * @param roomLinkString uuid link for the room
+     * @return list of all the polls of the room
+     */
     public List<Poll> getPolls(String roomLinkString) {
         UUID roomLink = UUID.fromString(roomLinkString);
         List<Poll> polls = pollRepository.findAllByRoomLink(roomLink);
@@ -50,34 +57,71 @@ public class PollService {
         return polls;
     }
 
+    /**
+     * Check if the link given has moderator access.
+     * @param roomLink uuid link of the room
+     * @return if the access was granted
+     */
     private boolean isModerator(String roomLink) {
         Room room = roomService.getByLink(roomLink);
-        if (room == null) return false;
-        if (room.getLinkIdModerator().equals(UUID.fromString(roomLink))) return true;
+        if (room == null) {
+            return false;
+        }
+        if (room.getLinkIdModerator().equals(UUID.fromString(roomLink))) {
+            return true;
+        }
         return false;
     }
 
     //Moderator services
+
+    /**
+     * Create a new empty poll.
+     * @param roomLink uuid link of the room
+     * @return the new poll's id
+     */
     public long createPoll(String roomLink) {
-        if (!isModerator(roomLink)) return 0;
+        if (!isModerator(roomLink)) {
+            return 0;
+        }
         Room room = this.roomService.getByLink(roomLink);
         Poll poll = new Poll(room);
         this.pollRepository.save(poll);
         return poll.getId();
     }
 
+    /**
+     * Auxiliary method that removes all the poll's options.
+     * @param pollId id of the poll to be cleared
+     */
     private void clearPollOptions(long pollId) {
         this.pollOptionRepository.deleteOptionsFromRoom(pollId);
     }
 
+
+    /**
+     * Auxiliary method that adds a new option to a poll.
+     * @param pollId id of the poll to add the new option
+     * @param optionText the text of the option
+     * @param isCorrect whether this option is a correct one
+     */
     private void addPollOption(long pollId, String optionText, boolean isCorrect) {
         Poll poll = this.pollRepository.findById(pollId).get();
         PollOption pollOption = new PollOption(poll, optionText, isCorrect);
         this.pollOptionRepository.save(pollOption);
     }
 
+    /**
+     * Update the poll with the given data.
+     * Delete and replace all options
+     * @param roomLink room of the poll
+     * @param pollId id of the poll to be updated
+     * @param poll new poll
+     */
     public void updateAndOpenPoll(String roomLink, long pollId, Poll poll) {
-        if (!isModerator(roomLink)) return;
+        if (!isModerator(roomLink)) {
+            return;
+        }
         System.out.println(poll.toString());
         clearPollOptions(pollId);
         for (PollOption pollOption :
@@ -88,8 +132,15 @@ public class PollService {
         this.pollRepository.updateAndOpenPoll(pollId, poll.getQuestion());
     }
 
+    /**
+     * Set poll as finished.
+     * @param roomLink moderator link of the polls room
+     * @param pollId id of the poll
+     */
     public void finishPoll(String roomLink, long pollId) {
-        if (!isModerator(roomLink)) return;
+        if (!isModerator(roomLink)) {
+            return;
+        }
         this.pollRepository.finishPoll(pollId);
     }
 
@@ -102,6 +153,11 @@ public class PollService {
         pollAnswerRepository.updateAnswer(answerId, isMarked);
     }
 
+    /**
+     * Create or update an answer for given student/poll.
+     * @param userId student who sent the answer
+     * @param poll poll with the answers given
+     */
     public void createAnswers(long userId, Poll poll) {
 
         List<PollAnswer> pollAnswers = new ArrayList<>();
@@ -111,7 +167,7 @@ public class PollService {
             boolean isMarked = answerReceived.isCorrect();
             PollAnswer pollAnswer = pollAnswerRepository
                     .findAnswerByUserAndOptionId(pollOptionId, userId);
-            if (pollAnswer!=null) {
+            if (pollAnswer != null) {
                 updateAnswer(pollAnswer.getId(), isMarked);
             } else {
                 Student student = (Student) userService.getByID(userId + "");

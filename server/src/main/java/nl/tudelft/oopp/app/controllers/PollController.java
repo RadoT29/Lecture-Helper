@@ -32,6 +32,11 @@ public class PollController {
         return pollService.getPolls(roomLink);
     }
 
+    /**
+     * Gets all polls in a room and sends them to client.
+     * The function is asynchronous.
+     * @return - Other.
+     */
     @GetMapping("/constant/{roomLink}")
     @ResponseBody
     public DeferredResult<List<Poll>> sendAllPollsAsync(@PathVariable String roomLink) {
@@ -39,8 +44,8 @@ public class PollController {
         String timeOutResp = "Time out.";
         DeferredResult<List<Poll>> deferredResult = new DeferredResult<>(timeOut,timeOutResp);
         CompletableFuture.runAsync(() -> {
-            List<Poll> newQuestions = pollService.getPolls(roomLink);
-            deferredResult.setResult(newQuestions);
+            List<Poll> newPolls = pollService.getPolls(roomLink);
+            deferredResult.setResult(newPolls);
         });
 
         return deferredResult;

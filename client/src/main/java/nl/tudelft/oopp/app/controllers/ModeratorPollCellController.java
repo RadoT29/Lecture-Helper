@@ -34,6 +34,10 @@ public class ModeratorPollCellController {
         this.hsc = hsc;
     }
 
+    /**
+     * Add a new option for the poll.
+     * @throws IOException when the fxml file is not found
+     */
     public void addOption() throws IOException {
         // load the poll to a newNode and set it's homeSceneController to this
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/moderatorPollOptionCell.fxml"));
@@ -49,6 +53,11 @@ public class ModeratorPollCellController {
         pollOptionBox.getChildren().add(newPollOption);
     }
 
+
+    /**
+     * Send the poll data to be updated in the server.
+     * Also opens the poll to be answered.
+     */
     public void sendPoll() {
         Poll poll = new Poll();
 
@@ -73,6 +82,10 @@ public class ModeratorPollCellController {
         PollCommunication.updatePoll(pollId, poll);
     }
 
+    /**
+     * Set the poll as finished so it cannot be answered by students
+     * and everyone can see the results.
+     */
     public void closePoll() {
         long pollId = Long.parseLong(pollBox.getParent().getId());
         PollCommunication.finishPoll(pollId);

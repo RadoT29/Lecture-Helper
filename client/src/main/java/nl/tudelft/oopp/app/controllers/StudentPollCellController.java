@@ -35,6 +35,9 @@ public class StudentPollCellController {
         this.hsc = hsc;
     }
 
+    /**
+     * Send this polls answers to the server.
+     */
     public void submitAnswers() {
         Poll poll = new Poll();
 

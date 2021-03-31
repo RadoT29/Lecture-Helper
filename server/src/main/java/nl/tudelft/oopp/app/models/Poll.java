@@ -34,7 +34,7 @@ public class Poll {
     @ManyToOne
     private Room room;
 
-    @OneToMany(mappedBy="poll")
+    @OneToMany(mappedBy = "poll")
     private List<PollOption> pollOptions;
 
     private String question;
@@ -58,12 +58,6 @@ public class Poll {
     public Poll(String question, Room room) {
         this.question = question;
         this.room = room;
-    }
-
-    public Poll(String question, Room room, Duration timeLimit) {
-        this.question = question;
-        this.room = room;
-        this.timeLimit = timeLimit;
     }
 
 }

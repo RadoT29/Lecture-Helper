@@ -44,6 +44,11 @@ public class PollAnswer {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    /**.
+     * @param student Student who answered
+     * @param pollOption PollOption that was answered
+     * @param isMarked answered true/false;
+     */
     public PollAnswer(Student student, PollOption pollOption, boolean isMarked) {
         this.student = student;
         this.pollOption = pollOption;

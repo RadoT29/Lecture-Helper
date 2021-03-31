@@ -46,6 +46,11 @@ public class PollOption {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    /**.
+     * @param poll Poll with this option
+     * @param optionText text of the option
+     * @param isCorrect whether it is true or false
+     */
     public PollOption(Poll poll, String optionText, boolean isCorrect) {
         this.poll = poll;
         this.optionText = optionText;

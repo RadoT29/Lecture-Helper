@@ -21,6 +21,11 @@ public class PollCommunication {
 
     private static Session session = Session.getInstance();
 
+    /**
+     * Method to get polls from the server.
+     * Can be used by student and moderator
+     * @return list of all the room polls
+     */
     public static List<Poll> getPolls() {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink()))
@@ -38,6 +43,13 @@ public class PollCommunication {
         return polls;
     }
 
+    /**
+     * Method to get polls from the server.
+     * Can be used by student and moderator
+     * @param roomLink - the link for the room.
+     * @return - A List of all questions.
+     * @throws InterruptedException - Thrown when a thread is waiting and is interrupted.
+     */
     public static List<Poll> constantlyGetPolls(String roomLink)
             throws InterruptedException {
         HttpRequest request = HttpRequest.newBuilder().GET()
@@ -57,6 +69,11 @@ public class PollCommunication {
     }
 
     //Moderator routes
+
+    /**
+     * Method send a request to the server to create a new empty poll.
+     * @return new poll's id
+     */
     public static long createPoll() {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -77,6 +94,11 @@ public class PollCommunication {
         return pollId;
     }
 
+    /**Method sends a request to the server to update a given poll.
+     * For now it also automatically opens the poll.
+     * @param pollId the id of the poll to be updated
+     * @param poll a Poll object with the data of the update
+     */
     public static void updatePoll(long pollId, Poll poll) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(poll)))
@@ -96,6 +118,11 @@ public class PollCommunication {
         }
     }
 
+    /**
+     * Set a poll as finished so students can no longer answer
+     * and students and moderators can see the results.
+     * @param pollId id of the poll to be finished
+     */
     public static void finishPoll(long pollId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.noBody())
@@ -115,6 +142,13 @@ public class PollCommunication {
     }
 
     //Student routes
+
+    /**
+     * Get from the server the students answers for a given poll.
+     * The student id is stored in Session
+     * @param pollId Id of the poll
+     * @return list of poll answers with the answer of each poll option
+     */
     public static List<PollAnswer> getAnswers(long pollId) {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/polls/answer/" + session.getUserId() + '/' + pollId))
@@ -133,6 +167,12 @@ public class PollCommunication {
         return answers;
     }
 
+    /**
+     * Send the student answers to the server.
+     * It sends the answers as if they were options,
+     * the server is responsible for interpreting it the right way.
+     * @param poll Poll with poll answers
+     */
     public static void sendAnswers(Poll poll) {
         System.out.println(gson.toJson(poll));
         HttpRequest request = HttpRequest.newBuilder()

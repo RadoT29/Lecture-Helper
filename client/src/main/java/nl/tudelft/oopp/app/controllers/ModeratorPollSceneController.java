@@ -182,6 +182,9 @@ public class ModeratorPollSceneController implements Initializable {
     }
 
 
+    /**
+     * Will be removed with refactoring.
+     */
     public void exportQuestionsClicked() {
         Session session = Session.getInstance();
         String exported = "Nothing has been added";
@@ -234,6 +237,14 @@ public class ModeratorPollSceneController implements Initializable {
     }
 
     //Poll stuff
+
+    /**
+     * Create the poll options to fill the poll cell.
+     * @param pollOption option data
+     * @param optionCount place in the option order
+     * @return a node to be loaded with the proper format and data
+     * @throws IOException when the fxml file is not found
+     */
     protected Node createPollOptionCell(PollOption pollOption, int optionCount) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/moderatorPollOptionCell.fxml"));
         Node newPollOption = loader.load();
@@ -250,8 +261,14 @@ public class ModeratorPollSceneController implements Initializable {
         return newPollOption;
     }
 
-    protected Node createPollCell(Poll poll, String resource) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+    /**
+     * Create a new poll cell for a poll with its data.
+     * @param poll the poll to load the cell
+     * @return a node to be loaded with the proper format and data
+     * @throws IOException when the fxml file is not found
+     */
+    protected Node createPollCell(Poll poll) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/moderatorPollCell.fxml"));
         Node newPoll = loader.load();
         ModeratorPollCellController qsc = loader.getController();
         qsc.setHomeScene(this);
@@ -280,13 +297,10 @@ public class ModeratorPollSceneController implements Initializable {
         return newPoll;
     }
 
+    /**
+     * Load polls to the scene, creating new nodes for the poll box.
+     */
     public void loadPolls() {
-
-        String resource = "/moderatorPollCell.fxml";
-        if (session.getIsModerator()) {
-            resource = "/moderatorPollCell.fxml";
-        }
-
         polls = PollCommunication.getPolls();
 
         pollBox.getChildren().clear();
@@ -294,7 +308,7 @@ public class ModeratorPollSceneController implements Initializable {
                 polls) {
             try {
                 pollBox.getChildren()
-                        .add(createPollCell(poll, resource));
+                        .add(createPollCell(poll));
             } catch (IOException e) {
                 pollBox.getChildren().add(
                         new Label("Something went wrong while loading this poll"));
@@ -302,12 +316,24 @@ public class ModeratorPollSceneController implements Initializable {
         }
     }
 
+    /**
+     * Update the polls list and load them to the scene.
+     */
     public void refresh() {
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.getPolls());
         loadPolls();
     }
 
+    /**
+     * This method is constantly called by a thread and refreshes the page.
+     *
+     * @throws ExecutionException           - may be thrown.
+     * @throws InterruptedException         - may be thrown.
+     * @throws NoStudentPermissionException - may be thrown.
+     * @throws RoomIsClosedException        - may be thrown.
+     * @throws AccessDeniedException        - may be thrown.
+     */
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, RoomIsClosedException, AccessDeniedException {
         polls = new ArrayList<>();
@@ -325,7 +351,11 @@ public class ModeratorPollSceneController implements Initializable {
 
     }
 
-    public void createPoll(){
+    /**
+     * Create a new empty poll on the server.
+     */
+    public void createPoll() {
         long pollId = PollCommunication.createPoll();
+        refresh();
     }
 }
