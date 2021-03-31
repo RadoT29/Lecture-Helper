@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -18,7 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -37,6 +37,10 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public VBox mainMenu;
     @FXML
     public VBox slidingMenu;
+    @FXML
+    public Label moreOptionsLabel;
+    @FXML
+    public HBox reactionBox;
 
     @FXML
     public Button speedStat;
@@ -114,9 +118,10 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      * This method closes the sliding part of the navigation bar.
      */
     public void hideSlidingBar() {
-
-        menuButton.getStyleClass().remove("menuBtnWhite");
-        menuButton.getStyleClass().add("menuBtnBlack");
+        if (buttonColour == null) {
+            buttonColour = "black";
+        }
+        menuButton.setStyle("-fx-background-color:" + buttonColour);
         closeNav.setToX(-(slidingMenu.getWidth()));
         closeNav.play();
     }
@@ -128,8 +133,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void controlMenu() {
 
         if ((slidingMenu.getTranslateX()) == -(slidingMenu.getWidth())) {
-            menuButton.getStyleClass().remove("menuBtnBlack");
-            menuButton.getStyleClass().add("menuBtnWhite");
+            menuButton.setStyle("-fx-background-color: white");
             openNav.play();
         } else {
             hideSlidingBar();
@@ -281,5 +285,44 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             answerButtonLog.setText("Edit");
         }
         return newQuestion;
+    }
+
+    @Override
+    public void changeTheme(
+            boolean mode, String buttonColour, String menuColour, String textColour,
+            String inputColour, String backgroundColour) {
+
+        for (Node button : reactionBox.getChildren()) {
+            button.setStyle("-fx-background-color:" + buttonColour);
+        }
+        ArrayList<VBox> list = new ArrayList<>();
+        list.add(slidingMenu);
+        list.add(mainMenu);
+        moreOptionsLabel.setStyle("-fx-text-fill:" + textColour);
+        setMenuColour(list, menuColour, buttonColour, textColour);
+
+        super.changeTheme(mode, buttonColour, menuColour,
+                textColour, inputColour, backgroundColour);
+    }
+
+    /**
+     * This method changes the colour of the menu(navigation bar).
+     * @param list - a list of the VBoxes in the menu.
+     * @param menuColour - the colour of the background.
+     * @param buttonColour - the button colour.
+     * @param textColour - the label colour.
+     */
+    public void setMenuColour(ArrayList<VBox> list, String menuColour,
+                              String buttonColour, String textColour) {
+        for (VBox box : list) {
+            box.setStyle("-fx-background-color:" + menuColour);
+            for (Node node : box.getChildren()) {
+                if (node instanceof Button) {
+                    node.setStyle("-fx-background-color:" + buttonColour);
+                } else {
+                    node.setStyle("-fx-text-fill:" + textColour);
+                }
+            }
+        }
     }
 }
