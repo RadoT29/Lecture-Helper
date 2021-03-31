@@ -13,6 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.mockito.Mockito.*;
 
+/**
+ * This class tests the methods in the QuestionController.
+ */
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest
 public class QuestionControllerTest {
@@ -34,21 +37,32 @@ public class QuestionControllerTest {
         userId = "1";
     }
 
+    /**
+     * This test checks if setAnswerText() executes what is expected
+     * and calls the Question service.
+     */
     @Test
-    public void AnswerTextTest() {
+    public void answerTextTest() {
         String answerText = "'Test'";
         String answerTextService = "Test";
 
         questionController.setAnswerText(questionId, userId, answerText);
-        verify(questionServiceMock,times(1)).setAnswered(answerTextService, questionId, userId, false);
+        verify(questionServiceMock,times(1))
+                .setAnswered(answerTextService,
+                questionId, userId, false);
     }
 
+    /**
+     * This test checks if setAnswered() is executed as planned
+     * and properly calls the Question service.
+     */
     @Test
-    public void SetAnsweredTest() {
+    public void setAnsweredTest() {
 
         questionController.setAnswered(questionId,userId, true);
         verify(questionServiceMock,times(1))
-                .setAnswered("This question was answered during the lecture", questionId, userId, true);
+                .setAnswered("This question was answered during the lecture",
+                        questionId, userId, true);
     }
 
 }
