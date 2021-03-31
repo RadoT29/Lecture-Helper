@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -95,4 +96,6 @@ public class EditQuestionSceneController {
     }
 
 
+    public void starClicked() {
+    }
 }
