@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.repositories;
 
+import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,8 +18,12 @@ import java.util.UUID;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT u FROM Question u WHERE (u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1)"
-            + " AND u.answered='false'")
+            + " AND u.answered=false")
     List<Question> findAllByRoomLink(UUID link);
+
+    @Query("SELECT u FROM Question u WHERE "
+            + "(u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1) AND u.answered = true")
+    List<Question> findAllAnsweredByRoomLink(UUID link);
 
     @Transactional
     @Modifying
@@ -37,6 +42,17 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT MAX(u.id) FROM Question u WHERE u.room.id=?1 AND u.user.id=?2")
     String getSingularQuestion(long roomId, long userId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.answered=?2 WHERE u.id=?1")
+    void updateAnsweredStatus(long questionId, boolean answered);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.answerText=?2 WHERE u.id=?1")
+    void setAnswer(long questionId2, String answerText);
+
 
     @Query("SELECT u.answered FROM Question u WHERE u.id=?1 AND u.room.id=?2")
     boolean checkAnswered(long questionId, long roomId);

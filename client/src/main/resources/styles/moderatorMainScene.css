@@ -117,3 +117,11 @@
     -fx-background-color: black;
 }
 
+#scrollPaneLog > .viewport {
+    -fx-background-color: transparent;
+}
+
+#scrollPaneLog {
+    -fx-background-color: transparent;
+}
+

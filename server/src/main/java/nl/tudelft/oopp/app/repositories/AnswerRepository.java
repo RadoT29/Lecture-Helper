@@ -12,6 +12,12 @@ import java.util.List;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Answer u WHERE u.question.id=?1")
+    void deleteByQuestionID(long questionId);
+
+
     @Query("SELECT u.id FROM Answer u WHERE u.question.id=?1")
     List<Long> getAllAnswerIds(long roomId);
 
