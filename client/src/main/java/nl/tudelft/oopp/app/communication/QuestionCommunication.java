@@ -185,6 +185,32 @@ public class QuestionCommunication {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
+                //setAnsweredUpdate(questionId);
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Send a POST request to the table updates that this question was marked as answered.
+     *
+     * @param questionId - question where upvote status is changed
+     */
+    public static void setAnsweredUpdate(String questionId) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/questions/answer/setAsAnsweredUpdate/" + questionId))
+                .build();
+        System.out.println("Sending request: " + request.toString());
+
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
             }
         } catch (Exception e) {

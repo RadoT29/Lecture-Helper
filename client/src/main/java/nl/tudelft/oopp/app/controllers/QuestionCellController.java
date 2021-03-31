@@ -290,6 +290,7 @@ public class QuestionCellController {
 
         if (!status) {
             QuestionCommunication.setAnswered(questionId, true);
+            QuestionCommunication.setAnsweredUpdate(questionId);
         } else {
             System.out.println("This question was already answered");
         }

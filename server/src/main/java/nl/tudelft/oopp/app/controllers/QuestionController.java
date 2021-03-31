@@ -221,8 +221,20 @@ public class QuestionController {
         if (answeredInClass) {
             answerText = "This question was answered during the lecture";
         }
-        Question question = questionService.findByQuestionId(Long.parseLong(questionId));
+
         questionService.setAnswered(answerText, questionId, userId, answeredInClass);
+    }
+
+    /**
+     * Save in questionsUpdateRepository the new update.
+     * Question is set as answered
+     * @param questionId - the question id
+     */
+    @PostMapping("/answer/setAsAnsweredUpdate/{questionId}")
+    @ResponseBody
+    public void setAnsweredUpdate(@PathVariable String questionId) {
+
+        Question question = questionService.findByQuestionId(Long.parseLong(questionId));
         QuestionsUpdate update = new QuestionsUpdate(question.getUser(), question.getRoom(), 0);
         update.setQuestionText(question.getQuestionText());
         questionsUpdateRepository.save(update);
