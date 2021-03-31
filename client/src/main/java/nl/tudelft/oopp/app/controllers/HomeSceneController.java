@@ -15,6 +15,14 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.*;
+import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.communication.QuestionCommunication;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
+import nl.tudelft.oopp.app.communication.SplashCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.Session;
@@ -144,16 +152,18 @@ public class HomeSceneController {
      * (each client will have these stored locally)
      */
     public void sendQuestion() {
-
-        passLimitQuestionsLabel.setVisible(false);
-        try {
-            HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(), session.getRoomLink());
-        } catch (OutOfLimitOfQuestionsException exception) {
-            System.out.println("Out of limit");
-            passLimitQuestionsLabel.setVisible(true);
-            //passLimitQuestionsLabel.wait(4000);
-            questionInput.clear();
-            return;
+        if (!session.getIsModerator()) {
+            passLimitQuestionsLabel.setVisible(false);
+            try {
+                HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(),
+                                                        session.getRoomLink());
+            } catch (OutOfLimitOfQuestionsException exception) {
+                System.out.println("Out of limit");
+                passLimitQuestionsLabel.setVisible(true);
+                //passLimitQuestionsLabel.wait(4000);
+                questionInput.clear();
+                return;
+            }
         }
         System.out.println("in limit");
         // If input is null, don't send question
@@ -256,11 +266,10 @@ public class HomeSceneController {
 
     /**
      * creates a node for a question.
-     *
      * @param resource String the path to the resource with the question format
      * @return Node that is ready to be displayed
      * @throws IOException if the loader fails
-     *                     or one of the fields that should be changed where not found
+     *      or one of the fields that should be changed where not found
      */
     protected Node createQuestionCell(Question question, String resource) throws IOException {
         // load the question to a newNode and set it's homeSceneController to this
@@ -290,7 +299,7 @@ public class HomeSceneController {
 
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + question.getUpVotes());
+        upvoteLabel.setText("+" + getTotalUpVotes(question));
 
         //set upvote button as active or inactive
         Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
@@ -319,7 +328,6 @@ public class HomeSceneController {
      * Method to check whether the Question that is being created has been
      * written by the student in the session (so that the dismiss button
      * will be shown - if it does not correspond it won't show).
-     *
      * @param newQuestion - Node of the new question created
      * @param question    - the object of the new question created
      */
@@ -345,7 +353,6 @@ public class HomeSceneController {
 
     /**
      * Get the Date in which the room was created.
-     *
      * @return Date - at which room was created
      */
     public Date retrieveRoomTime() {
@@ -355,7 +362,6 @@ public class HomeSceneController {
 
     /**
      * Get the Date in which the room was last modified.
-     *
      * @return Date - at which room was last modified
      */
     public Date retrieveModifiedTime() {
@@ -396,6 +402,16 @@ public class HomeSceneController {
         alert.showAndWait();
 
     }
+    /**
+     * Method to get the moderator upVotes with extra value.
+     * @param question - question to retrieve upVotes from
+     * @return number of upVotes
+     */
+    public int getTotalUpVotes(Question question) {
+        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
 
+        int total = question.getUpVotes() + 9 * modUpVotes;
+        return total;
+    }
 
 }

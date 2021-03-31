@@ -52,7 +52,6 @@ public class QuestionController {
 
     /**
      * Method to retrieve the last entry made by a specific user in a specific room.
-     *
      * @param roomLink - room where request came from
      * @param userId   - Id of user that made request
      * @return - string of the questionId
@@ -69,7 +68,6 @@ public class QuestionController {
     /**
      * This method parses the path variables and the http request
      * to get the values needed to create the question to be saved on the DB.
-     *
      * @param roomLink link of the room where the question has been asked
      * @param userId   id of the user who asked the question
      * @param question question that has been asked
@@ -84,7 +82,6 @@ public class QuestionController {
 
     /**
      * calls the questionService to delete the question from the database.
-     *
      * @param questionId the id of the question to be deleted
      */
     @DeleteMapping("/dismiss/{questionId}")
@@ -106,10 +103,10 @@ public class QuestionController {
     }
 
 
+
     /**
      * calls the questionService to add an upvote to a specific question by a specific
      * user on the database.
-     *
      * @param questionId the id of the question to be upVoted
      * @param userId     - Id of the user who upVoted
      */
@@ -126,7 +123,6 @@ public class QuestionController {
     /**
      * Receives the DELETE request from the client side
      * calls the questionService to delete the upvote from the database.
-     *
      * @param questionId the id of the question to be deleted
      * @param userId     - user who made the change
      */
@@ -173,7 +169,6 @@ public class QuestionController {
     /**
      * Receives a POST request from the client.
      * calls questionService to change the text of a question
-     *
      * @param questionId String from PathVariable, id of the question to be modified
      * @param newText    String from RequestBody, new text for the question
      */
@@ -215,6 +210,12 @@ public class QuestionController {
     }
 
 
+    /**
+     * Receive GET request from client so to chek if a question is answered.
+     * @param questionId - id of question to check
+     * @param roomLink - room where question is
+     * @return - boolean if answered
+     */
     @GetMapping("/answer/checkAnswer/{questionId}/{roomLink}")
     @ResponseBody
     public boolean checkAnswered(@PathVariable("questionId") String questionId,
@@ -223,6 +224,11 @@ public class QuestionController {
         return questionService.checkAnswered(questionId, roomLink);
     }
 
+    /**
+     * receive GET request to export the questions.
+     * @param roomLink - room from where to export
+     * @return String with all the questions and answers (formatted)
+     */
     @GetMapping("/export/{roomLink}")
     @ResponseBody
     public String exportQuestions(@PathVariable("roomLink") String roomLink) {
@@ -253,5 +259,13 @@ public class QuestionController {
         return update;
     }
 
+
+    @GetMapping("/upVote/getModUpVotes/{questionId}/{roomLink}")
+    @ResponseBody
+    public int getModUpVotes(@PathVariable("questionId") String questionId,
+                                @PathVariable("roomLink") String roomLink) {
+        return questionService.getModUpVotes(questionId, roomLink);
+
+    }
 
 }

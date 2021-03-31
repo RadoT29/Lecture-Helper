@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="410.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ViewFeedbackSceneController">
+   <children>
+      <Button fx:id="closeButton" onAction="#closeClicked" alignment="BOTTOM_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </Button>
+      <ScrollPane fx:id="feedbackScroll" prefHeight="297.0" prefWidth="591.0" style="-fx-background: #17AEDAFF; -fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+         <content>
+            <Text fx:id="feedbackText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="370.65972900390625" />
+         </content>
+      </ScrollPane>
+   </children>
+</VBox>
