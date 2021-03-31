@@ -160,7 +160,8 @@ public class SplashSceneController {
 
         // Sets nickname
         String userId = session.getUserId();
-        ServerCommunication.setNick(userId, nickName.getText());
+        String timeZone = session.getTimeZone();
+        ServerCommunication.setNick(userId, nickName.getText(), timeZone);
 
         Parent loader;
         // If the user is a moderator, loads the moderator moderatorScene,
