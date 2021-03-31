@@ -17,6 +17,7 @@ import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -137,6 +138,9 @@ public class SplashSceneController {
             invalidRoomLink.setVisible(true);
         } catch (AccessDeniedException exception) {
             invalidRoomLink.setText("Access denied!");
+            invalidRoomLink.setVisible(true);
+        } catch (RoomIsClosedException e) {
+            invalidRoomLink.setText("The room is closed!");
             invalidRoomLink.setVisible(true);
         }
 

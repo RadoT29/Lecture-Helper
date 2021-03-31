@@ -2,6 +2,8 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
+import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.net.URI;
@@ -23,9 +25,9 @@ public class ServerCommunication {
      * @param linkId - name of the room
      * @throws Exception if communication with the server fails.
      */
-    public static void closeRoomStudents(String linkId) {
+    public static void closeRoom(String linkId) {
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/closeRoomForStudents/" + linkId)).build();
+                .uri(URI.create("http://localhost:8080/closeRoomById/" + linkId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -45,10 +47,9 @@ public class ServerCommunication {
      *
      * @param linkId - link of the room
      * @return boolean true if the room is open, otherwise false
-     * @throws NoStudentPermissionException - throws the exception when is
-     *      tried to entry in closed room
+     * @throws RoomIsClosedException - throws the exception when is tried to entry in closed room
      */
-    public static boolean isRoomOpenStudents(String linkId) throws NoStudentPermissionException {
+    public static boolean isTheRoomClosed(String linkId) throws RoomIsClosedException {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/isOpenById/" + linkId)).build();
         HttpResponse<String> response = null;
@@ -93,13 +94,31 @@ public class ServerCommunication {
         }
         System.out.println(response.body());
         boolean result = gson.fromJson(response.body(), Boolean.class);
-        System.out.println("The room is open:" + result);
-        if (result) {
-            return result;
-        } else {
+        if (!result) {
             throw new NoStudentPermissionException();
         }
+        return result;
+    }
 
+    /**
+     * Kick all students.
+     *
+     * @param linkId - link of the room
+     * @throws Exception if communication with the server fails.
+     */
+    public static void kickAllStudents(String linkId) {
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create("http://localhost:8080/kickAllStudents/" + linkId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
     }
 
     /**
@@ -148,24 +167,5 @@ public class ServerCommunication {
         session = session.getInstance();
         session.setRoomName(response.body());
 
-    }
-
-    /**
-     * This method makes put request to the server to open a room by provided room link.
-     *  @param linkId - the room link
-     */
-    public static void openRoomStudents(String linkId) {
-        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/openRoomForStudents/" + linkId)).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
     }
 }
