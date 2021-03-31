@@ -123,9 +123,10 @@ public class QuestionService {
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
         //delete answer
         answerRepository.deleteByQuestionID(questionId);
+        Question question = questionRepository.getOne(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
-        Question question = questionRepository.getOne(questionId);
+
         System.out.println("Question " + question.getId() + "(room: "
                 + question.getRoom().getName() + ") was deleted by a moderator");
     }
