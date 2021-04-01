@@ -46,7 +46,7 @@ public class PresentationSceneController extends ModeratorSceneController implem
             }
             try {
                 questionBox.getChildren()
-                        .add(createQuestionCell(question, resource));
+                        .add(QuestionCellController.init(question, resource, this));
             } catch (IOException e) {
                 questionBox.getChildren().add(
                         new Label("Something went wrong while loading this question"));

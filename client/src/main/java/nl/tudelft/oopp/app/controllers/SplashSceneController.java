@@ -2,15 +2,18 @@ package nl.tudelft.oopp.app.controllers;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
@@ -85,6 +88,12 @@ public class SplashSceneController {
         }
 
         try {
+            if (roomLink.getText().equals("admin")) {
+                AdminPasswordController
+                        .enterPasswordAdmin((Stage) enterRoomButton.getScene().getWindow());
+                return;
+            }
+
             //This method checks if the link inserted corresponds
             // to a Student one, Moderator one or if it is invalid.
             SplashCommunication.checkForRoom(roomLink.getText());
@@ -92,9 +101,9 @@ public class SplashSceneController {
             //Gets the session with the updated information
             Session session = Session.getInstance();
             if (!session.getIsModerator()) {
-                SplashCommunication.isIpBanned(roomLink.getText());
+                BanCommunication.isIpBanned(roomLink.getText());
                 ServerCommunication.isRoomOpenStudents(roomLink.getText());
-                SplashCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
+                BanCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
 
             ServerCommunication.getRoomName();

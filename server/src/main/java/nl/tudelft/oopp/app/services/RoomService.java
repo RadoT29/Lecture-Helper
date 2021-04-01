@@ -38,7 +38,7 @@ public class RoomService {
     public Room getByLink(String link) {
         UUID toCheck = UUID.fromString(link);
         Room room = roomRepository.findByLink(UUID.fromString(link));
-        updatePermision(room);
+        updatePermission(room);
         return room;
     }
 
@@ -47,7 +47,7 @@ public class RoomService {
      * and the room hasn't been closed yet (endDate is null).
      * @param room Room to be updated
      */
-    public void updatePermision(Room room) {
+    public void updatePermission(Room room) {
         if (room == null) {
             return;
         }

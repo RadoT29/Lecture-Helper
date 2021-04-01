@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="100.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.RoomCellController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Id" />
+            <TextField fx:id="idText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Name" />
+            <TextField fx:id="nameText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Modeator Link" />
+            <TextField fx:id="moderatorLinkText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Student Link" />
+            <TextField fx:id="studentLinkText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="IsOpen" />
+            <TextField fx:id="isOpenText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Permission" />
+            <TextField fx:id="permissionText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Max Q/Time" />
+            <TextField fx:id="maxQTText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Time Interval" />
+            <TextField fx:id="timeIntervalText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Start Date" />
+            <TextField fx:id="startDateText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="End Date" />
+            <TextField fx:id="endDateText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Created At" />
+            <TextField fx:id="createdAtText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Updated At" />
+            <TextField fx:id="updatedAtText" alignment="CENTER" editable="false" />
+         </children>
+      </VBox>
+      <CheckBox fx:id="selectedBox" mnemonicParsing="false" onAction="#onSelected">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </CheckBox>
+   </children>
+</HBox>

@@ -7,6 +7,9 @@ import nl.tudelft.oopp.app.repositories.SpeedReactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ReactionService {
 
@@ -123,5 +126,22 @@ public class ReactionService {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    /**
+     * retrieves the count of each reaction in the room and writes it to a list.
+     * @param roomLink link of the room we need reaction information of
+     * @return a list of counts of each reaction where list index: 0 - confused, 1 - sad, 2 - happy
+     */
+    public List<Integer> getEmotionCounts(String roomLink) {
+        Long roomId = roomService.getByLink(roomLink).getId();
+        List<Integer> counts = new ArrayList<>();
+        // add confused
+        counts.add(emotionReactionRepository.getEmotionCountOfValue(roomId, -1));
+        // add sad
+        counts.add(emotionReactionRepository.getEmotionCountOfValue(roomId, 0));
+        // add happy
+        counts.add(emotionReactionRepository.getEmotionCountOfValue(roomId, 1));
+        return counts;
     }
 }
