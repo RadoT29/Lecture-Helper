@@ -409,4 +409,23 @@ public class ModeratorPollSceneController implements Initializable {
         long pollId = PollCommunication.createPoll();
         refresh();
     }
+
+    /**
+     * close the room.
+     * true/exception for close
+     * false for open
+     */
+    public void closeOpenRoom() {
+        //Session session = Session.getInstance();
+        String linkId = session.getRoomLink();
+        try {
+            ServerCommunication.isRoomOpenStudents(linkId);
+            changeImageCloseRoomButton();
+            ServerCommunication.closeRoomStudents(linkId);
+
+        } catch (NoStudentPermissionException exception) {
+            changeImageOpenRoomButton();
+            ServerCommunication.openRoomStudents(linkId);
+        }
+    }
 }
