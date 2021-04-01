@@ -17,16 +17,6 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="kickUserButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#kickAllStudents" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Kick Users" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
             <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exportQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2.0" left="35.0" top="20.0" />
@@ -47,12 +37,12 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="closeRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeRoom" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="closeOpenRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeRoom" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
                 </VBox.margin>
             </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Close Room" textAlignment="CENTER">
+            <Label fx:id="closeOpenRoomLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Close Room" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="10.0" />
                 </font>
@@ -195,7 +185,7 @@
                 <VBox fx:id="pollBox" prefHeight="446.0" />
             </content>
         </ScrollPane>
-      <Button mnemonicParsing="false" text="Button" onMouseClicked="#createPoll" />
+      <Button mnemonicParsing="false" onMouseClicked="#createPoll" text="Button" />
     </VBox>
 
 </AnchorPane>
