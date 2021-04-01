@@ -48,12 +48,46 @@
                 <right>
                     <HBox fx:id="reactionBox" prefHeight="100.0" spacing="20.0" BorderPane.alignment="CENTER">
                         <children>
+                        <HBox fx:id="emotionReactions" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <Button fx:id="happyIcon" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="happyButton">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin></Button>
+                        <Label fx:id="happyCount" minHeight="30.0" minWidth="30.0" text="0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Button fx:id="sadIcon" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="sadButton">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin></Button>
+                        <Label fx:id="sadCount" minHeight="30.0" minWidth="30.0" text="0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Button fx:id="confusedIcon" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="confusedButton">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin></Button>
+                        <Label fx:id="confusedCount" minHeight="30.0" minWidth="30.0" text="0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Button fx:id="moreReactionButton" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="18.5" mnemonicParsing="false" onAction="#moreReactionsClicked" styleClass="expandButton" stylesheets="@styles/moderatorMainScene.css">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Button>
                             <Button fx:id="speedStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="okButton" stylesheets="@styles/moderatorMainScene.css">
                                 <HBox.margin>
                                     <Insets />
                                 </HBox.margin>
                             </Button>
-                            <Button fx:id="emotionStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="happyButton" />
                             <Button fx:id="showFeedback" alignment="CENTER_RIGHT" layoutX="60.0" layoutY="10.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#showFeedback" styleClass="feedbackButton" />
                         </children>
                         <BorderPane.margin>

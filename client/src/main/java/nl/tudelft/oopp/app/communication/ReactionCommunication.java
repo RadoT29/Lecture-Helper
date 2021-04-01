@@ -1,15 +1,14 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
-import nl.tudelft.oopp.app.models.EmotionReaction;
-import nl.tudelft.oopp.app.models.Reaction;
-import nl.tudelft.oopp.app.models.Session;
-import nl.tudelft.oopp.app.models.SpeedReaction;
+import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.app.models.*;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class ReactionCommunication {
 
@@ -99,6 +98,45 @@ public class ReactionCommunication {
 
         int stat = Integer.parseInt(response.body());
         return stat;
+    }
+
+
+    /**
+     * sends a GET request to the server.
+     * should receive a list of counts of each emotion reaction
+     * (index 0 - confused, 1 - sad, 2 - happy)
+     * @return a list of emotion reaction counts or
+     *      a list of (0, 0, 0) if the response code was not 200
+     *      or the list from the server was not of size 3.
+     */
+    public static List<Integer> getAllReactionCount() {
+        session = Session.getInstance();
+
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/reactions/counts/emotion/"
+                        + session.getRoomLink()))
+                .build();
+
+        System.out.println("Sending request: " + request.toString());
+
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(0, 0, 0);
+        }
+
+        List<Integer> result = gson.fromJson(response.body(), new TypeToken<List<Integer>>() {
+        }.getType());
+        if (result.size() != 3) {
+            return List.of(0, 0, 0);
+        }
+        return result;
     }
 
 }
