@@ -309,12 +309,5 @@ public class QuestionController {
     }
 
 
-    @GetMapping("/upVote/getModUpVotes/{questionId}/{roomLink}")
-    @ResponseBody
-    public int getModUpVotes(@PathVariable("questionId") String questionId,
-                                @PathVariable("roomLink") String roomLink) {
-        return questionService.getModUpVotes(questionId, roomLink);
-
-    }
 
 }

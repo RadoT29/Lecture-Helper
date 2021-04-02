@@ -127,9 +127,11 @@ public class ServerCommunication {
      * @param userId   - the id of the user.
      * @param nickName - the name of the user.
      */
-    public static void setNick(String userId, String nickName) {
+    public static void setNick(String userId, String nickName, String timeZone) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room/user/" + userId.replace(" ", "%20") + "/nick/" + nickName.replace(" ", "%20"))).build();
+                .uri(URI.create("http://localhost:8080/room/user/" + userId.replace(" ", "%20") + "/nick/" 
+                        + nickName.replace(" ", "%20") + "/" + timeZone))
+                .build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

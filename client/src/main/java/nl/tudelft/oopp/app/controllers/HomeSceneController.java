@@ -33,9 +33,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -295,7 +297,10 @@ public class HomeSceneController {
             NoStudentPermissionException, RoomIsClosedException,
             AccessDeniedException, UserWarnedException {
         questions = new PriorityQueue<>();
+
+        
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
+        
         loadQuestions();
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
@@ -354,8 +359,10 @@ public class HomeSceneController {
         QuestionCellController qsc = loader.getController();
         qsc.setHomeScene(this);
         newQuestion.setId(question.getId() + "");
+
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabelLog");
         questionLabel.setText(question.questionText);
+
         Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
         answerLabel.setText(question.answerText);
 
@@ -467,18 +474,6 @@ public class HomeSceneController {
         alert.setContentText(additionalText);
         alert.showAndWait();
 
-    }
-
-    /**
-     * Method to get the moderator upVotes with extra value.
-     * @param question - question to retrieve upVotes from
-     * @return number of upVotes
-     */
-    public int getTotalUpVotes(Question question) {
-        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
-
-        int total = question.getUpVotes() + 9 * modUpVotes;
-        return total;
     }
 
     public String buttonColour;
