@@ -113,7 +113,7 @@ public class QuestionCellController {
 
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + getTotalUpVotes(question));
+        upvoteLabel.setText("+" + question.getTotalUpVotes());
 
         //set upvote button as active or inactive
         Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
@@ -126,19 +126,6 @@ public class QuestionCellController {
         return newQuestion;
     }
 
-    /**
-     * Method to get the moderator upVotes with extra value.
-     * @param question - question to retrieve upVotes from
-     * @return number of upVotes
-     */
-    public static int getTotalUpVotes(Question question) {
-        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
-
-        int total = question.getUpVotes() + 9 * modUpVotes;
-        question.setUpVotesFinal(total);
-
-        return total;
-    }
 
     public String buttonColour;
 

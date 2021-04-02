@@ -297,15 +297,10 @@ public class HomeSceneController {
             NoStudentPermissionException, RoomIsClosedException,
             AccessDeniedException, UserWarnedException {
         questions = new PriorityQueue<>();
+
+        List<Question> list = HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink());
+        questions.addAll(list);
         
-        //used to update the upvotecount locally considering moderator upVotes
-        List<Question> unsortedQuestions =
-                HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink());
-        for (Question q: unsortedQuestions) {
-            q.setUpVotesFinal(getTotalUpVotes(q));
-        }
-        
-        questions.addAll(unsortedQuestions);
         loadQuestions();
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
         if (!session.getIsModerator()) {
@@ -479,20 +474,6 @@ public class HomeSceneController {
         alert.setContentText(additionalText);
         alert.showAndWait();
 
-    }
-
-    /**
-     * Method to get the moderator upVotes with extra value.
-     * @param question - question to retrieve upVotes from
-     * @return number of upVotes
-     */
-    public int getTotalUpVotes(Question question) {
-        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
-
-        int total = question.getUpVotes() + 9 * modUpVotes;
-        question.setUpVotesFinal(total);
-        
-        return total;
     }
 
     public String buttonColour;

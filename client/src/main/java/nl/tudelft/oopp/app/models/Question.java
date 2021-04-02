@@ -26,7 +26,7 @@ public class Question implements Comparable<Question> {
     public int upVotes;
     public String duration;
     public String ageSeconds;
-    public int upVotesFinal;
+    public Integer totalUpVotes;
 
     //  public LocalDateTime createdAt;
     //  public LocalDateTime updatedAt;
@@ -47,28 +47,34 @@ public class Question implements Comparable<Question> {
      */
     @Override
     public int compareTo(Question o) {
+        /*if (o.getTotalUpVotes() == null) {
+            o.setTotalUpVotes(0);
+        } else if (this.getTotalUpVotes() == null) {
+            this.setTotalUpVotes(0);
+        }*/
+
         int extra = extraPoints(this);
         int extra1 = extraPoints(o);
-
-        return ((o.getUpVotesFinal() + extra1) - (this.getUpVotesFinal() + extra));
+        return ((o.getTotalUpVotes() + extra1) - (this.getTotalUpVotes() + extra));
     }
 
-    /**
-     * Method to attribute the extra points to recent questions
+    
+    /** Method to attribute the extra points to recent questions
      * the age of a question is in seconds, meaning that as time goes by it will get less
      * extra points and its relevance will mostly be by upvotes and not time
      * To avoid misallocating extra points, questions with less than 5 upvotes are not considered.
-     * @param o - question to attribute the points
+            * @param o - question to attribute the points
      * @return int - amount of points
      */
     public int extraPoints(Question o) {
-        if (o.ageSeconds == null || o.ageSeconds.equals("0") || o.getUpVotesFinal() < 5) {
+        if (o.ageSeconds == null || o.ageSeconds.equals("0") || o.getTotalUpVotes() < 5) {
             return 0;
         }
 
         int age1 = Integer.parseInt(o.ageSeconds);
         return  ((60 + age1) / (age1));
     }
+
 
     @Override
     public boolean equals(Object o) {
