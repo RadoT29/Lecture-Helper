@@ -23,6 +23,7 @@ public class Upvote {
      * The onDelete feature establishes that once a question is deleted
      * All of its corresponding entries in the upVotes table are also deleted.
      */
+    @Getter(value = AccessLevel.NONE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     public Question question;
@@ -30,9 +31,19 @@ public class Upvote {
     @ManyToOne
     public User user;
 
+    public Boolean isModerator;
+
+    public Integer value = 0;
+
+    /**
+     * Constructor for upvote.
+     * @param question - question
+     * @param user - user
+     */
     public Upvote(Question question, User user) {
         this.question = question;
         this.user = user;
+        this.isModerator = user.getIsModerator();
     }
 
 }

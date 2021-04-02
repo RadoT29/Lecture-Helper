@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
@@ -23,7 +22,6 @@ import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.Session;
-
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
@@ -269,15 +267,6 @@ public class HomeSceneController {
             ServerCommunication.openRoomStudents(linkId);
         }
     }
-
-    //    /**
-    //     * kick all students.
-    //     */
-    //    public void kickAllStudents() {
-    //        Session session = Session.getInstance();
-    //        String linkId = session.getRoomLink();
-    //        ServerCommunication.kickAllStudents(linkId);
-    //    }
 
     /**
      * fill in the priority queue and and load them on the screen.

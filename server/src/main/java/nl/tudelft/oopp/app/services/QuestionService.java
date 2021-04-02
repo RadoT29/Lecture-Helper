@@ -1,18 +1,15 @@
 package nl.tudelft.oopp.app.services;
 
 import nl.tudelft.oopp.app.models.*;
-import nl.tudelft.oopp.app.repositories.AnswerRepository;
-import nl.tudelft.oopp.app.repositories.QuestionRepository;
-import nl.tudelft.oopp.app.repositories.RoomRepository;
-import nl.tudelft.oopp.app.repositories.UpvoteRepository;
+import nl.tudelft.oopp.app.repositories.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +25,7 @@ public class QuestionService {
     private UpvoteRepository upvoteRepository;
     private AnswerRepository answerRepository;
     private RoomRepository roomRepository;
+    private UserRepository userRepository;
 
     /**
      * This constructor injects all the dependencies needed by the class.
@@ -59,15 +57,26 @@ public class QuestionService {
      * Gets all questions from the room.
      * gets all questions from the room.
      * Questions have the roomId and UserId changed to 0.
+     *
      * @param roomLinkString a room link
      * @return list of questions from the room.
-     *
      */
     public List<Question> getAllQuestionsByRoom(String roomLinkString) {
         UUID roomLink = UUID.fromString(roomLinkString);
+        
+        //Makes sure the duration attribute is set
+        List<Long> updateTime = questionRepository.findAllIdByRoomLink(roomLink);
+        Room room = roomRepository.findByLink(roomLink);
+        getTimeOfQuestions(updateTime, room.getId());
+        
         //the result list only gets the unanswered questions
         List<Question> result = questionRepository.findAllByRoomLink(roomLink);
         for (Question q : result) {
+            Integer upVotes = getUpVotes(q.getId(), roomLink);
+            if (upVotes == null) {
+                upVotes = 0;
+            }
+            q.setTotalUpVotes(upVotes);
             q.getRoom().setId(0);
             q.getUser().setId(0);
         }
@@ -78,6 +87,7 @@ public class QuestionService {
     /**
      * Get the last added question by user that created the request.
      * Questions have to roomId and UserId changed to 0.
+     *
      * @param roomLink - the room link
      * @param userId   - the users Id
      * @return list of questions from the room.
@@ -91,9 +101,9 @@ public class QuestionService {
     }
 
 
-
     /**
      * This method sets the correct Room and User associated with the question that has been sent.
+     *
      * @param roomLink the roomLink where the question has been asked
      * @param userId   the id of the user who asked the question
      * @param question the question that has been asked
@@ -119,14 +129,11 @@ public class QuestionService {
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
+        Question question = questionRepository.getOne(questionId);
         //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
-        //delete answer
-        answerRepository.deleteByQuestionID(questionId);
-        Question question = questionRepository.getOne(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
-
         System.out.println("Question " + question.getId() + "(room: "
                 + question.getRoom().getName() + ") was deleted by a moderator");
     }
@@ -162,8 +169,14 @@ public class QuestionService {
         Question question = questionRepository.getOne(questionId2);
 
         Upvote upvote = new Upvote(question, user);
+        if (user.getIsModerator()) {
+            upvote.setValue(10);
+        } else {
+            upvote.setValue(1);
+        }
+
         upvoteRepository.save(upvote);
-        upvoteRepository.incrementUpVotes(questionId2);
+
 
     }
 
@@ -182,7 +195,6 @@ public class QuestionService {
 
         Upvote temp = upvoteRepository.findUpvoteByUserAndQuestion(userId2, questionId2);
         upvoteRepository.deleteById(temp.getId());
-        upvoteRepository.decrementUpVotes(questionId2);
     }
 
     /**
@@ -273,14 +285,14 @@ public class QuestionService {
     /**
      * Get a String with all the questions and their answers (formatted).
      * Questions have to roomId and UserId changed to 0.
+     *
      * @param roomLink - the room link
      * @return list of questions from the room.
-     *
      */
     public String exportQuestions(String roomLink) {
         Room room = roomService.getByLink(roomLink);
 
-        String logTemp =  getQuestionsAndAnswers(room);
+        String logTemp = getQuestionsAndAnswers(room);
         return logTemp;
 
     }
@@ -295,6 +307,7 @@ public class QuestionService {
         String roomName = roomRepository.getRoomName(room.getId());
         String id = String.valueOf(room.getId());
         String log = "\nQuestions and Answers from Room: " + roomName + " " + id + "\n\n";
+        getTimeOfQuestions(questionIds, room.getId());
 
         //will be used to store the string time
         String time;
@@ -302,13 +315,15 @@ public class QuestionService {
         for (int i = 0; i < questionIds.size(); i++) {
             long questionId = questionIds.get(i);
 
-            LocalDateTime tempDate = questionRepository.getQuestionTime(questionId);
-            time = getTimeString(tempDate);
+            Question question = questionRepository.getQuestionById(questionIds.get(i));
+
+            time = question.getDuration();
 
             log = log + "Question: \n"
                     + time + ": " + questionRepository.getQuestionText(questionId) + "\n";
 
             List<Long> answerIds = answerRepository.getAllAnswerIds(questionId);
+            getTimeOfAnswers(answerIds, room.getId());
 
             if (answerIds.size() == 0) {
                 log = log + "This question was not answered yet\n\n";
@@ -317,9 +332,9 @@ public class QuestionService {
                 for (int j = 0; j < answerIds.size(); j++) {
                     long answerId = answerIds.get(j);
 
-                    tempDate = answerRepository.getAnswerTime(answerId);
-                    time = getTimeString(tempDate);
+                    Answer answer = answerRepository.getAnswerById(answerIds.get(j));
 
+                    time = answer.getDuration();
 
                     log = log + time + ": " + answerRepository.getAnswerText(answerId) + "\n\n";
                 }
@@ -332,35 +347,25 @@ public class QuestionService {
     }
 
     /**
-     * Transform the dates onto a string.
-     * @param tempDate - date to transform
-     * @return - a string with the date
-     */
-    public String getTimeString(LocalDateTime tempDate) {
-        //Formatter to transform the dates into string
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH.mm.ss");
-
-        LocalTime tempTime = tempDate.toLocalTime();
-        String time = tempTime.format(formatter);
-        return time;
-    }
-
-    /**
      * Method that will make the connection to the database and retrieve the final upVotes.
+     *
      * @param questionId - question to retrieve from
-     * @param roomLink - room where request came from
+     * @param roomLink   - room where request came from
      * @return number of upvotes
      */
-    public int getModUpVotes(String questionId, String roomLink) {
-        long questionId2 = Long.parseLong(questionId);
-        Room room = roomService.getByLink(roomLink);
-        long roomId = room.getId();
-       
+    public Integer getUpVotes(long questionId, UUID roomLink) {
+        String roomLink2 = roomLink.toString();
+        Room room = roomService.getByLink(roomLink2);
 
-        List<Long> totalUpVotes = upvoteRepository.getModUpVotes(questionId2, roomId);
-        return totalUpVotes.size();
+        Integer totalUpVotes = upvoteRepository.getUpVotes(questionId, room.getId());
+        if (totalUpVotes == null) {
+            totalUpVotes = 0;
+        }
+        
+        return totalUpVotes;
 
     }
+
 
     public Question findByQuestionId(long questionId) {
         return questionRepository.findById(questionId).get();
@@ -382,4 +387,98 @@ public class QuestionService {
         return result;
     }
 
+
+    /**
+     * Method to set the creation time of the questions (after room created)
+     * **The user and the client might have different timeZones, that being said
+     * firstly we make sure the the user's time is the same as the server's
+     * then we will get the time period between the creation of teh room and the creation
+     * of the question.
+     * @param questions - List of question Ids
+     * @param roomId - room selected
+     */
+    public void getTimeOfQuestions(List<Long> questions, long roomId) {
+        String currentZone = ZoneId.systemDefault().toString();
+        ZoneId currentZoneId = ZoneId.of(currentZone);
+
+
+        LocalDateTime roomTime = roomRepository.getRoomTime(roomId);
+        
+
+        for (int i = 0; i < questions.size(); i++) {
+            Question question = questionRepository.getQuestionById(questions.get(i));
+
+            //Makes sure time is in the correct timeZone
+            LocalDateTime questionTime = question.getCreatedAt();
+            ZonedDateTime actualTime = questionTime.atZone(currentZoneId);
+
+            String duration = formatDuration(roomTime, actualTime);
+            questionRepository.updateDuration(question.getId(), duration);
+            setAge(actualTime, question);
+
+        }
+
+    }
+
+
+    /**
+     * Method to set the answer time of the answers(after room creation)
+     * This method works the same as before but for answers.
+     * @param answers - List with ids of questions to be considered
+     * @param roomId - id of the room
+     */
+    public void getTimeOfAnswers(List<Long> answers, long roomId) {
+        String currentZone = ZoneId.systemDefault().toString();
+        ZoneId currentZoneId = ZoneId.of(currentZone);
+
+        LocalDateTime roomTime = roomRepository.getRoomTime(roomId);
+
+        for (int i = 0; i < answers.size(); i++) {
+            Answer answer = answerRepository.getAnswerById(answers.get(i));
+           
+            LocalDateTime answerTime = answer.getCreatedAt();
+            ZonedDateTime actualTime = answerTime.atZone(currentZoneId);
+            String duration = formatDuration(roomTime, actualTime);
+            
+            answer.setDuration(duration);
+            answerRepository.updateDuration(answer.getId(), duration);
+            
+        }
+
+    }
+
+    /**
+     * This method formats the duration following the desired patterns "HH:mm:ss".
+     * @param roomTime - Time of the room creation
+     * @param elementTime - Time of creation from Answer/Question
+     * @return String with formatted date
+     */
+    public String formatDuration(LocalDateTime roomTime, ZonedDateTime elementTime) {
+        Duration duration = Duration.between(roomTime, elementTime);
+        long minutes = duration.toMinutes() - duration.toHours() * 60;
+        long seconds = duration.toSeconds() - 60 * minutes;
+
+        System.out.println(duration.toHours() + ":" + minutes + ":" + seconds);
+        return (duration.toHours() + ":" + minutes + ":" + seconds);
+    }
+
+
+    /**
+     * Method to update the age of the question
+     * It compares the local time with the ZonedTime of the question 
+     * (this to make sure they are in the same timeZone).
+     * @param actualTime - ZonedTime of the question
+     */
+    public void setAge(ZonedDateTime actualTime, Question question) {
+        ZonedDateTime current = ZonedDateTime.now();
+        
+        Duration age = Duration.between(actualTime, current);
+        
+        //Age is stored in minutes
+        String age1 = age.toSeconds() + "";
+        questionRepository.updateAge(question.getId(), age1);
+        
+        
+    }
+    
 }

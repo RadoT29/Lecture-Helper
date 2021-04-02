@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public final class Session {
     private String userId;
     private List<String> upVotedQuestions;
     private List<String> questionsMade;
+    private String timeZone;
     //status of the student
     //if the student is warned,
     //that it will be banned
@@ -47,6 +49,7 @@ public final class Session {
         this.isWarned = false;
         this.upVotedQuestions = new ArrayList<>();
         this.questionsMade = new ArrayList<>();
+        this.timeZone = ZoneId.systemDefault().toString();
 
     }
 
@@ -67,6 +70,7 @@ public final class Session {
         this.isWarned = false;
         this.upVotedQuestions = new ArrayList<>();
         this.questionsMade = new ArrayList<>();
+        this.timeZone = ZoneId.systemDefault().toString();
 
     }
 

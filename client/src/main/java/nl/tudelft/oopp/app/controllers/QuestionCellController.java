@@ -94,6 +94,10 @@ public class QuestionCellController {
         newQuestion.setId(question.getId() + ""); //to deleted
         qsc.setQuestion(question);
 
+
+        //Check if the question loaded was created by the session's user
+        hsc.checkForQuestion(newQuestion, question);
+
         //set the question text
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
         questionLabel.setText(question.questionText);
@@ -101,12 +105,31 @@ public class QuestionCellController {
         Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
         nicknameLabel.setText(question.user.getName());
 
+        //set the question box size
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + question.getUpVotes());
+        upvoteLabel.setText("+" + question.getTotalUpVotes());
+
+        //set upvote button as active or inactive
+        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
+        boolean isActive = Session.getInstance().getUpVotedQuestions()
+                .contains(String.valueOf(question.getId()));
+        if (isActive) {
+            upvoteButton.getStyleClass().add("active");
+        }
 
         return newQuestion;
     }
+
+
+    public String buttonColour;
+
+
 
     /**
      * dismisses the question.

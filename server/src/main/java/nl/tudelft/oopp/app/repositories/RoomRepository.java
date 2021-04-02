@@ -28,7 +28,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     Room findByLink(UUID link);
 
     @Query("SELECT r.createdAt FROM Room r WHERE r.id=?1")
-    Date getRoomTime(long l);
+    LocalDateTime getRoomTime(long l);
 
     @Query("SELECT r.updatedAt FROM Room r WHERE r.id=?1")
     Date getUpdatedTime(long l);

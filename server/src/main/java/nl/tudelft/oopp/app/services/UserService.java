@@ -47,8 +47,8 @@ public class UserService {
      * @param userId   - user's id.
      * @param userName - name of user.
      */
-    public void update(long userId, String userName) {
-        userRepository.updateUserName(userId, userName);
+    public void update(long userId, String userName, String timeZone) {
+        userRepository.updateUserName(userId, userName, timeZone);
     }
 
     /**
