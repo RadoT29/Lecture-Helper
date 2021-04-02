@@ -298,8 +298,8 @@ public class HomeSceneController {
             AccessDeniedException, UserWarnedException {
         questions = new PriorityQueue<>();
 
-        List<Question> list = HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink());
-        questions.addAll(list);
+        
+        questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         
         loadQuestions();
         ServerCommunication.isTheRoomClosed(session.getRoomLink());
