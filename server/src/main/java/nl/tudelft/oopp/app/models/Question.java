@@ -55,6 +55,8 @@ public class Question {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    private Integer totalUpVotes = 0;
+    
     public Question(String questionText) {
         this.questionText = questionText;
     }

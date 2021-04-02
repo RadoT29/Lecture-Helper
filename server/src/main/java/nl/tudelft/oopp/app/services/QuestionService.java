@@ -72,6 +72,11 @@ public class QuestionService {
         //the result list only gets the unanswered questions
         List<Question> result = questionRepository.findAllByRoomLink(roomLink);
         for (Question q : result) {
+            Integer upVotes = getUpVotes(q.getId(), roomLink);
+            if (upVotes == null) {
+                upVotes = 0;
+            }
+            q.setTotalUpVotes(upVotes);
             q.getRoom().setId(0);
             q.getUser().setId(0);
         }
@@ -164,8 +169,14 @@ public class QuestionService {
         Question question = questionRepository.getOne(questionId2);
 
         Upvote upvote = new Upvote(question, user);
+        if (user.getIsModerator()) {
+            upvote.setValue(10);
+        } else {
+            upvote.setValue(1);
+        }
+
         upvoteRepository.save(upvote);
-        upvoteRepository.incrementUpVotes(questionId2);
+
 
     }
 
@@ -184,7 +195,6 @@ public class QuestionService {
 
         Upvote temp = upvoteRepository.findUpvoteByUserAndQuestion(userId2, questionId2);
         upvoteRepository.deleteById(temp.getId());
-        upvoteRepository.decrementUpVotes(questionId2);
     }
 
     /**
@@ -337,35 +347,22 @@ public class QuestionService {
     }
 
     /**
-     * Transform the dates onto a string.
-     *
-     * @param tempDate - date to transform
-     * @return - a string with the date
-     */
-    public String getTimeString(LocalDateTime tempDate) {
-        //Formatter to transform the dates into string
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH.mm.ss");
-
-        LocalTime tempTime = tempDate.toLocalTime();
-        String time = tempTime.format(formatter);
-        return time;
-    }
-
-    /**
      * Method that will make the connection to the database and retrieve the final upVotes.
      *
      * @param questionId - question to retrieve from
      * @param roomLink   - room where request came from
      * @return number of upvotes
      */
-    public int getModUpVotes(String questionId, String roomLink) {
-        long questionId2 = Long.parseLong(questionId);
-        Room room = roomService.getByLink(roomLink);
-        long roomId = room.getId();
+    public Integer getUpVotes(long questionId, UUID roomLink) {
+        String roomLink2 = roomLink.toString();
+        Room room = roomService.getByLink(roomLink2);
 
-
-        List<Long> totalUpVotes = upvoteRepository.getModUpVotes(questionId2, roomId);
-        return totalUpVotes.size();
+        Integer totalUpVotes = upvoteRepository.getUpVotes(questionId, room.getId());
+        if (totalUpVotes == null) {
+            totalUpVotes = 0;
+        }
+        
+        return totalUpVotes;
 
     }
 
