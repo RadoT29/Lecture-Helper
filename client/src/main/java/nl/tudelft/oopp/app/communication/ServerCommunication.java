@@ -80,8 +80,8 @@ public class ServerCommunication {
      */
     public static void setNick(String userId, String nickName, String timeZone) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/room/user/" + userId.replace(" ", "%20") + "/nick/" 
-                        + nickName.replace(" ", "%20") + "/" + timeZone))
+                .uri(URI.create("http://localhost:8080/room/user/" + userId + "/nick/"
+                        + nickName))
                 .build();
         HttpResponse<String> response = null;
         try {

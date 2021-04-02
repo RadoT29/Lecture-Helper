@@ -41,8 +41,6 @@ public class Room {
 
     private LocalDateTime startDate;
 
-    private LocalDateTime endDateForStudents;
-
     @CreationTimestamp
     private Date createdAt;
 

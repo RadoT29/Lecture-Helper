@@ -1,8 +1,6 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
-import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
-import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;

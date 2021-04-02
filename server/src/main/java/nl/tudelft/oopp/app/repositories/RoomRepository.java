@@ -14,9 +14,10 @@ import java.util.UUID;
 @Repository("RoomRepository")
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
+
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.isOpen=false, r.endDateForStudents=?2 WHERE r.id=?1")
+    @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.id=?1")
     void closeRoomStudents(Long id, LocalDateTime endDate);
 
     @Modifying
