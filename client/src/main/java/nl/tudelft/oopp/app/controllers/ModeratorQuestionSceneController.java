@@ -3,7 +3,9 @@ package nl.tudelft.oopp.app.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
@@ -12,12 +14,18 @@ import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.PriorityQueue;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
 public class ModeratorQuestionSceneController extends ModeratorSceneController {
 
 
+    @FXML
+    protected VBox questionBox;
+    @FXML
+    private TextField questionInput;
     @FXML
     public HBox reactionBox;
     @FXML
@@ -25,6 +33,12 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
     @FXML
     public HBox emotionReactions;
 
+    ModeratorReactionController reactionController;
+
+    public void initialize(URL url, ResourceBundle rb) {
+        super.initialize(url, rb);
+        reactionController = new ModeratorReactionController(emotionReactions);
+    }
 
     /**
      * This method changes the icons that represent the Speed and Emotion Reaction to
@@ -142,5 +156,16 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
             reactionController.hideEmotion();
         }
 
+    }
+
+    /**
+     * shows feedback from students in the scene.
+     */
+    public void showFeedback() {
+        try {
+            ViewFeedbackSceneController.init();
+        } catch (IOException e) {
+            return;
+        }
     }
 }

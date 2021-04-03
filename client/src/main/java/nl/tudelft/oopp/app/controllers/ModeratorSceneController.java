@@ -35,7 +35,7 @@ import nl.tudelft.oopp.app.models.Session;
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class ModeratorSceneController extends SceneController {
+public abstract class ModeratorSceneController extends SceneController {
     @FXML
     public Button menuButton;
     @FXML
@@ -44,6 +44,10 @@ public class ModeratorSceneController extends SceneController {
     public VBox slidingMenu;
     @FXML
     public Label moreOptionsLabel;
+    @FXML
+    public Button closeOpenRoomButton;
+    @FXML
+    public Label closeOpenRoomLabel;
 
     @FXML
     public Button moreReactionButton;
@@ -73,12 +77,9 @@ public class ModeratorSceneController extends SceneController {
                 closeFastNav.setToX(-(slidingMenu.getWidth()));
                 closeFastNav.play();
             }
-
-
         });
+
         super.initialize(url,rb);
-        reactionController = new ModeratorReactionController(emotionReactions);
-        refresh();
     }
 
 
@@ -164,7 +165,7 @@ public class ModeratorSceneController extends SceneController {
      * It will reconfirm if the user is a moderator and call clearQuestions
      * in the HomeCommunicationScene.
      */
-    public void clearQuestionsClicked() { 
+    public void clearQuestionsClicked() {
 
         if (session.isModerator()) {
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
@@ -179,7 +180,7 @@ public class ModeratorSceneController extends SceneController {
      * it will then create a new text file inside the repository with these.
      */
     public void exportQuestionsClicked() {
-        
+
         String exported = "Nothing has been added";
         if (session.isModerator()) {
             exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
@@ -187,7 +188,7 @@ public class ModeratorSceneController extends SceneController {
 
         try {
             FileWriter file = new FileWriter(new File("ExportedQuestions"
-                                                    + session.getRoomName() + ".txt"));
+                    + session.getRoomName() + ".txt"));
             file.write(exported);
             file.close();
 
@@ -217,8 +218,7 @@ public class ModeratorSceneController extends SceneController {
     }
 
     public void goToLog() throws IOException {
-        changeScene("/moderatorLogScene.fxml", 0.8);
-        System.out.println("went to log");
+        changeScene("/moderatorQuestionLogScene.fxml", 0.8);
     }
 
     /**
@@ -227,7 +227,7 @@ public class ModeratorSceneController extends SceneController {
      * @throws IOException if it cant load the fxml file
      */
     public void goToHome() throws IOException {
-        changeScene("/moderatorQuestionScene.fxml", 0.8);
+        changeScene("/moderatorMainScene.fxml", 0.8);
     }
 
     /**
@@ -238,57 +238,6 @@ public class ModeratorSceneController extends SceneController {
     public void openConstraintsScene() throws IOException {
         QuestionsPerTimeController questionsPerTimeController = new QuestionsPerTimeController();
         questionsPerTimeController.open();
-
-    }
-
-    @Override
-    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
-        Node newQuestion = super.createQuestionCellLog(question,resource);
-        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
-
-        if (!answerLabel.getText().equals("This question was answered during the lecture")) {
-            Button answerButtonLog = (Button) newQuestion.lookup("#answerButtonLog");
-            answerButtonLog.getStyleClass().remove("answerButton");
-            answerButtonLog.getStyleClass().add("editButton");
-            answerButtonLog.setText("Edit");
-        }
-        return newQuestion;
-    }
-
-    /**
-     * shows feedback from students in the scene.
-     */
-    public void showFeedback() {
-        try {
-            ViewFeedbackSceneController.init();
-        } catch (IOException e) {
-            return;
-        }
-
-
-    }
-
-    /**
-     * handles click on moreReactionButton.
-     * shows/hides the emotion reactions on the screen
-     * and changes the button to + or -
-     */
-    public void moreReactionsClicked() {
-        if (!emotionReactions.isVisible()) {
-            //display emotion reactions
-            moreReactionButton.getStyleClass().set(1, "hideButton");
-            reactionController.showEmotion();
-        } else {
-            //hide emotion reactions
-            moreReactionButton.getStyleClass().set(1, "expandButton");
-            reactionController.hideEmotion();
-        }
-
-    }
-
-    public abstract void constantRefresh()
-            throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, AccessDeniedException, UserWarnedException{
 
     }
 

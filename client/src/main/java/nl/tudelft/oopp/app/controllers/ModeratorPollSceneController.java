@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ModeratorPollSceneController implements Initializable {
+public class ModeratorPollSceneController extends ModeratorSceneController {
 
     Session session = Session.getInstance();
 
