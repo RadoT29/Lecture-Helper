@@ -78,7 +78,7 @@ public class ServerCommunication {
      * @param userId   - the id of the user.
      * @param nickName - the name of the user.
      */
-    public static void setNick(String userId, String nickName, String timeZone) {
+    public static void setNick(String userId, String nickName) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room/user/" + userId + "/nick/"
                         + nickName))

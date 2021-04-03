@@ -31,8 +31,6 @@ public class User {
     @UpdateTimestamp
     private Date updatedAt;
 
-    private String timeZone;
-
 
     /**
      * Create a user.
