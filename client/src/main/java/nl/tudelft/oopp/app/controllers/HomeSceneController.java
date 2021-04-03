@@ -126,43 +126,7 @@ public class HomeSceneController {
 
 
 
-    /**
-     * Pressing the sendButton will send all the text in the questionInput
-     * to the sever as a Question object.
-     * The question is also added to the list of questions made by the session's user
-     * (each client will have these stored locally)
-     */
-    public void sendQuestion() {
-        if (!session.isModerator()) {
-            passLimitQuestionsLabel.setVisible(false);
-            try {
-                HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(),
-                                                        session.getRoomLink());
-            } catch (OutOfLimitOfQuestionsException exception) {
-                System.out.println("Out of limit");
-                passLimitQuestionsLabel.setVisible(true);
-                //passLimitQuestionsLabel.wait(4000);
-                questionInput.clear();
-                return;
-            }
-        }
-        System.out.println("in limit");
-        // If input is null, don't send question
-        if (questionInput.getText().equals("")) {
-            return;
-        }
 
-        Question question = new Question(questionInput.getText());
-        HomeSceneCommunication.postQuestion(question);
-
-        //Sends a request to get the questionId of the question just created
-        Long questionId = HomeSceneCommunication.getSingleQuestion();
-        //Adds said question to the users list of created questions
-        session.questionAdded(String.valueOf(questionId));
-
-        questionInput.clear(); // clears question input box
-        refresh();
-    }
 
 
     /**

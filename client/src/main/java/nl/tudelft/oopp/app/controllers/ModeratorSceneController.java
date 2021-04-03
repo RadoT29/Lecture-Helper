@@ -157,16 +157,6 @@ public class ModeratorSceneController extends SceneController {
         closeOpenRoomLabel.setText("Close Room");
     }
 
-    /**
-     * Pressing the sendButton will send all the text in the questionInput
-     * to the sever as a Question object.
-     */
-    public void sendQuestion() {
-        super.sendQuestion();
-    }
-
-
-
 
     /**
      * Method to clear all questions and allow the moderator to reset the room

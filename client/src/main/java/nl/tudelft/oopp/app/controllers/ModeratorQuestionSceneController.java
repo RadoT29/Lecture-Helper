@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 
@@ -101,5 +102,30 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
                         new Label("Something went wrong while loading this question"));
             }
         }
+    }
+
+    /**
+     * Pressing the sendButton will send all the text in the questionInput
+     * to the sever as a Question object.
+     * The question is also added to the list of questions made by the session's user
+     * (each client will have these stored locally)
+     */
+    public void sendQuestion() {
+
+        // If input is null, don't send question
+        if (questionInput.getText().equals("")) {
+            return;
+        }
+
+        Question question = new Question(questionInput.getText());
+        HomeSceneCommunication.postQuestion(question);
+
+        //Sends a request to get the questionId of the question just created
+        Long questionId = HomeSceneCommunication.getSingleQuestion();
+        //Adds said question to the users list of created questions
+        session.questionAdded(String.valueOf(questionId));
+
+        questionInput.clear(); // clears question input box
+        refresh();
     }
 }
