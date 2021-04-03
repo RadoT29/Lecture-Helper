@@ -76,6 +76,7 @@ public class QuestionService {
             if (upVotes == null) {
                 upVotes = 0;
             }
+            System.out.println("This is the number of Upvotes" + upVotes);
             q.setTotalUpVotes(upVotes);
             q.getRoom().setId(0);
             q.getUser().setId(0);
@@ -356,8 +357,9 @@ public class QuestionService {
     public Integer getUpVotes(long questionId, UUID roomLink) {
         String roomLink2 = roomLink.toString();
         Room room = roomService.getByLink(roomLink2);
-
+        
         Integer totalUpVotes = upvoteRepository.getUpVotes(questionId, room.getId());
+        System.out.println("This is the total upvotes " + totalUpVotes);
         if (totalUpVotes == null) {
             totalUpVotes = 0;
         }

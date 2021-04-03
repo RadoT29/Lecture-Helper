@@ -25,8 +25,7 @@ public interface UpvoteRepository extends JpaRepository<Upvote, Long> {
     void deleteUpVotesByQuestionId(long questionId);
 
 
-    @Query("SELECT SUM(u.value) FROM Upvote u WHERE u.question.id=?1 AND u.question.room.id=?2 "
-            + "AND u.user.isModerator= 'true'")
+    @Query("SELECT SUM(u.value) FROM Upvote u WHERE u.question.id=?1 AND u.question.room.id=?2")
     Integer getUpVotes(long questionId, long roomId);
 
 }
