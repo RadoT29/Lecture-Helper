@@ -29,7 +29,7 @@ import nl.tudelft.oopp.app.models.SpeedReaction;
 /**
  * This class controls the Main scene of the Students.
  */
-public class StudentSceneController extends HomeSceneController implements Initializable {
+public abstract class StudentSceneController extends SceneController {
 
     @FXML
     public Button reactionButton;
@@ -82,8 +82,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
         openReactionNav.setToX(reactionMenu.getTranslateX() - reactionMenu.getWidth());
         closeReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
         closeReactionFastNav = new TranslateTransition(Duration.millis(.1), reactionMenu);
-
-        mainBoxLog.setVisible(false);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -160,7 +158,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
         slowButton.setDisable(false);
     }
 
-
     /**
      * This method sends the corresponding SpeedReaction when the okButton is clicked.
      */
@@ -221,25 +218,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
         confusedButton.setDisable(true);
     }
 
-
-    /**
-     *  Creates a node for a question in the question log scene.
-     * @param question - the question.
-     * @param resource - the question cell.
-     * @return - a Node of the question.
-     */
-    @Override
-    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
-
-        Node newQuestion = super.createQuestionCellLog(question, resource);
-
-        HBox buttonBox = (HBox) newQuestion.lookup("#buttonBox");
-        buttonBox.setVisible(false);
-
-        return newQuestion;
-    }
-
-
     @Override
     public void closeWindow() {
         super.closeWindow();
@@ -253,64 +231,20 @@ public class StudentSceneController extends HomeSceneController implements Initi
         StudentFeedbackSceneController.init();
     }
 
-    @Override
-    public void changeTheme(
-            boolean mode, String buttonColour, String menuColour, String textColour,
-            String inputColour, String backgroundColour) {
-        ArrayList<VBox> list = new ArrayList<>();
-        list.add(reactionMenu);
-        list.add(speedMenu);
-        list.add(mainMenu);
-
-        changeMenuColour(mode, menuColour, textColour, list);
-
-        super.changeTheme(mode, buttonColour, menuColour,
-                textColour, inputColour, backgroundColour);
-    }
-
-    /**
-     * This method changes the colour of the menu(navigation bar).
-     * @param mode - current mode.
-     * @param menuColour - background of menu.
-     * @param textColour - colour of labels.
-     * @param list - all the VBoxes, which compose the navigation bar.
-     */
-    public void changeMenuColour(
-            boolean mode, String menuColour, String textColour, ArrayList<VBox> list) {
-        for (VBox box : list) {
-            box.setStyle("-fx-background-color:" + menuColour);
-            for (Node node : box.getChildren()) {
-                if (node instanceof Button) {
-                    if (mode) {
-                        node.getStyleClass().remove("menuBtnBlack");
-                        node.getStyleClass().add("menuBtnBlue");
-                    } else {
-                        node.getStyleClass().removeAll(Collections.singleton("menuBtnBlue"));
-                        node.getStyleClass().add("menuBtnBlack");
-                    }
-                } else {
-                    node.setStyle("-fx-text-fill:" + textColour);
-                }
-            }
-        }
-    }
-
     /**
      * Method to load the poll scene.
      * @throws IOException if it cant load the fxml file
      */
     public void goToPolls() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/studentPollScene.fxml")).load();
-        Stage stage = (Stage) reactionMenu.getScene().getWindow();
+        changeScene("/studentPollScene.fxml", 0.8);
+    }
 
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
+    public void goToHome() throws IOException {
+        changeScene("/studentMainScene.fxml", 0.8);
+    }
 
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+    public void goToLog() throws IOException {
+        changeScene("/studentQuestionLogScene.fxml", 0.8);
     }
 
     /**

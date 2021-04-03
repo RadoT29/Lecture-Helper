@@ -8,23 +8,31 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.PriorityQueue;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class PresentationSceneController extends ModeratorSceneController implements Initializable {
+public class PresentationSceneController extends SceneController implements Initializable {
     @FXML
     private VBox questionBox;
     @FXML
     public VBox mainMenu;
 
-    @Override
+    /**
+     * Method to load questions.
+     */
     public void loadQuestions() {
 
         String resource = "/questionCellPresentation.fxml";
@@ -46,45 +54,31 @@ public class PresentationSceneController extends ModeratorSceneController implem
         }
     }
 
+    public void goToHome() throws IOException {
+        changeScene("/moderatorMainScene.fxml", 0.8);
+    }
+
     /**
-     * fill in the priority queue and and load them on the screen.
+     * Refresh method.
      */
     public void refresh() {
-        super.refresh();
-    }
-
-    public void presenterMode() throws IOException {
-
+        questions = new PriorityQueue<>();
+        questions.addAll(HomeSceneCommunication.getQuestions());
+        loadQuestions();
     }
 
     /**
-     * Method to load the main moderator scene.
-     * Makes the scene bigger so the moderator can interacat with all its features
-     * @throws IOException if it cant load the fxml file
+     * Method to constant refresh .
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws NoStudentPermissionException
+     * @throws AccessDeniedException
+     * @throws UserWarnedException
      */
-    public void goToHome() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/moderatorMainScene.fxml")).load();
-        Stage stage = (Stage) mainMenu.getScene().getWindow();
-
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
-
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
-    }
-
-
-    /**
-     * Method to make it so that when the scene loads
-     * the refresh method is automatically executed.
-     * @param url - url of the scene
-     * @param rb - resource bundle used
-     */
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void constantRefresh() throws ExecutionException, InterruptedException,
+            NoStudentPermissionException, AccessDeniedException, UserWarnedException {
+        questions.clear();
+        questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
+        loadQuestions();
     }
 }

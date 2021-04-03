@@ -160,7 +160,7 @@ public class SplashSceneController {
 
             loader = new FXMLLoader(getClass().getResource("/moderatorMainScene.fxml")).load();
         } else {
-            loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
+            loader = new FXMLLoader(getClass().getResource("/studentMainScene.fxml")).load();
         }
 
         Stage stage = (Stage) setNick.getScene().getWindow();
@@ -201,26 +201,6 @@ public class SplashSceneController {
             scheduleRoomFail.setVisible(true);
         }
     }
-
-
-
-
-    /* **
-     * Establishes the subclass of the user in the session
-     * @param name - This parameter corresponds to the user nickname set on the previous method
-     *//*
-    public void setUserClass(String name){
-    Session session = Session.getInstance();
-
-    if(session.getIsModerator()) {
-    User moderator = new Moderator(session.getUserId(), name, session.get);
-    } else {
-    User student = new Student();
-    }
-
-    }
-    */
-
 
 
 }

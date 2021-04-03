@@ -18,5 +18,4 @@ public class Poll {
     public String question;
     public boolean open;
     public boolean finished;
-    public Duration timeLimit;
 }

@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,7 +20,7 @@ import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
-public abstract class SceneController {
+public abstract class SceneController implements Initializable {
     protected boolean interruptThread = false;
     protected boolean openOne = true;
     protected String buttonColour;
@@ -137,4 +138,6 @@ public abstract class SceneController {
     public void openSettings() throws IOException {
         SettingsController.initialize(this, darkTheme);
     }
+
+    public abstract void refresh();
 }

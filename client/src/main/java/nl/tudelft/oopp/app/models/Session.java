@@ -21,8 +21,8 @@ public final class Session {
     private String roomName;
     private boolean isModerator;
     private String userId;
-    private List<String> upVotedQuestions;
-    private List<String> questionsMade;
+    private List<String> upVotedQuestions = new ArrayList<>();
+    private List<String> questionsMade = new ArrayList<>();
     private String timeZone;
     private Stage stage;
     //status of the student
@@ -31,14 +31,8 @@ public final class Session {
     private boolean isWarned;
 
     /**
-     * Session constructor.
-     *
-     * @param roomLink    Link for the room that is going to be used by this client for requests
-     * @param roomName    Name of the room
-     * @param isModerator If this user is a moderator or students it will load different displays.
-     *                    Notice there still is a server side authentication for the links,
-     *                    so a student can not access moderator rights
-     *                    just by changing this variable
+     * Constructor for the session
+     * @param stage - Stage to be used
      */
     public Session(Stage stage) {
         this.stage = stage;
@@ -109,7 +103,9 @@ public final class Session {
      * This method resets the session by clearing all the session Data.
      */
     public static void clearSession() {
+        Stage stage = instance.getStage();
         instance = null;
+        instance = new Session(stage);
     }
 
     /**
@@ -120,7 +116,7 @@ public final class Session {
     public void questionAdded(String questionId) {
         this.questionsMade.add(questionId);
     }
-    
+
     /**
      * Method to add a question to the list of the upvoted questions by a specific user
      * (given that each user will have a different list initiated in their session).

@@ -50,10 +50,10 @@ public class QuestionCellController {
 
     Session session = Session.getInstance();
 
-    private HomeSceneController hsc;
+    private SceneController hsc;
     private Question question;
 
-    public void setHomeScene(HomeSceneController hsc) {
+    public void setHomeScene(SceneController hsc) {
         this.hsc = hsc;
     }
 
@@ -73,7 +73,7 @@ public class QuestionCellController {
      * @return - A visual representation of the question.
      * @throws IOException - may be thrown.
      */
-    public static Node init(Question question, String resource, HomeSceneController hsc)
+    public static Node init(Question question, String resource, SceneController hsc)
             throws IOException {
         FXMLLoader loader = new FXMLLoader(EditQuestionSceneController
                 .class.getResource(resource));
@@ -88,7 +88,7 @@ public class QuestionCellController {
 
 
         //Check if the question loaded was created by the session's user
-        hsc.checkForQuestion(newQuestion, question);
+        //hsc.checkForQuestion(newQuestion, question);
 
         //set the question text
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
@@ -105,6 +105,7 @@ public class QuestionCellController {
 
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
+
         upvoteLabel.setText("+" + question.getTotalUpVotes());
 
         //set upvote button as active or inactive
@@ -204,6 +205,7 @@ public class QuestionCellController {
             QuestionCommunication.upVoteQuestion(questionId);
         }
 
+
     }
 
     /**
@@ -213,7 +215,7 @@ public class QuestionCellController {
     public void blockWarnUser() throws IOException {
         Node question = questionCell.getParent();
         questionId = question.getId();
-        System.out.println("Question Id: " + questionId);
+
         Session session = Session.getInstance();
         try {
             BanCommunication.isIpWarned(session.getRoomLink());
@@ -289,8 +291,6 @@ public class QuestionCellController {
         hsc.refresh();
     }
 
-
-
     /**
      * Method to set a question as answered,
      * It will check if the question selected has been marked as answered
@@ -310,9 +310,9 @@ public class QuestionCellController {
             System.out.println("This question was already answered");
         }
 
+        refresh();
+
     }
-
-
 
     public void refresh() {
         hsc.refresh();
