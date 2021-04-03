@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.models;
 
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public final class Session {
     private List<String> upVotedQuestions;
     private List<String> questionsMade;
     private String timeZone;
+    private Stage stage;
     //status of the student
     //if the student is warned,
     //that it will be banned
@@ -38,40 +40,13 @@ public final class Session {
      *                    so a student can not access moderator rights
      *                    just by changing this variable
      */
-    public Session(String roomLink,
-                   String roomName,
-                   String userId,
-                   boolean isModerator) {
-        this.roomLink = roomLink;
-        this.roomName = roomName;
-        this.isModerator = isModerator;
-        this.userId = userId;
-        this.isWarned = false;
-        this.upVotedQuestions = new ArrayList<>();
-        this.questionsMade = new ArrayList<>();
-        this.timeZone = ZoneId.systemDefault().toString();
-
+    public Session(Stage stage) {
+        this.stage = stage;
     }
 
-    /**
-     * Session constructor.
-     *
-     * @param roomLink    Link for the room that is going to be used by this client for requests
-     * @param userId      Id of the user on the local client
-     * @param isModerator If this user is a moderator or students it will load different displays.
-     *                    Notice there still is a server side authentication for the links,
-     *                    so a student can not access moderator rights
-     *                    just by changing this variable
-     */
-    public Session(String roomLink, String userId, boolean isModerator) {
-        this.roomLink = roomLink;
-        this.userId = userId;
-        this.isModerator = isModerator;
-        this.isWarned = false;
-        this.upVotedQuestions = new ArrayList<>();
-        this.questionsMade = new ArrayList<>();
-        this.timeZone = ZoneId.systemDefault().toString();
-
+    public static Session getInstance(Stage stage) {
+        instance = new Session(stage);
+        return instance;
     }
 
     /**
@@ -92,9 +67,10 @@ public final class Session {
                                       String userId,
                                       boolean isModerator
     ) {
-        if (instance == null) {
-            instance = new Session(roomLink, roomName, userId, isModerator);
-        }
+        instance.setRoomLink(roomLink);
+        instance.setRoomName(roomName);
+        instance.setUserId(userId);
+        instance.setModerator(isModerator);
         return instance;
     }
 
@@ -114,9 +90,9 @@ public final class Session {
     public static Session getInstance(String roomLink,
                                       String userId,
                                       boolean isModerator) {
-        if (instance == null) {
-            instance = new Session(roomLink, userId, isModerator);
-        }
+        instance.setRoomLink(roomLink);
+        instance.setUserId(userId);
+        instance.setModerator(isModerator);
         return instance;
     }
 
@@ -129,14 +105,12 @@ public final class Session {
         return instance;
     }
 
+    /**
+     * This method resets the session by clearing all the session Data.
+     */
     public static void clearSession() {
         instance = null;
     }
-
-    public boolean getIsModerator() {
-        return isModerator;
-    }
-
 
     /**
      * Method to add a question to the list of questions that the user in this session has made
@@ -167,8 +141,6 @@ public final class Session {
         this.upVotedQuestions.remove(questionId);
     }
 
-
-
     /**
      * Method to remove a user's question from the list of questions that they have made
      * (each user has their own list of questions made, in their correspondent session,
@@ -177,13 +149,6 @@ public final class Session {
      */
     public void questionDeleted(String questionId) {
         this.questionsMade.remove(questionId);
-    }
-
-    /**
-     * This method resets the session by clearing all the session Data.
-     */
-    public static void cleanUserSession() {
-        instance = null;
     }
 
 }

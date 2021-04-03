@@ -150,7 +150,7 @@ public class ModeratorPollSceneController implements Initializable {
     public void clearQuestionsClicked() {
         Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
         }
 
@@ -191,7 +191,7 @@ public class ModeratorPollSceneController implements Initializable {
     public void exportQuestionsClicked() {
         Session session = Session.getInstance();
         String exported = "Nothing has been added";
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
         }
 

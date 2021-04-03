@@ -101,7 +101,7 @@ public class SplashCommunication {
             // Uses the information received to update the session information.
             System.out.println("Is moderator1 " + user.getIsModerator());
             session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
-            System.out.println("Is moderator2 " + session.getIsModerator());
+            System.out.println("Is moderator2 " + session.isModerator());
             //If the link is not valid then no session is started
             // and user should stay on splash screen.
             if (session == null) {

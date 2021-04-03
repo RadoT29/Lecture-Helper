@@ -1,29 +1,21 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import nl.tudelft.oopp.app.communication.BanCommunication;
-import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
-import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
-import nl.tudelft.oopp.app.models.User;
 
 import java.awt.*;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.util.Locale;
 
 public class QuestionCellController {
 
@@ -140,7 +132,7 @@ public class QuestionCellController {
         String id = question.getId() + "";
         Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             //delete the question from the database if moderator
             QuestionCommunication.dismissQuestion(Long.parseLong(id));
 

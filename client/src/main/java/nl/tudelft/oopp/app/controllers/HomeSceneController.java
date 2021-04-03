@@ -218,7 +218,7 @@ public class HomeSceneController {
      * (each client will have these stored locally)
      */
     public void sendQuestion() {
-        if (!session.getIsModerator()) {
+        if (!session.isModerator()) {
             passLimitQuestionsLabel.setVisible(false);
             try {
                 HomeSceneCommunication.isInLimitOfQuestion(session.getUserId(),
@@ -292,7 +292,7 @@ public class HomeSceneController {
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             String linkId = session.getRoomLink();
             try {
                 ServerCommunication.isRoomOpenStudents(linkId);
@@ -303,7 +303,7 @@ public class HomeSceneController {
         }
 
         //ServerCommunication.isTheRoomClosed(session.getRoomLink());
-        if (!session.getIsModerator()) {
+        if (!session.isModerator()) {
             //ServerCommunication.hasStudentPermission(session.getRoomLink());
             ServerCommunication.isRoomOpenStudents(session.getRoomLink());
             QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
@@ -409,7 +409,7 @@ public class HomeSceneController {
     public void loadQuestions() {
 
         String resource = "/questionCellStudent.fxml";
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             resource = "/questionCellModerator.fxml";
         }
 
@@ -435,7 +435,7 @@ public class HomeSceneController {
      * @param question    - the object of the new question created
      */
     public void checkForQuestion(Node newQuestion, Question question) {
-        if (!session.getIsModerator()) {
+        if (!session.isModerator()) {
             Button d = (Button) newQuestion.lookup("#dismissButton");
 
             String id = String.valueOf(question.id);

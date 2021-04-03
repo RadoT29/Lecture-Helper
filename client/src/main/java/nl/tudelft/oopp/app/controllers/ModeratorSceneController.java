@@ -168,7 +168,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void clearQuestionsClicked() {
         Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
         }
 
@@ -183,7 +183,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void exportQuestionsClicked() {
         Session session = Session.getInstance();
         String exported = "Nothing has been added";
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
         }
 

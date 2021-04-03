@@ -2,12 +2,10 @@ package nl.tudelft.oopp.app.controllers;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -80,7 +78,7 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
-        Session.cleanUserSession();
+        Session.clearSession();
         if (roomLink.getText().equals("")) {
             invalidRoomLink.setText("Insert a Room Link!");
             invalidRoomLink.setVisible(true);
@@ -100,7 +98,7 @@ public class SplashSceneController {
 
             //Gets the session with the updated information
             Session session = Session.getInstance();
-            if (!session.getIsModerator()) {
+            if (!session.isModerator()) {
                 BanCommunication.isIpBanned(roomLink.getText());
                 ServerCommunication.isRoomOpenStudents(roomLink.getText());
                 BanCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
@@ -159,7 +157,7 @@ public class SplashSceneController {
         Parent loader;
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
 
             loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         } else {
