@@ -76,6 +76,7 @@ public class QuestionService {
             if (upVotes == null) {
                 upVotes = 0;
             }
+            System.out.println("This is the number of Upvotes" + upVotes);
             q.setTotalUpVotes(upVotes);
             q.getRoom().setId(0);
             q.getUser().setId(0);
@@ -358,10 +359,11 @@ public class QuestionService {
         Room room = roomService.getByLink(roomLink2);
 
         Integer totalUpVotes = upvoteRepository.getUpVotes(questionId, room.getId());
+        
         if (totalUpVotes == null) {
             totalUpVotes = 0;
         }
-        
+
         return totalUpVotes;
 
     }
@@ -398,9 +400,7 @@ public class QuestionService {
      * @param roomId - room selected
      */
     public void getTimeOfQuestions(List<Long> questions, long roomId) {
-        String currentZone = ZoneId.systemDefault().toString();
-        ZoneId currentZoneId = ZoneId.of(currentZone);
-
+        
 
         LocalDateTime roomTime = roomRepository.getRoomTime(roomId);
         
@@ -410,11 +410,10 @@ public class QuestionService {
 
             //Makes sure time is in the correct timeZone
             LocalDateTime questionTime = question.getCreatedAt();
-            ZonedDateTime actualTime = questionTime.atZone(currentZoneId);
 
-            String duration = formatDuration(roomTime, actualTime);
+            String duration = formatDuration(roomTime, questionTime);
             questionRepository.updateDuration(question.getId(), duration);
-            setAge(actualTime, question);
+            setAge(questionTime, question);
 
         }
 
@@ -437,8 +436,8 @@ public class QuestionService {
             Answer answer = answerRepository.getAnswerById(answers.get(i));
            
             LocalDateTime answerTime = answer.getCreatedAt();
-            ZonedDateTime actualTime = answerTime.atZone(currentZoneId);
-            String duration = formatDuration(roomTime, actualTime);
+
+            String duration = formatDuration(roomTime, answerTime);
             
             answer.setDuration(duration);
             answerRepository.updateDuration(answer.getId(), duration);
@@ -453,7 +452,7 @@ public class QuestionService {
      * @param elementTime - Time of creation from Answer/Question
      * @return String with formatted date
      */
-    public String formatDuration(LocalDateTime roomTime, ZonedDateTime elementTime) {
+    public String formatDuration(LocalDateTime roomTime, LocalDateTime elementTime) {
         Duration duration = Duration.between(roomTime, elementTime);
         long minutes = duration.toMinutes() - duration.toHours() * 60;
         long seconds = duration.toSeconds() - 60 * minutes;
@@ -469,7 +468,7 @@ public class QuestionService {
      * (this to make sure they are in the same timeZone).
      * @param actualTime - ZonedTime of the question
      */
-    public void setAge(ZonedDateTime actualTime, Question question) {
+    public void setAge(LocalDateTime actualTime, Question question) {
         ZonedDateTime current = ZonedDateTime.now();
         
         Duration age = Duration.between(actualTime, current);
