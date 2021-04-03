@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
@@ -18,8 +20,8 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
 public abstract class SceneController {
-    private boolean interruptThread = false;
-    private boolean openOne = true;
+    protected boolean interruptThread = false;
+    protected boolean openOne = true;
     protected String buttonColour;
 
     Session session = Session.getInstance();
@@ -52,6 +54,16 @@ public abstract class SceneController {
                                 constantRefresh();
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
+                            } catch (UserWarnedException e) {
+                                //Pops up a message
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setWidth(900);
+                                alert.setHeight(300);
+                                alert.setTitle("Warning!");
+                                alert.setHeaderText("Banning warning!");
+                                alert.showAndWait();
+                            } catch (Exception e) {
+                                closeWindow();
                             }
                         });
 
@@ -71,11 +83,13 @@ public abstract class SceneController {
 
     /**
      * This method is constantly called by a thread and refreshes the page.
-     * @throws ExecutionException           - may be thrown.
-     * @throws InterruptedException         - may be thrown.
+     *
+     * @throws ExecutionException   - may be thrown.
+     * @throws InterruptedException - may be thrown.
      */
     public abstract void constantRefresh()
-            throws ExecutionException, InterruptedException;
+            throws ExecutionException, InterruptedException,
+            NoStudentPermissionException, AccessDeniedException, UserWarnedException;
 
     protected void changeScene(String resource, double dimensionScale) {
         Parent loader = null;
@@ -96,6 +110,23 @@ public abstract class SceneController {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    /**
+     * When this method is called it:
+     * 1. set the boolean variable interruptThread = true
+     * which afterwards interrupts the thread
+     * 2. Open the Splash Scene and should close the current one
+     */
+    public void closeWindow() {
+        interruptThread = true;
+        if (!openOne) {
+            return;
+        }
+
+        changeScene("/splashScene.fxml", 0.8);
+
+        openOne = false;
     }
 
 }

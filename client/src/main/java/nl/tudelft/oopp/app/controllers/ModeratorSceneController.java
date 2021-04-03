@@ -255,5 +255,11 @@ public class ModeratorSceneController extends SceneController {
 
     }
 
+    public abstract void constantRefresh()
+            throws ExecutionException, InterruptedException,
+            NoStudentPermissionException, AccessDeniedException, UserWarnedException{
+
+    }
+
 
 }
