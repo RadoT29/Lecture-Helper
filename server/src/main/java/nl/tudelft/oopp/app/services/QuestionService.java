@@ -72,12 +72,6 @@ public class QuestionService {
         //the result list only gets the unanswered questions
         List<Question> result = questionRepository.findAllByRoomLink(roomLink);
         for (Question q : result) {
-            Integer upVotes = getUpVotes(q.getId(), roomLink);
-            if (upVotes == null) {
-                upVotes = 0;
-            }
-            System.out.println("This is the number of Upvotes" + upVotes);
-            q.setTotalUpVotes(upVotes);
             q.getRoom().setId(0);
             q.getUser().setId(0);
         }
@@ -170,12 +164,17 @@ public class QuestionService {
         Question question = questionRepository.getOne(questionId2);
 
         Upvote upvote = new Upvote(question, user);
+        Integer upvoteValue = 0;
         if (user.getIsModerator()) {
             upvote.setValue(10);
+            upvoteValue = 10;
         } else {
             upvote.setValue(1);
+            upvoteValue = 1;
         }
-
+        Integer count = questionRepository.getUpVoteCount(questionId2);
+        question.setTotalUpVotes(count + upvoteValue);
+        questionRepository.save(question);
         upvoteRepository.save(upvote);
 
 
@@ -192,9 +191,14 @@ public class QuestionService {
         long questionId2 = Long.parseLong(questionId);
         long userId2 = Long.parseLong(userId);
 
-        System.out.print(questionId2 + " " + userId2);
+        Question question = questionRepository.getOne(questionId2);
 
         Upvote temp = upvoteRepository.findUpvoteByUserAndQuestion(userId2, questionId2);
+        Integer upvoteValue = temp.value;
+
+        Integer count = questionRepository.getUpVoteCount(questionId2);
+        question.setTotalUpVotes(count - upvoteValue);
+        questionRepository.save(question);
         upvoteRepository.deleteById(temp.getId());
     }
 
