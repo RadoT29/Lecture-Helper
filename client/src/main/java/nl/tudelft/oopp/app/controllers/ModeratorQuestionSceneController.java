@@ -2,12 +2,15 @@ package nl.tudelft.oopp.app.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
+import nl.tudelft.oopp.app.models.Question;
 
+import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.concurrent.ExecutionException;
 
@@ -45,6 +48,9 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
      * Fill in the priority queue and and load them on the screen.
      */
     public void refresh() {
+        questions = new PriorityQueue<>();
+        questions.addAll(HomeSceneCommunication.getQuestions());
+        loadQuestions();
         loadStats();
         reactionController.update();
     }
@@ -72,5 +78,28 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
             changeImageCloseRoomButton();
         }
 
+    }
+
+    /**
+     * loads questions in the question box in the correct format.
+     */
+    public void loadQuestions() {
+
+        String resource = "/questionCellStudent.fxml";
+        if (session.isModerator()) {
+            resource = "/questionCellModerator.fxml";
+        }
+
+        questionBox.getChildren().clear();
+        while (!questions.isEmpty()) {
+            Question question = questions.poll();
+            try {
+                questionBox.getChildren()
+                        .add(QuestionCellController.init(question, resource, this));
+            } catch (IOException e) {
+                questionBox.getChildren().add(
+                        new Label("Something went wrong while loading this question"));
+            }
+        }
     }
 }
