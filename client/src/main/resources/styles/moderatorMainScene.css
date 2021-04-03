@@ -168,3 +168,7 @@
 .darkBackGround {
     -fx-background-color: #44475a;
 }
+.button:disabled {
+    -fx-background-color: white;
+    -fx-opacity: 1.0;
+}

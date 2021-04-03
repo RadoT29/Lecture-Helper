@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/studentMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.StudentQuestionSceneController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/studentMainScene.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.StudentQuestionSceneController">
    <VBox id="vboxNav" fx:id="speedMenu" fillWidth="false" layoutX="100.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="252.0" VBox.vgrow="NEVER">
       <Button fx:id="fastButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tooFast" prefHeight="30.0" prefWidth="40.0" styleClass="menuBtnBlack" stylesheets="@styles/studentMainScene.css">
          <VBox.margin>
@@ -83,7 +87,7 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Label>
-      <Button fx:id="homeButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="menuBtnBlack" onMouseClicked="#goToHome">
+      <Button fx:id="homeButton" disable="true" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToHome" prefHeight="30.0" prefWidth="35.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="31.5" top="30.0" />
          </VBox.margin>
@@ -93,7 +97,7 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Label>
-      <Button fx:id="pollsButton" onMouseClicked="#goToPolls" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+      <Button fx:id="pollsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToPolls" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="35" top="30.0" />
          </VBox.margin>
