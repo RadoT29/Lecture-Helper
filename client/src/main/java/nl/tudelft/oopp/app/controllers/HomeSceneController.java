@@ -454,26 +454,7 @@ public class HomeSceneController {
     }
 
 
-    /**
-     * Get the Date in which the room was created.
-     *
-     * @return Date - at which room was created
-     */
-    public Date retrieveRoomTime() {
-        Date roomDate = HomeSceneCommunication.getRoomTime().get(0);
-        return roomDate;
-    }
-
-    /**
-     * Get the Date in which the room was last modified.
-     *
-     * @return Date - at which room was last modified
-     */
-    public Date retrieveModifiedTime() {
-        Date roomDate = HomeSceneCommunication.getRoomTime().get(1);
-        return roomDate;
-    }
-
+   
     /**
      * Every 2 seconds the client side of the app asks the server for a
      * questions update for this user. If there is one, this method
@@ -507,18 +488,7 @@ public class HomeSceneController {
         alert.showAndWait();
 
     }
-
-    /**
-     * Method to get the moderator upVotes with extra value.
-     * @param question - question to retrieve upVotes from
-     * @return number of upVotes
-     */
-    public int getTotalUpVotes(Question question) {
-        int modUpVotes = QuestionCommunication.getModUpVotes(question.getId());
-
-        int total = question.getUpVotes() + 9 * modUpVotes;
-        return total;
-    }
+    
 
     public String buttonColour;
 

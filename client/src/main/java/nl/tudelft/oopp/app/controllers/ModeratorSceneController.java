@@ -125,15 +125,13 @@ public class ModeratorSceneController extends SceneController {
 
 
 
-
     /**
      * Method to clear all questions and allow the moderator to reset the room
      * It will activate when the clear questions button is clicked (within the moderator view)
      * It will reconfirm if the user is a moderator and call clearQuestions
      * in the HomeCommunicationScene.
      */
-    public void clearQuestionsClicked() {
-        Session session = Session.getInstance();
+    public void clearQuestionsClicked() { 
 
         if (session.isModerator()) {
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
@@ -148,7 +146,7 @@ public class ModeratorSceneController extends SceneController {
      * it will then create a new text file inside the repository with these.
      */
     public void exportQuestionsClicked() {
-        Session session = Session.getInstance();
+        
         String exported = "Nothing has been added";
         if (session.isModerator()) {
             exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
