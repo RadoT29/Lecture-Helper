@@ -29,29 +29,29 @@ public class SettingsController {
     @FXML
     public AnchorPane settingsPane;
 
-    private HomeSceneController hsc;
+    private SceneController sc;
 
     private final String menuColour = "#17AEDA";
 
 
-    public void setHsc(HomeSceneController hsc) {
-        this.hsc = hsc;
+    public void setSc(SceneController sc) {
+        this.sc = sc;
     }
 
     /**
      * This method initializes the settings window.
-     * @param hsc - the controller, from which the settings button was clicked.
+     * @param sc - the controller, from which the settings button was clicked.
      * @param mode - the current theme.
      * @throws IOException - may be thrown.
      */
-    public static void initialize(HomeSceneController hsc, boolean mode) throws IOException {
+    public static void initialize(SceneController sc, boolean mode) throws IOException {
         FXMLLoader loader = new FXMLLoader(SettingsController
                 .class.getResource("/settingsScene.fxml"));
         Parent parent = loader.load();
         Scene scene = new Scene(parent);
         SettingsController controller = loader.getController();
 
-        controller.setHsc(hsc);
+        controller.setSc(sc);
 
         if (mode) {
             controller.setDark();
@@ -81,8 +81,8 @@ public class SettingsController {
 
         String inputText = "white";
         String darkModeBackground = "#44475a";
-        hsc.changeTheme(true, menuColour, darkModeMenu,
-                darkModeText, inputText, darkModeBackground);
+        //sc.changeTheme(true, menuColour, darkModeMenu,
+        //        darkModeText, inputText, darkModeBackground);
     }
 
     /**
@@ -98,7 +98,7 @@ public class SettingsController {
 
         String text = "black";
         String background = "#f4f4f4";
-        hsc.changeTheme(false, text, menuColour, text, text, background);
+        //sc.changeTheme(false, text, menuColour, text, text, background);
     }
 
     public void exit() {

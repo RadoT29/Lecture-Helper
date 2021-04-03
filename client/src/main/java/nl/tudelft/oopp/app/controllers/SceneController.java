@@ -43,7 +43,7 @@ public abstract class SceneController {
      * @param rb  - Provides any needed resources.
      */
     public void initialize(URL url, ResourceBundle rb) {
-        new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 keepRequesting = true;
@@ -67,7 +67,7 @@ public abstract class SceneController {
                             }
                         });
 
-                        Thread.sleep(2000);
+                        Thread.sleep(10000);
                         if (interruptThread) {
                             Thread.currentThread().interrupt();
                             break;
@@ -78,7 +78,8 @@ public abstract class SceneController {
                     }
                 }
             }
-        }).start();
+        });
+        thread.start();
     }
 
     /**
@@ -129,4 +130,11 @@ public abstract class SceneController {
         openOne = false;
     }
 
+    /**
+     * This method opens the settings window.
+     * @throws IOException - may be thrown.
+     */
+    public void openSettings() throws IOException {
+        SettingsController.initialize(this, darkTheme);
+    }
 }
