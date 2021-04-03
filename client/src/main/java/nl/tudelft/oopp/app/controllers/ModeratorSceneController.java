@@ -43,13 +43,7 @@ public class ModeratorSceneController extends SceneController {
     public VBox slidingMenu;
     @FXML
     public Label moreOptionsLabel;
-    @FXML
-    public HBox reactionBox;
 
-    @FXML
-    public Button speedStat;
-    @FXML
-    public HBox emotionReactions;
     @FXML
     public Button moreReactionButton;
 
@@ -128,33 +122,9 @@ public class ModeratorSceneController extends SceneController {
         super.sendQuestion();
     }
 
-    /**
-     * fill in the priority queue and and load them on the screen.
-     */
-    public void refresh() {
-        super.refresh();
-        loadStats();
-        reactionController.update();
-    }
 
-    /**
-     * This method changes the icons that represent the Speed and Emotion Reaction to
-     * match their statistics.
-     */
-    public void loadStats() {
-        int speedStatInt = ReactionCommunication.getReactionStats(true);
 
-        System.out.println("speed = " + speedStatInt);
 
-        if (speedStatInt == 1) {
-            speedStat.getStyleClass().set(1,"fastButton");
-        } else if (speedStatInt == -1) {
-            speedStat.getStyleClass().set(1,"slowButton");
-        } else {
-            speedStat.getStyleClass().set(1,"okButton");
-        }
-
-    }
 
     /**
      * Method to clear all questions and allow the moderator to reset the room
@@ -204,17 +174,7 @@ public class ModeratorSceneController extends SceneController {
      * @throws IOException if it cant load the fxml file
      */
     public void presenterMode() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/presentationScene.fxml")).load();
-        Stage stage = (Stage) mainMenu.getScene().getWindow();
-
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.65;
-        double height = screenSize.getHeight() * 0.6;
-
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+        changeScene("/presentationScene.fxml", 0.65);
     }
 
     /**
@@ -222,17 +182,21 @@ public class ModeratorSceneController extends SceneController {
      * @throws IOException if it cant load the fxml file
      */
     public void goToPolls() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/moderatorPollScene.fxml")).load();
-        Stage stage = (Stage) mainMenu.getScene().getWindow();
+        changeScene("/moderatorPollScene.fxml", 0.8);
+    }
 
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
+    public void goToLog() throws IOException {
+        changeScene("/moderatorLogScene.fxml", 0.8);
+        System.out.println("went to log");
+    }
 
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+    /**
+     * Method to load the main moderator scene.
+     * Makes the scene bigger so the moderator can interacat with all its features
+     * @throws IOException if it cant load the fxml file
+     */
+    public void goToHome() throws IOException {
+        changeScene("/moderatorQuestionScene.fxml", 0.8);
     }
 
     /**
@@ -290,4 +254,6 @@ public class ModeratorSceneController extends SceneController {
         }
 
     }
+
+
 }
