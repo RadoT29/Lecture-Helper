@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.scene.control.Label;
 import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
@@ -10,6 +11,7 @@ import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 
+import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.concurrent.ExecutionException;
 
@@ -81,5 +83,25 @@ public class StudentQuestionSceneController {
 
         questionInput.clear(); // clears question input box
         refresh();
+    }
+
+    /**
+     * loads questions in the question box in the correct format.
+     */
+    public void loadQuestions() {
+
+        String resource = "/questionCellStudent.fxml";
+
+        questionBox.getChildren().clear();
+        while (!questions.isEmpty()) {
+            Question question = questions.poll();
+            try {
+                questionBox.getChildren()
+                        .add(QuestionCellController.init(question, resource, this));
+            } catch (IOException e) {
+                questionBox.getChildren().add(
+                        new Label("Something went wrong while loading this question"));
+            }
+        }
     }
 }

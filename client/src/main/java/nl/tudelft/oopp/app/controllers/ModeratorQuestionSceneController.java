@@ -86,10 +86,7 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
      */
     public void loadQuestions() {
 
-        String resource = "/questionCellStudent.fxml";
-        if (session.isModerator()) {
-            resource = "/questionCellModerator.fxml";
-        }
+        String resource = "/questionCellModerator.fxml";
 
         questionBox.getChildren().clear();
         while (!questions.isEmpty()) {
@@ -127,5 +124,23 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
 
         questionInput.clear(); // clears question input box
         refresh();
+    }
+
+    /**
+     * handles click on moreReactionButton.
+     * shows/hides the emotion reactions on the screen
+     * and changes the button to + or -
+     */
+    public void moreReactionsClicked() {
+        if (!emotionReactions.isVisible()) {
+            //display emotion reactions
+            moreReactionButton.getStyleClass().set(1, "hideButton");
+            reactionController.showEmotion();
+        } else {
+            //hide emotion reactions
+            moreReactionButton.getStyleClass().set(1, "expandButton");
+            reactionController.hideEmotion();
+        }
+
     }
 }
