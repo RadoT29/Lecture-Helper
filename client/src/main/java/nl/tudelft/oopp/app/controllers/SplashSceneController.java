@@ -158,7 +158,7 @@ public class SplashSceneController {
         // otherwise loads the studentScene
         if (session.isModerator()) {
 
-            loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
+            loader = new FXMLLoader(getClass().getResource("/moderatorMainScene.fxml")).load();
         } else {
             loader = new FXMLLoader(getClass().getResource("/studentScene.fxml")).load();
         }
