@@ -9,11 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.app.models.Session;
 
 public class SplashDisplay extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        Session.getInstance(primaryStage);
+
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.8;
         double height = screenSize.getHeight() * 0.8;

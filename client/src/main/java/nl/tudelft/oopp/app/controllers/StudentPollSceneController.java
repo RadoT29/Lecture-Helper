@@ -19,7 +19,6 @@ import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.*;
 
@@ -73,8 +72,9 @@ public class StudentPollSceneController implements Initializable {
     /**
      * This method initializes the state of the navigation bar.
      * It hides the sliding bars behind the regular one.
+     *
      * @param url - The path.
-     * @param rb - Provides any needed resources.
+     * @param rb  - Provides any needed resources.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -230,6 +230,7 @@ public class StudentPollSceneController implements Initializable {
 
     /**
      * will be removed with refactoring.
+     *
      * @throws IOException k
      */
     public void goToPolls() throws IOException {
@@ -252,7 +253,8 @@ public class StudentPollSceneController implements Initializable {
      * Create the poll options to fill the poll cell.
      * This is for options that were already answered and the poll closed.
      * The correct answers and the answered answers are reveled.
-     * @param pollAnswer option data
+     *
+     * @param pollAnswer  option data
      * @param optionCount place in the option order
      * @return a node to be loaded with the proper format and data
      * @throws IOException when the fxml file is not found
@@ -285,7 +287,8 @@ public class StudentPollSceneController implements Initializable {
      * Create the poll options to fill the poll cell.
      * This is for options that were not answered and the poll closed.
      * The correct answers are reveled.
-     * @param pollOption option data
+     *
+     * @param pollOption  option data
      * @param optionCount place in the option order
      * @return a node to be loaded with the proper format and data
      * @throws IOException when the fxml file is not found
@@ -317,6 +320,7 @@ public class StudentPollSceneController implements Initializable {
     /**
      * Create the poll options to fill the poll cell.
      * This are the options that can still be answered
+     *
      * @param pollOption option data
      * @return a node to be loaded with the proper format and data
      * @throws IOException when the fxml file is not found
@@ -335,6 +339,7 @@ public class StudentPollSceneController implements Initializable {
 
     /**
      * Create a new poll cell for a poll with its data.
+     *
      * @param poll the poll to load the cell
      * @return a node to be loaded with the proper format and data
      * @throws IOException when the fxml file is not found
@@ -435,26 +440,36 @@ public class StudentPollSceneController implements Initializable {
      * @throws ExecutionException           - may be thrown.
      * @throws InterruptedException         - may be thrown.
      * @throws NoStudentPermissionException - may be thrown.
-     * @throws RoomIsClosedException        - may be thrown.
      * @throws AccessDeniedException        - may be thrown.
      * @throws UserWarnedException          - may be thrown.
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, RoomIsClosedException,
-            AccessDeniedException, UserWarnedException {
+            NoStudentPermissionException, AccessDeniedException, UserWarnedException {
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.constantlyGetPolls(session.getRoomLink()));
         loadPolls();
-        ServerCommunication.isTheRoomClosed(session.getRoomLink());
-        if (!session.getIsModerator()) {
-            ServerCommunication.hasStudentPermission(session.getRoomLink());
-            QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
-            if (!session.isWarned()) {
-                BanCommunication.isIpWarned(session.getRoomLink());
-            } else {
-                BanCommunication.isIpBanned(session.getRoomLink());
-            }
+        //        if (session.getIsModerator()) {
+        //            String linkId = session.getRoomLink();
+        //            try {
+        //                ServerCommunication.isRoomOpenStudents(linkId);
+        //                //changeImageOpenRoomButton();
+        //            } catch (NoStudentPermissionException exception) {
+        //                //changeImageCloseRoomButton();
+        //                exception.getStackTrace();
+        //            }
+        //        }
+
+        //ServerCommunication.isTheRoomClosed(session.getRoomLink());
+        //if (!session.getIsModerator()) {
+        //ServerCommunication.hasStudentPermission(session.getRoomLink());
+        ServerCommunication.isRoomOpenStudents(session.getRoomLink());
+        QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
+        if (!session.isWarned()) {
+            BanCommunication.isIpWarned(session.getRoomLink());
+        } else {
+            BanCommunication.isIpBanned(session.getRoomLink());
         }
+        // }
 
 
     }

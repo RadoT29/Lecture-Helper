@@ -27,7 +27,6 @@ import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
@@ -120,15 +119,8 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     /**
      * close the room.
      */
-    public void closeRoom() {
-        super.closeRoom();
-    }
-
-    /**
-     * kick all students.
-     */
-    public void kickAllStudents() {
-        super.kickAllStudents();
+    public void closeOpenRoom() {
+        super.closeOpenRoom();
     }
 
     /**
@@ -176,7 +168,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void clearQuestionsClicked() {
         Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
         }
 
@@ -191,7 +183,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     public void exportQuestionsClicked() {
         Session session = Session.getInstance();
         String exported = "Nothing has been added";
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
         }
 
@@ -305,7 +297,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     @Override
     public void constantRefresh() throws ExecutionException,
             InterruptedException, NoStudentPermissionException,
-            RoomIsClosedException, AccessDeniedException, UserWarnedException {
+            AccessDeniedException, UserWarnedException {
         super.constantRefresh();
         loadStats();
         reactionController.update();

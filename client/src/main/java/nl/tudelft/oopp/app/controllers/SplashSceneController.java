@@ -2,12 +2,10 @@ package nl.tudelft.oopp.app.controllers;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,7 +17,6 @@ import nl.tudelft.oopp.app.communication.SplashCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
-import nl.tudelft.oopp.app.exceptions.RoomIsClosedException;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -81,7 +78,7 @@ public class SplashSceneController {
      * @throws IOException - Is thrown if loader fails.
      */
     public void enterRoom() throws IOException {
-        Session.cleanUserSession();
+        Session.clearSession();
         if (roomLink.getText().equals("")) {
             invalidRoomLink.setText("Insert a Room Link!");
             invalidRoomLink.setVisible(true);
@@ -101,19 +98,10 @@ public class SplashSceneController {
 
             //Gets the session with the updated information
             Session session = Session.getInstance();
-            if (!session.getIsModerator()) {
-                BanCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
-            }
-            System.out.println("Is moderator " + session.getIsModerator());
-            ServerCommunication.isTheRoomClosed(roomLink.getText());
-            //System.out.println(roomLink.getText());
-
-            ServerCommunication.isTheRoomClosed(session.getRoomLink());
-            System.out.println("Is moderator " + session.getIsModerator());
-
-            if (!session.getIsModerator()) {
+            if (!session.isModerator()) {
                 BanCommunication.isIpBanned(roomLink.getText());
-                ServerCommunication.hasStudentPermission(roomLink.getText());
+                ServerCommunication.isRoomOpenStudents(roomLink.getText());
+                BanCommunication.saveStudentIp(session.getUserId(), roomLink.getText());
             }
 
             ServerCommunication.getRoomName();
@@ -133,10 +121,6 @@ public class SplashSceneController {
 
         } catch (NoSuchRoomException exception) {
             invalidRoomLink.setText("No such room exists or the link is wrong!");
-            invalidRoomLink.setVisible(true);
-
-        } catch (RoomIsClosedException exception) {
-            invalidRoomLink.setText("The room is closed!");
             invalidRoomLink.setVisible(true);
 
         } catch (NoStudentPermissionException exception) {
@@ -172,7 +156,7 @@ public class SplashSceneController {
         Parent loader;
         // If the user is a moderator, loads the moderator moderatorScene,
         // otherwise loads the studentScene
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
 
             loader = new FXMLLoader(getClass().getResource("/moderatorScene.fxml")).load();
         } else {

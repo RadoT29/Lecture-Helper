@@ -1,29 +1,21 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import nl.tudelft.oopp.app.communication.BanCommunication;
-import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
-import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
-import nl.tudelft.oopp.app.models.User;
 
 import java.awt.*;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.util.Locale;
 
 public class QuestionCellController {
 
@@ -94,6 +86,10 @@ public class QuestionCellController {
         newQuestion.setId(question.getId() + ""); //to deleted
         qsc.setQuestion(question);
 
+
+        //Check if the question loaded was created by the session's user
+        hsc.checkForQuestion(newQuestion, question);
+
         //set the question text
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
         questionLabel.setText(question.questionText);
@@ -101,12 +97,31 @@ public class QuestionCellController {
         Label nicknameLabel = (Label) newQuestion.lookup("#nickname");
         nicknameLabel.setText(question.user.getName());
 
+        //set the question box size
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
-        upvoteLabel.setText("+" + question.getUpVotes());
+        upvoteLabel.setText("+" + question.getTotalUpVotes());
+
+        //set upvote button as active or inactive
+        Button upvoteButton = (Button) newQuestion.lookup(("#upvoteButton"));
+        boolean isActive = Session.getInstance().getUpVotedQuestions()
+                .contains(String.valueOf(question.getId()));
+        if (isActive) {
+            upvoteButton.getStyleClass().add("active");
+        }
 
         return newQuestion;
     }
+
+
+    public String buttonColour;
+
+
 
     /**
      * dismisses the question.
@@ -117,7 +132,7 @@ public class QuestionCellController {
         String id = question.getId() + "";
         Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             //delete the question from the database if moderator
             QuestionCommunication.dismissQuestion(Long.parseLong(id));
 

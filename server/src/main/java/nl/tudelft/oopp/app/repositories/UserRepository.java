@@ -21,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query("UPDATE User u SET u.name=?2 WHERE u.id=?1")
     void updateUserName(long id,String name);
+    
 }

@@ -14,26 +14,22 @@ import java.util.UUID;
 @Repository("RoomRepository")
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.id=?1")
-    void closeRoom(Long id);
+    void closeRoomStudents(Long id, LocalDateTime endDate);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Room r SET r.permission=false, r.endDateForStudents=?2 WHERE r.id=?1")
-    void kickAllStudents(Long id, LocalDateTime endDate);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Room r SET r.isOpen=true, r.permission=true WHERE r.id=?1")
+    @Query("UPDATE Room r SET r.permission=true, r.isOpen = true  WHERE r.id=?1")
     void openRoomForStudents(long roomId);
 
     @Query("SELECT u FROM Room u WHERE u.linkIdStudent=?1 OR u.linkIdModerator=?1")
     Room findByLink(UUID link);
 
     @Query("SELECT r.createdAt FROM Room r WHERE r.id=?1")
-    Date getRoomTime(long l);
+    LocalDateTime getRoomTime(long l);
 
     @Query("SELECT r.updatedAt FROM Room r WHERE r.id=?1")
     Date getUpdatedTime(long l);
