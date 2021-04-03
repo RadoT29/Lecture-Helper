@@ -357,9 +357,9 @@ public class QuestionService {
     public Integer getUpVotes(long questionId, UUID roomLink) {
         String roomLink2 = roomLink.toString();
         Room room = roomService.getByLink(roomLink2);
-        
+
         Integer totalUpVotes = upvoteRepository.getUpVotes(questionId, room.getId());
-        System.out.println("This is the total upvotes " + totalUpVotes);
+        
         if (totalUpVotes == null) {
             totalUpVotes = 0;
         }
@@ -400,10 +400,10 @@ public class QuestionService {
      * @param roomId - room selected
      */
     public void getTimeOfQuestions(List<Long> questions, long roomId) {
-
+        
 
         LocalDateTime roomTime = roomRepository.getRoomTime(roomId);
-
+        
 
         for (int i = 0; i < questions.size(); i++) {
             Question question = questionRepository.getQuestionById(questions.get(i));
