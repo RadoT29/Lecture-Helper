@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     @Modifying
     @Transactional
-    @Query("UPDATE User u SET u.name=?2, u.timeZone=?3 WHERE u.id=?1")
-    void updateUserName(long id,String name, String timeZone);
+    @Query("UPDATE User u SET u.name=?2 WHERE u.id=?1")
+    void updateUserName(long id,String name);
     
 }

@@ -124,13 +124,11 @@ public class AdminSceneController  {
         maxQuestTText.setText(Integer.toString(room.numberQuestionsInterval));
 
         TextField timeIntervalText = (TextField) newRoom.lookup("#timeIntervalText");
-        timeIntervalText.setText(Integer.toString(room.numberQuestionsInterval));
+        timeIntervalText.setText(Integer.toString(room.timeInterval));
 
         TextField startDateText = (TextField) newRoom.lookup("#startDateText");
         startDateText.setText(room.startDate);
 
-        TextField endDateText = (TextField) newRoom.lookup("#endDateText");
-        endDateText.setText(room.endDateForStudents);
 
         TextField createdAtText = (TextField) newRoom.lookup("#createdAtText");
         createdAtText.setText(room.createdAt);

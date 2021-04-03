@@ -79,12 +79,11 @@ public class UserController {
      * @param nickName - the nickname.
      * @param userId   - the id of the user, used to find the right one.
      */
-    @PostMapping(path = "/room/user/{userId}/nick/{nickName}/{timeZone}")
+    @PostMapping(path = "/room/user/{userId}/nick/{nickName}")
     @ResponseBody
     public void setNickName(@PathVariable("nickName") String nickName,
-                            @PathVariable("userId") String userId,
-                            @PathVariable("timeZone") String timeZone) {
-        userService.update(Long.parseLong(userId), nickName, timeZone);
+                            @PathVariable("userId") String userId) {
+        userService.update(Long.parseLong(userId), nickName);
     }
 
 
