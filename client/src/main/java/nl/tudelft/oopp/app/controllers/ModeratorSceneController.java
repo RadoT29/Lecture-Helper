@@ -34,7 +34,7 @@ import nl.tudelft.oopp.app.models.Session;
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class ModeratorSceneController extends HomeSceneController implements Initializable {
+public class ModeratorSceneController extends SceneController {
     @FXML
     public Button menuButton;
     @FXML
@@ -72,8 +72,6 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
         closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
-        mainBoxLog.setVisible(false);
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -86,7 +84,6 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         super.initialize(url,rb);
         reactionController = new ModeratorReactionController(emotionReactions);
         refresh();
-
     }
 
 
@@ -292,53 +289,5 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
             reactionController.hideEmotion();
         }
 
-    }
-
-    @Override
-    public void constantRefresh() throws ExecutionException,
-            InterruptedException, NoStudentPermissionException,
-            AccessDeniedException, UserWarnedException {
-        super.constantRefresh();
-        loadStats();
-        reactionController.update();
-    }
-
-    @Override
-    public void changeTheme(
-            boolean mode, String buttonColour, String menuColour, String textColour,
-            String inputColour, String backgroundColour) {
-
-        for (Node button : reactionBox.getChildren()) {
-            button.setStyle("-fx-background-color:" + buttonColour);
-        }
-        ArrayList<VBox> list = new ArrayList<>();
-        list.add(slidingMenu);
-        list.add(mainMenu);
-        moreOptionsLabel.setStyle("-fx-text-fill:" + textColour);
-        setMenuColour(list, menuColour, buttonColour, textColour);
-
-        super.changeTheme(mode, buttonColour, menuColour,
-                textColour, inputColour, backgroundColour);
-    }
-
-    /**
-     * This method changes the colour of the menu(navigation bar).
-     * @param list - a list of the VBoxes in the menu.
-     * @param menuColour - the colour of the background.
-     * @param buttonColour - the button colour.
-     * @param textColour - the label colour.
-     */
-    public void setMenuColour(ArrayList<VBox> list, String menuColour,
-                              String buttonColour, String textColour) {
-        for (VBox box : list) {
-            box.setStyle("-fx-background-color:" + menuColour);
-            for (Node node : box.getChildren()) {
-                if (node instanceof Button) {
-                    node.setStyle("-fx-background-color:" + buttonColour);
-                } else {
-                    node.setStyle("-fx-text-fill:" + textColour);
-                }
-            }
-        }
     }
 }
