@@ -15,7 +15,6 @@ public class User {
     public String name;
     public String roomLink;
     public boolean isModerator;
-    public String timeZone;
     //  private Date createdAt;
     //  private Date updatedAt;
 
