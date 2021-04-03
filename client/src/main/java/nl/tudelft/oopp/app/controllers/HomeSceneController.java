@@ -92,60 +92,8 @@ public class HomeSceneController {
 
     protected boolean darkTheme;
 
-    /**
-     * This method initializes the thread,
-     * which is responsible for constantly refreshing the questions.
-     *
-     * @param url - The path.
-     * @param rb  - Provides any needed resources.
-     */
-    public void initialize(URL url, ResourceBundle rb) {
 
-        callRequestingThread();
-    }
 
-    /**
-     * This thread will periodically refresh the content of the question queue.
-     */
-    public void callRequestingThread() {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                keepRequesting = true;
-                while (keepRequesting) {
-                    try {
-                        Platform.runLater(() -> {
-                            try {
-                                constantRefresh();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (UserWarnedException e) {
-                                //Pops up a message
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setWidth(900);
-                                alert.setHeight(300);
-                                alert.setTitle("Warning!");
-                                alert.setHeaderText("Banning warning!");
-                                alert.showAndWait();
-                            } catch (Exception e) {
-                                closeWindow();
-                            }
-                        });
-
-                        Thread.sleep(2000);
-                        if (interruptThread) {
-                            Thread.currentThread().interrupt();
-                            break;
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
 
     /**
      * This thread will periodically refresh the content of the question queue.
@@ -176,40 +124,7 @@ public class HomeSceneController {
         }).start();
     }
 
-    /**
-     * When this method is called it:
-     * 1. set the boolean variable interruptThread = true
-     * which afterwards interrupts the thread
-     * 2. Open the Splash Scene and should close the current one
-     */
 
-    public void closeWindow() {
-        interruptThread = true;
-        if (!openOne) {
-            return;
-        }
-        Parent loader = null;
-        try {
-            loader = new FXMLLoader(getClass().getResource("/splashScene.fxml")).load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Stage linkStage = (Stage) questionInput.getScene().getWindow();
-        //Scene scene = new Scene(loader);
-
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
-
-        Scene scene = new Scene(loader, width, height);
-
-        linkStage.setScene(scene);
-        linkStage.centerOnScreen();
-        linkStage.show();
-        openOne = false;
-
-    }
 
     /**
      * Pressing the sendButton will send all the text in the questionInput
@@ -249,24 +164,6 @@ public class HomeSceneController {
         refresh();
     }
 
-    /**
-     * close the room.
-     * true/exception for close
-     * false for open
-     */
-    public void closeOpenRoom() {
-        //Session session = Session.getInstance();
-        String linkId = session.getRoomLink();
-        try {
-            ServerCommunication.isRoomOpenStudents(linkId);
-            changeImageCloseRoomButton();
-            ServerCommunication.closeRoomStudents(linkId);
-
-        } catch (NoStudentPermissionException exception) {
-            changeImageOpenRoomButton();
-            ServerCommunication.openRoomStudents(linkId);
-        }
-    }
 
     /**
      * fill in the priority queue and and load them on the screen.
@@ -315,35 +212,6 @@ public class HomeSceneController {
         }
     }
 
-    /**
-     * change the image of the closeOpenRoomButton
-     * to open room image.
-     */
-    public void changeImageCloseRoomButton() {
-        closeOpenRoomButton.setStyle("-fx-shape: \"M184.646,0v21.72H99.704v433.358h31.403V53.123h"
-                + "53.539V492.5l208.15-37.422v-61.235V37.5L184.646,0z M222.938,263.129\n"
-                + "\t\tc-6.997,0-12.67-7.381-12.67-16.486c0-9.104,5.673-16.485,12.67-16.4"
-                + "85s12.67,7.381,12.67,16.485\n"
-                + "\t\tC235.608,255.748,229.935,263.129,222.938,263.129z\"");
-        closeOpenRoomLabel.setText("Open Room");
-    }
-
-    /**
-     * change the image of the closeOpenRoomButton
-     * to close room image.
-     */
-    public void changeImageOpenRoomButton() {
-        closeOpenRoomButton.setStyle("-fx-shape: \"M32.6652 5.44421C17.6121 5.44421 5.44434 17.611"
-                + "9 5.44434 32.6651C5.44434 47.7182 17.6121 59.8859 32.6652 59.8859C47.7183 59.88"
-                + "59 59.886 47.7182 59.886 32.6651C59.886 17.6119 47.7183 5.44421 32.6652 5.44421"
-                + "ZM32.6652 54.4417C20.6608 54.4417 10.8885 44.6694 10.8885 32.6651C10.8885 20.66"
-                + "07 20.6608 10.8884 32.6652 10.8884C44.6696 10.8884 54.4418 20.6607 54.4418 32.6"
-                + "651C54.4418 44.6694 44.6696 54.4417 32.6652 54.4417ZM42.4375 19.0546L32.6652 28"
-                + ".8269L22.8929 19.0546L19.0548 22.8928L28.827 32.6651L19.0548 42.4373L22.8929 46"
-                + ".2755L32.6652 36.5032L42.4375 46.2755L46.2756 42.4373L36.5033 32.6651L46.2756 2"
-                + "2.8928L42.4375 19.0546Z\"");
-        closeOpenRoomLabel.setText("Close Room");
-    }
 
     /**
      * This method is constantly called by a thread and refreshes the page.
@@ -453,42 +321,6 @@ public class HomeSceneController {
         }
     }
 
-
-   
-    /**
-     * Every 2 seconds the client side of the app asks the server for a
-     * questions update for this user. If there is one, this method
-     * is called by the QuestionCommunication class.
-     * @param result - depending on the update, the result can be -1 for
-     *               a question discarded or 0 for question marked
-     *               as answered. Depending on that a pop up appears and
-     *               notifies the user for its question update.
-     */
-    public static void questionUpdatePopUp(QuestionsUpdate result) {
-
-        //String[] updateInformation = result.split("/");
-        String additionalText = "";
-
-        String text = "";
-        if (result.getStatusQuestion() == -1) {
-            text = "Your question has been discarded!";
-            additionalText = "Your question: \"" + result.getQuestionText()
-                    + "\" has been discarded!";
-        } else if (result.getStatusQuestion() == 0) {
-            text = "Your question has been marked as answered!";
-            additionalText = "Your question: \"" + result.getQuestionText()
-                    + "\" has been marked as answered!";
-        }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setWidth(900);
-        alert.setHeight(300);
-        alert.setTitle("Update on your question!");
-        alert.setHeaderText(text);
-        alert.setContentText(additionalText);
-        alert.showAndWait();
-
-    }
-    
 
     public String buttonColour;
 

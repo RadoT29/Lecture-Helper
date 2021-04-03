@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.SpeedReaction;
 
 /**
@@ -309,6 +311,40 @@ public class StudentSceneController extends HomeSceneController implements Initi
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    /**
+     * Every 2 seconds the client side of the app asks the server for a
+     * questions update for this user. If there is one, this method
+     * is called by the QuestionCommunication class.
+     * @param result - depending on the update, the result can be -1 for
+     *               a question discarded or 0 for question marked
+     *               as answered. Depending on that a pop up appears and
+     *               notifies the user for its question update.
+     */
+    public static void questionUpdatePopUp(QuestionsUpdate result) {
+
+        //String[] updateInformation = result.split("/");
+        String additionalText = "";
+
+        String text = "";
+        if (result.getStatusQuestion() == -1) {
+            text = "Your question has been discarded!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been discarded!";
+        } else if (result.getStatusQuestion() == 0) {
+            text = "Your question has been marked as answered!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been marked as answered!";
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setWidth(900);
+        alert.setHeight(300);
+        alert.setTitle("Update on your question!");
+        alert.setHeaderText(text);
+        alert.setContentText(additionalText);
+        alert.showAndWait();
+
     }
 
 }
