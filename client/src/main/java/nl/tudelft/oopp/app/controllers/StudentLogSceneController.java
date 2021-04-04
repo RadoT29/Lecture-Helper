@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.models.Question;
 import java.io.IOException;
@@ -31,6 +32,8 @@ public class StudentLogSceneController extends StudentSceneController {
     protected Node createQuestionCellLog(Question question) throws IOException {
 
         Node newQuestion = super.createQuestionCellLog(question);
+        HBox buttonBox = (HBox) newQuestion.lookup("#buttonBox");
+        buttonBox.setVisible(false);
 
         return newQuestion;
     }
