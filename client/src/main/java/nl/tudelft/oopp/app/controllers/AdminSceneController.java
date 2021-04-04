@@ -56,12 +56,12 @@ public class AdminSceneController  {
      * This method makes a request for the rooms on database to refresh them on the client.
      */
     public void refresh() {
-        rooms = new ArrayList<AdminRoom>();
-        selected = new HashMap<String,AdminRoom>();
+
+        rooms = new ArrayList<>();
+        selected = new HashMap<>();
         rooms.addAll(AdminCommunication.getAdminRooms());
         loadRooms();
         selectAllButton.setText("Select All");
-
     }
 
     /**
@@ -177,13 +177,13 @@ public class AdminSceneController  {
 
             String moderatorLink = room.linkIdModerator.toString();
 
-            String exported = "Nothing has been added";
-            exported = HomeSceneCommunication.exportQuestions(moderatorLink);
+            String exported = HomeSceneCommunication.exportQuestions(moderatorLink);
 
             try {
 
-                FileWriter file = new FileWriter(new File("ExportedQuestions"
+                FileWriter file = new FileWriter(("ExportedQuestions"
                         + room.name + ".txt"));
+                assert exported != null;
                 file.write(exported);
                 file.close();
 

@@ -62,6 +62,7 @@ public class UserController {
                 System.out.println("Moderator created @ Room" + student.getRoomId() + ":"
                         + "\n\tUser id: " + student.getId()
                         + "\n\tUser name: " + student.getName());
+
                 return student;
             }
             return null;

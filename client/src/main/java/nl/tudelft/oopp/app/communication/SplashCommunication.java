@@ -80,7 +80,6 @@ public class SplashCommunication {
      * @throws NoSuchRoomException - throws this exception if the room link is wrong
      */
     public static void checkForRoom(String roomLink) throws NoSuchRoomException {
-        System.out.println("This worked - checkForRoom !!!");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
         HttpResponse<String> response = null;
         try {
@@ -101,7 +100,7 @@ public class SplashCommunication {
             // Uses the information received to update the session information.
             System.out.println("Is moderator1 " + user.getIsModerator());
             session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
-            System.out.println("Is moderator2 " + session.getIsModerator());
+            System.out.println("Is moderator2 " + session.isModerator());
             //If the link is not valid then no session is started
             // and user should stay on splash screen.
             if (session == null) {

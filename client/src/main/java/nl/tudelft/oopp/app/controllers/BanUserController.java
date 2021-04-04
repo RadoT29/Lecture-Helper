@@ -8,10 +8,8 @@ import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.models.Session;
 
 public class BanUserController {
-    private Session session = Session.getInstance();
 
-    void initialize() {
-    }
+    private Session session = Session.getInstance();
 
     private String questionId;
 

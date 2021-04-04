@@ -3,14 +3,8 @@ package nl.tudelft.oopp.app.models;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
-import nl.tudelft.oopp.app.controllers.HomeSceneController;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -58,12 +52,12 @@ public class Question implements Comparable<Question> {
         return ((o.getTotalUpVotes() + extra1) - (this.getTotalUpVotes() + extra));
     }
 
-    
+
     /** Method to attribute the extra points to recent questions
      * the age of a question is in seconds, meaning that as time goes by it will get less
      * extra points and its relevance will mostly be by upvotes and not time
      * To avoid misallocating extra points, questions with less than 5 upvotes are not considered.
-            * @param o - question to attribute the points
+     * @param o - question to attribute the points
      * @return int - amount of points
      */
     public int extraPoints(Question o) {

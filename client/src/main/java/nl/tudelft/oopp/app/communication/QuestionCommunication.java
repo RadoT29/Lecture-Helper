@@ -2,7 +2,8 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import nl.tudelft.oopp.app.controllers.HomeSceneController;
+
+import nl.tudelft.oopp.app.controllers.StudentSceneController;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.Session;
 
@@ -242,7 +243,7 @@ public class QuestionCommunication {
         QuestionsUpdate result = gson.fromJson(response.body(), QuestionsUpdate.class);
         System.out.println("Result is " + result);
         if (result != null) {
-            HomeSceneController.questionUpdatePopUp(result);
+            StudentSceneController.questionUpdatePopUp(result);
         }
     }
 

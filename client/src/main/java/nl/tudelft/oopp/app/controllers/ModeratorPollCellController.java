@@ -28,10 +28,10 @@ public class ModeratorPollCellController {
     private HBox pollBox;
 
 
-    private ModeratorPollSceneController hsc;
+    private ModeratorPollSceneController mpsc;
 
-    public void setHomeScene(ModeratorPollSceneController hsc) {
-        this.hsc = hsc;
+    public void setHomeScene(ModeratorPollSceneController mpsc) {
+        this.mpsc = mpsc;
     }
 
     /**

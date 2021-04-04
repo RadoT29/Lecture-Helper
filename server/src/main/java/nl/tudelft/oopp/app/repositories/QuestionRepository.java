@@ -99,4 +99,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("UPDATE Question u SET u.ageSeconds=?2 WHERE u.id=?1")
     void updateAge(long questionId, String ageSeconds);
 
+
+    @Query(value = "SELECT u.totalUpVotes from Question u where u.id=?1")
+    Integer getUpVoteCount(Long questionId);
+
 }

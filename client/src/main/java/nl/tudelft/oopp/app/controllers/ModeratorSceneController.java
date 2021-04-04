@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
@@ -34,7 +35,7 @@ import nl.tudelft.oopp.app.models.Session;
 /**
  * This class controls the Main scene of the Moderators.
  */
-public class ModeratorSceneController extends HomeSceneController implements Initializable {
+public abstract class ModeratorSceneController extends SceneController {
     @FXML
     public Button menuButton;
     @FXML
@@ -44,12 +45,10 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
     @FXML
     public Label moreOptionsLabel;
     @FXML
-    public HBox reactionBox;
+    public Button closeOpenRoomButton;
+    @FXML
+    public Label closeOpenRoomLabel;
 
-    @FXML
-    public Button speedStat;
-    @FXML
-    public HBox emotionReactions;
     @FXML
     public Button moreReactionButton;
 
@@ -72,21 +71,15 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
         closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
         closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
-        mainBoxLog.setVisible(false);
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 closeFastNav.setToX(-(slidingMenu.getWidth()));
                 closeFastNav.play();
             }
-
-
         });
-        super.initialize(url,rb);
-        reactionController = new ModeratorReactionController(emotionReactions);
-        refresh();
 
+        super.initialize(url,rb);
     }
 
 
@@ -118,46 +111,53 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
 
     /**
      * close the room.
+     * true/exception for close
+     * false for open
      */
     public void closeOpenRoom() {
-        super.closeOpenRoom();
-    }
+        //Session session = Session.getInstance();
+        String linkId = session.getRoomLink();
+        try {
+            ServerCommunication.isRoomOpenStudents(linkId);
+            changeImageCloseRoomButton();
+            ServerCommunication.closeRoomStudents(linkId);
 
-    /**
-     * Pressing the sendButton will send all the text in the questionInput
-     * to the sever as a Question object.
-     */
-    public void sendQuestion() {
-        super.sendQuestion();
-    }
-
-    /**
-     * fill in the priority queue and and load them on the screen.
-     */
-    public void refresh() {
-        super.refresh();
-        loadStats();
-        reactionController.update();
-    }
-
-    /**
-     * This method changes the icons that represent the Speed and Emotion Reaction to
-     * match their statistics.
-     */
-    public void loadStats() {
-        int speedStatInt = ReactionCommunication.getReactionStats(true);
-
-        System.out.println("speed = " + speedStatInt);
-
-        if (speedStatInt == 1) {
-            speedStat.getStyleClass().set(1,"fastButton");
-        } else if (speedStatInt == -1) {
-            speedStat.getStyleClass().set(1,"slowButton");
-        } else {
-            speedStat.getStyleClass().set(1,"okButton");
+        } catch (NoStudentPermissionException exception) {
+            changeImageOpenRoomButton();
+            ServerCommunication.openRoomStudents(linkId);
         }
-
     }
+
+    /**
+     * change the image of the closeOpenRoomButton
+     * to open room image.
+     */
+    public void changeImageCloseRoomButton() {
+        closeOpenRoomButton.setStyle("-fx-shape: \"M184.646,0v21.72H99.704v433.358h31.403V53.123h"
+                + "53.539V492.5l208.15-37.422v-61.235V37.5L184.646,0z M222.938,263.129\n"
+                + "\t\tc-6.997,0-12.67-7.381-12.67-16.486c0-9.104,5.673-16.485,12.67-16.4"
+                + "85s12.67,7.381,12.67,16.485\n"
+                + "\t\tC235.608,255.748,229.935,263.129,222.938,263.129z\"");
+        closeOpenRoomLabel.setText("Open Room");
+    }
+
+    /**
+     * change the image of the closeOpenRoomButton
+     * to close room image.
+     */
+    public void changeImageOpenRoomButton() {
+        closeOpenRoomButton.setStyle("-fx-shape: \"M32.6652 5.44421C17.6121 5.44421 5.44434 17.611"
+                + "9 5.44434 32.6651C5.44434 47.7182 17.6121 59.8859 32.6652 59.8859C47.7183 59.88"
+                + "59 59.886 47.7182 59.886 32.6651C59.886 17.6119 47.7183 5.44421 32.6652 5.44421"
+                + "ZM32.6652 54.4417C20.6608 54.4417 10.8885 44.6694 10.8885 32.6651C10.8885 20.66"
+                + "07 20.6608 10.8884 32.6652 10.8884C44.6696 10.8884 54.4418 20.6607 54.4418 32.6"
+                + "651C54.4418 44.6694 44.6696 54.4417 32.6652 54.4417ZM42.4375 19.0546L32.6652 28"
+                + ".8269L22.8929 19.0546L19.0548 22.8928L28.827 32.6651L19.0548 42.4373L22.8929 46"
+                + ".2755L32.6652 36.5032L42.4375 46.2755L46.2756 42.4373L36.5033 32.6651L46.2756 2"
+                + "2.8928L42.4375 19.0546Z\"");
+        closeOpenRoomLabel.setText("Close Room");
+    }
+
 
     /**
      * Method to clear all questions and allow the moderator to reset the room
@@ -166,9 +166,8 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      * in the HomeCommunicationScene.
      */
     public void clearQuestionsClicked() {
-        Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
         }
 
@@ -181,15 +180,15 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      * it will then create a new text file inside the repository with these.
      */
     public void exportQuestionsClicked() {
-        Session session = Session.getInstance();
+
         String exported = "Nothing has been added";
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
         }
 
         try {
             FileWriter file = new FileWriter(new File("ExportedQuestions"
-                                                    + session.getRoomName() + ".txt"));
+                    + session.getRoomName() + ".txt"));
             file.write(exported);
             file.close();
 
@@ -207,17 +206,7 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      * @throws IOException if it cant load the fxml file
      */
     public void presenterMode() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/presentationScene.fxml")).load();
-        Stage stage = (Stage) mainMenu.getScene().getWindow();
-
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.65;
-        double height = screenSize.getHeight() * 0.6;
-
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+        changeScene("/presentationScene.fxml", 0.65);
     }
 
     /**
@@ -225,17 +214,20 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
      * @throws IOException if it cant load the fxml file
      */
     public void goToPolls() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/moderatorPollScene.fxml")).load();
-        Stage stage = (Stage) mainMenu.getScene().getWindow();
+        changeScene("/moderatorPollScene.fxml", 0.8);
+    }
 
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
+    public void goToLog() throws IOException {
+        changeScene("/moderatorQuestionLogScene.fxml", 0.8);
+    }
 
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+    /**
+     * Method to load the main moderator scene.
+     * Makes the scene bigger so the moderator can interacat with all its features
+     * @throws IOException if it cant load the fxml file
+     */
+    public void goToHome() throws IOException {
+        changeScene("/moderatorMainScene.fxml", 0.8);
     }
 
     /**
@@ -249,96 +241,5 @@ public class ModeratorSceneController extends HomeSceneController implements Ini
 
     }
 
-    @Override
-    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
-        Node newQuestion = super.createQuestionCellLog(question,resource);
-        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
 
-        if (!answerLabel.getText().equals("This question was answered during the lecture")) {
-            Button answerButtonLog = (Button) newQuestion.lookup("#answerButtonLog");
-            answerButtonLog.getStyleClass().remove("answerButton");
-            answerButtonLog.getStyleClass().add("editButton");
-            answerButtonLog.setText("Edit");
-        }
-        return newQuestion;
-    }
-
-    /**
-     * shows feedback from students in the scene.
-     */
-    public void showFeedback() {
-        try {
-            ViewFeedbackSceneController.init();
-        } catch (IOException e) {
-            return;
-        }
-
-
-    }
-
-    /**
-     * handles click on moreReactionButton.
-     * shows/hides the emotion reactions on the screen
-     * and changes the button to + or -
-     */
-    public void moreReactionsClicked() {
-        if (!emotionReactions.isVisible()) {
-            //display emotion reactions
-            moreReactionButton.getStyleClass().set(1, "hideButton");
-            reactionController.showEmotion();
-        } else {
-            //hide emotion reactions
-            moreReactionButton.getStyleClass().set(1, "expandButton");
-            reactionController.hideEmotion();
-        }
-
-    }
-
-    @Override
-    public void constantRefresh() throws ExecutionException,
-            InterruptedException, NoStudentPermissionException,
-            AccessDeniedException, UserWarnedException {
-        super.constantRefresh();
-        loadStats();
-        reactionController.update();
-    }
-
-    @Override
-    public void changeTheme(
-            boolean mode, String buttonColour, String menuColour, String textColour,
-            String inputColour, String backgroundColour) {
-
-        for (Node button : reactionBox.getChildren()) {
-            button.setStyle("-fx-background-color:" + buttonColour);
-        }
-        ArrayList<VBox> list = new ArrayList<>();
-        list.add(slidingMenu);
-        list.add(mainMenu);
-        moreOptionsLabel.setStyle("-fx-text-fill:" + textColour);
-        setMenuColour(list, menuColour, buttonColour, textColour);
-
-        super.changeTheme(mode, buttonColour, menuColour,
-                textColour, inputColour, backgroundColour);
-    }
-
-    /**
-     * This method changes the colour of the menu(navigation bar).
-     * @param list - a list of the VBoxes in the menu.
-     * @param menuColour - the colour of the background.
-     * @param buttonColour - the button colour.
-     * @param textColour - the label colour.
-     */
-    public void setMenuColour(ArrayList<VBox> list, String menuColour,
-                              String buttonColour, String textColour) {
-        for (VBox box : list) {
-            box.setStyle("-fx-background-color:" + menuColour);
-            for (Node node : box.getChildren()) {
-                if (node instanceof Button) {
-                    node.setStyle("-fx-background-color:" + buttonColour);
-                } else {
-                    node.setStyle("-fx-text-fill:" + textColour);
-                }
-            }
-        }
-    }
 }

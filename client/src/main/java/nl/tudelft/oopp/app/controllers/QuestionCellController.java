@@ -1,29 +1,21 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import nl.tudelft.oopp.app.communication.BanCommunication;
-import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
-import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
-import nl.tudelft.oopp.app.models.User;
 
 import java.awt.*;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.util.Locale;
 
 public class QuestionCellController {
 
@@ -58,10 +50,10 @@ public class QuestionCellController {
 
     Session session = Session.getInstance();
 
-    private HomeSceneController hsc;
+    private SceneController hsc;
     private Question question;
 
-    public void setHomeScene(HomeSceneController hsc) {
+    public void setHomeScene(SceneController hsc) {
         this.hsc = hsc;
     }
 
@@ -81,7 +73,7 @@ public class QuestionCellController {
      * @return - A visual representation of the question.
      * @throws IOException - may be thrown.
      */
-    public static Node init(Question question, String resource, HomeSceneController hsc)
+    public static Node init(Question question, String resource, SceneController hsc)
             throws IOException {
         FXMLLoader loader = new FXMLLoader(EditQuestionSceneController
                 .class.getResource(resource));
@@ -96,7 +88,7 @@ public class QuestionCellController {
 
 
         //Check if the question loaded was created by the session's user
-        hsc.checkForQuestion(newQuestion, question);
+        //hsc.checkForQuestion(newQuestion, question);
 
         //set the question text
         Label questionLabel = (Label) newQuestion.lookup("#questionTextLabel");
@@ -113,6 +105,7 @@ public class QuestionCellController {
 
         //set the upvote count
         Label upvoteLabel = (Label) newQuestion.lookup(("#upvoteLabel"));
+
         upvoteLabel.setText("+" + question.getTotalUpVotes());
 
         //set upvote button as active or inactive
@@ -140,7 +133,7 @@ public class QuestionCellController {
         String id = question.getId() + "";
         Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             //delete the question from the database if moderator
             QuestionCommunication.dismissQuestion(Long.parseLong(id));
 
@@ -212,6 +205,7 @@ public class QuestionCellController {
             QuestionCommunication.upVoteQuestion(questionId);
         }
 
+
     }
 
     /**
@@ -221,7 +215,7 @@ public class QuestionCellController {
     public void blockWarnUser() throws IOException {
         Node question = questionCell.getParent();
         questionId = question.getId();
-        System.out.println("Question Id: " + questionId);
+
         Session session = Session.getInstance();
         try {
             BanCommunication.isIpWarned(session.getRoomLink());
@@ -297,8 +291,6 @@ public class QuestionCellController {
         hsc.refresh();
     }
 
-
-
     /**
      * Method to set a question as answered,
      * It will check if the question selected has been marked as answered
@@ -318,9 +310,9 @@ public class QuestionCellController {
             System.out.println("This question was already answered");
         }
 
+        refresh();
+
     }
-
-
 
     public void refresh() {
         hsc.refresh();

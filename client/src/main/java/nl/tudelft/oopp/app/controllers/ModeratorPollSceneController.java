@@ -4,7 +4,6 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,15 +24,13 @@ import nl.tudelft.oopp.app.models.PollOption;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ModeratorPollSceneController implements Initializable {
+public class ModeratorPollSceneController extends ModeratorSceneController {
 
     Session session = Session.getInstance();
 
@@ -81,12 +78,9 @@ public class ModeratorPollSceneController implements Initializable {
         closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
         closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                closeFastNav.setToX(-(slidingMenu.getWidth()));
-                closeFastNav.play();
-            }
+        Platform.runLater(() -> {
+            closeFastNav.setToX(-(slidingMenu.getWidth()));
+            closeFastNav.play();
         });
 
         refresh();
@@ -114,6 +108,7 @@ public class ModeratorPollSceneController implements Initializable {
         double width = screenSize.getWidth() * 0.8;
         double height = screenSize.getHeight() * 0.8;
 
+        assert loader != null;
         Scene scene = new Scene(loader, width, height);
 
         linkStage.setScene(scene);
@@ -121,25 +116,6 @@ public class ModeratorPollSceneController implements Initializable {
         linkStage.show();
 
     }
-
-    //    /**
-    //     * close the room.
-    //     */
-    //    public void closeRoom() {
-    //        Session session = Session.getInstance();
-    //        String linkId = session.getRoomLink();
-    //        ServerCommunication.closeRoom(linkId);
-    //    }
-    //
-    //    /**
-    //     * kick all students.
-    //     */
-    //    public void kickAllStudents() {
-    //        Session session = Session.getInstance();
-    //        String linkId = session.getRoomLink();
-    //        ServerCommunication.kickAllStudents(linkId);
-    //    }
-
 
     /**
      * Method to clear all questions and allow the moderator to reset the room
@@ -150,7 +126,7 @@ public class ModeratorPollSceneController implements Initializable {
     public void clearQuestionsClicked() {
         Session session = Session.getInstance();
 
-        if (session.getIsModerator()) {
+        if (session.isModerator()) {
             HomeSceneCommunication.clearQuestions(session.getRoomLink());
         }
 
@@ -182,30 +158,6 @@ public class ModeratorPollSceneController implements Initializable {
         } else {
             hideSlidingBar();
         }
-    }
-
-
-    /**
-     * Will be removed with refactoring.
-     */
-    public void exportQuestionsClicked() {
-        Session session = Session.getInstance();
-        String exported = "Nothing has been added";
-        if (session.getIsModerator()) {
-            exported = HomeSceneCommunication.exportQuestions(session.getRoomLink());
-        }
-
-        try {
-            FileWriter file = new FileWriter(new File("ExportedQuestions"
-                    + session.getRoomName() + ".txt"));
-            file.write(exported);
-            file.close();
-
-        } catch (IOException e) {
-            System.out.print("Impossible to find file");
-            e.printStackTrace();
-        }
-        refresh();
     }
 
     /**
@@ -335,19 +287,15 @@ public class ModeratorPollSceneController implements Initializable {
     /**
      * This method is constantly called by a thread and refreshes the page.
      *
-     * @throws ExecutionException           - may be thrown.
-     * @throws InterruptedException         - may be thrown.
-     * @throws NoStudentPermissionException - may be thrown.
-     * @throws AccessDeniedException        - may be thrown.
-     * @throws UserWarnedException          - may be thrown.
+     * @throws InterruptedException - Thrown when a thread is waiting, sleeping,
+     *                                or otherwise occupied, and the thread is interrupted,
+     *                                either before or during the activity.
      */
-    public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException,
-            AccessDeniedException, UserWarnedException {
+    public void constantRefresh() throws InterruptedException {
+
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.constantlyGetPolls(session.getRoomLink()));
         loadPolls();
-        //if (session.getIsModerator()) {
         String linkId = session.getRoomLink();
         try {
             ServerCommunication.isRoomOpenStudents(linkId);
@@ -355,25 +303,12 @@ public class ModeratorPollSceneController implements Initializable {
         } catch (NoStudentPermissionException exception) {
             changeImageCloseRoomButton();
         }
-        // }
 
-        //        //ServerCommunication.isTheRoomClosed(session.getRoomLink());
-        //        if (!session.getIsModerator()) {
-        //            //ServerCommunication.hasStudentPermission(session.getRoomLink());
-        //            ServerCommunication.isRoomOpenStudents(session.getRoomLink());
-        //            QuestionCommunication
-        //            .updatesOnQuestions(session.getUserId(), session.getRoomLink());
-        //            if (!session.isWarned()) {
-        //                BanCommunication.isIpWarned(session.getRoomLink());
-        //            } else {
-        //                BanCommunication.isIpBanned(session.getRoomLink());
-        //            }
-        //        }
     }
 
 
     /**
-     * change the image of the closeOpenRoomButton
+     * Change the image of the closeOpenRoomButton
      * to open room image.
      */
     public void changeImageCloseRoomButton() {
