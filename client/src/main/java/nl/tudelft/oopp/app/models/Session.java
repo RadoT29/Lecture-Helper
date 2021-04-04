@@ -106,10 +106,22 @@ public final class Session {
      * This method resets the session by clearing all the session Data.
      */
     public static void clearSession() {
+        if (instance == null) {
+            instance = new Session();
+            return;
+        }
         Stage stage = instance.getStage();
         instance = null;
         instance = new Session(stage);
     }
+
+    /**
+     * This method resets the session by making it null for tests.
+     */
+    public static void clearSessionTest() {
+        instance = null;
+    }
+
 
     /**
      * Method to add a question to the list of questions that the user in this session has made

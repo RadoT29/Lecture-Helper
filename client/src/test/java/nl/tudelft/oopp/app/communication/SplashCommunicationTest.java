@@ -1,8 +1,10 @@
 package nl.tudelft.oopp.app.communication;
 
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
+import nl.tudelft.oopp.app.models.Moderator;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
+import nl.tudelft.oopp.app.models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +31,7 @@ public class SplashCommunicationTest {
      */
     @AfterEach
     public void stopMockServer() {
-        Session.clearSession();
+        Session.clearSessionTest();
         mockServer.stop();
     }
 

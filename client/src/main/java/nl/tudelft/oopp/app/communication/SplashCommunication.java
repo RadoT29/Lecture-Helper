@@ -80,7 +80,6 @@ public class SplashCommunication {
      * @throws NoSuchRoomException - throws this exception if the room link is wrong
      */
     public static void checkForRoom(String roomLink) throws NoSuchRoomException {
-        System.out.println("This worked - checkForRoom !!!");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
         HttpResponse<String> response = null;
         try {
