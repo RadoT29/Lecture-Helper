@@ -41,8 +41,6 @@ public class Room {
 
     private LocalDateTime startDate;
 
-    private LocalDateTime endDateForStudents;
-
     @CreationTimestamp
     private Date createdAt;
 
@@ -58,8 +56,8 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
-        this.startDate = LocalDateTime.now(Clock.systemUTC());
         this.permission = true;
+        this.startDate = LocalDateTime.now(Clock.systemUTC());
     }
 
     /**
@@ -70,8 +68,8 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
         this.linkIdModerator = UUID.randomUUID();
         this.isOpen = true;
-        this.startDate = startDate;
         this.permission = false;
+        this.startDate = startDate;
     }
 
     public void setLinkIdModerator() {
@@ -82,20 +80,8 @@ public class Room {
         this.linkIdStudent = UUID.randomUUID();
     }
 
-    public boolean getIsOpen() {
-        return isOpen;
-    }
-
     public void setIsOpen(boolean isOpen) {
         this.isOpen = isOpen;
-    }
-
-    public boolean getPermission() {
-        return permission;
-    }
-
-    public void setPermission(boolean permission) {
-        this.permission = permission;
     }
 
 }

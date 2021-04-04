@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -48,7 +47,7 @@ public class EditQuestionSceneController {
                 .class.getResource("/editQuestionScene.fxml"));
         Parent parent = loader.load();
         Scene scene = new Scene(parent);
-        EditQuestionSceneController eqc = loader.<EditQuestionSceneController>getController();
+        EditQuestionSceneController eqc = loader.getController();
 
         //set the fields for the newly created scene
         eqc.setQuestionId(questionId);

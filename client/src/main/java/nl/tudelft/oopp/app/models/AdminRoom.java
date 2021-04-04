@@ -13,7 +13,6 @@ public class AdminRoom {
     public int numberQuestionsInterval;
     public int timeInterval;
     public String startDate;
-    public String endDateForStudents;
     public String createdAt;
     public String updatedAt;
 }

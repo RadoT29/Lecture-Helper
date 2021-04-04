@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.app.models;
 
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,55 +21,26 @@ public final class Session {
     private String roomName;
     private boolean isModerator;
     private String userId;
-    private List<String> upVotedQuestions;
-    private List<String> questionsMade;
+    private List<String> upVotedQuestions = new ArrayList<>();
+    private List<String> questionsMade = new ArrayList<>();
+    private String timeZone;
+    private Stage stage;
     //status of the student
     //if the student is warned,
     //that it will be banned
     private boolean isWarned;
 
     /**
-     * Session constructor.
-     *
-     * @param roomLink    Link for the room that is going to be used by this client for requests
-     * @param roomName    Name of the room
-     * @param isModerator If this user is a moderator or students it will load different displays.
-     *                    Notice there still is a server side authentication for the links,
-     *                    so a student can not access moderator rights
-     *                    just by changing this variable
+     * Constructor for the session.
+     * @param stage - Stage to be used
      */
-    public Session(String roomLink,
-                   String roomName,
-                   String userId,
-                   boolean isModerator) {
-        this.roomLink = roomLink;
-        this.roomName = roomName;
-        this.isModerator = isModerator;
-        this.userId = userId;
-        this.isWarned = false;
-        this.upVotedQuestions = new ArrayList<>();
-        this.questionsMade = new ArrayList<>();
-
+    public Session(Stage stage) {
+        this.stage = stage;
     }
 
-    /**
-     * Session constructor.
-     *
-     * @param roomLink    Link for the room that is going to be used by this client for requests
-     * @param userId      Id of the user on the local client
-     * @param isModerator If this user is a moderator or students it will load different displays.
-     *                    Notice there still is a server side authentication for the links,
-     *                    so a student can not access moderator rights
-     *                    just by changing this variable
-     */
-    public Session(String roomLink, String userId, boolean isModerator) {
-        this.roomLink = roomLink;
-        this.userId = userId;
-        this.isModerator = isModerator;
-        this.isWarned = false;
-        this.upVotedQuestions = new ArrayList<>();
-        this.questionsMade = new ArrayList<>();
-
+    public static Session getInstance(Stage stage) {
+        instance = new Session(stage);
+        return instance;
     }
 
     /**
@@ -89,8 +62,12 @@ public final class Session {
                                       boolean isModerator
     ) {
         if (instance == null) {
-            instance = new Session(roomLink, roomName, userId, isModerator);
+            instance = new Session();
         }
+        instance.setRoomLink(roomLink);
+        instance.setRoomName(roomName);
+        instance.setUserId(userId);
+        instance.setModerator(isModerator);
         return instance;
     }
 
@@ -110,9 +87,9 @@ public final class Session {
     public static Session getInstance(String roomLink,
                                       String userId,
                                       boolean isModerator) {
-        if (instance == null) {
-            instance = new Session(roomLink, userId, isModerator);
-        }
+        instance.setRoomLink(roomLink);
+        instance.setUserId(userId);
+        instance.setModerator(isModerator);
         return instance;
     }
 
@@ -125,12 +102,26 @@ public final class Session {
         return instance;
     }
 
+    /**
+     * This method resets the session by clearing all the session Data.
+     */
     public static void clearSession() {
+        
+        if (instance == null) {
+            instance = new Session();
+            return;
+        }
+        
+        Stage stage = instance.getStage();
         instance = null;
+        instance = new Session(stage);
     }
 
-    public boolean getIsModerator() {
-        return isModerator;
+    /**
+     * This method resets the session by making it null for tests.
+     */
+    public static void clearSessionTest() {
+        instance = null;
     }
 
 
@@ -142,7 +133,7 @@ public final class Session {
     public void questionAdded(String questionId) {
         this.questionsMade.add(questionId);
     }
-    
+
     /**
      * Method to add a question to the list of the upvoted questions by a specific user
      * (given that each user will have a different list initiated in their session).
@@ -163,8 +154,6 @@ public final class Session {
         this.upVotedQuestions.remove(questionId);
     }
 
-
-
     /**
      * Method to remove a user's question from the list of questions that they have made
      * (each user has their own list of questions made, in their correspondent session,
@@ -173,13 +162,6 @@ public final class Session {
      */
     public void questionDeleted(String questionId) {
         this.questionsMade.remove(questionId);
-    }
-
-    /**
-     * This method resets the session by clearing all the session Data.
-     */
-    public static void cleanUserSession() {
-        instance = null;
     }
 
 }

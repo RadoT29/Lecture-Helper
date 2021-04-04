@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,12 +23,13 @@ import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.SpeedReaction;
 
 /**
  * This class controls the Main scene of the Students.
  */
-public class StudentSceneController extends HomeSceneController implements Initializable {
+public abstract class StudentSceneController extends SceneController {
 
     @FXML
     public Button reactionButton;
@@ -80,8 +82,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
         openReactionNav.setToX(reactionMenu.getTranslateX() - reactionMenu.getWidth());
         closeReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
         closeReactionFastNav = new TranslateTransition(Duration.millis(.1), reactionMenu);
-
-        mainBoxLog.setVisible(false);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -158,7 +158,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
         slowButton.setDisable(false);
     }
 
-
     /**
      * This method sends the corresponding SpeedReaction when the okButton is clicked.
      */
@@ -219,25 +218,6 @@ public class StudentSceneController extends HomeSceneController implements Initi
         confusedButton.setDisable(true);
     }
 
-
-    /**
-     *  Creates a node for a question in the question log scene.
-     * @param question - the question.
-     * @param resource - the question cell.
-     * @return - a Node of the question.
-     */
-    @Override
-    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
-
-        Node newQuestion = super.createQuestionCellLog(question, resource);
-
-        HBox buttonBox = (HBox) newQuestion.lookup("#buttonBox");
-        buttonBox.setVisible(false);
-
-        return newQuestion;
-    }
-
-
     @Override
     public void closeWindow() {
         super.closeWindow();
@@ -251,64 +231,54 @@ public class StudentSceneController extends HomeSceneController implements Initi
         StudentFeedbackSceneController.init();
     }
 
-    @Override
-    public void changeTheme(
-            boolean mode, String buttonColour, String menuColour, String textColour,
-            String inputColour, String backgroundColour) {
-        ArrayList<VBox> list = new ArrayList<>();
-        list.add(reactionMenu);
-        list.add(speedMenu);
-        list.add(mainMenu);
-
-        changeMenuColour(mode, menuColour, textColour, list);
-
-        super.changeTheme(mode, buttonColour, menuColour,
-                textColour, inputColour, backgroundColour);
-    }
-
-    /**
-     * This method changes the colour of the menu(navigation bar).
-     * @param mode - current mode.
-     * @param menuColour - background of menu.
-     * @param textColour - colour of labels.
-     * @param list - all the VBoxes, which compose the navigation bar.
-     */
-    public void changeMenuColour(
-            boolean mode, String menuColour, String textColour, ArrayList<VBox> list) {
-        for (VBox box : list) {
-            box.setStyle("-fx-background-color:" + menuColour);
-            for (Node node : box.getChildren()) {
-                if (node instanceof Button) {
-                    if (mode) {
-                        node.getStyleClass().remove("menuBtnBlack");
-                        node.getStyleClass().add("menuBtnBlue");
-                    } else {
-                        node.getStyleClass().removeAll(Collections.singleton("menuBtnBlue"));
-                        node.getStyleClass().add("menuBtnBlack");
-                    }
-                } else {
-                    node.setStyle("-fx-text-fill:" + textColour);
-                }
-            }
-        }
-    }
-
     /**
      * Method to load the poll scene.
      * @throws IOException if it cant load the fxml file
      */
     public void goToPolls() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/studentPollScene.fxml")).load();
-        Stage stage = (Stage) reactionMenu.getScene().getWindow();
+        changeScene("/studentPollScene.fxml", 0.8);
+    }
 
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
+    public void goToHome() throws IOException {
+        changeScene("/studentMainScene.fxml", 0.8);
+    }
 
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+    public void goToLog() throws IOException {
+        changeScene("/studentQuestionLogScene.fxml", 0.8);
+    }
+
+    /**
+     * Every 2 seconds the client side of the app asks the server for a
+     * questions update for this user. If there is one, this method
+     * is called by the QuestionCommunication class.
+     * @param result - depending on the update, the result can be -1 for
+     *               a question discarded or 0 for question marked
+     *               as answered. Depending on that a pop up appears and
+     *               notifies the user for its question update.
+     */
+    public static void questionUpdatePopUp(QuestionsUpdate result) {
+
+        //String[] updateInformation = result.split("/");
+        String additionalText = "";
+
+        String text = "";
+        if (result.getStatusQuestion() == -1) {
+            text = "Your question has been discarded!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been discarded!";
+        } else if (result.getStatusQuestion() == 0) {
+            text = "Your question has been marked as answered!";
+            additionalText = "Your question: \"" + result.getQuestionText()
+                    + "\" has been marked as answered!";
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setWidth(900);
+        alert.setHeight(300);
+        alert.setTitle("Update on your question!");
+        alert.setHeaderText(text);
+        alert.setContentText(additionalText);
+        alert.showAndWait();
+
     }
 
 }

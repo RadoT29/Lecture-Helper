@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.repositories;
 
 import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,6 +26,12 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             + "(u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1) AND u.answered = true")
     List<Question> findAllAnsweredByRoomLink(UUID link);
 
+    @Query("SELECT u.id FROM Question u WHERE "
+            + "(u.room.linkIdStudent=?1 OR u.room.linkIdModerator=?1)"
+            + " AND u.answered='false'")
+    List<Long> findAllIdByRoomLink(UUID link);
+    
+    
     @Transactional
     @Modifying
     @Query("DELETE FROM Question u WHERE u.id=?1 AND u.user.id=?2")
@@ -77,4 +84,23 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query(value = "SELECT q FROM Question q "
             + "where q.user.id=?1 and q.room.id=?2 and q.createdAt>=?3")
     List<Question> questionsByUserIdRoomIdInterval(long userId, long roomId, LocalDateTime time);
+    
+    
+    @Query("SELECT q FROM Question q WHERE q.id=?1")
+    Question getQuestionById(long questionId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.duration=?2 WHERE u.id=?1")
+    void updateDuration(long questionId, String duration);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Question u SET u.ageSeconds=?2 WHERE u.id=?1")
+    void updateAge(long questionId, String ageSeconds);
+
+
+    @Query(value = "SELECT u.totalUpVotes from Question u where u.id=?1")
+    Integer getUpVoteCount(Long questionId);
+
 }

@@ -33,7 +33,7 @@ public class QuestionCommunicationTest {
      */
     @AfterEach
     public void stopMockServer() {
-        Session.clearSession();
+        Session.clearSessionTest();
         mockServer.stop();
     }
 
