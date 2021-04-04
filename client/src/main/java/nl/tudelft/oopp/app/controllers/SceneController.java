@@ -85,9 +85,15 @@ public abstract class SceneController implements Initializable {
 
     /**
      * This method is constantly called by a thread and refreshes the page.
-     *
-     * @throws ExecutionException   - may be thrown.
-     * @throws InterruptedException - may be thrown.
+     * @throws ExecutionException - Exception thrown when attempting to retrieve
+     *                              the result of a task that aborted by throwing an exception.
+     * @throws InterruptedException - Thrown when a thread is waiting, sleeping,
+     *                                or otherwise occupied, and the thread is interrupted,
+     *                                either before or during the activity.
+     * @throws NoStudentPermissionException - Thrown if the user is a student
+     *                                        has no permission for the room.
+     * @throws AccessDeniedException - Thrown if the Server denies access to user.
+     * @throws UserWarnedException - Thrown if the user has been warned by a moderator.
      */
     public abstract void constantRefresh()
             throws ExecutionException, InterruptedException,
