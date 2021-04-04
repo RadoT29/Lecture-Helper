@@ -31,7 +31,7 @@ public final class Session {
     private boolean isWarned;
 
     /**
-     * Constructor for the session
+     * Constructor for the session.
      * @param stage - Stage to be used
      */
     public Session(Stage stage) {
@@ -61,6 +61,9 @@ public final class Session {
                                       String userId,
                                       boolean isModerator
     ) {
+        if (instance == null) {
+            instance = new Session();
+        }
         instance.setRoomLink(roomLink);
         instance.setRoomName(roomName);
         instance.setUserId(userId);
