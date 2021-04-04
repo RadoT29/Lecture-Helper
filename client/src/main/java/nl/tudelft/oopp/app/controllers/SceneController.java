@@ -1,11 +1,15 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
@@ -35,6 +39,8 @@ public abstract class SceneController implements Initializable {
 
     protected Thread thread;
 
+    @FXML
+    protected VBox questionBoxLog;
 
     /**
      * This method initializes the thread,
@@ -143,6 +149,51 @@ public abstract class SceneController implements Initializable {
      */
     public void openSettings() throws IOException {
         SettingsController.initialize(this, darkTheme);
+    }
+
+    /**
+     * Loads all answered questions in the question log.
+     */
+    public void loadAnsweredQuestions() {
+
+        questionBoxLog.getChildren().clear();
+        while (!questions.isEmpty()) {
+            Question question = questions.poll();
+            try {
+                questionBoxLog.getChildren()
+                        .add(createQuestionCellLog(question));
+            } catch (IOException e) {
+                questionBoxLog.getChildren().add(
+                        new Label("Something went wrong while loading this question"));
+            }
+        }
+    }
+
+    /**
+     * Creates a node for a question in the question log scene.
+     * @param question - the question.
+     * @return - a Node of the question.
+     */
+    protected Node createQuestionCellLog(Question question) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/questionCellQuestionLog.fxml"));
+        Node newQuestion = loader.load();
+        QuestionCellController qsc = loader.getController();
+        qsc.setHomeScene(this);
+
+        //set the node id to the question id
+        newQuestion.setId(question.getId() + "");
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabelLog");
+        questionLabel.setText(question.questionText);
+        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
+        answerLabel.setText(question.answerText);
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
+        return newQuestion;
     }
 
     public abstract void refresh();
