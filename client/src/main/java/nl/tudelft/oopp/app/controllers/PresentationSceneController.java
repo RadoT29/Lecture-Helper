@@ -69,14 +69,12 @@ public class PresentationSceneController extends SceneController implements Init
 
     /**
      * Method to constant refresh .
-     * @throws ExecutionException
-     * @throws InterruptedException
-     * @throws NoStudentPermissionException
-     * @throws AccessDeniedException
-     * @throws UserWarnedException
+     *
+     * @throws InterruptedException - Thrown when a thread is waiting, sleeping,
+     *                                or otherwise occupied, and the thread is interrupted,
+     *                                either before or during the activity.
      */
-    public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, AccessDeniedException, UserWarnedException {
+    public void constantRefresh() throws InterruptedException {
         questions.clear();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();

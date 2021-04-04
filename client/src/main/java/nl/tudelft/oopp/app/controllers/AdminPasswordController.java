@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.AdminCommunication;
-import nl.tudelft.oopp.app.models.AdminSession;
 
 
 import java.awt.*;
@@ -62,7 +61,6 @@ public class AdminPasswordController {
         boolean succeeded = AdminCommunication.checkPassword(password);
         if (succeeded) {
             // Loads next scene
-            AdminSession session = AdminSession.getInstance(password);
             AdminSceneController.init((Stage) passwordBox.getScene().getWindow());
         } else {
             // Tips the user that the password was wrong

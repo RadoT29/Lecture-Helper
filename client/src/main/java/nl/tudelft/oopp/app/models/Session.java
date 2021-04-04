@@ -106,10 +106,12 @@ public final class Session {
      * This method resets the session by clearing all the session Data.
      */
     public static void clearSession() {
+        
         if (instance == null) {
             instance = new Session();
             return;
         }
+        
         Stage stage = instance.getStage();
         instance = null;
         instance = new Session(stage);

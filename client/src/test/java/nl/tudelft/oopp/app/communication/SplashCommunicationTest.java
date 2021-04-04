@@ -17,13 +17,16 @@ import static org.mockserver.model.HttpResponse.response;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SplashCommunicationTest {
+
     private ClientAndServer mockServer;
+    private Session session;
 
     /**Start the mock server before each test.
      */
     @BeforeEach
     public void startMockServer() {
         mockServer = startClientAndServer(8080);
+        session = new Session();
     }
 
     /**Close the mock server after each test so they are completely isolated.
@@ -86,18 +89,22 @@ public class SplashCommunicationTest {
                                         .checkRoomBodyResponse(roomName, roomLink)));
     }
 
-    /**Test if SplashCommunication.postRoom return a user and it is saved in the Session singleton
+    /**
+     * Test if SplashCommunication.postRoom return a user and it is saved in the Session singleton
      */
     @Test
     void shouldCreateUserAndSaveSession() throws NoSuchRoomException {
+
         String roomName = "new room";
         mockPostRoom(roomName);
         Room room = SplashCommunication.postRoom(roomName);
         String roomLink = room.getLinkIdModerator().toString();
+
         mockCheckRoom(roomLink, roomName);
         SplashCommunication.checkForRoom(roomLink);
+
         //Gets the session with the updated information
-        Session session = Session.getInstance();
+        session = Session.getInstance();
 
         assertEquals(session.getRoomLink(), roomLink);
     }

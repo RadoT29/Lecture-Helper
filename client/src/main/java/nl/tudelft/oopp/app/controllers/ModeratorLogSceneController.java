@@ -7,15 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
-import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
-import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.PriorityQueue;
-import java.util.concurrent.ExecutionException;
 
 public class ModeratorLogSceneController extends ModeratorSceneController {
 
@@ -24,11 +20,12 @@ public class ModeratorLogSceneController extends ModeratorSceneController {
 
     /**
      * This method is constantly called by a thread and refreshes the page.
-     * @throws ExecutionException - may be thrown.
-     * @throws InterruptedException - may be thrown.
+     * @throws InterruptedException - Thrown when a thread is waiting, sleeping,
+     *                                or otherwise occupied, and the thread is interrupted,
+     *                                either before or during the activity.
      */
-    public void constantRefresh() throws ExecutionException, InterruptedException,
-            NoStudentPermissionException, AccessDeniedException, UserWarnedException {
+    public void constantRefresh() throws InterruptedException {
+
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication
                 .constantlyGetAnsweredQuestions(session.getRoomLink()));
@@ -49,7 +46,7 @@ public class ModeratorLogSceneController extends ModeratorSceneController {
             Question question = questions.poll();
             try {
                 questionBoxLog.getChildren()
-                        .add(createQuestionCellLog(question, "/questionCellQuestionLog.fxml"));
+                        .add(createQuestionCellLog(question));
             } catch (IOException e) {
                 questionBoxLog.getChildren().add(
                         new Label("Something went wrong while loading this question"));
@@ -58,14 +55,13 @@ public class ModeratorLogSceneController extends ModeratorSceneController {
     }
 
     /**
-     *  Creates a node for a question in the question log scene.
+     * Creates a node for a question in the question log scene.
      * @param question - the question.
-     * @param resource - the question cell.
      * @return - a Node of the question.
      */
-    protected Node createQuestionCellLog(Question question, String resource) throws IOException {
+    protected Node createQuestionCellLog(Question question) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/questionCellQuestionLog.fxml"));
         Node newQuestion = loader.load();
         QuestionCellController qsc = loader.getController();
         qsc.setHomeScene(this);
