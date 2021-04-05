@@ -124,6 +124,18 @@ public class ReactionServiceTest {
         verifyNoInteractions(speedReactionRepository);
     }
 
+    /**
+     * test that if the reaction is not a type of EmotionReaction or SpeedReaction
+     * then there is no interaction with the reaction repositories.
+     */
+    @Test
+    public void addNewReaction_reaction_noRepositoryInteraction_test() {
+        Reaction reaction = new Reaction();
+        reactionService.addNewReaction(roomLink, userIdStr, reaction);
+        verifyNoInteractions(speedReactionRepository);
+        verifyNoInteractions(emotionReactionRepository);
+    }
+
 
     //test getting reactionId
     /**

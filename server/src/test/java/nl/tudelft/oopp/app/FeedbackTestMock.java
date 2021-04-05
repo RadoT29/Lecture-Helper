@@ -37,7 +37,6 @@ public class FeedbackTestMock {
     private Feedback feedback;
     private Feedback tooLongFeedback;
     private String roomLink;
-    private String falseLink;
 
     @BeforeEach
     void setUp() {
@@ -59,8 +58,6 @@ public class FeedbackTestMock {
                 + "Aliquam placerat, ex ac molestie congue, mi nec.");
         tooLongFeedback.setRating(2);
 
-        falseLink = "FalseLink";
-        when(roomService.getByLink(falseLink)).thenReturn(null);
     }
 
     //TEST addFeedback(String roomLink, Feedback feedback)
@@ -85,25 +82,7 @@ public class FeedbackTestMock {
         verify(feedbackRepository, times(0)).save(tooLongFeedback);
     }
 
-    /**
-     * Tests that if the room does not exist AssertionError is thrown
-     * and the feedback is not saved.
-     */
-    @Test
-    public void addFeedbackNullTest() {
-        assertThrows(AssertionError.class, () -> feedbackService.addFeedback(roomLink, null));
-        verify(feedbackRepository, times(0)).save(feedback);
-    }
 
-    /**
-     * Tests that if the room does not exist then the AssertionError is thrown
-     * and the feedback is not saved.
-     */
-    @Test
-    public void addFeedbackRoomDoesNotExistTest() {
-        assertThrows(AssertionError.class, () -> feedbackService.addFeedback(falseLink, feedback));
-        verify(feedbackRepository, times(0)).save(feedback);
-    }
 
     /**
      * tests if the room of the feedback is set to a specified by the roomLink room.
@@ -128,13 +107,5 @@ public class FeedbackTestMock {
         assertEquals(List.of(feedback), feedbackService.getFeedback(roomLink));
     }
 
-    /**
-     * tests that AssertionError is thrown when the room does not exist.
-     */
-    @Test
-    public void getFeedbackRoomDoesNotExistTest() {
-        assertThrows(AssertionError.class, () -> feedbackService.getFeedback(falseLink));
-        verify(feedbackRepository, times(0)).findAllByRoomId(room.getId());
-    }
 
 }

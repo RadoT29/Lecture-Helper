@@ -28,10 +28,8 @@ public class FeedbackService {
      */
     public void addFeedback(String roomLink, Feedback feedback) {
         //is student link??
-        assert feedback != null;
         if (feedback.getComment().length() < 255) {
             Room room = roomService.getByLink(roomLink);
-            assert room != null;
             feedback.setRoom(room);
             feedbackRepository.save(feedback);
             System.out.print("Feedback added: "
@@ -51,7 +49,6 @@ public class FeedbackService {
     public List<Feedback> getFeedback(String roomLink) {
         //is moderator link
         Room room = roomService.getByLink(roomLink);
-        assert room != null;
         return feedbackRepository.findAllByRoomId(room.getId());
     }
 }
