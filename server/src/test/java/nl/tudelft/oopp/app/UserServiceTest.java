@@ -14,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,9 +42,13 @@ public class UserServiceTest {
 
     private Room room;
 
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
+        System.setOut(new PrintStream(outputStreamCaptor));
         list = new ArrayList<>();
         room = new Room("myRoom");
         userFirst = new User("First", room);
@@ -92,6 +98,20 @@ public class UserServiceTest {
         .thenReturn(Optional.empty());
 
         assertNull(userService.getByID(String.valueOf(userFirst.getId())));
+    }
+
+    /**
+     * Tests the getByID method in a situation
+     * in which a user is not found.
+     * Checks if the method prints the wanted String.
+     */
+    @Test
+    public void getByIDTestEmptyPrint() {
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+        userService.getByID(String.valueOf(userFirst.getId()));
+        assertEquals("User not found", outputStreamCaptor.toString()
+                .trim());
     }
 
     /**
