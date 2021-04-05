@@ -81,7 +81,7 @@
             </content>
         </ScrollPane>
         <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" VBox.vgrow="ALWAYS">
-            <TextField fx:id="questionInput" maxWidth="1.7976931348623157E308" onAction="#sendQuestion" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField">
+            <TextField fx:id="questionInput" maxWidth="1.7976931348623157E308" onAction="#sendQuestion" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField" HBox.hgrow="ALWAYS">
                 <font>
                     <Font name="System Italic" size="12.0" />
                 </font>
