@@ -241,5 +241,20 @@ public abstract class ModeratorSceneController extends SceneController {
 
     }
 
+    /**
+     * Creates a popup containing the student and moderator links for this room.
+     * @throws IOException - Signals that an I/O exception of some sort has occurred.
+     */
+    public void showLinks() throws IOException {
+        String moderatorLink = session.getRoomLink();
+        String studentLink = ServerCommunication.getStudentLink(moderatorLink);
+
+        //Creates a popup with the links
+        LinkController linkController = new LinkController();
+        linkController.getLinks(studentLink, moderatorLink);
+
+
+    }
+
 
 }

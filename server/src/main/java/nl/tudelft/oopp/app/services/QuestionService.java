@@ -207,7 +207,7 @@ public class QuestionService {
      * part so to identify the room from which to delete.
      */
     public void clearQuestions(String roomLink) {
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLinkModerator(roomLink);
         List<Question> qs = questionRepository.findAllByRoomLink(room.getLinkIdModerator());
         for (Question q : qs) {
             answerRepository.deleteByQuestionID(q.getId());
@@ -295,7 +295,7 @@ public class QuestionService {
      * @return list of questions from the room.
      */
     public String exportQuestions(String roomLink) {
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLinkModerator(roomLink);
 
         String logTemp = getQuestionsAndAnswers(room);
         return logTemp;

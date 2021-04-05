@@ -2,22 +2,15 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
-import com.google.gson.stream.JsonReader;
-import nl.tudelft.oopp.app.models.Feedback;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalTime;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 
@@ -26,10 +19,11 @@ import java.util.List;
  */
 public class HomeSceneCommunication {
 
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
     private static Session session;
 
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static HttpResponse<String> response;
 
     /**
      * This method makes a POST Request on the server with the question object as body
@@ -49,9 +43,6 @@ public class HomeSceneCommunication {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "application/json")
                 .build();
-        System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -75,7 +66,7 @@ public class HomeSceneCommunication {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/refresh/" + session.getRoomLink()))
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -100,7 +91,7 @@ public class HomeSceneCommunication {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/getOneQuestion/" + session.getRoomLink() + "/" + session.getUserId()))
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -120,11 +111,12 @@ public class HomeSceneCommunication {
      * @param roomLink - Link of the room from which the request was made from
      */
     public static void clearQuestions(String roomLink) {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/questions/clearAllQuestions/" + roomLink))
                 .DELETE()
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
@@ -143,46 +135,14 @@ public class HomeSceneCommunication {
      */
     public static List<Question> constantlyGetQuestions(String roomLink)
             throws InterruptedException {
+
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/constant/" + roomLink))
                 .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request,HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
-                System.out.println("Status: " + response.statusCode());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return List.of();
-        }
-        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+
+        return tryCatchResponseQuestionsList(request);
     }
 
-    /**
-     * When changing timezones there are no changes to the minute pointers
-     * These only change in the hours pointers
-     * These can be used to understand when the timestamps of the room
-     * That being said we can retrieve the room createdAt and the
-     * UpdatedAt times to understand if the room has been open for more than an hour.
-     * @return a Date with the creation time
-     */
-    public static List<Date> getRoomTime() {
-        HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/room/getRoomTime/" + session.getRoomLink()))
-                .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request,HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return gson.fromJson(response.body(), new TypeToken<List<Date>>(){}.getType());
-    }
 
     /**
      * Sends a request to get all answered questions from a room.
@@ -192,12 +152,20 @@ public class HomeSceneCommunication {
      */
     public static List<Question> constantlyGetAnsweredQuestions(String roomLink)
             throws InterruptedException {
+
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/log/" + roomLink))
                 .build();
-        HttpResponse<String> response = null;
+
+        return tryCatchResponseQuestionsList(request);
+
+    }
+
+    private static List<Question> tryCatchResponseQuestionsList(HttpRequest request)
+            throws InterruptedException {
+
         try {
-            response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
             }
@@ -207,9 +175,7 @@ public class HomeSceneCommunication {
         }
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
-
     }
-
 
 
     /**
@@ -218,12 +184,11 @@ public class HomeSceneCommunication {
      * @return a list questions
      */
     public static String exportQuestions(String roomLink) {
-        JsonReader reader;
-        String trim;
+
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/export/" + roomLink))
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
@@ -252,7 +217,7 @@ public class HomeSceneCommunication {
 
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/room/user/canAskQuestion/" + userId + "/" + roomLink)).build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -278,9 +243,11 @@ public class HomeSceneCommunication {
      * @param roomLink - the room id then is found by that link
      */
     public static void setQuestionsPerTime(int numQuestions, int minutes, String roomLink) {
+
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/setConstraints/" + roomLink + "/" + numQuestions + "/" + minutes)).build();
-        HttpResponse<String> response = null;
+                .uri(URI.create("http://localhost:8080/setConstraints/" + roomLink + "/" + numQuestions + "/" + minutes))
+                .build();
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {

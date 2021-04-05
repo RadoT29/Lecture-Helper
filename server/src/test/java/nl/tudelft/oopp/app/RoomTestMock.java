@@ -55,8 +55,9 @@ public class RoomTestMock {
     public void findRoomByModeratorLinkFalse() {
         Room room = new Room("My room");
         Room room2 = new Room("new Room");
-        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
-        assertNotEquals(room2, roomService.getByLink(String.valueOf(room.getLinkIdModerator())));
+        when(repository.findByLinkModerator(room.getLinkIdModerator())).thenReturn(room);
+        assertNotEquals(room2,
+                roomService.getByLinkModerator(String.valueOf(room.getLinkIdModerator())));
 
     }
 

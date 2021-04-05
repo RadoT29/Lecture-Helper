@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.AdminCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.AdminRoom;
 
 import java.awt.*;
@@ -115,7 +116,7 @@ public class AdminSceneController  {
         studentLinkText.setText(room.linkIdStudent.toString());
 
         TextField isOpenText = (TextField) newRoom.lookup("#isOpenText");
-        isOpenText.setText(Boolean.toString(room.isOpen));
+        isOpenText.setText(Boolean.toString(room.open));
 
         TextField permissionText = (TextField) newRoom.lookup("#permissionText");
         permissionText.setText(Boolean.toString(room.permission));
@@ -164,8 +165,9 @@ public class AdminSceneController  {
      * @throws IOException - Thrown if an error occurs while loading the Question per time popup
      */
     public void setConstraints() throws IOException {
-        QuestionsPerTimeAdminController qptac = new QuestionsPerTimeAdminController();
-        qptac.open(selected);
+        QuestionsPerTimeAdminController constraintsController =
+                new QuestionsPerTimeAdminController();
+        constraintsController.open(selected, this);
     }
 
     /**
@@ -223,6 +225,30 @@ public class AdminSceneController  {
             CheckBox selectedBox = (CheckBox) roomCell.lookup("#selectedBox");
             selectedBox.fire();
         }
+    }
+
+    /**
+     * Closes all selected rooms.
+     */
+    public void closeRooms() {
+
+        for (AdminRoom room: selected.values()) {
+            String moderatorLink = room.linkIdModerator.toString();
+            ServerCommunication.closeRoomStudents(moderatorLink);
+        }
+        refresh();
+    }
+
+    /**
+     * Opens all selected rooms.
+     */
+    public void openRooms() {
+
+        for (AdminRoom room: selected.values()) {
+            String moderatorLink = room.linkIdModerator.toString();
+            ServerCommunication.openRoomStudents(moderatorLink);
+        }
+        refresh();
     }
 
 }
