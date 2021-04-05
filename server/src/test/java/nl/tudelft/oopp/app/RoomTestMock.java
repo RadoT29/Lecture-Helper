@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,11 +35,11 @@ public class RoomTestMock {
     @Mock
     private RoomRepository repository;
 
-    @Mock
-    private RoomService roomServiceMock;
-
     @InjectMocks
     private RoomController roomController;
+
+    @Mock
+    private RoomService getRoomService;
 
     @BeforeEach
     void setUp() {
@@ -90,6 +91,81 @@ public class RoomTestMock {
         expected.setLinkIdStudent(actual.getLinkIdStudent());
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testIsOpenTrue() {
+        Room room = new Room("My room");
+        when(getRoomService.getByLink(String.valueOf(room.getLinkIdStudent()))).thenReturn(room);
+        assertTrue(roomController.isOpen(String.valueOf(room.getLinkIdStudent())));
+    }
+
+    @Test
+    public void testIsOpenFalse1() {
+        Room room = new Room("My room");
+        room.setPermission(false);
+        when(getRoomService.getByLink(String.valueOf(room.getLinkIdStudent()))).thenReturn(room);
+        assertFalse(roomController.isOpen(String.valueOf(room.getLinkIdStudent())));
+    }
+
+    @Test
+    public void testIsOpenFalse2() {
+        Room room = new Room("My room");
+        room.setIsOpen(false);
+        when(getRoomService.getByLink(String.valueOf(room.getLinkIdStudent()))).thenReturn(room);
+        assertFalse(roomController.isOpen(String.valueOf(room.getLinkIdStudent())));
+    }
+
+    @Test
+    public void testIsOpenFalse3() {
+        Room room = new Room("My room");
+        room.setPermission(false);
+        room.setIsOpen(false);
+        when(getRoomService.getByLink(String.valueOf(room.getLinkIdStudent()))).thenReturn(room);
+        assertFalse(roomController.isOpen(String.valueOf(room.getLinkIdStudent())));
+    }
+
+    @Test
+    public void testKickAllStudentsWithModeratorLink() {
+        UUID uuid = UUID.randomUUID();
+        Room room = new Room("My room");
+        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+        roomController.kickAllStudent(String.valueOf(room.getLinkIdModerator()));
+        verify(repository).closeRoomStudents(room.getId());
+    }
+
+    @Test
+    public void testKickAllStudentsWithStudentLink() {
+        UUID uuid = UUID.randomUUID();
+        Room room = new Room("My room");
+        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
+        roomController.openRoomStudent(String.valueOf(room.getLinkIdStudent()));
+        verify(repository, never()).openRoomForStudents(room.getId());
+    }
+
+    @Test
+    public void testOpenRoomStudentWithModeratorLink() {
+        UUID uuid = UUID.randomUUID();
+        Room room = new Room("My room");
+        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+        roomController.openRoomStudent(String.valueOf(room.getLinkIdModerator()));
+        verify(repository).openRoomForStudents(room.getId());
+    }
+
+    @Test
+    public void testOpenRoomStudentWithStudentLink() {
+        UUID uuid = UUID.randomUUID();
+        Room room = new Room("My room");
+        when(repository.findByLink(room.getLinkIdStudent())).thenReturn(room);
+        roomController.openRoomStudent(String.valueOf(room.getLinkIdStudent()));
+        verify(repository, never()).openRoomForStudents(room.getId());
+    }
+
+    @Test
+    public void testPutConstraints() {
+        UUID uuid = UUID.randomUUID();
+        roomController.putConstraints(uuid.toString(), "3", "3");
+        verify(getRoomService).putConstraints(uuid.toString(), 3, 3);
     }
 
 }

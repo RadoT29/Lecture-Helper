@@ -18,7 +18,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE Room r SET r.isOpen=false WHERE r.id=?1")
-    void closeRoomStudents(Long id, LocalDateTime endDate);
+    void closeRoomStudents(Long id);
 
     @Modifying
     @Transactional

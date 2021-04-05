@@ -72,7 +72,7 @@ public class RoomController {
     @ResponseBody
     public boolean isOpen(@PathVariable String linkId) {
         Room room = roomService.getByLink(linkId);
-        System.out.println("The room is open: " + room.isOpen());
+        //System.out.println("The room is open: " + room.isOpen());
         return room.isOpen() && room.isPermission();
     }
 
@@ -86,7 +86,7 @@ public class RoomController {
     public void kickAllStudent(@PathVariable String linkId) {
         Room room = roomRepository.findByLink(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
-            roomRepository.closeRoomStudents(room.getId(), LocalDateTime.now(Clock.systemUTC()));
+            roomRepository.closeRoomStudents(room.getId());
             System.out.println("Room " + room.getId()
                     + "(name: " + room.getName() + ") had all students kicked out");
         }
