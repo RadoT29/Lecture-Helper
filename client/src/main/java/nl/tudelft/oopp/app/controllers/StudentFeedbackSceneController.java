@@ -53,6 +53,7 @@ public class StudentFeedbackSceneController {
                     + session.getRoomName() + "\"? (max 255 characters)");
 
             Stage stage = new Stage();
+            stage.setTitle("Leave feedback");
             stage.setScene(scene);
             stage.show();
 
@@ -61,14 +62,7 @@ public class StudentFeedbackSceneController {
         }
     }
 
-    /**
-     * Handles click on 'Cancel' button.
-     * closes the feedback window.
-     */
-    public void cancelClicked() {
-        Stage stage = (Stage) editTextArea.getScene().getWindow();
-        stage.close();
-    }
+
 
     /**
      * Handles click on 'OK' button.
