@@ -70,6 +70,10 @@
     -fx-text-fill: #ffb86c;
 }
 
+.labelWhite {
+    -fx-text-fill: white;
+}
+
 .lightMenuBackground {
     -fx-background-color: #17AEDA;
 }
@@ -84,6 +88,14 @@
 
 .lightPane {
     -fx-background-color: #f4f4f4;
+}
+
+.borderBlack {
+    -fx-border-color: black;
+}
+
+.borderWhite {
+    -fx-border-color: white;
 }
 
 #questionInput {

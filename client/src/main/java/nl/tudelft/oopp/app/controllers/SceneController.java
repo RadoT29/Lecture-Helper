@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -43,9 +44,12 @@ public abstract class SceneController implements Initializable {
 
     @FXML
     protected VBox questionBoxLog;
-
     @FXML
     protected AnchorPane pane;
+    @FXML
+    public Button settingsButton;
+    @FXML
+    public Label settingsLabel;
 
     /**
      * This method initializes the thread,
@@ -201,20 +205,58 @@ public abstract class SceneController implements Initializable {
         return newQuestion;
     }
 
+    /**
+     * This method alters the colour theme of the application.
+     * @param mode - indicates if we are in dark mode or not.
+     */
     public void changeTheme(boolean mode) {
+        darkTheme = mode;
         String backgroundAdd;
         String backgroundRemove;
-        darkTheme = mode;
+        String labelAdd;
+        String labelRemove;
+        String buttonAdd;
+        String buttonRemove;
+
         if (mode) {
             backgroundAdd = "darkPane";
             backgroundRemove = "lightPane";
+            buttonAdd = "menuBtnDark";
+            buttonRemove = "menuBtnBlack";
+            labelAdd = "labelDark";
+            labelRemove = "labelBlack";
+            buttonColour = "menuBtnDark";
         } else {
             backgroundAdd = "lightPane";
             backgroundRemove = "darkPane";
+            buttonAdd = "menuBtnBlack";
+            buttonRemove = "menuBtnDark";
+            labelAdd = "labelBlack";
+            labelRemove = "labelDark";
+            buttonColour = "menuBtnBlack";
         }
+        changeColours(backgroundAdd,backgroundRemove,
+                        labelAdd, labelRemove, buttonAdd, buttonRemove);
+    }
 
+    /**
+     * This method applies the colour changes.
+     * @param backgroundAdd - the colour of the pane.
+     * @param backgroundRemove - the previous colour of the pane.
+     * @param labelAdd - the colour of the label.
+     * @param labelRemove - the previous colour of the label.
+     * @param buttonAdd - the colour of the button.
+     * @param buttonRemove - the previous colour of the button.
+     */
+    private void changeColours(String backgroundAdd, String backgroundRemove,
+                               String labelAdd, String labelRemove,
+                               String buttonAdd, String buttonRemove) {
         pane.getStyleClass().removeAll(Collections.singleton(backgroundRemove));
         pane.getStyleClass().add(backgroundAdd);
+        settingsButton.getStyleClass().removeAll(Collections.singleton(buttonRemove));
+        settingsButton.getStyleClass().add(buttonAdd);
+        settingsLabel.getStyleClass().removeAll(Collections.singleton(labelRemove));
+        settingsLabel.getStyleClass().add(labelAdd);
     }
 
     public abstract void refresh();

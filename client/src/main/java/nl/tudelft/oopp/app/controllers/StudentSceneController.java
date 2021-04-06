@@ -78,7 +78,8 @@ public abstract class StudentSceneController extends SceneController {
      * This method closes the sliding part of the speed bar.
      */
     public void hideSpeedBar() {
-        speedButton.setStyle("-fx-background-color:" + buttonColour);
+        speedButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
+        speedButton.getStyleClass().add(buttonColour);
         closeSpeedNav.setToX(-(speedMenu.getWidth()));
         closeSpeedNav.play();
     }
@@ -92,7 +93,8 @@ public abstract class StudentSceneController extends SceneController {
             hideReactionBar();
         }
         if ((speedMenu.getTranslateX()) == -(speedMenu.getWidth())) {
-            speedButton.setStyle("-fx-background-color: white");
+            speedButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
+            speedButton.getStyleClass().add("menuBtnWhite");
             openSpeedNav.play();
         } else {
             hideSpeedBar();
@@ -103,7 +105,8 @@ public abstract class StudentSceneController extends SceneController {
      * This method closes the sliding part of the reaction bar.
      */
     public void hideReactionBar() {
-        reactionButton.setStyle("-fx-background-color:" + buttonColour);
+        reactionButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
+        reactionButton.getStyleClass().add(buttonColour);
         closeReactionNav.setToX(-(reactionMenu.getWidth()));
         closeReactionNav.play();
     }
@@ -117,7 +120,8 @@ public abstract class StudentSceneController extends SceneController {
             hideSpeedBar();
         }
         if ((reactionMenu.getTranslateX()) == -(reactionMenu.getWidth())) {
-            reactionButton.setStyle("-fx-background-color: white");
+            reactionButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
+            reactionButton.getStyleClass().add("menuBtnWhite");
             openReactionNav.play();
         } else {
             hideReactionBar();
@@ -280,6 +284,16 @@ public abstract class StudentSceneController extends SceneController {
         super.changeTheme(mode);
     }
 
+    /**
+     * This method applies the colour changes.
+     * @param menuList - the menu components.
+     * @param removeMenu - the previous menu colour.
+     * @param addMenu - the new menu colour.
+     * @param removeButton - the previous button colour.
+     * @param addButton - the current button colour.
+     * @param removeLabel - the previous label colour.
+     * @param addLabel - the current label colour.
+     */
     public void colourChange(List<VBox> menuList, String removeMenu,
                              String addMenu, String removeButton,
                              String addButton, String removeLabel, String addLabel) {
