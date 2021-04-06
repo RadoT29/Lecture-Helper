@@ -40,7 +40,7 @@ public class StudentQuestionSceneController extends StudentSceneController {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        changeTheme(darkTheme);
+        changeTheme(session.isDarkTheme());
         super.initialize(url, rb);
     }
 

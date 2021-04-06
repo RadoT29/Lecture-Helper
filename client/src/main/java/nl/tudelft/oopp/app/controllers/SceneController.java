@@ -117,17 +117,21 @@ public abstract class SceneController implements Initializable {
     protected void changeScene(String resource, double dimensionScale) {
         Parent loader = null;
         try {
-            loader = new FXMLLoader(getClass().getResource(resource)).load();
+            FXMLLoader page = new FXMLLoader(getClass().getResource(resource));
+            loader = page.load();
+            SceneController qe = page.getController();
+            qe.session.setDarkTheme(darkTheme);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Stage stage = session.getStage();
 
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * dimensionScale;
         double height = screenSize.getHeight() * dimensionScale;
 
+        assert loader != null;
         Scene scene = new Scene(loader, width, height);
 
         stage.setScene(scene);

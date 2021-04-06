@@ -113,8 +113,7 @@
     -fx-border-width: 2;
     -fx-border-radius: 50 50 50 50;
     -fx-background-radius: 50 50 50 50;
-    -fx-border-color: black;
-    -fx-background-color: white;
+    -fx-background-color: transparent;
 }
 
 #questionInput {
