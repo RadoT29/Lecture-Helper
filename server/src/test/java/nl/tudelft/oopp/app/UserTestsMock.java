@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app;
 import nl.tudelft.oopp.app.controllers.UserController;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.IpAddressRepository;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
@@ -46,15 +47,15 @@ public class UserTestsMock {
     @Mock
     private RoomService roomService;
 
-    @Mock
-    private QuestionService questionService2;
 
     @InjectMocks
     private UserController userController;
 
-    @Autowired
-    private RoomRepository roomRepository;
+    @Mock
+    private RoomService getRoomService;
 
+    @Mock
+    private QuestionService getQuestionService;
 
     @BeforeEach
     void setUp() {
@@ -129,24 +130,14 @@ public class UserTestsMock {
                 String.valueOf(1),room.getLinkIdStudent().toString()));
     }
 
+//    @Test
+//    public void testCanAskQuestion(){
+//        Room room = new Room("hhj");
+//        User user = new User();
+//        room.setNumberQuestionsInterval(2);
+//
+//    }
 
-    //    /**
-    //     * This method tests if the user is in limit of allowed questions to ask.
-    //     */
-    //    @Test
-    //    public void canUserAskQuestion() {
-    //        Room room = new Room("my room");
-    //        room.setNumberQuestionsInterval(9);
-    //        room.setTimeInterval(3);
-    //        LocalDateTime localDateTime = LocalDateTime.now();
-    //        when(roomService.getByLink(room.getLinkIdStudent().toString())).thenReturn(room);
-    //        when(questionService2.questionsByUserIdRoomIdInterval(String.valueOf(2L),
-    //        room.getId(), localDateTime))
-    //                .thenReturn(Stream.of(new Question(), new Question(), new Question())
-    //                        .collect(Collectors.toList()));
-    //        assertTrue(userController.canAskQuestion(
-    //                String.valueOf(1),room.getLinkIdStudent().toString()));
-    //    }
 
 
 }

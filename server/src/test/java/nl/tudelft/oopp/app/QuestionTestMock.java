@@ -1,8 +1,15 @@
 package nl.tudelft.oopp.app;
 
+import nl.tudelft.oopp.app.controllers.QuestionController;
+import nl.tudelft.oopp.app.controllers.UserController;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.QuestionsUpdate;
+import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
+import nl.tudelft.oopp.app.services.QuestionsUpdateService;
+import nl.tudelft.oopp.app.services.RoomService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,16 +20,23 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest
 public class QuestionTestMock {
+
+    @InjectMocks
+    private QuestionController questionController;
+
+    @Mock
+    private RoomService roomService;
+
+    @Mock
+    private QuestionsUpdateService questionsUpdateService;
 
     @InjectMocks
     private QuestionService questionService;
@@ -86,5 +100,33 @@ public class QuestionTestMock {
         questionService.editQuestionText(q.getId(), "This is edited");
         q.setQuestionText("This is edited");
         assertEquals("This is edited", questionRepository.getOne(q.getId()).getQuestionText());
+    }
+
+    @Test
+    public void testUpdateOnQuestion(){
+        User user = new User();
+        Room room = new Room("My room");
+        QuestionsUpdate questionsUpdate = new QuestionsUpdate();
+
+        when(roomService.getByLink(room.getLinkIdStudent().toString()))
+                .thenReturn(room);
+        when(questionsUpdateService.findUpdate(user.getId(),room.getId()))
+                .thenReturn(questionsUpdate);
+        assertEquals(questionsUpdate,questionController.updateOnQuestion(String.valueOf(user.getId()),String.valueOf(room.getLinkIdStudent())));
+        verify(questionsUpdateService).deleteUpdate(questionsUpdate.getId(),user.getId(),room.getId());
+    }
+
+    @Test
+    public void testUpdateOnQuestionNull(){
+        User user = new User();
+        Room room = new Room("My room");
+        QuestionsUpdate questionsUpdate = null;
+
+        when(roomService.getByLink(room.getLinkIdStudent().toString()))
+                .thenReturn(room);
+        when(questionsUpdateService.findUpdate(user.getId(),room.getId()))
+                .thenReturn(questionsUpdate);
+        assertNull(questionController.updateOnQuestion(String.valueOf(user.getId()),String.valueOf(room.getLinkIdStudent())));
+        //verify(questionsUpdateService).deleteUpdate(questionsUpdate.getId(),user.getId(),room.getId());
     }
 }
