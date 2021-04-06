@@ -46,7 +46,7 @@ public class QuestionControllerTest {
         String answerText = "'Test'";
         String answerTextService = "Test";
 
-        questionController.setAnswerText(questionId, userId, answerText);
+        questionController.setAnswerText(questionId, userId, "false", answerText);
         verify(questionServiceMock,times(1))
                 .setAnswered(answerTextService,
                         questionId, userId, false);

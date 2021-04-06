@@ -6,7 +6,6 @@ import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -17,8 +16,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
@@ -44,21 +41,12 @@ public class UserControllerTest {
     @Mock
     private RoomRepository roomRepository;
 
-    private final PrintStream standardOut = System.out;
-    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-
     private Room room;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        System.setOut(new PrintStream(outputStreamCaptor));
         room = new Room("myRoom");
-    }
-
-    @AfterEach
-    public void tearDown() {
-        System.setOut(standardOut);
     }
 
     /**

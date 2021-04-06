@@ -263,11 +263,10 @@ public class QuestionService {
 
         if (answerType) {
             questionRepository.updateAnsweredStatus(question.getId(), true);
-            answerRepository.save(answer);
         } else {
             answerRepository.deleteByQuestionID(questionId2);
-            answerRepository.save(answer);
         }
+        answerRepository.save(answer);
         questionRepository.setAnswer(questionId2, answerText);
 
     }
