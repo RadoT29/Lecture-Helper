@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import nl.tudelft.oopp.app.controllers.StudentSceneController;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
@@ -11,13 +10,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Date;
-import java.util.List;
 
 public class QuestionCommunication {
 
-    private static Gson gson = new Gson();
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private static final Gson gson = new Gson();
+    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static HttpResponse<String> response;
+
 
     private static Session session = Session.getInstance();
 
@@ -27,11 +26,12 @@ public class QuestionCommunication {
      * @param questionId the id of a question that is supposed to be deleted
      */
     public static void dismissQuestion(long questionId) {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/questions/dismiss/" + questionId))
                 .DELETE()
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
@@ -53,11 +53,12 @@ public class QuestionCommunication {
      * @param questionId the id of a question that is supposed to be deleted
      */
     public static void dismissSingular(long questionId, long userId) {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/questions/dismissSingular/" + questionId + "/" + userId))
                 .DELETE()
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
@@ -75,13 +76,11 @@ public class QuestionCommunication {
      * @param questionId - question where upvote status is changed
      */
     public static void upVoteQuestion(String questionId) {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/questions/changeUpvote/" + questionId + "/" + Session.getInstance().getUserId()))
                 .build();
-        System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -101,11 +100,13 @@ public class QuestionCommunication {
      * @param questionId the id of a question that is supposed to be deleted
      */
     public static void deleteUpvote(String questionId) {
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/questions/deleteUpvote/" + questionId + "/" + Session.getInstance().getUserId()))
+                .uri(URI.create("http://localhost:8080/questions/deleteUpvote/"
+                        + questionId + "/" + Session.getInstance().getUserId()))
                 .DELETE()
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
@@ -131,7 +132,7 @@ public class QuestionCommunication {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "text/plain")
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
@@ -150,10 +151,12 @@ public class QuestionCommunication {
      * @return a string with true if answered and false if not
      */
     public static boolean checkAnswered(String questionId) {
+
         HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/questions/answer/checkAnswer/" + questionId + "/" + session.getRoomLink()))
+                .uri(URI.create("http://localhost:8080/questions/answer/checkAnswer/"
+                        + questionId + "/" + session.getRoomLink()))
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -174,14 +177,12 @@ public class QuestionCommunication {
      * @param questionId - question where upvote status is changed
      */
     public static void setAnswered(String questionId, boolean createdInClass) {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/questions/answer/setAsAnswered/" + questionId + "/"
                         + session.getUserId() + "/" + createdInClass))
                 .build();
-        System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -201,13 +202,11 @@ public class QuestionCommunication {
      * @param questionId - question where upvote status is changed
      */
     public static void setAnsweredUpdate(String questionId) {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/questions/answer/setAsAnsweredUpdate/" + questionId))
                 .build();
-        System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -231,7 +230,7 @@ public class QuestionCommunication {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/updateOnQuestion/" + userId + "/" + roomLink))
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -262,7 +261,7 @@ public class QuestionCommunication {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "text/plain")
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
@@ -271,28 +270,6 @@ public class QuestionCommunication {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * GET request to check if the question has an answer stored on the server.
-     *
-     * @return a string with true if answered and false if not
-     */
-    public static int getModUpVotes(long questionId) {
-        HttpRequest request = HttpRequest.newBuilder().GET()
-                .uri(URI.create("http://localhost:8080/questions/upVote/getModUpVotes/" + questionId + "/"
-                        + session.getRoomLink()))
-                .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request,HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return gson.fromJson(response.body(), int.class);
     }
 
 }
