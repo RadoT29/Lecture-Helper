@@ -258,7 +258,7 @@ public class QuestionCellController {
     }
 
     /**
-     * Create an answer from the log scene.
+     * Creates an answer from the log scene.
      */
     public void answerFromLog() {
         String oldAnswer = answerTextLabel.getText();
@@ -269,8 +269,23 @@ public class QuestionCellController {
         String userId = session.getUserId();
 
         try {
-            AnswerSceneController.initialize(oldAnswer, id, userId);
+            AnswerSceneController.initialize(oldAnswer, id, userId, false);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates an answer from the main scene.
+     * Used by the reply button.
+     */
+    public void replyFromMainScene() {
+        Node question = questionCell.getParent();
+
+        try {
+            AnswerSceneController
+                    .initialize("", question.getId(), session.getUserId(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }

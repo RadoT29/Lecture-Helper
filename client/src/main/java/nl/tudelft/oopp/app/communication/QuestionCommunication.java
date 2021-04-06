@@ -253,18 +253,21 @@ public class QuestionCommunication {
      * @param newText - the answer.
      * @param userId - the user id.
      */
-    public static void addAnswerText(String questionId, String newText, String userId) {
+    public static void addAnswerText(
+            String questionId, String newText, String userId, boolean type) {
 
         String requestBody = gson.toJson(newText);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/questions/setAnswer/" + questionId + "/user/" + userId))
+                .uri(URI.create("http://localhost:8080/questions/setAnswer/"
+                        + questionId + "/user/" + userId + "/type/" + Boolean.toString(type)))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "text/plain")
                 .build();
-        HttpResponse<String> response = null;
+
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
             }

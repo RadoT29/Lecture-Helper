@@ -25,6 +25,7 @@ public class AnswerSceneController {
     private String questionId;
     private String oldAnswer;
     private String userId;
+    private boolean type;
 
 
     /**
@@ -33,7 +34,7 @@ public class AnswerSceneController {
      * @throws IOException when the loader fails
      */
     public static void initialize(
-            String oldAnswer, String questionId, String userId)
+            String oldAnswer, String questionId, String userId, boolean type)
             throws IOException {
 
         //Load scene.
@@ -47,6 +48,7 @@ public class AnswerSceneController {
         aqc.setQuestionId(questionId);
         aqc.setOldAnswer(oldAnswer);
         aqc.setUserId(userId);
+        aqc.setType(type);
 
         //put current answerText in the text area
         TextArea textArea = (TextArea) scene.lookup("#editTextArea");
@@ -75,7 +77,7 @@ public class AnswerSceneController {
 
         //if the text has changed
         if (!newText.equals(oldAnswer)) {
-            QuestionCommunication.addAnswerText(questionId, newText, userId);   
+            QuestionCommunication.addAnswerText(questionId, newText, userId, type);
         }
         Stage stage = (Stage) editTextArea.getScene().getWindow();
         stage.close();
