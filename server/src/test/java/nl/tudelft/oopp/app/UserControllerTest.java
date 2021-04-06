@@ -2,11 +2,12 @@ package nl.tudelft.oopp.app;
 
 import nl.tudelft.oopp.app.controllers.UserController;
 import nl.tudelft.oopp.app.models.*;
+import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
+import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -17,8 +18,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
@@ -44,32 +43,58 @@ public class UserControllerTest {
     @Mock
     private RoomRepository roomRepository;
 
-    private final PrintStream standardOut = System.out;
-    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    @Mock
+    private ModeratorRepository moderatorRepository;
+
+    @Mock
+    private StudentRepository studentRepository;
 
     private Room room;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        System.setOut(new PrintStream(outputStreamCaptor));
         room = new Room("myRoom");
-    }
-
-    @AfterEach
-    public void tearDown() {
-        System.setOut(standardOut);
     }
 
     /**
      * Tests if a nullPointerException is thrown.
      */
     @Test
-    public void roomExistsModeratorTestNull() {
+    public void roomExistsTestNull() {
         when(roomRepository.findByLink(any()))
-            .thenReturn(room);
+                .thenReturn(room);
+
         assertThrows(NullPointerException.class,
                 (Executable) userController.roomExists(null));
+    }
+
+    /**
+     * Tests if when provided moderator link,
+     * the proper repository saves a moderator.
+     */
+    @Test
+    public void roomExistsTestModerator() {
+        when(roomRepository.findByLink(any()))
+                .thenReturn(room);
+
+        userController.roomExists(room.getLinkIdModerator().toString());
+        verify(moderatorRepository, times(1))
+                .save(any());
+    }
+
+    /**
+     * Tests if when provided student link,
+     * the proper repository saves a student.
+     */
+    @Test
+    public void roomExistsTestStudent() {
+        when(roomRepository.findByLink(any()))
+                .thenReturn(room);
+
+        userController.roomExists(room.getLinkIdStudent().toString());
+        verify(studentRepository, times(1))
+                .save(any());
     }
 
     /**
@@ -100,7 +125,8 @@ public class UserControllerTest {
         room.setTimeInterval(1);
         when(roomService.getByLink(any()))
                 .thenReturn(room);
-        when(questionService.questionsByUserIdRoomIdInterval(anyString(), anyLong(),any(LocalDateTime.class)))
+        when(questionService
+                .questionsByUserIdRoomIdInterval(anyString(), anyLong(),any(LocalDateTime.class)))
                 .thenReturn(Collections.singletonList(new Question("something")));
         assertFalse(userController.canAskQuestion("1", room.getLinkIdModerator().toString()));
     }
