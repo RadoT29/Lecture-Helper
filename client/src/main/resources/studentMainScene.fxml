@@ -167,15 +167,15 @@
             </Label>
          </top>
       </BorderPane>
-      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="780.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="780.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
          <content>
-            <VBox fx:id="questionBox" prefHeight="446.0" style="-fx-background-color: transparent;" />
+            <VBox fx:id="questionBox" maxWidth="1.7976931348623157E308" prefHeight="446.0" style="-fx-background-color: transparent;" />
          </content>
       </ScrollPane>
-      <VBox layoutX="109.0" layoutY="514.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="43.0" prefWidth="650.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+      <VBox layoutX="109.0" layoutY="514.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="43.0" prefWidth="650.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="50.0">
          <children>
             <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="615.0" style="-fx-background-color: transparent" VBox.vgrow="ALWAYS">
-               <TextField fx:id="questionInput" maxWidth="1.7976931348623157E308"  prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" HBox.hgrow="ALWAYS">
+               <TextField fx:id="questionInput" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" HBox.hgrow="ALWAYS">
                   <font>
                      <Font name="System Italic" size="12.0" />
                   </font>

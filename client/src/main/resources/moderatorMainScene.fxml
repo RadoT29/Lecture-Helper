@@ -72,15 +72,15 @@
                     <Insets top="5.0" />
                 </VBox.margin>
             </BorderPane>
-            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutY="40.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="780.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="40.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="780.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
             <content>
-                <VBox fx:id="questionBox" alignment="TOP_CENTER" prefHeight="498.0" prefWidth="1100.0" style="-fx-background-color: transparent;">
+                <VBox fx:id="questionBox" alignment="TOP_CENTER" prefHeight="498.0" style="-fx-background-color: transparent;">
                <padding>
                   <Insets top="20.0" />
                </padding></VBox>
             </content>
         </ScrollPane>
-        <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" VBox.vgrow="ALWAYS">
+        <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="50.0" VBox.vgrow="ALWAYS">
             <TextField fx:id="questionInput" maxWidth="1.7976931348623157E308" onAction="#sendQuestion" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" styleClass="textField" HBox.hgrow="ALWAYS">
                 <font>
                     <Font name="System Italic" size="12.0" />
