@@ -1,28 +1,20 @@
 package nl.tudelft.oopp.app.controllers;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
-import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.SpeedReaction;
 
@@ -59,11 +51,9 @@ public abstract class StudentSceneController extends SceneController {
 
     private TranslateTransition openSpeedNav;
     private TranslateTransition closeSpeedNav;
-    private TranslateTransition closeSpeedFastNav;
 
     private TranslateTransition openReactionNav;
     private TranslateTransition closeReactionNav;
-    private TranslateTransition closeReactionFastNav;
 
     /**
      * This method initializes the state of the navigation bar.
@@ -268,6 +258,48 @@ public abstract class StudentSceneController extends SceneController {
         alert.showAndWait();
 
     }
+
+    @Override
+    public void changeTheme(boolean mode) {
+
+        List<VBox> menuList = new ArrayList<>();
+        menuList.add(mainMenu);
+        menuList.add(speedMenu);
+        menuList.add(reactionMenu);
+
+        if (mode) {
+            colourChange(menuList, "lightMenuBackground", "darkMenuBackground",
+                    "menuBtnBlack", "menuBtnDark",
+                    "labelBlack", "labelDark");
+        } else {
+            colourChange(menuList, "darkMenuBackground", "lightMenuBackground",
+                    "menuBtnDark", "menuBtnBlack",
+                    "labelDark", "labelBlack");
+        }
+
+        super.changeTheme(mode);
+    }
+
+    public void colourChange(List<VBox> menuList, String removeMenu,
+                             String addMenu, String removeButton,
+                             String addButton, String removeLabel, String addLabel) {
+        for (VBox box : menuList) {
+            box.getStyleClass().removeAll(Collections.singleton(removeMenu));
+            box.getStyleClass().add(addMenu);
+            for (Node node : box.getChildren()) {
+                if (node instanceof Button) {
+                    node.getStyleClass().removeAll(Collections.singleton(removeButton));
+                    if (!node.getStyleClass().contains("menuBtnWhite")) {
+                        node.getStyleClass().add(addButton);
+                    }
+                } else {
+                    node.getStyleClass().removeAll(Collections.singleton(removeLabel));
+                    node.getStyleClass().add(addLabel);
+                }
+            }
+        }
+    }
+
 
 }
 

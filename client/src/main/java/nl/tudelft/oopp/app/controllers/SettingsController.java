@@ -9,9 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import lombok.Setter;
 import java.io.IOException;
 
+@Setter
 public class SettingsController {
 
     @FXML
@@ -30,13 +31,6 @@ public class SettingsController {
     public AnchorPane settingsPane;
 
     private SceneController sc;
-
-    private final String menuColour = "#17AEDA";
-
-
-    public void setSc(SceneController sc) {
-        this.sc = sc;
-    }
 
     /**
      * This method initializes the settings window.
@@ -70,6 +64,7 @@ public class SettingsController {
      * This method sets the theme to dark.
      */
     public void setDark() {
+        String menuColour = "#17AEDA";
         exitButton.setStyle("-fx-background-color:" + menuColour);
         themeButtonDark.setVisible(false);
         themeButtonLight.setVisible(true);
@@ -79,10 +74,7 @@ public class SettingsController {
         String darkModeText = "#ffb86c";
         themeLabel.setStyle("-fx-text-fill:" + darkModeText);
 
-        String inputText = "white";
-        String darkModeBackground = "#44475a";
-        //sc.changeTheme(true, menuColour, darkModeMenu,
-        //        darkModeText, inputText, darkModeBackground);
+        sc.changeTheme(true);
     }
 
     /**
@@ -96,9 +88,7 @@ public class SettingsController {
         themeLabel.setText("Dark Mode");
         themeLabel.setStyle("-fx-text-fill: black");
 
-        String text = "black";
-        String background = "#f4f4f4";
-        //sc.changeTheme(false, text, menuColour, text, text, background);
+        sc.changeTheme(false);
     }
 
     public void exit() {

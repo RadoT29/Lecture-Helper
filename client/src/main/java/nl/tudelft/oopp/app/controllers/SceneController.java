@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
@@ -20,6 +21,7 @@ import nl.tudelft.oopp.app.models.Session;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -41,6 +43,9 @@ public abstract class SceneController implements Initializable {
 
     @FXML
     protected VBox questionBoxLog;
+
+    @FXML
+    protected AnchorPane pane;
 
     /**
      * This method initializes the thread,
@@ -194,6 +199,22 @@ public abstract class SceneController implements Initializable {
         questionLabel.setMaxWidth(width);
 
         return newQuestion;
+    }
+
+    public void changeTheme(boolean mode) {
+        String backgroundAdd;
+        String backgroundRemove;
+        darkTheme = mode;
+        if (mode) {
+            backgroundAdd = "darkPane";
+            backgroundRemove = "lightPane";
+        } else {
+            backgroundAdd = "lightPane";
+            backgroundRemove = "darkPane";
+        }
+
+        pane.getStyleClass().removeAll(Collections.singleton(backgroundRemove));
+        pane.getStyleClass().add(backgroundAdd);
     }
 
     public abstract void refresh();

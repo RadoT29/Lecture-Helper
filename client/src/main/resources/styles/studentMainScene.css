@@ -58,8 +58,32 @@
     -fx-background-color: white;
 }
 
-.menuBtnBlue {
+.menuBtnDark {
     -fx-background-color: #17AEDA;
+}
+
+.labelBlack {
+    -fx-text-fill: black;
+}
+
+.labelDark {
+    -fx-text-fill: #ffb86c;
+}
+
+.lightMenuBackground {
+    -fx-background-color: #17AEDA;
+}
+
+.darkMenuBackground {
+    -fx-background-color: #282a36;
+}
+
+.darkPane {
+    -fx-background-color: #44475a;
+}
+
+.lightPane {
+    -fx-background-color: #f4f4f4;
 }
 
 #questionInput {
