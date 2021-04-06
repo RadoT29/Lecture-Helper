@@ -66,18 +66,9 @@ public abstract class ModeratorSceneController extends SceneController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        openNav = new TranslateTransition(Duration.millis(100), slidingMenu);
-        openNav.setToX(slidingMenu.getTranslateX() - slidingMenu.getWidth());
-        closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
-        closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                closeFastNav.setToX(-(slidingMenu.getWidth()));
-                closeFastNav.play();
-            }
-        });
+        openNav = new TranslateTransition(Duration.millis(150), slidingMenu);
+        openNav.setToX(slidingMenu.getLayoutX());
+        closeNav = new TranslateTransition(Duration.millis(150), slidingMenu);
 
         super.initialize(url,rb);
     }

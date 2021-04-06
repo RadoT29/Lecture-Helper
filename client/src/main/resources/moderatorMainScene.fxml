@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Point3D?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorQuestionSceneController">
       <AnchorPane fx:id="mainBox" layoutX="140.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="860.0" style="-fx-background-color: transparent;" styleClass="mainBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
@@ -108,7 +101,7 @@
             <Point3D />
          </rotationAxis>
         </AnchorPane>
-        <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
+        <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="clearQuestionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />

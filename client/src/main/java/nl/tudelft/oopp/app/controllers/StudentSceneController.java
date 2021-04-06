@@ -73,25 +73,13 @@ public abstract class StudentSceneController extends SceneController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        openSpeedNav = new TranslateTransition(Duration.millis(100), speedMenu);
-        openSpeedNav.setToX(speedMenu.getTranslateX() - speedMenu.getWidth());
-        closeSpeedNav = new TranslateTransition(Duration.millis(100), speedMenu);
-        closeSpeedFastNav = new TranslateTransition(Duration.millis(.1), speedMenu);
+        openSpeedNav = new TranslateTransition(Duration.millis(150), speedMenu);
+        openSpeedNav.setToX(speedMenu.getLayoutX());
+        closeSpeedNav = new TranslateTransition(Duration.millis(150), speedMenu);
 
-        openReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
-        openReactionNav.setToX(reactionMenu.getTranslateX() - reactionMenu.getWidth());
-        closeReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
-        closeReactionFastNav = new TranslateTransition(Duration.millis(.1), reactionMenu);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                closeSpeedFastNav.setToX(-(speedMenu.getWidth()));
-                closeSpeedFastNav.play();
-                closeReactionFastNav.setToX(-(reactionMenu.getWidth()));
-                closeReactionFastNav.play();
-            }
-        });
+        openReactionNav = new TranslateTransition(Duration.millis(150), reactionMenu);
+        openReactionNav.setToX(speedMenu.getLayoutX());
+        closeReactionNav = new TranslateTransition(Duration.millis(150), reactionMenu);
 
         super.initialize(url,rb);
     }
