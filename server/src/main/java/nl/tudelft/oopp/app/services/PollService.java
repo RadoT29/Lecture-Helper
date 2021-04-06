@@ -63,14 +63,13 @@ public class PollService {
      * @return if the access was granted
      */
     private boolean isModerator(String roomLink) {
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLinkModerator(roomLink);
+
         if (room == null) {
             return false;
-        }
-        if (room.getLinkIdModerator().equals(UUID.fromString(roomLink))) {
+        } else {
             return true;
         }
-        return false;
     }
 
     //Moderator services

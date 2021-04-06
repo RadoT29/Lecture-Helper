@@ -14,15 +14,18 @@ import java.util.HashMap;
 public class QuestionsPerTimeAdminController extends QuestionsPerTimeController {
 
     private HashMap<String, AdminRoom> selected;
+    private AdminSceneController asc;
 
     /**
      * Opens the scene for setting the number of questions per time.
      * @param selected  Selected rooms where the change needs to be applied
      * @throws IOException - may thrown
      */
-    public void open(HashMap<String, AdminRoom> selected) throws IOException {
+    public void open(HashMap<String, AdminRoom> selected,
+                     AdminSceneController asc) throws IOException {
 
         this.selected = selected;
+        this.asc = asc;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/QuestionsPerTime.fxml"));
         loader.setController(this);
@@ -36,6 +39,7 @@ public class QuestionsPerTimeAdminController extends QuestionsPerTimeController 
 
     public void setConstraints(ActionEvent actionEvent) {
         super.setConstraints(actionEvent);
+        asc.refresh();
     }
 
     /**
@@ -51,4 +55,5 @@ public class QuestionsPerTimeAdminController extends QuestionsPerTimeController 
             HomeSceneCommunication.setQuestionsPerTime(numQuestion, minutes, moderatorLink);
         }
     }
+
 }

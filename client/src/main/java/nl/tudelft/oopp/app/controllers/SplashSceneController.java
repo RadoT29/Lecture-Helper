@@ -86,6 +86,7 @@ public class SplashSceneController {
         }
 
         try {
+
             if (roomLink.getText().equals("admin")) {
                 AdminPasswordController
                         .enterPasswordAdmin((Stage) enterRoomButton.getScene().getWindow());
