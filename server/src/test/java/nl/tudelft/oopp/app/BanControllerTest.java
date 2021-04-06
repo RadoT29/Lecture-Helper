@@ -50,16 +50,7 @@ public class BanControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void testSaveStudentIp(){
-        Room room = new Room("My room");
-        User user = new User();
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        when(roomService.getByLink(room.getLinkIdStudent().toString())).thenReturn(room);
-        when(userService.getByID(String.valueOf(user.getId()))).thenReturn(user);
-        banController.saveStudentIp(String.valueOf(user.getId()), String.valueOf(room.getLinkIdStudent()),request);
-        verify(userService).saveStudentIp(request.getRemoteAddr(),user,room);
-    }
+
 
     @Test
     public void testBanUserForThatRoom(){
@@ -125,5 +116,15 @@ public class BanControllerTest {
         assertFalse(banController.isUserWarned(String.valueOf(room.getLinkIdStudent()),request));
     }
 
+    @Test
+    public void testSaveStudentIp(){
+        Room room = new Room("My room");
+        User user = new User();
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        when(roomService.getByLink(room.getLinkIdStudent().toString())).thenReturn(room);
+        when(userService.getByID(String.valueOf(user.getId()))).thenReturn(user);
+        banController.saveStudentIp(String.valueOf(user.getId()), String.valueOf(room.getLinkIdStudent()),request);
+        verify(userService).saveStudentIp(request.getRemoteAddr(),user,room);
+    }
 
 }
