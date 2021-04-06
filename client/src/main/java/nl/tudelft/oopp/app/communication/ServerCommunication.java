@@ -82,7 +82,7 @@ public class ServerCommunication {
 
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room/user/" + userId + "/nick/"
-                        + nickName))
+                        + nickName.replace(" ", "%20")))
                 .build();
 
         try {

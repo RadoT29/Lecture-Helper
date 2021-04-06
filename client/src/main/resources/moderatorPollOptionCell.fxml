@@ -14,11 +14,20 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
    </padding>
    <children>
-      <VBox prefHeight="41.0" prefWidth="698.0" >
+      <VBox prefHeight="41.0" prefWidth="698.0">
          <children>
-            <Text fx:id="optionLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Option 2" />
-            <TextArea fx:id="optionText" prefHeight="52.0" prefWidth="769.0" />
-            <CheckBox mnemonicParsing="false" text="Correct answer" fx:id="isCorrect" />
+            <Text fx:id="optionLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Option 2">
+               <VBox.margin>
+                  <Insets left="8.0" />
+               </VBox.margin></Text>
+            <TextArea fx:id="optionText" prefHeight="52.0" prefWidth="769.0">
+               <VBox.margin>
+                  <Insets left="8.0" right="8.0" />
+               </VBox.margin></TextArea>
+            <CheckBox fx:id="isCorrect" mnemonicParsing="false" text="Correct answer">
+               <VBox.margin>
+                  <Insets left="8.0" />
+               </VBox.margin></CheckBox>
          </children>
       </VBox>
    </children>

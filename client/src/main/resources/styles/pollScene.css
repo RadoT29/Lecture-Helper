@@ -1,0 +1,30 @@
+
+#pollSceneBox{
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 4, 4);
+}
+
+#closePollButton{
+    -fx-background-color: #C32323;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 2, 2);
+}
+#openPollButton{
+    -fx-background-color: #17aeda;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 2, 2);
+}
+#addOptionButton{
+    -fx-background-color: #17aeda;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 2, 2);
+}
+
+#resultBox .label{
+    -fx-start-margin: 8;
+    -fx-end-margin: 8;
+}
