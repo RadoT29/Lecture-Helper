@@ -5,6 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<!--to open this in Scene Builder, change LimitedTextField to TextField and remove the import-->
+
+<?import nl.tudelft.oopp.app.scenes.LimitedTextField?>
 <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/studentMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.StudentQuestionSceneController">
    <VBox id="vboxNav" fx:id="speedMenu" fillWidth="false" layoutX="100.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="252.0" VBox.vgrow="NEVER">
       <Button fx:id="fastButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tooFast" prefHeight="30.0" prefWidth="40.0" styleClass="menuBtnBlack" stylesheets="@styles/studentMainScene.css">
@@ -175,14 +178,14 @@
       <VBox layoutX="109.0" layoutY="514.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="43.0" prefWidth="650.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="50.0">
          <children>
             <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="615.0" style="-fx-background-color: transparent" VBox.vgrow="ALWAYS">
-               <TextField fx:id="questionInput" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" HBox.hgrow="ALWAYS">
+               <LimitedTextField fx:id="questionInput" onAction="#sendQuestion" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here" HBox.hgrow="ALWAYS">
                   <font>
                      <Font name="System Italic" size="12.0" />
                   </font>
                   <HBox.margin>
                      <Insets right="5.0" />
                   </HBox.margin>
-               </TextField>
+               </LimitedTextField>
                <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendQuestion" prefHeight="20.0" prefWidth="25.0" styleClass="menuBtnBlack">
                   <HBox.margin>
                      <Insets bottom="3.0" right="2.0" />
