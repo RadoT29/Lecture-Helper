@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 import nl.tudelft.oopp.app.models.Session;
 
 public class SplashDisplay extends Application {
@@ -29,6 +30,7 @@ public class SplashDisplay extends Application {
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.getScene().getStylesheets().add("styles/splashScene.css");
         primaryStage.getScene().getStylesheets().add("styles/svgIcons.css");
+        primaryStage.getIcons().add(new Image("assets/img/logo.png"));
         primaryStage.show();
     }
 

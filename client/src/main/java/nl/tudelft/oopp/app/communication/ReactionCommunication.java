@@ -12,8 +12,10 @@ import java.util.List;
 
 public class ReactionCommunication {
 
-    private static Gson gson = new Gson();
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private static final Gson gson = new Gson();
+    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static HttpResponse<String> response;
+
     private static Session session;
 
 
@@ -46,10 +48,6 @@ public class ReactionCommunication {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "application/json")
                 .build();
-
-        System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -96,8 +94,9 @@ public class ReactionCommunication {
             e.printStackTrace();
         }
 
-        int stat = Integer.parseInt(response.body());
-        return stat;
+        assert response != null;
+        return Integer.parseInt(response.body());
+
     }
 
 
@@ -118,8 +117,6 @@ public class ReactionCommunication {
                 .build();
 
         System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

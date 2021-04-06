@@ -4,8 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
-<AnchorPane prefHeight="121.0" prefWidth="201.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.BanUserController">
+<AnchorPane prefHeight="121.0" prefWidth="201.0" style="-fx-background-color: #17AEDA;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.BanUserController">
    <children>
       <VBox layoutY="19.0" prefHeight="102.0" prefWidth="221.0">
          <children>
@@ -22,8 +21,8 @@
                <children>
                   <Pane prefHeight="86.0" prefWidth="225.0">
                      <children>
-                        <Button fx:id="banUser" layoutX="14.0" layoutY="25.0" mnemonicParsing="false" text="Yes, I want!" onAction="#banUser"/>
-                        <Button fx:id="cancel" layoutX="124.0" layoutY="25.0" mnemonicParsing="false" text="No, I do not!" onAction="#close" />
+                        <Button fx:id="banUser" layoutX="14.0" layoutY="25.0" mnemonicParsing="false" onAction="#banUser" text="Yes, I want!" />
+                        <Button fx:id="cancel" layoutX="124.0" layoutY="25.0" mnemonicParsing="false" onAction="#close" text="No, I do not!" />
                      </children>
                   </Pane>
                </children>

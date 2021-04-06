@@ -103,7 +103,7 @@ public class ReactionService {
         try {
             int speedSum = speedReactionRepository.getSpeedSum(roomId);
             int speedCount = speedReactionRepository.getSpeedCount(roomId);
-            return Math.round(speedSum / speedCount);
+            return (int) Math.round((double) speedSum / speedCount);
 
         } catch (Exception e) {
             return 0;

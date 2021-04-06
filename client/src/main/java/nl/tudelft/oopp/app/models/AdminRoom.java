@@ -8,7 +8,7 @@ public class AdminRoom {
     public String name;
     public UUID linkIdStudent;
     public UUID linkIdModerator;
-    public boolean isOpen;
+    public boolean open;
     public boolean permission;
     public int numberQuestionsInterval;
     public int timeInterval;
