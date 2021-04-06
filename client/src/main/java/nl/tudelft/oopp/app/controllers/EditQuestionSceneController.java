@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
+import nl.tudelft.oopp.app.scenes.LimitedTextArea;
 
 import java.io.IOException;
 
@@ -55,23 +56,16 @@ public class EditQuestionSceneController {
         eqc.setQcc(qcc);
 
         //put current questionText in the text area
-        TextArea textArea = (TextArea) scene.lookup("#editTextArea");
+        TextArea textArea = (LimitedTextArea) scene.lookup("#editTextArea");
         textArea.setText(oldText);
 
         Stage stage = new Stage();
+        stage.setTitle("Edit question");
         stage.setScene(scene);
         stage.show();
 
     }
 
-    /**
-     * Handles click on 'Cancel' button.
-     * closes the Edit question window.
-     */
-    public void cancelClicked() {
-        Stage stage = (Stage) editTextArea.getScene().getWindow();
-        stage.close();
-    }
 
     /**
      * Handles click on 'OK' button.
