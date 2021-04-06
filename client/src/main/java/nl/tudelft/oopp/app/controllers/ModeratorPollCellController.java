@@ -51,8 +51,6 @@ public class ModeratorPollCellController {
         questionLabel.setText("Option " + (pollOptionBox.getChildren().size() + 1));
 
         pollOptionBox.getChildren().add(newPollOption);
-
-        mpsc.refresh();
     }
 
 

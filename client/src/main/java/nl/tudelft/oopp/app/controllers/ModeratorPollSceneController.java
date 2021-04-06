@@ -1,34 +1,22 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.*;
-import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
-import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Poll;
 import nl.tudelft.oopp.app.models.PollOption;
-import nl.tudelft.oopp.app.models.Session;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class ModeratorPollSceneController extends ModeratorSceneController {
 
@@ -106,9 +94,10 @@ public class ModeratorPollSceneController extends ModeratorSceneController {
                 poll.getPollOptions()) {
             pollOptionBox.getChildren().add(createPollOptionCell(pollOption, optionCount));
 
+            int percentRight = (int) Math.round(pollOption.getScoreRate()*100);
             if (poll.isFinished()) {
-                resultBox.getChildren().add(new Label("  Option " + optionCount
-                        + ":\t\t" + pollOption.getScoreRate() + "\n"));
+                resultBox.getChildren().add(new Label("\n  Option " + optionCount
+                        + ":\t\t" + percentRight + "%"));
             }
 
             optionCount++;
