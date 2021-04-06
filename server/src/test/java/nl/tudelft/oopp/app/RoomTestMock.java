@@ -130,7 +130,7 @@ public class RoomTestMock {
     public void testKickAllStudentsWithModeratorLink() {
         UUID uuid = UUID.randomUUID();
         Room room = new Room("My room");
-        when(repository.findByLink(room.getLinkIdModerator())).thenReturn(room);
+        when(repository.findByLinkModerator(room.getLinkIdModerator())).thenReturn(room);
         roomController.kickAllStudent(String.valueOf(room.getLinkIdModerator()));
         verify(repository).closeRoomStudents(room.getId());
     }

@@ -105,7 +105,7 @@ public class RoomController {
     @PutMapping("openRoomForStudents/{linkId}")
     @ResponseBody
     public void openRoomStudent(@PathVariable String linkId) {
-        Room room = roomRepository.findByLinkModerator(UUID.fromString(linkId));
+        Room room = roomRepository.findByLink(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
             roomRepository.openRoomForStudents(room.getId());
             System.out.println("Room " + room.getId()
