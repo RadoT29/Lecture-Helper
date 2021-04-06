@@ -94,7 +94,7 @@ public class ModeratorPollSceneController extends ModeratorSceneController {
                 poll.getPollOptions()) {
             pollOptionBox.getChildren().add(createPollOptionCell(pollOption, optionCount));
 
-            int percentRight = (int) Math.round(pollOption.getScoreRate()*100);
+            int percentRight = (int) Math.round(pollOption.getScoreRate() * 100);
             if (poll.isFinished()) {
                 resultBox.getChildren().add(new Label("\n  Option " + optionCount
                         + ":\t\t" + percentRight + "%"));
@@ -142,18 +142,6 @@ public class ModeratorPollSceneController extends ModeratorSceneController {
      *                                either before or during the activity.
      */
     public void constantRefresh() throws InterruptedException {
-
-//        polls = new ArrayList<>();
-//        polls.addAll(PollCommunication.constantlyGetPolls(session.getRoomLink()));
-//        loadPolls();
-//        String linkId = session.getRoomLink();
-//        try {
-//            ServerCommunication.isRoomOpenStudents(linkId);
-//            changeImageOpenRoomButton();
-//        } catch (NoStudentPermissionException exception) {
-//            changeImageCloseRoomButton();
-//        }
-
     }
 
     /**

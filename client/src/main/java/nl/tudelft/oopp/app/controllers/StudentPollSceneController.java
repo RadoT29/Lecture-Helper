@@ -184,7 +184,7 @@ public class StudentPollSceneController extends StudentSceneController {
                             createPollUnansweredCell(pollOption, optionCount));
                 }
 
-                int percentRight = (int) Math.round(pollOption.getScoreRate()*100);
+                int percentRight = (int) Math.round(pollOption.getScoreRate() * 100);
                 resultBox.getChildren().add(new Label("\n  Option " + optionCount
                         + ":\t\t" + percentRight + "%"));
                 optionCount++;
