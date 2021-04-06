@@ -28,6 +28,9 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT u FROM Room u WHERE u.linkIdStudent=?1 OR u.linkIdModerator=?1")
     Room findByLink(UUID link);
 
+    @Query("SELECT u FROM Room u WHERE u.linkIdModerator=?1")
+    Room findByLinkModerator(UUID link);
+
     @Query("SELECT r.createdAt FROM Room r WHERE r.id=?1")
     LocalDateTime getRoomTime(long l);
 

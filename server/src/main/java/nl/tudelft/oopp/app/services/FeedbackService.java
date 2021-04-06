@@ -21,7 +21,7 @@ public class FeedbackService {
     }
 
     /**
-     * associates feedback with a room and
+     * Associates feedback with a room and
      * adds it feedback to the database.
      * @param roomLink String link of the rated room
      * @param feedback Feedback to be saved

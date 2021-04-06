@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 
 public class SplashCommunication {
 
-    private static Gson gson = new Gson();
-
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private static final Gson gson = new Gson();
+    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static HttpResponse<String> response;
 
     private static Session session;
 
@@ -27,9 +27,10 @@ public class SplashCommunication {
      * @return Room object with name, links and isOpen boolena
      */
     public static Room postRoom(String name) {
+
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room?name=" + name.replace(" ", "%20"))).build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -52,12 +53,13 @@ public class SplashCommunication {
      * @return Room object with name, links and isOpen boolena
      */
     public static Room scheduleRoom(String name, LocalDateTime startDateUtc) {
+
         String requestBody = gson.toJson(startDateUtc.toString());
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "text/plain")
                 .uri(URI.create("http://localhost:8080/scheduleRoom?name=" + name.replace(" ", "%20"))).build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -80,8 +82,9 @@ public class SplashCommunication {
      * @throws NoSuchRoomException - throws this exception if the room link is wrong
      */
     public static void checkForRoom(String roomLink) throws NoSuchRoomException {
+
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/user/" + roomLink)).build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="80.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.QuestionCellController">
+<AnchorPane maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.QuestionCellController">
    <stylesheets>
       <URL value="@styles/svgIcons.css" />
    </stylesheets>
    <children>
-      <HBox fx:id="questionCell" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="80.0">
+      <HBox fx:id="questionCell" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="80.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <children>
-            <HBox fx:id="questionBlueBox" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" style="-fx-background-color: #17AEDA;">
+            <HBox fx:id="questionBlueBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" style="-fx-background-color: #17AEDA;" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
                <children>
-                  <BorderPane>
+                  <BorderPane HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                      <center>
-                        <Label fx:id="questionTextLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="550.0" text="Question" wrapText="true" />
+                        <Label fx:id="questionTextLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Question" wrapText="true" BorderPane.alignment="TOP_LEFT">
+                           <font>
+                              <Font size="10.0" />
+                           </font></Label>
                      </center>
                      <top>
                         <Label fx:id="nickname" alignment="TOP_CENTER" text="Nickname" BorderPane.alignment="TOP_LEFT">
@@ -36,21 +36,21 @@
                         </Label>
                      </top>
                   </BorderPane>
-                  <Label fx:id="upvoteLabel" maxHeight="1.7976931348623157E308" prefHeight="70.0" prefWidth="50.0" text="+130" textAlignment="CENTER">
+                  <Label fx:id="upvoteLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="50.0" text="+130" textAlignment="CENTER">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
                      </HBox.margin>
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
 
-                  <Button fx:id="answerButton" layoutX="596.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="answerIcon" onAction="#answeredClicked" text="A">
+                  <Button fx:id="answerButton" layoutX="596.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#answeredClicked" prefHeight="50.0" prefWidth="50.0" styleClass="answerIcon">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="dismissButton" alignment="BOTTOM_LEFT" layoutX="646.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#dismissClicked" prefHeight="50.0" prefWidth="50.0" styleClass="dismissIcon" text="D">
+                  <Button fx:id="dismissButton" alignment="BOTTOM_LEFT" layoutX="646.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dismissClicked" prefHeight="50.0" prefWidth="50.0" styleClass="dismissIcon">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>

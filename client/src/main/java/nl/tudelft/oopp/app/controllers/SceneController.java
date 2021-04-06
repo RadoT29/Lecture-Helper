@@ -1,11 +1,17 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
@@ -35,6 +41,8 @@ public abstract class SceneController implements Initializable {
 
     protected Thread thread;
 
+    @FXML
+    protected VBox questionBoxLog;
 
     /**
      * This method initializes the thread,
@@ -62,6 +70,7 @@ public abstract class SceneController implements Initializable {
                                 alert.setHeight(300);
                                 alert.setTitle("Warning!");
                                 alert.setHeaderText("Banning warning!");
+                                styleAlert(alert);
                                 alert.showAndWait();
                             } catch (Exception e) {
                                 closeWindow();
@@ -145,5 +154,62 @@ public abstract class SceneController implements Initializable {
         SettingsController.initialize(this, darkTheme);
     }
 
+    /**
+     * Loads all answered questions in the question log.
+     */
+    public void loadAnsweredQuestions() {
+
+        questionBoxLog.getChildren().clear();
+        while (!questions.isEmpty()) {
+            Question question = questions.poll();
+            try {
+                questionBoxLog.getChildren()
+                        .add(createQuestionCellLog(question));
+            } catch (IOException e) {
+                questionBoxLog.getChildren().add(
+                        new Label("Something went wrong while loading this question"));
+            }
+        }
+    }
+
+    /**
+     * Creates a node for a question in the question log scene.
+     * @param question - the question.
+     * @return - a Node of the question.
+     */
+    protected Node createQuestionCellLog(Question question) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/questionCellQuestionLog.fxml"));
+        Node newQuestion = loader.load();
+        QuestionCellController qsc = loader.getController();
+        qsc.setHomeScene(this);
+
+        //set the node id to the question id
+        newQuestion.setId(question.getId() + "");
+        Label questionLabel = (Label) newQuestion.lookup("#questionTextLabelLog");
+        questionLabel.setText(question.questionText);
+        Label answerLabel = (Label) newQuestion.lookup("#answerTextLabel");
+        answerLabel.setText(question.answerText);
+
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * 0.4;
+        questionLabel.setPrefWidth(width);
+        questionLabel.setMaxWidth(width);
+
+        return newQuestion;
+    }
+
     public abstract void refresh();
+
+    protected static void styleAlert(Alert alert) {
+        DialogPane dialogPane = alert.getDialogPane();
+        javafx.scene.control.Button button = new Button();
+        button.setStyle("-fx-min-width: 30; -fx-min-hight:30; -fx-background-color: #000; "
+                + "-fx-shape: \"M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 "
+                + "2 2 6.48 2 12s4.48 10 10 10 10-4.48 "
+                + "10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 "
+                + "8-8 8 3.59 8 8-3.59 8-8 8z\"");
+        dialogPane.setStyle("-fx-background-color: #17AEDA");
+        alert.setGraphic(button);
+    }
 }

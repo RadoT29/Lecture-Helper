@@ -48,6 +48,11 @@ public class RoomController {
         return roomService.getByLink(roomLink).getName();
     }
 
+    @GetMapping("room/getStudentLink/{roomLink}")
+    @ResponseBody
+    public String getStudentLink(@PathVariable String roomLink) {
+        return roomService.getByLink(roomLink).getLinkIdStudent().toString();
+    }
 
     /**
      * GET Endpoint to retrieve a random quote.
@@ -77,14 +82,14 @@ public class RoomController {
     }
 
     /**
-     * PUT Endpoint kick all student.
+     * PUT Endpoint Close the room and kick all student.
      *
      * @param linkId - name of the room
      */
     @PutMapping("closeRoomForStudents/{linkId}")
     @ResponseBody
     public void kickAllStudent(@PathVariable String linkId) {
-        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        Room room = roomRepository.findByLinkModerator(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
             roomRepository.closeRoomStudents(room.getId());
             System.out.println("Room " + room.getId()
@@ -93,14 +98,14 @@ public class RoomController {
     }
 
     /**
-     * PUT Endpoint kick all student.
+     * PUT Endpoint Open the Room.
      *
      * @param linkId - name of the room
      */
     @PutMapping("openRoomForStudents/{linkId}")
     @ResponseBody
     public void openRoomStudent(@PathVariable String linkId) {
-        Room room = roomRepository.findByLink(UUID.fromString(linkId));
+        Room room = roomRepository.findByLinkModerator(UUID.fromString(linkId));
         if (room.getLinkIdModerator().toString().equals(linkId)) {
             roomRepository.openRoomForStudents(room.getId());
             System.out.println("Room " + room.getId()

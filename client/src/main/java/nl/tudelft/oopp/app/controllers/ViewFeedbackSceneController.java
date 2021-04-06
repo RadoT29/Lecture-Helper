@@ -33,7 +33,7 @@ public class ViewFeedbackSceneController {
 
         //window size
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.4;
+        double width = screenSize.getWidth() * 0.3;
         double height = screenSize.getHeight() * 0.5;
 
         Scene scene = new Scene(parent, width, height);

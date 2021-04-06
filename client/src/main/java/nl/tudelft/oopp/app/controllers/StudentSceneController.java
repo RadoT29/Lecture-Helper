@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -25,6 +26,8 @@ import nl.tudelft.oopp.app.models.EmotionReaction;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.SpeedReaction;
+
+import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 /**
  * This class controls the Main scene of the Students.
@@ -272,11 +275,12 @@ public abstract class StudentSceneController extends SceneController {
                     + "\" has been marked as answered!";
         }
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setWidth(900);
-        alert.setHeight(300);
+        alert.setWidth(800);
+        alert.setHeight(200);
         alert.setTitle("Update on your question!");
         alert.setHeaderText(text);
         alert.setContentText(additionalText);
+        styleAlert(alert);
         alert.showAndWait();
 
     }
