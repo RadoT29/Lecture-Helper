@@ -1,35 +1,23 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.*;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
 public class StudentPollSceneController extends StudentSceneController {
@@ -220,19 +208,10 @@ public class StudentPollSceneController extends StudentSceneController {
     public void loadPolls() {
         polls = PollCommunication.getPolls();
 
-//        List<Node> pollCells = pollBox.getChildren();
-//        for (Node pollCell :
-//                pollCells) {
-//            VBox resultBox = (VBox) pollCell.lookup("#resultBox");
-//            if (!resultBox.isVisible()) {
-//                pollCells.remove(pollCell);
-//            }
-//        }
         pollBox.getChildren().clear();
 
         for (Poll poll :
                 polls) {
-            //boolean added = poll.isFinished() && session.getPollsFinished().contains(poll.getId());
             if (poll.isOpen()) {
                 try {
                     pollBox.getChildren()

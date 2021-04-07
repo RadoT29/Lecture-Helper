@@ -1,19 +1,15 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import nl.tudelft.oopp.app.communication.PollCommunication;
 import nl.tudelft.oopp.app.models.Poll;
 import nl.tudelft.oopp.app.models.PollOption;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
