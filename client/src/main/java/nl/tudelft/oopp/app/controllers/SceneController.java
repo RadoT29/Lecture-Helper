@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
@@ -23,6 +25,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -50,6 +53,16 @@ public abstract class SceneController implements Initializable {
     public Button settingsButton;
     @FXML
     public Label settingsLabel;
+    @FXML
+    public HBox textBox;
+    @FXML
+    public Label roomName;
+    @FXML
+    public Button sendButton;
+    @FXML
+    public TextField questionInput;
+    @FXML
+    public Label logLabel;
 
     /**
      * This method initializes the thread,
@@ -120,7 +133,7 @@ public abstract class SceneController implements Initializable {
             FXMLLoader page = new FXMLLoader(getClass().getResource(resource));
             loader = page.load();
             SceneController controller = page.getController();
-            controller.changeTheme(true);
+            controller.changeTheme(darkTheme);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -252,7 +265,7 @@ public abstract class SceneController implements Initializable {
      * @param buttonAdd - the colour of the button.
      * @param buttonRemove - the previous colour of the button.
      */
-    private void changeColours(String backgroundAdd, String backgroundRemove,
+    protected void changeColours(String backgroundAdd, String backgroundRemove,
                                String labelAdd, String labelRemove,
                                String buttonAdd, String buttonRemove) {
         pane.getStyleClass().removeAll(Collections.singleton(backgroundRemove));
@@ -261,6 +274,118 @@ public abstract class SceneController implements Initializable {
         settingsButton.getStyleClass().add(buttonAdd);
         settingsLabel.getStyleClass().removeAll(Collections.singleton(labelRemove));
         settingsLabel.getStyleClass().add(labelAdd);
+    }
+
+    /**
+     * This method applies the colour changes.
+     * @param menuList - the menu components.
+     * @param removeMenu - the previous menu colour.
+     * @param addMenu - the new menu colour.
+     * @param removeButton - the previous button colour.
+     * @param addButton - the current button colour.
+     * @param removeLabel - the previous label colour.
+     * @param addLabel - the current label colour.
+     */
+    public void colourChange(List<VBox> menuList, String removeMenu,
+                             String addMenu, String removeButton,
+                             String addButton, String removeLabel, String addLabel) {
+        for (VBox box : menuList) {
+            box.getStyleClass().removeAll(Collections.singleton(removeMenu));
+            box.getStyleClass().add(addMenu);
+            for (Node node : box.getChildren()) {
+                if (node instanceof Button) {
+                    node.getStyleClass().removeAll(Collections.singleton(removeButton));
+                    if (!node.getStyleClass().contains("menuBtnWhite")) {
+                        node.getStyleClass().add(addButton);
+                    }
+                } else {
+                    node.getStyleClass().removeAll(Collections.singleton(removeLabel));
+                    node.getStyleClass().add(addLabel);
+                }
+            }
+        }
+    }
+
+    /**
+     * This method changes the theme of the main scene.
+     * @param mode - indicates if we are in dark theme or not.
+     */
+    public void changeColourMainScene(boolean mode) {
+        String boxColourAdd;
+        String boxColourRemove;
+        String inputColourAdd;
+        String inputColourRemove;
+        String addLabel;
+        String removeLabel;
+        String buttonAdd;
+        String buttonRemove;
+
+        if (mode) {
+            boxColourAdd = "borderWhite";
+            boxColourRemove = "borderBlack";
+            inputColourAdd = "labelWhite";
+            inputColourRemove = "labelBlack";
+            addLabel = "labelDark";
+            removeLabel = "labelBlack";
+            buttonAdd = "menuBtnWhite";
+            buttonRemove = "menuBtnBlack";
+        } else {
+            boxColourAdd = "borderBlack";
+            boxColourRemove = "borderWhite";
+            inputColourAdd = "labelBlack";
+            inputColourRemove = "labelWhite";
+            addLabel = "labelBlack";
+            removeLabel = "labelDark";
+            buttonAdd = "menuBtnBlack";
+            buttonRemove = "menuBtnWhite";
+        }
+        applyColour(boxColourAdd, boxColourRemove, inputColourAdd, inputColourRemove,
+                addLabel, removeLabel, buttonAdd, buttonRemove);
+    }
+
+    /**
+     * This method applies the colour changes of the main scene.
+     * @param boxColourAdd - the colour of the input border.
+     * @param boxColourRemove - the previous colour of the input border.
+     * @param inputColourAdd - the colour of the input text.
+     * @param inputColourRemove - the previous colour of the input box.
+     * @param addLabel -the colour of the roomName label.
+     * @param removeLabel - the previous colour of the roomName label.
+     * @param buttonAdd -  the colour of the send button.
+     * @param buttonRemove - the previous colour of the send button.
+     */
+    private void applyColour(String boxColourAdd, String boxColourRemove, String inputColourAdd,
+                             String inputColourRemove, String addLabel, String removeLabel,
+                             String buttonAdd, String buttonRemove) {
+
+        textBox.getStyleClass().removeAll(Collections.singleton(boxColourRemove));
+        textBox.getStyleClass().add(boxColourAdd);
+        questionInput.getStyleClass().removeAll(Collections.singleton(inputColourRemove));
+        questionInput.getStyleClass().add(inputColourAdd);
+        roomName.getStyleClass().removeAll(Collections.singleton(removeLabel));
+        roomName.getStyleClass().add(addLabel);
+        sendButton.getStyleClass().removeAll(Collections.singleton(buttonRemove));
+        sendButton.getStyleClass().add(buttonAdd);
+    }
+
+    /**
+     * This method changes the colour theme of the question log.
+     * @param mode - indicates whether or not the mode is dark.
+     */
+    public void changeColourQuestionLog(boolean mode) {
+        String addLabel;
+        String removeLabel;
+
+        if (mode) {
+            addLabel = "labelDark";
+            removeLabel = "labelBlack";
+        } else {
+            addLabel = "labelBlack";
+            removeLabel = "labelDark";
+        }
+
+        logLabel.getStyleClass().removeAll(Collections.singleton(removeLabel));
+        logLabel.getStyleClass().add(addLabel);
     }
 
     public abstract void refresh();

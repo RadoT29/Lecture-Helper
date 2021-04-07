@@ -1,10 +1,7 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
@@ -18,7 +15,6 @@ import nl.tudelft.oopp.app.models.Question;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -29,14 +25,6 @@ public class StudentQuestionSceneController extends StudentSceneController {
     private Label passLimitQuestionsLabel;
     @FXML
     protected VBox questionBox;
-    @FXML
-    private TextField questionInput;
-    @FXML
-    private HBox textBox;
-    @FXML
-    private Label roomName;
-    @FXML
-    private Button sendButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -141,50 +129,7 @@ public class StudentQuestionSceneController extends StudentSceneController {
 
     @Override
     public void changeTheme(boolean mode) {
-        String boxColourAdd;
-        String boxColourRemove;
-        String inputColourAdd;
-        String inputColourRemove;
-        String addLabel;
-        String removeLabel;
-        String buttonAdd;
-        String buttonRemove;
-
-        if (mode) {
-            boxColourAdd = "borderWhite";
-            boxColourRemove = "borderBlack";
-            inputColourAdd = "labelWhite";
-            inputColourRemove = "labelBlack";
-            addLabel = "labelDark";
-            removeLabel = "labelBlack";
-            buttonAdd = "menuBtnWhite";
-            buttonRemove = "menuBtnBlack";
-        } else {
-            boxColourAdd = "borderBlack";
-            boxColourRemove = "borderWhite";
-            inputColourAdd = "labelBlack";
-            inputColourRemove = "labelWhite";
-            addLabel = "labelBlack";
-            removeLabel = "labelDark";
-            buttonAdd = "menuBtnBlack";
-            buttonRemove = "menuBtnWhite";
-        }
-        applyColour(boxColourAdd, boxColourRemove, inputColourAdd, inputColourRemove,
-                addLabel, removeLabel, buttonAdd, buttonRemove);
+        changeColourMainScene(mode);
         super.changeTheme(mode);
-    }
-
-    private void applyColour(String boxColourAdd, String boxColourRemove, String inputColourAdd,
-                             String inputColourRemove, String addLabel, String removeLabel,
-                             String buttonAdd, String buttonRemove) {
-
-        textBox.getStyleClass().removeAll(Collections.singleton(boxColourRemove));
-        textBox.getStyleClass().add(boxColourAdd);
-        questionInput.getStyleClass().removeAll(Collections.singleton(inputColourRemove));
-        questionInput.getStyleClass().add(inputColourAdd);
-        roomName.getStyleClass().removeAll(Collections.singleton(removeLabel));
-        roomName.getStyleClass().add(addLabel);
-        sendButton.getStyleClass().removeAll(Collections.singleton(buttonRemove));
-        sendButton.getStyleClass().add(buttonAdd);
     }
 }

@@ -71,6 +71,12 @@ public abstract class StudentSceneController extends SceneController {
         openReactionNav.setToX(speedMenu.getLayoutX());
         closeReactionNav = new TranslateTransition(Duration.millis(150), reactionMenu);
 
+        if (darkTheme) {
+            buttonColour = "menuBtnDark";
+        } else  {
+            buttonColour = "menuBtnBlack";
+        }
+
         super.initialize(url,rb);
     }
 
@@ -283,37 +289,6 @@ public abstract class StudentSceneController extends SceneController {
 
         super.changeTheme(mode);
     }
-
-    /**
-     * This method applies the colour changes.
-     * @param menuList - the menu components.
-     * @param removeMenu - the previous menu colour.
-     * @param addMenu - the new menu colour.
-     * @param removeButton - the previous button colour.
-     * @param addButton - the current button colour.
-     * @param removeLabel - the previous label colour.
-     * @param addLabel - the current label colour.
-     */
-    public void colourChange(List<VBox> menuList, String removeMenu,
-                             String addMenu, String removeButton,
-                             String addButton, String removeLabel, String addLabel) {
-        for (VBox box : menuList) {
-            box.getStyleClass().removeAll(Collections.singleton(removeMenu));
-            box.getStyleClass().add(addMenu);
-            for (Node node : box.getChildren()) {
-                if (node instanceof Button) {
-                    node.getStyleClass().removeAll(Collections.singleton(removeButton));
-                    if (!node.getStyleClass().contains("menuBtnWhite")) {
-                        node.getStyleClass().add(addButton);
-                    }
-                } else {
-                    node.getStyleClass().removeAll(Collections.singleton(removeLabel));
-                    node.getStyleClass().add(addLabel);
-                }
-            }
-        }
-    }
-
 
 }
 
