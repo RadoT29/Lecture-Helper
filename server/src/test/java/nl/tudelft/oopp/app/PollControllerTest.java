@@ -49,36 +49,54 @@ public class PollControllerTest {
         answers.add(pollAnswer2);
     }
 
+    /**
+     * Verifies that the correct service for the controller is called.
+     */
     @Test
     void getPollsTest() {
         pollController.getPolls(roomLink);
         verify(pollService,times(1)).getPolls(roomLink);
     }
 
+    /**
+     * Verifies that when poll is created, the correct Id is returned.
+     */
     @Test
     void createPollTestEquals() {
         when(pollController.createPoll(roomLink)).thenReturn(pollId);
         assertEquals(pollId,pollController.createPoll(roomLink));
     }
 
+    /**
+     * Verifies that the wrong Id should be returned.
+     */
     @Test
     void createPollTestNotEquals() {
         when(pollController.createPoll(roomLink)).thenReturn(pollId);
         assertNotEquals(2,pollController.createPoll(roomLink));
     }
 
+    /**
+     * Verifies that the correct service for the controller is called.
+     */
     @Test
     void updatePollTest() {
         pollController.updatePoll(roomLink,pollId,poll);
         verify(pollService,times(1)).updateAndOpenPoll(roomLink,pollId,poll);
     }
 
+    /**
+     * Verifies that the correct service for the controller is called.
+     */
     @Test
     void finishPollTest() {
         pollController.finishPoll(roomLink,pollId);
         verify(pollService,times(1)).finishPoll(roomLink,pollId);
     }
 
+    /**
+     * Verifies that the correct answers get returned.
+     */
     @Test
     void getAnswerTestEquals() {
 
@@ -86,12 +104,18 @@ public class PollControllerTest {
         assertEquals(answers, pollController.getAnswers(pollId,userId));
     }
 
+    /**
+     * Verifies that the wrong answers should get returned.
+     */
     @Test
     void getAnswerTestNotEquals() {
         when(pollService.getAnswers(pollId,1)).thenReturn(new ArrayList<PollAnswer>());
         assertNotEquals(answers, pollController.getAnswers(pollId,userId));
     }
 
+    /**
+     * Verifies that the correct service for the controller is called.
+     */
     @Test
     void createAnswersTest() {
         pollController.createAnswers(userId,poll);

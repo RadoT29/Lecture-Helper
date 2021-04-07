@@ -44,12 +44,19 @@ public class AdminControllerTest {
 
     }
 
+    /**
+     * Tests that the controller calls the right service to check the password.
+     */
     @Test
     void checkPasswordTest() {
         adminController.checkPassword(password);
         verify(adminService,times(1)).checkAdminPassword(password);
     }
 
+
+    /**
+     * Tests that the controller checks the password and then call the right service method.
+     */
     @Test
     void getRoomsTestCorrectPassword() {
         when(adminService.checkAdminPassword(password)).thenReturn(true);
@@ -57,6 +64,10 @@ public class AdminControllerTest {
         verify(adminService,times(1)).getRooms();
     }
 
+
+    /**
+     * Tests that the controller checks the password and returns since the password is wrong.
+     */
     @Test
     void getRoomsTestWrongPassword() {
         when(adminService.checkAdminPassword(password)).thenReturn(false);
@@ -64,6 +75,9 @@ public class AdminControllerTest {
         verify(adminService,times(0)).getRooms();
     }
 
+    /**
+     * Tests that the controller checks the password and then calls the right service method.
+     */
     @Test
     void unbanAllUsersTestCorrectPassword() {
 
@@ -72,6 +86,9 @@ public class AdminControllerTest {
         verify(adminService,times(1)).unbanAllUsersForRoom(roomId);
     }
 
+    /**
+     * Tests that the controller checks the password and returns since the password is wrong.
+     */
     @Test
     void unbanAllUsersTestWrongPassword() {
         when(adminService.checkAdminPassword(password)).thenReturn(false);

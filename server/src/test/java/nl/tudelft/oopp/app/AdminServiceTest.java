@@ -51,33 +51,51 @@ public class AdminServiceTest {
         rooms = new ArrayList<>();
         rooms.add(room1);
         rooms.add(room2);
-        when(roomRepository.findAll()).thenReturn(rooms);
 
 
     }
 
+    /**
+     * Checks that the password is correct and returns true.
+     */
     @Test
     void checkAdminPasswordTestTrue() {
         assertTrue(adminService.checkAdminPassword(realPassword));
 
     }
 
+
+    /**
+     * Checks that the password is wrong and returns false.
+     */
     @Test
     void checkAdminPasswordTestFalse() {
         assertFalse(adminService.checkAdminPassword(""));
 
     }
 
+    /**
+     * Checks that the rooms received are the same.
+     */
     @Test
     void getRoomsTestEquals() {
+        when(roomRepository.findAll()).thenReturn(rooms);
         assertEquals(rooms,adminService.getRooms());
     }
 
+    /**
+     * Checks that the rooms received should not be the same.
+     */
     @Test
     void getRoomsTestNotEquals() {
+
+        when(roomRepository.findAll()).thenReturn(rooms);
         assertNotEquals(new ArrayList<Room>(),adminService.getRooms());
     }
 
+    /**
+     * Checks that the right repository method is called.
+     */
     @Test
     void unbanAllUsersForRoomTest() {
         adminService.unbanAllUsersForRoom(room1Id);

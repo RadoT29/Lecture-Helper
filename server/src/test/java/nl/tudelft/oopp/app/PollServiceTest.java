@@ -70,24 +70,29 @@ public class PollServiceTest {
         MockitoAnnotations.initMocks(this);
         pollServiceSpied = spy(pollService);
 
+        //Creates a room
         room = new Room("room name");
         roomLink = room.getLinkIdModerator();
         roomLinkString = roomLink.toString();
-        when(roomService.getByLink(roomLinkString)).thenReturn(room);
 
+        //Creates a user
         user = new Student();
         userId = user.getId();
 
+        //Creates a poll
         poll1 = new Poll(room);
         poll1.setQuestion("abc?");
         poll1Id = poll1.getId();
 
+        //Creates a second poll
         poll2 = new Poll();
 
+        //Adds all polls to a list
         polls = new ArrayList<>();
         polls.add(poll1);
         polls.add(poll2);
 
+        //Creates options
         pollOption1 = new PollOption();
         pollOption1.setId(0);
         pollOption1.setCorrect(true);
@@ -102,17 +107,18 @@ public class PollServiceTest {
         pollOption3.setCorrect(false);
         pollOption3.setOptionText("c");
 
-
+        //Sets options for poll 1
         List<PollOption> optionsForPoll1 = new ArrayList<>();
         optionsForPoll1.add(pollOption1);
         optionsForPoll1.add(pollOption2);
         poll1.setPollOptions(optionsForPoll1);
 
+        //Sets options for poll 1
         List<PollOption> optionsForPoll2 = new ArrayList<>();
         optionsForPoll2.add(pollOption3);
         poll2.setPollOptions(optionsForPoll2);
 
-
+        //Set answers for poll 1
         answers = new ArrayList<>();
         pollAnswer1 = new PollAnswer((Student) user, pollOption1,true);
         pollAnswer2 = new PollAnswer((Student) user, pollOption2, false);
@@ -120,8 +126,11 @@ public class PollServiceTest {
         answers.add(pollAnswer2);
     }
 
+    /**
+     * Verifies that auxiliary method is called correctly.
+     */
     @Test
-    void getPollsTestCallsScore() {
+    void getPollsTestCallsAux() {
         UUID roomLink = UUID.fromString(roomLinkString);
         when(pollRepository.findAllByRoomLink(roomLink)).thenReturn(polls);
         pollServiceSpied.getPolls(roomLinkString);
@@ -129,14 +138,9 @@ public class PollServiceTest {
         verify(pollServiceSpied,times(1)).calculateScore(poll2);
     }
 
-    @Test
-    void getPollsTestReturns() {
-        UUID roomLink = UUID.fromString(roomLinkString);
-        when(pollRepository.findAllByRoomLink(roomLink)).thenReturn(polls);
-        pollService.getPolls(roomLinkString);
-
-    }
-
+    /**
+     * Verifies that scores for options are calculated correctly.
+     */
     @Test
     public void calculateScoreTest() {
         int countOption1 = 10;
@@ -163,6 +167,10 @@ public class PollServiceTest {
         assertEquals(expectedRate2, pollOption2.getScoreRate());
     }
 
+
+    /**
+     * Verifies that score is -1 since no one answered.
+     */
     @Test
     public void calculateScoreTestNegative() {
         int countOption3 = 0;
@@ -180,19 +188,29 @@ public class PollServiceTest {
         assertEquals(expectedRate3, pollOption3.getScoreRate());
     }
 
-
+    /**
+     * Verifies that isModerator is determined correctly: true.
+     */
     @Test
     void isModeratorTrue() {
         when(roomService.getByLinkModerator(roomLinkString)).thenReturn(room);
         assertTrue(pollService.isModerator(roomLinkString));
     }
 
+
+    /**
+     * Verifies that isModerator is determined correctly: false.
+     */
     @Test
     void isModeratorFalse() {
         when(roomService.getByLinkModerator(roomLinkString)).thenReturn(null);
         assertFalse(pollService.isModerator(roomLinkString));
     }
 
+
+    /**
+     * Verifies that no action is taken since not a moderator.
+     */
     @Test
     void createPollTestNotMod() {
 
@@ -200,6 +218,10 @@ public class PollServiceTest {
         assertEquals(0,pollService.createPoll(roomLinkString));
     }
 
+
+    /**
+     * Verifies that a poll is created since user is a mod.
+     */
     @Test
     void createPollTestMod() {
 
@@ -210,6 +232,10 @@ public class PollServiceTest {
 
     }
 
+
+    /**
+     * Verifies that options are deleted for room.
+     */
     @Test
     void clearPollOptions() {
 
@@ -217,6 +243,9 @@ public class PollServiceTest {
         verify(pollOptionRepository,times(1)).deleteOptionsFromRoom(poll1Id);
     }
 
+    /**
+     * Verifies that a poll option is added.
+     */
     @Test
     void addPollOption() {
 
@@ -227,6 +256,9 @@ public class PollServiceTest {
         verify(pollOptionRepository,times(1)).save(pollOption);
     }
 
+    /**
+     * Verifies that no action is taken since user is not a mod.
+     */
     @Test
     void updateAndOpenPollNoMod() {
         when(roomService.getByLinkModerator(roomLinkString)).thenReturn(null);
@@ -234,6 +266,9 @@ public class PollServiceTest {
         verifyNoInteractions(pollRepository);
     }
 
+    /**
+     * Verifies that all options are cleared and that the poll is opened.
+     */
     @Test
     void updateAndOpenPollMod() {
 
@@ -246,6 +281,9 @@ public class PollServiceTest {
         verify(pollRepository,times(1)).updateAndOpenPoll(poll1Id,poll1.getQuestion());
     }
 
+    /**
+     * Verifies that no action is taken since user is not a mod.
+     */
     @Test
     void finishPollTestNoMod() {
         when(roomService.getByLinkModerator(roomLinkString)).thenReturn(null);
@@ -253,6 +291,9 @@ public class PollServiceTest {
         verifyNoInteractions(pollRepository);
     }
 
+    /**
+     * Verifies that a poll becomes finished.
+     */
     @Test
     void finishPollTestMod() {
         when(roomService.getByLinkModerator(roomLinkString)).thenReturn(room);
@@ -260,18 +301,27 @@ public class PollServiceTest {
         verify(pollRepository,times(1)).finishPoll(poll1Id);
     }
 
+    /**
+     * Verifies that taken answers are correct.
+     */
     @Test
     void getAnswersTest() {
         when(pollAnswerRepository.findAnswersByUserAndPollId(poll1Id,userId)).thenReturn(answers);
         assertEquals(answers,pollService.getAnswers(poll1Id,userId));
     }
 
+    /**
+     * Verifies that an answer gets updated correctly.
+     */
     @Test
     void updateAnswersTest() {
         pollService.updateAnswer(userId,true);
         verify(pollAnswerRepository,times(1)).updateAnswer(userId,true);
     }
 
+    /**
+     * Verifies that answers get updated correctly.
+     */
     @Test
     void createAnswersTestUpdate() {
 
@@ -295,6 +345,9 @@ public class PollServiceTest {
 
     }
 
+    /**
+     * Verifies that new answers get created correctly.
+     */
     @Test
     void createAnswersTestNew() {
 
