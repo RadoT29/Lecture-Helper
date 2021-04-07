@@ -6,7 +6,6 @@ import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.User;
 import nl.tudelft.oopp.app.repositories.QuestionsUpdateRepository;
 import nl.tudelft.oopp.app.services.QuestionsUpdateService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +57,8 @@ public class QuestionUpdateServiceTests {
 
         list.add(questionsUpdate);
         when(questionsUpdateRepository.findUpdate(user.getId(), room.getId())).thenReturn(list);
-        Assertions.assertEquals(questionsUpdate, questionsUpdateService.findUpdate(user.getId(), room.getId()));
+        Assertions.assertEquals(questionsUpdate,
+                questionsUpdateService.findUpdate(user.getId(), room.getId()));
     }
 
     @Test

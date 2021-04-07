@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.app;
 
 import nl.tudelft.oopp.app.controllers.QuestionController;
-import nl.tudelft.oopp.app.controllers.UserController;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.Room;
@@ -44,9 +43,16 @@ public class QuestionTestMock {
     @Mock
     private QuestionRepository questionRepository;
 
+    private User user;
+    private Room room;
+    private QuestionsUpdate questionsUpdate;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
+        user = new User();
+        room = new Room("My room");
+        questionsUpdate = new QuestionsUpdate();
     }
 
     /**
@@ -102,31 +108,40 @@ public class QuestionTestMock {
         assertEquals("This is edited", questionRepository.getOne(q.getId()).getQuestionText());
     }
 
+    /**
+     * This method tests that the returned update is as the expected and also the update
+     * is deleted.
+     */
     @Test
-    public void testUpdateOnQuestion(){
-        User user = new User();
-        Room room = new Room("My room");
-        QuestionsUpdate questionsUpdate = new QuestionsUpdate();
+    public void testUpdateOnQuestion() {
+
 
         when(roomService.getByLink(room.getLinkIdStudent().toString()))
                 .thenReturn(room);
-        when(questionsUpdateService.findUpdate(user.getId(),room.getId()))
+
+        when(questionsUpdateService.findUpdate(user.getId(), room.getId()))
                 .thenReturn(questionsUpdate);
-        assertEquals(questionsUpdate,questionController.updateOnQuestion(String.valueOf(user.getId()),String.valueOf(room.getLinkIdStudent())));
-        verify(questionsUpdateService).deleteUpdate(questionsUpdate.getId(),user.getId(),room.getId());
+
+        assertEquals(questionsUpdate,
+                questionController.updateOnQuestion(String.valueOf(user.getId()),
+                        String.valueOf(room.getLinkIdStudent())));
+
+        verify(questionsUpdateService)
+                .deleteUpdate(questionsUpdate.getId(), user.getId(), room.getId());
     }
 
+    /**
+     * This method tests that there is no updates and returns null.
+     */
     @Test
-    public void testUpdateOnQuestionNull(){
-        User user = new User();
-        Room room = new Room("My room");
-        QuestionsUpdate questionsUpdate = null;
+    public void testUpdateOnQuestionNull() {
 
         when(roomService.getByLink(room.getLinkIdStudent().toString()))
                 .thenReturn(room);
-        when(questionsUpdateService.findUpdate(user.getId(),room.getId()))
+        when(questionsUpdateService.findUpdate(user.getId(), room.getId()))
                 .thenReturn(questionsUpdate);
-        assertNull(questionController.updateOnQuestion(String.valueOf(user.getId()),String.valueOf(room.getLinkIdStudent())));
-        //verify(questionsUpdateService).deleteUpdate(questionsUpdate.getId(),user.getId(),room.getId());
+        assertNull(questionController.updateOnQuestion(String.valueOf(user.getId()),
+                String.valueOf(room.getLinkIdStudent())));
+
     }
 }

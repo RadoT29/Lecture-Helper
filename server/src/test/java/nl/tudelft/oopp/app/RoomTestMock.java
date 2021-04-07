@@ -169,4 +169,37 @@ public class RoomTestMock {
         verify(getRoomService).putConstraints(uuid.toString(), 3, 3);
     }
 
+    @Test
+    public void testGetNewRoomLinks() {
+        Room room = new Room("My room");
+        assertEquals(room.getName(), roomController.getNewRoomLinks(room.getName()).getName());
+        verify(repository).save(any());
+    }
+
+    @Test
+    public void testGetRoomName() {
+        Room room = new Room("My room");
+        when(getRoomService.getByLink(room.getLinkIdModerator().toString())).thenReturn(room);
+        assertEquals("My room", roomController.getRoomName(room.getLinkIdModerator().toString()));
+    }
+
+    @Test
+    public void testGetStudentLink() {
+        Room room = new Room("My room");
+        when(getRoomService.getByLink(room.getLinkIdStudent().toString())).thenReturn(room);
+        assertEquals(room.getLinkIdStudent().toString(),
+                roomController.getStudentLink(room.getLinkIdStudent().toString()));
+    }
+
+    @Test
+    public void testGetScheduledRoomLinks() {
+        Room room = new Room("My room");
+        String startDateUtcString = "MMMMMM";
+        startDateUtcString = startDateUtcString.substring(1, startDateUtcString.length() - 1);
+        when(getRoomService.scheduleRoom("My room", startDateUtcString)).thenReturn(room);
+
+        assertEquals(room, roomController.getScheduledRoomLinks("My room", "MMMMMM"));
+
+    }
+
 }
