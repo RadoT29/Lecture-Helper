@@ -144,9 +144,30 @@ public abstract class CommuncationResponses {
                 + "\"updatedAt\":\"2021-04-07T13:11:06.112525\","
                 + "\"totalUpVotes\":\"0\""
                 + "}]";
+    }
 
-
-
+    /**
+     * Method to set up the response for a list of questions.
+     * @param questions - question list
+     * @param roomLink - roomLink String
+     * @param roomName - roomName
+     * @param userId - userId
+     * @return String
+     */
+    public static String getExportedQuestionsBodyResponse(
+            List<Question> questions, String roomLink, String roomName, String userId
+    ) {
+        return "Questions and Answers from Room: sala 17\n"
+                + "\n"
+                + "Question: \n"
+                + "0:0:28: question1\n"
+                + "Answers:\n"
+                + "0:0:35: This question was answered during the lecture\n"
+                + "\n"
+                + "Question: \n"
+                + "0:0:31: question2\n"
+                + "This question was not answered yet\n"
+                + "\n";
     }
 }
 

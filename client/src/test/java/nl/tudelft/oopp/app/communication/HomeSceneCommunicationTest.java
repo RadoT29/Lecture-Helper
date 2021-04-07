@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.communication;
 
 import nl.tudelft.oopp.app.exceptions.NoSuchRoomException;
+import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import nl.tudelft.oopp.app.models.Answer;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
@@ -82,7 +83,6 @@ public class HomeSceneCommunicationTest {
     void mockGetQuestions(
             List<Question> questions, String roomLink, String roomName, String userId
     ) {
-        System.out.println("/questions/refresh/" + roomLink);
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -172,7 +172,6 @@ public class HomeSceneCommunicationTest {
     void mockConstantlyGetQuestions(
             List<Question> questions, String roomLink, String roomName, String userId
     ) {
-        System.out.println("/questions/constant/" + roomLink);
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -196,10 +195,10 @@ public class HomeSceneCommunicationTest {
         assertEquals(2, retrievedQuestions.size());
     }
 
+
     void mockConstantlyGetAnsweredQuestions(
             List<Question> questions, String roomLink, String roomName, String userId
     ) {
-        System.out.println("/questions/log/" + roomLink);
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -213,5 +212,87 @@ public class HomeSceneCommunicationTest {
     }
 
 
+
+    @Test
+    void shouldExportQuestions() {
+        mockExportQuestions(questions, roomLink, roomName, userId);
+
+        String exported = HomeSceneCommunication.exportQuestions(roomLink);
+        String expected = "Questions and Answers from Room: sala 17\n"
+                + "\n"
+                + "Question: \n"
+                + "0:0:28: question1\n"
+                + "Answers:\n"
+                + "0:0:35: This question was answered during the lecture\n"
+                + "\n"
+                + "Question: \n"
+                + "0:0:31: question2\n"
+                + "This question was not answered yet\n"
+                + "\n";
+        assertEquals(exported, expected);
+    }
+
+
+    void mockExportQuestions(
+            List<Question> questions, String roomLink, String roomName, String userId) {
+        {
+            mockServer.when(
+                    request()
+                            .withMethod("GET")
+                            .withPath("/questions/export/" + roomLink)
+            )
+                    .respond(
+                            response()
+                                    .withStatusCode(200)
+                                    .withBody(CommuncationResponses
+                                            .getExportedQuestionsBodyResponse(
+                                            questions, roomLink, roomName, userId)));
+        }
+    }
+
+
+    @Test
+    void isInLimitOfQuestionsTestTrue() {
+        mockIsInLimitOfQuestion(true);
+
+        assertDoesNotThrow(() -> {
+            HomeSceneCommunication.isInLimitOfQuestion(userId, roomLink);
+        }
+        );
+    }
+
+    @Test
+    void isInLimitOfQuestionsTestFalse() {
+        mockIsInLimitOfQuestion(false);
+
+        assertThrows(OutOfLimitOfQuestionsException.class, () -> {
+            HomeSceneCommunication.isInLimitOfQuestion(userId, roomLink);
+        });
+    }
+
+
+    void mockIsInLimitOfQuestion(boolean check) {
+        {
+            mockServer.when(
+                    request()
+                            .withMethod("GET")
+                            .withPath("/room/user/canAskQuestion/" + userId + "/" + roomLink)
+            )
+                    .respond(
+                            response()
+                                    .withStatusCode(200)
+                                    .withBody(String.valueOf(check)));
+        }
+    }
+
+    @Test
+    void shouldSetQuestionsPerTime() {
+        HomeSceneCommunication.setQuestionsPerTime(3,1, roomLink);
+        String path = "/setConstraints/" + roomLink + "/" + 3 + "/" + 1;
+        mockServer.verify(request()
+                .withMethod("PUT")
+                .withPath(path));
+
+    }
 
 }

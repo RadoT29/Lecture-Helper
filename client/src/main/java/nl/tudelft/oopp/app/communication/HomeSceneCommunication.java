@@ -76,6 +76,7 @@ public class HomeSceneCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+        System.out.println(response.body());
         return gson.fromJson(response.body(), new TypeToken<List<Question>>() {
         }.getType());
     }
