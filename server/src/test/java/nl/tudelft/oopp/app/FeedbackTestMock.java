@@ -120,7 +120,7 @@ public class FeedbackTestMock {
     @Test
     public void getFeedbackContent_StudentLink_Test() {
         assertThrows(NullPointerException.class,
-                () -> feedbackService.getFeedback(roomLinkStudent));
+            () -> feedbackService.getFeedback(roomLinkStudent));
     }
 
 
