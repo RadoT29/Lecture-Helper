@@ -18,7 +18,7 @@ public class LimitedTextArea extends TextArea {
     @Override
     public void replaceText(int start, int end, String text) {
         // Delete or backspace user input.
-        if (text.equals("")) {
+        if (text.equals("") || getText() == null) {
             super.replaceText(start, end, text);
         } else if (getText().length() < maxlength) {
             super.replaceText(start, end, text);

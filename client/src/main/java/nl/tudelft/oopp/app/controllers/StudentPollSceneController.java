@@ -66,19 +66,19 @@ public class StudentPollSceneController extends StudentSceneController {
         Label correctLabel = (Label) newPollAnswer.lookup("#correct");
         if (pollAnswer.getPollOption().isCorrect()) {
             correctLabel.setText("This option was correct");
-            optionLabelBox.setStyle("-fx-border-color: #17aeda");
+            optionLabelBox.getStyleClass().add("rightAnswer");
         } else {
             correctLabel.setText("This option was wrong");
-            optionLabelBox.setStyle("-fx-border-color: #c32323");
+            optionLabelBox.getStyleClass().add("wrongAnswer");
         }
 
         Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
         if (pollAnswer.getPollOption().isCorrect() == pollAnswer.isMarked()) {
             scoredLabel.setText("And you answered correctly");
-            scoredLabel.setTextFill(Color.color(32,155,12));
+            scoredLabel.setTextFill(Color.rgb(32,155,12));
         } else {
             scoredLabel.setText("And you answered it wrong :(");
-            scoredLabel.setTextFill(Color.color(195,35,35));
+            scoredLabel.setTextFill(Color.rgb(195,35,35));
         }
         scoredLabel.setText("And you answered "
                 + (pollAnswer.getPollOption().isCorrect() == pollAnswer.isMarked()
@@ -141,8 +141,9 @@ public class StudentPollSceneController extends StudentSceneController {
 
         newPollOption.setId("" + pollOption.getId());
 
-        CheckBox optionLabel = (CheckBox) newPollOption.lookup("#isCorrect");
-        optionLabel.setText(pollOption.getOptionText());
+        CheckBox checkBox = (CheckBox) newPollOption.lookup("#isCorrect");
+        checkBox.setText(pollOption.getOptionText());
+        checkBox.setSelected(session.getPollsAnswersMarked().contains("" + pollOption.getId()));
 
         return newPollOption;
     }
@@ -174,6 +175,7 @@ public class StudentPollSceneController extends StudentSceneController {
         if (poll.isFinished()) {
 
             resultBox.setVisible(true);
+            session.getPollsFinished().add("" + poll.getId());
             List<PollAnswer> pollAnswers = PollCommunication.getAnswers(poll.id);
 
             boolean unanswered = pollAnswers.isEmpty();
@@ -218,9 +220,19 @@ public class StudentPollSceneController extends StudentSceneController {
     public void loadPolls() {
         polls = PollCommunication.getPolls();
 
+//        List<Node> pollCells = pollBox.getChildren();
+//        for (Node pollCell :
+//                pollCells) {
+//            VBox resultBox = (VBox) pollCell.lookup("#resultBox");
+//            if (!resultBox.isVisible()) {
+//                pollCells.remove(pollCell);
+//            }
+//        }
         pollBox.getChildren().clear();
+
         for (Poll poll :
                 polls) {
+            //boolean added = poll.isFinished() && session.getPollsFinished().contains(poll.getId());
             if (poll.isOpen()) {
                 try {
                     pollBox.getChildren()
@@ -257,14 +269,6 @@ public class StudentPollSceneController extends StudentSceneController {
         polls = new ArrayList<>();
         polls.addAll(PollCommunication.getPolls());
         loadPolls();
-
-        ServerCommunication.isRoomOpenStudents(session.getRoomLink());
-        QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
-        if (!session.isWarned()) {
-            BanCommunication.isIpWarned(session.getRoomLink());
-        } else {
-            BanCommunication.isIpBanned(session.getRoomLink());
-        }
     }
 }
 
