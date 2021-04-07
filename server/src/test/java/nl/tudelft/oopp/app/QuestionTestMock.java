@@ -139,7 +139,7 @@ public class QuestionTestMock {
         when(roomService.getByLink(room.getLinkIdStudent().toString()))
                 .thenReturn(room);
         when(questionsUpdateService.findUpdate(user.getId(), room.getId()))
-                .thenReturn(questionsUpdate);
+                .thenReturn(null);
         assertNull(questionController.updateOnQuestion(String.valueOf(user.getId()),
                 String.valueOf(room.getLinkIdStudent())));
 
