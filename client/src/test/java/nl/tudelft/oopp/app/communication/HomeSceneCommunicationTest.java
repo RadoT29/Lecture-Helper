@@ -28,8 +28,6 @@ public class HomeSceneCommunicationTest {
     private Question question1;
     private Question question2;
     private List<Question> questions;
-    private Answer answer1;
-    private Answer answer2;
 
     /**Start the mock server before each test.
      */

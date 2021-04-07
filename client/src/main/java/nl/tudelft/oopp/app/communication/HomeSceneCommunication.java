@@ -216,7 +216,8 @@ public class HomeSceneCommunication {
     public static void isInLimitOfQuestion(String userId, String roomLink)
             throws OutOfLimitOfQuestionsException {
 
-        HttpRequest request = HttpRequest.newBuilder().GET()
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
                 .uri(URI.create("http://localhost:8080/room/user/canAskQuestion/" + userId + "/" + roomLink)).build();
 
         try {

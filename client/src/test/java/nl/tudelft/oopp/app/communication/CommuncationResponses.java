@@ -17,11 +17,31 @@ public abstract class CommuncationResponses {
                 + "f71b9850-a0b1-4ec6-b85e-ba4fffeaa7c9\",\n  "
                 + "\"linkIdModerator\": \""
                 + "bea8d9bc-a3fd-4070-9dae-d4ceadfad3a6\",\n  "
-                + "\"isOpen\": true,\n  \"permission\": true,\n  \""
+                + "\"isOpen\": true,\n  \"permission\": false,\n  \""
                 + "createdAt\": \"2021-03-22T14:58:31.109+0000"
                 + "\",\n  \"updatedAt\": \""
                 + "2021-03-22T14:58:31.109+0000\"\n}";
     }
+
+    /**
+     * String with room.
+     * @param roomName - room name
+     * @return String
+     */
+    public static String postRoomBodyResponse1(String roomName) {
+        return "{\"id\":0,"
+                + "\"name\":\"" + roomName + "\","
+                + "\"linkIdStudent\":\"f71b9850-a0b1-4ec6-b85e-ba4fffeaa7c9\","
+                + "\"linkIdModerator\":\"bea8d9bc-a3fd-4070-9dae-d4ceadfad3a6\","
+                + "\"permission\":false,"
+                + "\"numberQuestionsInterval\":2147483647,"
+                + "\"timeInterval\":2147483647,"
+                + "\"startDate\":\"2021-04-07T11:10:41.850161\","
+                + "\"createdAt\":\"2021-04-07T11:10:41.910+0000\","
+                + "\"updatedAt\":\"2021-04-07T11:10:41.910+0000\","
+                + "\"open\":true}";
+    }
+
 
     /**
      * Method to return check room response body example for tests.

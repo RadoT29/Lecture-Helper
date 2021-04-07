@@ -165,6 +165,7 @@ public class QuestionCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+        System.out.println("This is answered " + response.body());
         return gson.fromJson(response.body(), Boolean.class);
     }
 
