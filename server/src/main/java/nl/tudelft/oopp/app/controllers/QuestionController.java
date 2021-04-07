@@ -33,6 +33,13 @@ public class QuestionController {
     @Autowired
     private QuestionsUpdateRepository questionsUpdateRepository;
 
+    /**
+     * constructor.
+     * @param questionService QuestionService
+     * @param questionsUpdateService QuestionUpdateService
+     * @param questionsUpdateRepository questionsUpdate Repository
+     * @param roomService roomService
+     */
     @Autowired
     public QuestionController(QuestionService questionService,
                               QuestionsUpdateService questionsUpdateService,

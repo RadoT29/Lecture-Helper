@@ -36,14 +36,20 @@ public class FeedbackTestMock {
     private Room room;
     private Feedback feedback;
     private Feedback tooLongFeedback;
-    private String roomLink;
+    private String roomLinkModerator;
+    private String roomLinkStudent;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
         room = new Room("room name");
-        roomLink = room.getLinkIdModerator() + "";
-        when(roomService.getByLink(roomLink)).thenReturn(room);
+        room.setLinkIdModerator();
+        room.newLinkIdStudent();
+        roomLinkModerator = room.getLinkIdModerator() + "";
+        roomLinkStudent = room.getLinkIdStudent() + "";
+        when(roomService.getByLinkModerator(roomLinkModerator)).thenReturn(room);
+        when(roomService.getByLink(roomLinkModerator)).thenReturn(room);
+        when(roomService.getByLink(roomLinkStudent)).thenReturn(room);
 
         feedback = new Feedback();
         feedback.setComment("nice");
@@ -67,7 +73,7 @@ public class FeedbackTestMock {
      */
     @Test
     public void addFeedbackOkCommentLengthTest() {
-        feedbackService.addFeedback(roomLink, feedback);
+        feedbackService.addFeedback(roomLinkStudent, feedback);
         verify(feedbackRepository, times(1)).save(feedback);
     }
 
@@ -77,7 +83,7 @@ public class FeedbackTestMock {
      */
     @Test
     public void addFeedbackCommentTooLongTest() {
-        feedbackService.addFeedback(roomLink, tooLongFeedback);
+        feedbackService.addFeedback(roomLinkStudent, tooLongFeedback);
         assertNull(feedback.getRoom());
         verify(feedbackRepository, times(0)).save(tooLongFeedback);
     }
@@ -90,7 +96,7 @@ public class FeedbackTestMock {
     @Test
     public void isFeedbackRoomSet() {
         assertNull(feedback.getRoom());
-        feedbackService.addFeedback(roomLink, feedback);
+        feedbackService.addFeedback(roomLinkStudent, feedback);
         assertEquals(room, feedback.getRoom());
     }
 
@@ -98,13 +104,23 @@ public class FeedbackTestMock {
 
     //TEST getFeedback(String roomLink)
     /**
-     * test if the feedback list is retrieved correctly.
+     * test if the feedback list is retrieved correctly, when the moderator link is provided.
      */
     @Test
-    public void getFeedbackContentTest() {
+    public void getFeedbackContent_ModeratorLink_Test() {
+        when(roomService.getByLinkModerator(roomLinkModerator)).thenReturn(room);
         when(feedbackRepository.findAllByRoomId(room.getId()))
                 .thenReturn(Stream.of(feedback).collect(Collectors.toList()));
-        assertEquals(List.of(feedback), feedbackService.getFeedback(roomLink));
+        assertEquals(List.of(feedback), feedbackService.getFeedback(roomLinkModerator));
+    }
+
+    /**
+     * test if the feedback list is retrieved correctly, when the moderator link is provided.
+     */
+    @Test
+    public void getFeedbackContent_StudentLink_Test() {
+        assertThrows(NullPointerException.class,
+                () -> feedbackService.getFeedback(roomLinkStudent));
     }
 
 
