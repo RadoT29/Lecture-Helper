@@ -174,7 +174,7 @@
       </ScrollPane>
       <VBox layoutX="109.0" layoutY="514.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="43.0" prefWidth="650.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="109.0">
          <children>
-            <HBox fx:id="textBox"  styleClass="borderWhite" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="textBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="650.0" styleClass="borderBlack" VBox.vgrow="ALWAYS">
                <TextField fx:id="questionInput" maxWidth="-Infinity" onAction="#sendQuestion" prefHeight="25.0" prefWidth="615.0" promptText="Write your question here">
                   <font>
                      <Font name="System Italic" size="12.0" />

@@ -19,7 +19,6 @@ public class StudentLogSceneController extends StudentSceneController {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        changeTheme(session.isDarkTheme());
         super.initialize(url, rb);
     }
 

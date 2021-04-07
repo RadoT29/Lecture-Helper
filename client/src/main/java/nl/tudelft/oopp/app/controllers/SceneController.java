@@ -119,8 +119,8 @@ public abstract class SceneController implements Initializable {
         try {
             FXMLLoader page = new FXMLLoader(getClass().getResource(resource));
             loader = page.load();
-            SceneController qe = page.getController();
-            qe.session.setDarkTheme(darkTheme);
+            SceneController controller = page.getController();
+            controller.changeTheme(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
