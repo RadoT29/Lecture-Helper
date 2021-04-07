@@ -20,6 +20,9 @@ import java.util.stream.Stream;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+/**
+ * test for questionService.
+ */
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest
 public class QuestionTestMock {
@@ -34,6 +37,8 @@ public class QuestionTestMock {
     void setUp() {
         MockitoAnnotations.initMocks(this);
     }
+
+
 
     /**
      * check the if the size of the returned object is the same as the expected.
