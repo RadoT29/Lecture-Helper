@@ -40,6 +40,7 @@ public class FeedBackCommunicationTest {
 
     @AfterEach
     public void stopServer() {
+        Session.clearSessionTest();
         mockServer.stop();
     }
 

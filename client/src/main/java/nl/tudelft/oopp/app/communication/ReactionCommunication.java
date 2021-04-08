@@ -93,7 +93,6 @@ public class ReactionCommunication {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         assert response != null;
         return Integer.parseInt(response.body());
 
@@ -123,9 +122,10 @@ public class ReactionCommunication {
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
             }
+            return List.of(0, 0, 0);
         } catch (Exception e) {
             e.printStackTrace();
-            return List.of(0, 0, 0);
+
         }
 
         List<Integer> result = gson.fromJson(response.body(), new TypeToken<List<Integer>>() {
