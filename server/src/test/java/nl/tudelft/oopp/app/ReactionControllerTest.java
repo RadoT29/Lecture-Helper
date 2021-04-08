@@ -65,6 +65,15 @@ public class ReactionControllerTest {
     }
 
     /**
+     * test if the right reaction service method is called when getting emotion statistics.
+     */
+    @Test
+    public void getEmotionStatTest() {
+        reactionController.getEmotionStat(roomLink);
+        verify(reactionService, times(1)).getEmotionStat(roomLink);
+    }
+
+    /**
      * test if the right reaction service method is called when getting emotion counts.
      */
     @Test
