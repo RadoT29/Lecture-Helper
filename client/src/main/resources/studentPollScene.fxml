@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
-<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.StudentPollSceneController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.StudentPollSceneController">
    <stylesheets>
       <URL value="@styles/svgIcons.css" />
       <URL value="@styles/studentMainScene.css" />
    </stylesheets>
-   <VBox id="vboxNav" fx:id="speedMenu" fillWidth="false" layoutX="100.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="252.0" VBox.vgrow="NEVER">
+   <VBox id="vboxNav" fx:id="speedMenu" fillWidth="false" layoutX="100.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="100.0" styleClass="lightMenuBackground" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="252.0" VBox.vgrow="NEVER">
       <Button fx:id="fastButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tooFast" prefHeight="30.0" prefWidth="40.0" styleClass="menuBtnBlack" stylesheets="@styles/studentMainScene.css">
          <VBox.margin>
             <Insets bottom="2" left="30" top="10.0" />
@@ -43,7 +43,7 @@
          </font>
       </Label>
    </VBox>
-   <VBox id="vboxNav" fx:id="reactionMenu" fillWidth="false" layoutX="100.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="332.0" VBox.vgrow="NEVER">
+   <VBox id="vboxNav" fx:id="reactionMenu" fillWidth="false" layoutX="100.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="100.0" styleClass="lightMenuBackground" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="332.0" VBox.vgrow="NEVER">
       <Button fx:id="happyButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addHappy" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="35" top="10.0" />
@@ -75,7 +75,7 @@
          </font>
       </Label>
    </VBox>
-   <VBox id="vboxNav" fx:id="mainMenu" layoutY="3.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <VBox id="vboxNav" fx:id="mainMenu" layoutY="3.0" prefHeight="600.0" prefWidth="100.0" styleClass="lightMenuBackground" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Button fx:id="refreshButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#refresh" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="35" top="30.0" />
@@ -157,7 +157,7 @@
    <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <left>
-            <Label fx:id="roomName" text="Room Name" BorderPane.alignment="CENTER">
+            <Label fx:id="roomName" styleClass="labelBlack" text="Room Name" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -170,7 +170,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </BorderPane>
-      <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
          <content>
             <VBox fx:id="pollBox" prefHeight="446.0" />
          </content>

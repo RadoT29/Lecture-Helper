@@ -249,5 +249,11 @@ public class StudentPollSceneController extends StudentSceneController {
         polls.addAll(PollCommunication.getPolls());
         loadPolls();
     }
+
+    @Override
+    public void changeTheme(boolean mode) {
+        changeColourRoomName(mode);
+        super.changeTheme(mode);
+    }
 }
 

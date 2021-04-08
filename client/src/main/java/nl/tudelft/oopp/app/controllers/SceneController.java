@@ -318,8 +318,6 @@ public abstract class SceneController implements Initializable {
         String boxColourRemove;
         String inputColourAdd;
         String inputColourRemove;
-        String addLabel;
-        String removeLabel;
         String buttonAdd;
         String buttonRemove;
 
@@ -328,8 +326,6 @@ public abstract class SceneController implements Initializable {
             boxColourRemove = "borderBlack";
             inputColourAdd = "labelWhite";
             inputColourRemove = "labelBlack";
-            addLabel = "labelDark";
-            removeLabel = "labelBlack";
             buttonAdd = "menuBtnWhite";
             buttonRemove = "menuBtnBlack";
         } else {
@@ -337,13 +333,13 @@ public abstract class SceneController implements Initializable {
             boxColourRemove = "borderWhite";
             inputColourAdd = "labelBlack";
             inputColourRemove = "labelWhite";
-            addLabel = "labelBlack";
-            removeLabel = "labelDark";
             buttonAdd = "menuBtnBlack";
             buttonRemove = "menuBtnWhite";
         }
-        applyColour(boxColourAdd, boxColourRemove, inputColourAdd, inputColourRemove,
-                addLabel, removeLabel, buttonAdd, buttonRemove);
+
+        changeColourRoomName(mode);
+        applyColour(boxColourAdd, boxColourRemove, inputColourAdd,
+                inputColourRemove, buttonAdd, buttonRemove);
     }
 
     /**
@@ -352,21 +348,17 @@ public abstract class SceneController implements Initializable {
      * @param boxColourRemove - the previous colour of the input border.
      * @param inputColourAdd - the colour of the input text.
      * @param inputColourRemove - the previous colour of the input box.
-     * @param addLabel -the colour of the roomName label.
-     * @param removeLabel - the previous colour of the roomName label.
      * @param buttonAdd -  the colour of the send button.
      * @param buttonRemove - the previous colour of the send button.
      */
     private void applyColour(String boxColourAdd, String boxColourRemove, String inputColourAdd,
-                             String inputColourRemove, String addLabel, String removeLabel,
+                             String inputColourRemove,
                              String buttonAdd, String buttonRemove) {
 
         textBox.getStyleClass().removeAll(Collections.singleton(boxColourRemove));
         textBox.getStyleClass().add(boxColourAdd);
         questionInput.getStyleClass().removeAll(Collections.singleton(inputColourRemove));
         questionInput.getStyleClass().add(inputColourAdd);
-        roomName.getStyleClass().removeAll(Collections.singleton(removeLabel));
-        roomName.getStyleClass().add(addLabel);
         sendButton.getStyleClass().removeAll(Collections.singleton(buttonRemove));
         sendButton.getStyleClass().add(buttonAdd);
     }
@@ -389,6 +381,26 @@ public abstract class SceneController implements Initializable {
 
         logLabel.getStyleClass().removeAll(Collections.singleton(removeLabel));
         logLabel.getStyleClass().add(addLabel);
+    }
+
+    /**
+     * This method changes the colour of the roomName label.
+     * @param mode - indicates the colour mode.
+     */
+    public void changeColourRoomName(boolean mode) {
+        String addLabel;
+        String removeLabel;
+
+        if (mode) {
+            addLabel = "labelDark";
+            removeLabel = "labelBlack";
+        } else {
+            addLabel = "labelBlack";
+            removeLabel = "labelDark";
+        }
+
+        roomName.getStyleClass().removeAll(Collections.singleton(removeLabel));
+        roomName.getStyleClass().add(addLabel);
     }
 
     public abstract void refresh();
