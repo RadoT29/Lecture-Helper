@@ -1,18 +1,19 @@
 package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
+import nl.tudelft.oopp.app.controllers.StudentSceneController;
 import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.QuestionsUpdate;
+import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.models.Session;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockserver.integration.ClientAndServer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -20,12 +21,28 @@ import static org.mockserver.model.HttpResponse.response;
 public class QuestionCommunicationTest {
     private ClientAndServer mockServer;
     private Gson gson = new Gson();
+    private Room room;
+    private long userId;
+    private Question question;
+    private Session session;
 
     /**Start the mock server before each test.
      */
     @BeforeEach
     public void startMockServer() {
         mockServer = startClientAndServer(8080);
+
+        userId = 1L;
+        question = new Question("questionText");
+        question.setAnswered(true);
+        room = new Room("roomName456");
+        UUID roomLink = UUID.randomUUID();
+        room.setLinkIdModerator(roomLink);
+
+        session = Session.getInstance(room.getLinkIdModerator().toString(),
+                room.getName(), String.valueOf(userId), true);
+
+
     }
 
     /**Close the mock server after each test so they are completely isolated.
@@ -42,11 +59,10 @@ public class QuestionCommunicationTest {
      */
     @Test
     void shouldSendDismissQuestionRequest() {
-        long questionId = 1L;
 
-        QuestionCommunication.dismissQuestion(questionId);
+        QuestionCommunication.dismissQuestion(question.getId());
 
-        String path = "/questions/dismiss/" + questionId;
+        String path = "/questions/dismiss/" + question.getId();
         mockServer.verify(request()
                 .withMethod("DELETE")
                 .withPath(path));
@@ -57,12 +73,9 @@ public class QuestionCommunicationTest {
      */
     @Test
     void shouldSendDismissQuestionRequestFromStudent() {
-        long questionId = 1L;
-        long userId = 1L;
+        QuestionCommunication.dismissSingular(question.getId(), userId);
 
-        QuestionCommunication.dismissSingular(questionId, userId);
-
-        String path = "/questions/dismissSingular/" + questionId + '/' + userId;
+        String path = "/questions/dismissSingular/" + question.getId() + '/' + userId;
         mockServer.verify(request()
                 .withMethod("DELETE")
                 .withPath(path));
@@ -73,17 +86,10 @@ public class QuestionCommunicationTest {
      */
     @Test
     void shouldSendUpVoteRequest() {
-        String roomLink = UUID.randomUUID().toString();
-        String roomName = "roomName456";
-        String userId = UUID.randomUUID().toString();
 
-        Session.getInstance(roomLink, roomName, userId, true);
+        QuestionCommunication.upVoteQuestion(String.valueOf(question.getId()));
 
-        String questionId = "1";
-
-        QuestionCommunication.upVoteQuestion(questionId);
-
-        String path = "/questions/changeUpvote/" + questionId + '/' + userId;
+        String path = "/questions/changeUpvote/" + question.getId() + '/' + userId;
         mockServer.verify(request()
                 .withMethod("POST")
                 .withPath(path));
@@ -94,17 +100,9 @@ public class QuestionCommunicationTest {
      */
     @Test
     void shouldSendDeleteUpVoteRequest() {
-        String roomLink = UUID.randomUUID().toString();
-        String roomName = "roomName456";
-        String userId = "1";
+        QuestionCommunication.deleteUpvote(String.valueOf(question.getId()));
 
-        Session.getInstance(roomLink, roomName, userId, true);
-
-        String questionId = "1L";
-
-        QuestionCommunication.deleteUpvote(questionId);
-
-        String path = "/questions/deleteUpvote/" + questionId + '/' + userId;
+        String path = "/questions/deleteUpvote/" + question.getId() + '/' + userId;
         mockServer.verify(request()
                 .withMethod("DELETE")
                 .withPath(path));
@@ -115,15 +113,71 @@ public class QuestionCommunicationTest {
      */
     @Test
     void shouldSendEditQuestionRequest() {
-        String questionId = "1L";
         String questionText = "questiooon";
 
-        QuestionCommunication.editQuestionText(questionId, questionText);
+        QuestionCommunication.editQuestionText(String.valueOf(question.getId()), questionText);
 
-        String path = "/questions/edit/" + questionId;
+        String path = "/questions/edit/" + question.getId();
         mockServer.verify(request()
                 .withMethod("POST")
                 .withPath(path)
                 .withBody(gson.toJson(questionText)));
+    }
+
+
+    @Test
+    void shouldCheckAnswered() {
+        mockCheckAnswered(question.getId());
+        Boolean answered = QuestionCommunication.checkAnswered(String.valueOf(question.getId()));
+        assertTrue(answered);
+    }
+
+    void mockCheckAnswered(long questionId) {
+        mockServer.when(
+                request()
+                        .withMethod("GET")
+                        .withPath("/questions/answer/checkAnswer/" + questionId + "/"
+                                + session.getRoomLink())
+        )
+                .respond(
+                        response()
+                                .withStatusCode(200)
+                                .withBody("true"));
+
+    }
+
+
+    @Test
+    void shouldSetAnswered() {
+
+        QuestionCommunication.setAnswered(String.valueOf(question.getId()), true);
+
+        String path = "/questions/answer/setAsAnswered/" + question.getId() + "/"
+                + session.getUserId() + "/" + true;
+        mockServer.verify(request()
+                .withMethod("POST")
+                .withPath(path));
+    }
+
+
+    @Test
+    void shouldCheckForUpdatesFalse() {
+        String path = "/questions/updateOnQuestion/" + userId + "/" + room.getLinkIdModerator();
+
+        QuestionCommunication.updatesOnQuestions(String.valueOf(userId),
+                room.getLinkIdModerator().toString());
+        mockServer.verify(request()
+                .withMethod("GET")
+                .withPath(path));
+    }
+
+    @Test
+    void shouldAddAnswerText() {
+        String path = "/questions/setAnswer/" + question.getId() + "/user/" + userId;
+        //QuestionCommunication.addAnswerText(String.valueOf(question.getId()),
+        //        "text", String.valueOf(userId));
+        // mockServer.verify(request()
+        //         .withMethod("POST")
+        //         .withPath(path));
     }
 }

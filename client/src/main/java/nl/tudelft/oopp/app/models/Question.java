@@ -21,6 +21,7 @@ public class Question implements Comparable<Question> {
     public String duration;
     public String ageSeconds;
     public Integer totalUpVotes;
+    public boolean answered;
 
     //  public LocalDateTime createdAt;
     //  public LocalDateTime updatedAt;
@@ -41,11 +42,6 @@ public class Question implements Comparable<Question> {
      */
     @Override
     public int compareTo(Question o) {
-        /*if (o.getTotalUpVotes() == null) {
-            o.setTotalUpVotes(0);
-        } else if (this.getTotalUpVotes() == null) {
-            this.setTotalUpVotes(0);
-        }*/
 
         int extra = extraPoints(this);
         int extra1 = extraPoints(o);

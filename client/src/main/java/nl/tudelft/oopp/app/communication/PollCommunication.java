@@ -18,7 +18,7 @@ public class PollCommunication {
     private static final Gson gson = new Gson();
     private static final HttpClient client = HttpClient.newBuilder().build();
     private static HttpResponse<String> response;
-    private static Session session = Session.getInstance();
+    private static Session session;
 
     /**
      * Method to get polls from the server.
@@ -26,6 +26,7 @@ public class PollCommunication {
      * @return list of all the room polls
      */
     public static List<Poll> getPolls() {
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink()))
                 .build();
@@ -38,7 +39,6 @@ public class PollCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-
         return gson.fromJson(response.body(), new TypeToken<List<Poll>>(){}.getType());
 
     }
@@ -76,6 +76,7 @@ public class PollCommunication {
      * @return new poll's id
      */
     public static long createPoll() {
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink()))
@@ -100,6 +101,7 @@ public class PollCommunication {
      */
     public static void updatePoll(long pollId, Poll poll) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(poll)))
                 .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink() + '/' + pollId))
@@ -124,6 +126,7 @@ public class PollCommunication {
      */
     public static void finishPoll(long pollId) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/polls/" + session.getRoomLink() + '/' + pollId + "/finish"))
@@ -150,6 +153,7 @@ public class PollCommunication {
      */
     public static List<PollAnswer> getAnswers(long pollId) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/polls/answer/" + session.getUserId() + '/' + pollId))
                 .build();
@@ -176,6 +180,7 @@ public class PollCommunication {
      */
     public static void sendAnswers(Poll poll) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(poll)))
                 .uri(URI.create("http://localhost:8080/polls/answer" + '/' + session.getUserId()))

@@ -76,6 +76,7 @@ public class HomeSceneCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+        System.out.println(response.body());
         return gson.fromJson(response.body(), new TypeToken<List<Question>>() {
         }.getType());
     }
@@ -215,7 +216,8 @@ public class HomeSceneCommunication {
     public static void isInLimitOfQuestion(String userId, String roomLink)
             throws OutOfLimitOfQuestionsException {
 
-        HttpRequest request = HttpRequest.newBuilder().GET()
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
                 .uri(URI.create("http://localhost:8080/room/user/canAskQuestion/" + userId + "/" + roomLink)).build();
 
         try {
