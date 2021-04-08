@@ -57,8 +57,7 @@ public class QuestionTestMock {
     private QuestionRepository questionRepository;
     @Mock
     private RoomRepository roomRepository;
-    @Mock
-    private RoomService roomService;
+
     @Mock
     private UserService userService;
     @Mock
@@ -121,6 +120,8 @@ public class QuestionTestMock {
         upvote.setValue(1);
 
         question2.setTotalUpVotes(1);
+        user = new User();
+        questionsUpdate = new QuestionsUpdate();
 
         now = LocalDateTime.now();
     }
