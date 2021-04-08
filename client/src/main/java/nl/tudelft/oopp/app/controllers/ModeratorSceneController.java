@@ -70,7 +70,7 @@ public abstract class ModeratorSceneController extends SceneController {
     public void hideSlidingBar() {
         menuButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
         menuButton.getStyleClass().add(buttonColour);
-        closeNav.setToX(-(slidingMenu.getWidth()));
+        closeNav.setToX(0);
         closeNav.play();
     }
 
@@ -80,7 +80,7 @@ public abstract class ModeratorSceneController extends SceneController {
      */
     public void controlMenu() {
 
-        if ((slidingMenu.getTranslateX()) == -(slidingMenu.getWidth())) {
+        if ((slidingMenu.getTranslateX()) == 0) {
             menuButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
             menuButton.getStyleClass().add("menuBtnWhite");
             openNav.play();

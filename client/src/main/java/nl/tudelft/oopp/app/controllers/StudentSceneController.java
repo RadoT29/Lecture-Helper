@@ -90,7 +90,7 @@ public abstract class StudentSceneController extends SceneController {
     public void hideSpeedBar() {
         speedButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
         speedButton.getStyleClass().add(buttonColour);
-        closeSpeedNav.setToX(-(speedMenu.getWidth()));
+        closeSpeedNav.setToX(0);
         closeSpeedNav.play();
     }
 
@@ -99,10 +99,10 @@ public abstract class StudentSceneController extends SceneController {
      * Afterwards, it decides whether to close or open the speed bar.
      */
     public void controlSpeedMenu() {
-        if ((reactionMenu.getTranslateX()) != -(reactionMenu.getWidth())) {
+        if ((reactionMenu.getTranslateX()) != 0) {
             hideReactionBar();
         }
-        if ((speedMenu.getTranslateX()) == -(speedMenu.getWidth())) {
+        if ((speedMenu.getTranslateX()) == 0) {
             speedButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
             speedButton.getStyleClass().add("menuBtnWhite");
             openSpeedNav.play();
@@ -117,7 +117,7 @@ public abstract class StudentSceneController extends SceneController {
     public void hideReactionBar() {
         reactionButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
         reactionButton.getStyleClass().add(buttonColour);
-        closeReactionNav.setToX(-(reactionMenu.getWidth()));
+        closeReactionNav.setToX(0);
         closeReactionNav.play();
     }
 
@@ -126,10 +126,10 @@ public abstract class StudentSceneController extends SceneController {
      * Afterwards, it decides whether to close or open the reaction bar.
      */
     public void controlReactionMenu() {
-        if ((speedMenu.getTranslateX()) != -(speedMenu.getWidth())) {
+        if ((speedMenu.getTranslateX()) != 0) {
             hideSpeedBar();
         }
-        if ((reactionMenu.getTranslateX()) == -(reactionMenu.getWidth())) {
+        if ((reactionMenu.getTranslateX()) == 0) {
             reactionButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
             reactionButton.getStyleClass().add("menuBtnWhite");
             openReactionNav.play();
