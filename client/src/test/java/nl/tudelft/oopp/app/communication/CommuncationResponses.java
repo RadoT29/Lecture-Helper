@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.communication;
 import nl.tudelft.oopp.app.models.Question;
 
 import java.util.List;
+import java.util.UUID;
 
 public abstract class CommuncationResponses {
     /**
@@ -189,5 +190,35 @@ public abstract class CommuncationResponses {
                 + "This question was not answered yet\n"
                 + "\n";
     }
+
+    /**
+     * String with feedback list.
+     * @param roomName - name of room
+     * @return String
+     */
+    public static String getFeedBackList(String roomName) {
+        return "[{\"id\":1,"
+                + "\"comment\":\"Alright\","
+                + "\"rating\":4,"
+                + "\"room\":"
+                + "{\"id\":31,"
+                + "\"name\":\"" + roomName + "\","
+                + "\"linkIdStudent\":\"77781e9f-97df-456f-a3f3-00fcca9eefe0\","
+                + "\"linkIdModerator\":\"96603678-5cd8-4813-9ba5-ec0248b6925c\""
+                + ",\"permission\":true,"
+                + "\"numberQuestionsInterval\":2147483647,"
+                + "\"timeInterval\":2147483647,"
+                + "\"startDate\":\"2021-04-08T10:48:23.533074\","
+                + "\"createdAt\":\"2021-04-08T10:48:23.548+0000\","
+                + "\"updatedAt\":\"2021-04-08T10:48:23.548+0000\","
+                + "\"open\":false},"
+                + "\"createdAt\":\"2021-04-08T12:50:39.352084\","
+                + "\"updatedAt\":\"2021-04-08T12:50:39.352084\""
+                + "}]";
+    }
+
+
+
+
 }
 
