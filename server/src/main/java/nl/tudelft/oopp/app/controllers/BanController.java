@@ -53,7 +53,7 @@ public class BanController {
     @ResponseBody
     public void banUserForThatRoom(@PathVariable("questionId") String questionId,
                                    @PathVariable("roomLink") String roomLink) {
-        String roomId = String.valueOf(roomService.getByLinkModerator(roomLink).getId());
+        String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         String userId = String.valueOf(questionService.findUserByQuestionId(questionId));
         userService.banUserForThatRoom(userId, roomId);
     }

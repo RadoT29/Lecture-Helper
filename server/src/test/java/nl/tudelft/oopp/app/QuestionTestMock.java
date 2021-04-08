@@ -1,8 +1,16 @@
 package nl.tudelft.oopp.app;
 
+import nl.tudelft.oopp.app.controllers.QuestionController;
+import nl.tudelft.oopp.app.models.Question;
+import nl.tudelft.oopp.app.models.QuestionsUpdate;
+import nl.tudelft.oopp.app.models.Room;
+import nl.tudelft.oopp.app.models.User;
+import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.repositories.*;
 import nl.tudelft.oopp.app.services.QuestionService;
+import nl.tudelft.oopp.app.services.QuestionsUpdateService;
+import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,14 +42,22 @@ import static org.mockito.Mockito.*;
 public class QuestionTestMock {
 
     @InjectMocks
+    private QuestionController questionController;
+
+    @Mock
+    private RoomService roomService;
+
+    @Mock
+    private QuestionsUpdateService questionsUpdateService;
+
+    @InjectMocks
     private QuestionService questionService;
 
     @Mock
     private QuestionRepository questionRepository;
     @Mock
     private RoomRepository roomRepository;
-    @Mock
-    private RoomService roomService;
+
     @Mock
     private UserService userService;
     @Mock
@@ -59,6 +76,9 @@ public class QuestionTestMock {
     Question question2;
     Question question3;
     Upvote upvote;
+
+    private User user;
+    private QuestionsUpdate questionsUpdate;
 
     @BeforeEach
     void setUp() {
@@ -100,6 +120,8 @@ public class QuestionTestMock {
         upvote.setValue(1);
 
         question2.setTotalUpVotes(1);
+        user = new User();
+        questionsUpdate = new QuestionsUpdate();
 
         now = LocalDateTime.now();
     }
@@ -614,6 +636,9 @@ public class QuestionTestMock {
                 .thenReturn(question1.getTotalUpVotes());
         assertEquals(0, questionService
                 .getUpVotes(question1.getId(), room.getLinkIdModerator()));
+        user = new User();
+        room = new Room("My room");
+        questionsUpdate = new QuestionsUpdate();
     }
 
     /**
@@ -773,5 +798,42 @@ public class QuestionTestMock {
         questionService.editQuestionText(q.getId(), "This is edited");
         q.setQuestionText("This is edited");
         assertEquals("This is edited", questionRepository.getOne(q.getId()).getQuestionText());
+    }
+
+    /**
+     * This method tests that the returned update is as the expected and also the update
+     * is deleted.
+     */
+    @Test
+    public void testUpdateOnQuestion() {
+
+
+        when(roomService.getByLink(room.getLinkIdStudent().toString()))
+                .thenReturn(room);
+
+        when(questionsUpdateService.findUpdate(user.getId(), room.getId()))
+                .thenReturn(questionsUpdate);
+
+        assertEquals(questionsUpdate,
+                questionController.updateOnQuestion(String.valueOf(user.getId()),
+                        String.valueOf(room.getLinkIdStudent())));
+
+        verify(questionsUpdateService)
+                .deleteUpdate(questionsUpdate.getId(), user.getId(), room.getId());
+    }
+
+    /**
+     * This method tests that there is no updates and returns null.
+     */
+    @Test
+    public void testUpdateOnQuestionNull() {
+
+        when(roomService.getByLink(room.getLinkIdStudent().toString()))
+                .thenReturn(room);
+        when(questionsUpdateService.findUpdate(user.getId(), room.getId()))
+                .thenReturn(null);
+        assertNull(questionController.updateOnQuestion(String.valueOf(user.getId()),
+                String.valueOf(room.getLinkIdStudent())));
+
     }
 }

@@ -5,7 +5,6 @@ import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Room;
 import nl.tudelft.oopp.app.repositories.IpAddressRepository;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
-import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
@@ -17,14 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,15 +41,9 @@ public class UserTestsMock {
     @Mock
     private RoomService roomService;
 
-    @Mock
-    private QuestionService questionService2;
 
     @InjectMocks
     private UserController userController;
-
-    @Autowired
-    private RoomRepository roomRepository;
-
 
     @BeforeEach
     void setUp() {
@@ -96,7 +85,7 @@ public class UserTestsMock {
         when(questionRepository.questionsByUserIdRoomIdInterval(2L, 2L, localDateTime))
                 .thenReturn(Stream.of(new Question(), new Question(), new Question())
                         .collect(Collectors.toList()));
-        assertEquals(3,questionService
+        Assertions.assertEquals(3, questionService
                 .questionsByUserIdRoomIdInterval(String.valueOf(2L), 2L, localDateTime).size());
     }
 
@@ -110,7 +99,7 @@ public class UserTestsMock {
         when(questionRepository.questionsByUserIdRoomIdInterval(2L, 2L, localDateTime))
                 .thenReturn(Stream.of(new Question(), new Question(), new Question())
                         .collect(Collectors.toList()));
-        assertNotEquals(2,questionService
+        Assertions.assertNotEquals(2, questionService
                 .questionsByUserIdRoomIdInterval(String.valueOf(2L), 2L, localDateTime).size());
     }
 
@@ -125,28 +114,8 @@ public class UserTestsMock {
         when(questionRepository.questionsByUserIdRoomIdInterval(2L, room.getId(), localDateTime))
                 .thenReturn(Stream.of(new Question(), new Question(), new Question())
                         .collect(Collectors.toList()));
-        assertTrue(userController.canAskQuestion(
-                String.valueOf(1),room.getLinkIdStudent().toString()));
+        Assertions.assertTrue(userController.canAskQuestion(
+                String.valueOf(1), room.getLinkIdStudent().toString()));
     }
-
-
-    //    /**
-    //     * This method tests if the user is in limit of allowed questions to ask.
-    //     */
-    //    @Test
-    //    public void canUserAskQuestion() {
-    //        Room room = new Room("my room");
-    //        room.setNumberQuestionsInterval(9);
-    //        room.setTimeInterval(3);
-    //        LocalDateTime localDateTime = LocalDateTime.now();
-    //        when(roomService.getByLink(room.getLinkIdStudent().toString())).thenReturn(room);
-    //        when(questionService2.questionsByUserIdRoomIdInterval(String.valueOf(2L),
-    //        room.getId(), localDateTime))
-    //                .thenReturn(Stream.of(new Question(), new Question(), new Question())
-    //                        .collect(Collectors.toList()));
-    //        assertTrue(userController.canAskQuestion(
-    //                String.valueOf(1),room.getLinkIdStudent().toString()));
-    //    }
-
 
 }
