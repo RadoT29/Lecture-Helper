@@ -122,11 +122,6 @@ public class QuestionCellController {
         return newQuestion;
     }
 
-
-    public String buttonColour;
-
-
-
     /**
      * dismisses the question.
      * deletes the database from the database and remove it from the screen
@@ -267,7 +262,7 @@ public class QuestionCellController {
     }
 
     /**
-     * Create an answer from the log scene.
+     * Creates an answer from the log scene.
      */
     public void answerFromLog() {
         String oldAnswer = answerTextLabel.getText();
@@ -278,8 +273,23 @@ public class QuestionCellController {
         String userId = session.getUserId();
 
         try {
-            AnswerSceneController.initialize(oldAnswer, id, userId, hsc);
+            AnswerSceneController.initialize(oldAnswer, id, userId, false, hsc);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * Creates an answer from the main scene.
+     * Used by the reply button.
+     */
+    public void replyFromMainScene() {
+        Node question = questionCell.getParent();
+
+        try {
+            AnswerSceneController
+                    .initialize("", question.getId(),
+                            session.getUserId(), true, hsc);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -49,4 +49,10 @@ public class ModeratorLogSceneController extends ModeratorSceneController {
         }
         return newQuestion;
     }
+
+    @Override
+    public void changeTheme(boolean mode) {
+        changeColourQuestionLog(mode);
+        super.changeTheme(mode);
+    }
 }

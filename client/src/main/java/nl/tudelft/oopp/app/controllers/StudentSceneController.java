@@ -1,29 +1,22 @@
 package nl.tudelft.oopp.app.controllers;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
-import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.SpeedReaction;
 
@@ -62,11 +55,9 @@ public abstract class StudentSceneController extends SceneController {
 
     private TranslateTransition openSpeedNav;
     private TranslateTransition closeSpeedNav;
-    private TranslateTransition closeSpeedFastNav;
 
     private TranslateTransition openReactionNav;
     private TranslateTransition closeReactionNav;
-    private TranslateTransition closeReactionFastNav;
 
     /**
      * This method initializes the state of the navigation bar.
@@ -76,25 +67,19 @@ public abstract class StudentSceneController extends SceneController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        openSpeedNav = new TranslateTransition(Duration.millis(100), speedMenu);
-        openSpeedNav.setToX(speedMenu.getTranslateX() - speedMenu.getWidth());
-        closeSpeedNav = new TranslateTransition(Duration.millis(100), speedMenu);
-        closeSpeedFastNav = new TranslateTransition(Duration.millis(.1), speedMenu);
+        openSpeedNav = new TranslateTransition(Duration.millis(150), speedMenu);
+        openSpeedNav.setToX(speedMenu.getLayoutX());
+        closeSpeedNav = new TranslateTransition(Duration.millis(150), speedMenu);
 
-        openReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
-        openReactionNav.setToX(reactionMenu.getTranslateX() - reactionMenu.getWidth());
-        closeReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
-        closeReactionFastNav = new TranslateTransition(Duration.millis(.1), reactionMenu);
+        openReactionNav = new TranslateTransition(Duration.millis(150), reactionMenu);
+        openReactionNav.setToX(speedMenu.getLayoutX());
+        closeReactionNav = new TranslateTransition(Duration.millis(150), reactionMenu);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                closeSpeedFastNav.setToX(-(speedMenu.getWidth()));
-                closeSpeedFastNav.play();
-                closeReactionFastNav.setToX(-(reactionMenu.getWidth()));
-                closeReactionFastNav.play();
-            }
-        });
+        if (darkTheme) {
+            buttonColour = "menuBtnDark";
+        } else  {
+            buttonColour = "menuBtnBlack";
+        }
 
         super.initialize(url,rb);
     }
@@ -103,8 +88,9 @@ public abstract class StudentSceneController extends SceneController {
      * This method closes the sliding part of the speed bar.
      */
     public void hideSpeedBar() {
-        speedButton.setStyle("-fx-background-color:" + buttonColour);
-        closeSpeedNav.setToX(-(speedMenu.getWidth()));
+        speedButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
+        speedButton.getStyleClass().add(buttonColour);
+        closeSpeedNav.setToX(0);
         closeSpeedNav.play();
     }
 
@@ -113,11 +99,12 @@ public abstract class StudentSceneController extends SceneController {
      * Afterwards, it decides whether to close or open the speed bar.
      */
     public void controlSpeedMenu() {
-        if ((reactionMenu.getTranslateX()) != -(reactionMenu.getWidth())) {
+        if ((reactionMenu.getTranslateX()) != 0) {
             hideReactionBar();
         }
-        if ((speedMenu.getTranslateX()) == -(speedMenu.getWidth())) {
-            speedButton.setStyle("-fx-background-color: white");
+        if ((speedMenu.getTranslateX()) == 0) {
+            speedButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
+            speedButton.getStyleClass().add("menuBtnWhite");
             openSpeedNav.play();
         } else {
             hideSpeedBar();
@@ -128,8 +115,9 @@ public abstract class StudentSceneController extends SceneController {
      * This method closes the sliding part of the reaction bar.
      */
     public void hideReactionBar() {
-        reactionButton.setStyle("-fx-background-color:" + buttonColour);
-        closeReactionNav.setToX(-(reactionMenu.getWidth()));
+        reactionButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
+        reactionButton.getStyleClass().add(buttonColour);
+        closeReactionNav.setToX(0);
         closeReactionNav.play();
     }
 
@@ -138,11 +126,12 @@ public abstract class StudentSceneController extends SceneController {
      * Afterwards, it decides whether to close or open the reaction bar.
      */
     public void controlReactionMenu() {
-        if ((speedMenu.getTranslateX()) != -(speedMenu.getWidth())) {
+        if ((speedMenu.getTranslateX()) != 0) {
             hideSpeedBar();
         }
-        if ((reactionMenu.getTranslateX()) == -(reactionMenu.getWidth())) {
-            reactionButton.setStyle("-fx-background-color: white");
+        if ((reactionMenu.getTranslateX()) == 0) {
+            reactionButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
+            reactionButton.getStyleClass().add("menuBtnWhite");
             openReactionNav.play();
         } else {
             hideReactionBar();
@@ -283,6 +272,27 @@ public abstract class StudentSceneController extends SceneController {
         styleAlert(alert);
         alert.showAndWait();
 
+    }
+
+    @Override
+    public void changeTheme(boolean mode) {
+
+        List<VBox> menuList = new ArrayList<>();
+        menuList.add(mainMenu);
+        menuList.add(speedMenu);
+        menuList.add(reactionMenu);
+
+        if (mode) {
+            colourChange(menuList, "lightMenuBackground", "darkMenuBackground",
+                    "menuBtnBlack", "menuBtnDark",
+                    "labelBlack", "labelDark");
+        } else {
+            colourChange(menuList, "darkMenuBackground", "lightMenuBackground",
+                    "menuBtnDark", "menuBtnBlack",
+                    "labelDark", "labelBlack");
+        }
+
+        super.changeTheme(mode);
     }
 
 }

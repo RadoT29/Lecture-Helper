@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorPollSceneController">
-        <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
-            <Button fx:id="clearQuestionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/moderatorMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorPollSceneController">
+        <VBox id="vboxNav" fx:id="slidingMenu" layoutX="100.0" prefHeight="600.0" prefWidth="100.0" styleClass="lightMenuBackground" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Button fx:id="clearQuestionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearQuestionsClicked" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
                 </VBox.margin>
@@ -17,7 +17,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exportQuestionsClicked" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="exportButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exportQuestionsClicked" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2.0" left="35.0" top="20.0" />
                 </VBox.margin>
@@ -47,12 +47,12 @@
          </font>
       </Label>
             <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+                <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openSettings" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                     <VBox.margin>
                         <Insets bottom="2" />
                     </VBox.margin>
                 </Button>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
+                <Label fx:id="settingsLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="10.0" />
                     </font>
@@ -62,7 +62,7 @@
                 </Label>
             </VBox>
         </VBox>
-        <VBox id="vboxNav" fx:id="mainMenu" layoutY="3.0" prefHeight="600.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox id="vboxNav" fx:id="mainMenu" layoutY="3.0" prefHeight="600.0" prefWidth="100.0" styleClass="lightMenuBackground" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="refreshButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#refresh" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
@@ -129,7 +129,7 @@
                         <Insets bottom="2" />
                     </VBox.margin>
                 </Button>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="More Options" textAlignment="CENTER">
+                <Label fx:id="moreOptionsLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="More Options" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="10.0" />
                     </font>
@@ -142,7 +142,7 @@
     <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <left>
-            <Label fx:id="roomName" text="Room Name" BorderPane.alignment="CENTER">
+            <Label fx:id="roomName" styleClass="labelBlack" text="Room Name" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -162,7 +162,7 @@
             <Insets top="5.0" />
          </VBox.margin>
       </BorderPane>
-        <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
+        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="801.0">
             <content>
                 <VBox fx:id="pollBox" prefHeight="446.0" />
             </content>

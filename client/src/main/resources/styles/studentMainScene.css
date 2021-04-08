@@ -58,8 +58,44 @@
     -fx-background-color: white;
 }
 
-.menuBtnBlue {
+.menuBtnDark {
     -fx-background-color: #17AEDA;
+}
+
+.labelBlack {
+    -fx-text-fill: black;
+}
+
+.labelDark {
+    -fx-text-fill: #ffb86c;
+}
+
+.labelWhite {
+    -fx-text-fill: white;
+}
+
+.lightMenuBackground {
+    -fx-background-color: #17AEDA;
+}
+
+.darkMenuBackground {
+    -fx-background-color: #282a36;
+}
+
+.darkPane {
+    -fx-background-color: #44475a;
+}
+
+.lightPane {
+    -fx-background-color: #f4f4f4;
+}
+
+.borderBlack {
+    -fx-border-color: black;
+}
+
+.borderWhite {
+    -fx-border-color: white;
 }
 
 #questionInput {
@@ -77,8 +113,7 @@
     -fx-border-width: 2;
     -fx-border-radius: 50 50 50 50;
     -fx-background-radius: 50 50 50 50;
-    -fx-border-color: black;
-    -fx-background-color: white;
+    -fx-background-color: transparent;
 }
 
 #questionInput {

@@ -1,36 +1,23 @@
 package nl.tudelft.oopp.app.controllers;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
 
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
-import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
-import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.UserWarnedException;
-import nl.tudelft.oopp.app.models.Question;
-import nl.tudelft.oopp.app.models.Session;
 
 /**
  * This class controls the Main scene of the Moderators.
@@ -56,7 +43,6 @@ public abstract class ModeratorSceneController extends SceneController {
     private ModeratorReactionController reactionController;
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
-    private TranslateTransition closeFastNav;
 
     /**
      * This method initializes the state of the navigation bar.
@@ -66,19 +52,14 @@ public abstract class ModeratorSceneController extends SceneController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        openNav = new TranslateTransition(Duration.millis(100), slidingMenu);
-        openNav.setToX(slidingMenu.getTranslateX() - slidingMenu.getWidth());
-        closeNav = new TranslateTransition(Duration.millis(100), slidingMenu);
-        closeFastNav = new TranslateTransition(Duration.millis(.1), slidingMenu);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                closeFastNav.setToX(-(slidingMenu.getWidth()));
-                closeFastNav.play();
-            }
-        });
-
+        openNav = new TranslateTransition(Duration.millis(150), slidingMenu);
+        openNav.setToX(slidingMenu.getLayoutX());
+        closeNav = new TranslateTransition(Duration.millis(150), slidingMenu);
+        if (darkTheme) {
+            buttonColour = "menuBtnDark";
+        } else  {
+            buttonColour = "menuBtnBlack";
+        }
         super.initialize(url,rb);
     }
 
@@ -87,11 +68,9 @@ public abstract class ModeratorSceneController extends SceneController {
      * This method closes the sliding part of the navigation bar.
      */
     public void hideSlidingBar() {
-        if (buttonColour == null) {
-            buttonColour = "black";
-        }
-        menuButton.setStyle("-fx-background-color:" + buttonColour);
-        closeNav.setToX(-(slidingMenu.getWidth()));
+        menuButton.getStyleClass().removeAll(Collections.singleton("menuBtnWhite"));
+        menuButton.getStyleClass().add(buttonColour);
+        closeNav.setToX(0);
         closeNav.play();
     }
 
@@ -101,8 +80,9 @@ public abstract class ModeratorSceneController extends SceneController {
      */
     public void controlMenu() {
 
-        if ((slidingMenu.getTranslateX()) == -(slidingMenu.getWidth())) {
-            menuButton.setStyle("-fx-background-color: white");
+        if ((slidingMenu.getTranslateX()) == 0) {
+            menuButton.getStyleClass().removeAll(Collections.singleton(buttonColour));
+            menuButton.getStyleClass().add("menuBtnWhite");
             openNav.play();
         } else {
             hideSlidingBar();
@@ -256,5 +236,35 @@ public abstract class ModeratorSceneController extends SceneController {
 
     }
 
+    @Override
+    public void changeTheme(boolean mode) {
+
+        List<VBox> menuList = new ArrayList<>();
+        menuList.add(mainMenu);
+        menuList.add(slidingMenu);
+
+        if (mode) {
+            colourChange(menuList, "lightMenuBackground", "darkMenuBackground",
+                    "menuBtnBlack", "menuBtnDark",
+                    "labelBlack", "labelDark");
+            moreOptionsLabel.getStyleClass().removeAll(Collections.singleton("labelBlack"));
+            moreOptionsLabel.getStyleClass().add("labelDark");
+            menuButton.getStyleClass().removeAll(Collections.singleton("menuBtnBlack"));
+            if (!menuButton.getStyleClass().contains("menuBtnWhite")) {
+                menuButton.getStyleClass().add("menuBtnDark");
+            }
+        } else {
+            colourChange(menuList, "darkMenuBackground", "lightMenuBackground",
+                    "menuBtnDark", "menuBtnBlack",
+                    "labelDark", "labelBlack");
+            moreOptionsLabel.getStyleClass().removeAll(Collections.singleton("labelDark"));
+            moreOptionsLabel.getStyleClass().add("labelBlack");
+            menuButton.getStyleClass().removeAll(Collections.singleton("menuBtnDark"));
+            if (!menuButton.getStyleClass().contains("menuBtnWhite")) {
+                menuButton.getStyleClass().add("menuBtnBlack");
+            }
+        }
+        super.changeTheme(mode);
+    }
 
 }

@@ -1,25 +1,16 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
-import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
-import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
-
-import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
+import java.util.Collections;
 import java.util.PriorityQueue;
-import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
 
 /**
  * This class controls the Main scene of the Moderators.
@@ -78,5 +69,44 @@ public class PresentationSceneController extends SceneController implements Init
         questions.clear();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
+    }
+
+    @Override
+    public void changeTheme(boolean mode) {
+        String menuBackgroundAdd;
+        String menuBackgroundRemove;
+        if (mode) {
+            menuBackgroundAdd = "darkMenuBackground";
+            menuBackgroundRemove = "lightMenuBackground";
+        } else {
+            menuBackgroundAdd = "lightMenuBackground";
+            menuBackgroundRemove = "darkMenuBackground";
+        }
+
+        mainMenu.getStyleClass().removeAll(Collections.singleton(menuBackgroundRemove));
+        mainMenu.getStyleClass().add(menuBackgroundAdd);
+
+        super.changeTheme(mode);
+    }
+
+    @Override
+    protected void changeColours(String backgroundAdd, String backgroundRemove,
+                                 String labelAdd, String labelRemove,
+                                 String buttonAdd, String buttonRemove) {
+
+        pane.getStyleClass().removeAll(Collections.singleton(backgroundRemove));
+        pane.getStyleClass().add(backgroundAdd);
+
+        for (Node child : mainMenu.getChildren()) {
+            if (child instanceof Button) {
+                child.getStyleClass().removeAll(Collections.singleton(buttonRemove));
+                if (!child.getStyleClass().contains("menuBtnWhite")) {
+                    child.getStyleClass().add(buttonAdd);
+                }
+            } else {
+                child.getStyleClass().removeAll(Collections.singleton(labelRemove));
+                child.getStyleClass().add(labelAdd);
+            }
+        }
     }
 }

@@ -5,9 +5,16 @@ import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.models.Question;
 import java.io.IOException;
+import java.net.URL;
 import java.util.PriorityQueue;
+import java.util.ResourceBundle;
 
 public class StudentLogSceneController extends StudentSceneController {
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        super.initialize(url, rb);
+    }
 
     /**
      * This method is constantly called by a thread and refreshes the page.
@@ -41,5 +48,11 @@ public class StudentLogSceneController extends StudentSceneController {
     @Override
     public void refresh() {
 
+    }
+
+    @Override
+    public void changeTheme(boolean mode) {
+        changeColourQuestionLog(mode);
+        super.changeTheme(mode);
     }
 }

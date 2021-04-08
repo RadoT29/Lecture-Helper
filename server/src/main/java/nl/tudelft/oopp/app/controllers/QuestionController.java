@@ -308,17 +308,24 @@ public class QuestionController {
      * Saves a new answer.
      * @param questionId - the question id.
      * @param userId - the user id.
+     * @param type - indicates
+     *     whether the answer comes from the main scene or not.
      * @param newText - the text.
      */
-    @PostMapping("/setAnswer/{questionId}/user/{userId}")
+    @PostMapping("/setAnswer/{questionId}/user/{userId}/type/{type}")
     @ResponseBody
     public void setAnswerText(@PathVariable String questionId,
                               @PathVariable String userId,
+                              @PathVariable String type,
                               @RequestBody String newText) {
 
         //remove quotation marks from the newText
         newText = newText.substring(1, newText.length() - 1);
-        questionService.setAnswered(newText,questionId,userId,false);
+
+        boolean answerType;
+        answerType = type.equals("true");
+
+        questionService.setAnswered(newText,questionId,userId,answerType);
     }
 
 

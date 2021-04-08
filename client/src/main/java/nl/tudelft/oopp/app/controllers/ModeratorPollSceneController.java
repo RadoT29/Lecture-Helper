@@ -151,4 +151,10 @@ public class ModeratorPollSceneController extends ModeratorSceneController {
         long pollId = PollCommunication.createPoll();
         refresh();
     }
+
+    @Override
+    public void changeTheme(boolean mode) {
+        changeColourRoomName(mode);
+        super.changeTheme(mode);
+    }
 }
