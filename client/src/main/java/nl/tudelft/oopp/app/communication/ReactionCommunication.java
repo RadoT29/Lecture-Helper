@@ -36,7 +36,6 @@ public class ReactionCommunication {
         }
 
         session = session.getInstance();
-
         String requestBody = gson.toJson(reaction);
 
         //Creates a new POST Request at the link reactions/typeOfReaction/roomLink/userId
@@ -121,8 +120,9 @@ public class ReactionCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
+                return List.of(0, 0, 0);
             }
-            return List.of(0, 0, 0);
+
         } catch (Exception e) {
             e.printStackTrace();
 

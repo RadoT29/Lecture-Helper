@@ -67,6 +67,7 @@ public class SplashCommunicationTest {
      */
     @Test
     void shouldPostRoom() {
+
         mockPostRoom(roomName);
         Room room = SplashCommunication.postRoom(roomName);
         System.out.println(room);

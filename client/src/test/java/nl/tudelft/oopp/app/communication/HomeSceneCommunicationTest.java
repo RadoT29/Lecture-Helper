@@ -227,7 +227,7 @@ public class HomeSceneCommunicationTest {
                 + "0:0:31: question2\n"
                 + "This question was not answered yet\n"
                 + "\n";
-        assertEquals(exported, expected);
+        assertEquals(expected, exported);
     }
 
 
