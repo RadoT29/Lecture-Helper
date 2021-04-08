@@ -199,7 +199,30 @@ public class RoomTestMock {
         when(getRoomService.scheduleRoom("My room", startDateUtcString)).thenReturn(room);
 
         assertEquals(room, roomController.getScheduledRoomLinks("My room", "MMMMMM"));
+    }
 
+    @Test
+    public void testUpdatePermission() {
+        Room room = new Room("My room");
+        room.setPermission(false);
+        roomService.updatePermission(room);
+        verify(repository, never()).openRoomForStudents(room.getId());
+    }
+
+    @Test
+    public void testUpdatePermissionNull() {
+        Room room = null;
+
+        roomService.updatePermission(room);
+        verify(repository, never()).openRoomForStudents(anyLong());
+    }
+
+    @Test
+    public void testUpdateNoPermission() {
+        Room room = new Room("My room");
+
+        roomService.updatePermission(room);
+        verify(repository, never()).openRoomForStudents(room.getId());
     }
 
 }
