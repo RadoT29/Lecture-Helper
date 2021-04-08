@@ -38,7 +38,6 @@ public class PollCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-
         return gson.fromJson(response.body(), new TypeToken<List<Poll>>(){}.getType());
 
     }

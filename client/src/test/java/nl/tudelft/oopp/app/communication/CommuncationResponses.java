@@ -217,7 +217,57 @@ public abstract class CommuncationResponses {
                 + "}]";
     }
 
-
+    /**
+     * Method for getting list of polls.
+     * @return String
+     */
+    public static String getPollsList() {
+        return "[{\"id\":2,"
+                + "\"room\":"
+                + "{\"id\":31,"
+                + "\"name\":\"room\","
+                + "\"linkIdStudent\":\"77781e9f-97df-456f-a3f3-00fcca9eefe0\","
+                + "\"linkIdModerator\":\"96603678-5cd8-4813-9ba5-ec0248b6925c\","
+                + "\"permission\":true,"
+                + "\"numberQuestionsInterval\":2147483647,"
+                + "\"timeInterval\":2147483647,"
+                + "\"startDate\":\"2021-04-08T10:48:23.533074\","
+                + "\"createdAt\":\"2021-04-08T10:48:23.548+0000\","
+                + "\"updatedAt\":\"2021-04-08T10:48:23.548+0000\","
+                + "\"open\":true},"
+                + "\"pollOptions\":"
+                + "[{\"id\":25,"
+                + "\"optionText\":\"hi!\","
+                + "\"scoreRate\":-1.0,"
+                + "\"createdAt\":\"2021-04-08T15:57:08.81109\","
+                + "\"updatedAt\":\"2021-04-08T15:57:08.81109\","
+                + "\"correct\":true},"
+                + "{\"id\":26,"
+                + "\"optionText\":\"heyy\","
+                + "\"scoreRate\":-1.0,"
+                + "\"createdAt\":\"2021-04-08T15:57:08.813089\","
+                + "\"updatedAt\":\"2021-04-08T15:57:08.813089\","
+                + "\"correct\":false},"
+                + "{\"id\":27,"
+                + "\"optionText\":\"bye\","
+                + "\"scoreRate\":-1.0,"
+                + "\"createdAt\":\"2021-04-08T15:57:08.81509\","
+                + "\"updatedAt\":\"2021-04-08T15:57:08.81509\","
+                + "\"correct\":false},"
+                + "{\"id\":28,"
+                + "\"optionText\":\"oi\","
+                + "\"scoreRate\":-1.0,"
+                + "\"createdAt\":\"2021-04-08T15:57:08.81809\","
+                + "\"updatedAt\":\"2021-04-08T15:57:08.81809\","
+                + "\"correct\":false}],"
+                + "\"question\":\"hello\","
+                + "\"timeLimit\":null,"
+                + "\"createdAt\":\"2021-04-08T15:56:41.245231\","
+                + "\"updatedAt\":\"2021-04-08T15:56:41.245231\","
+                + "\"open\":true,"
+                + "\"finished\":false"
+                + "}]";
+    }
 
 
 }
