@@ -33,9 +33,22 @@ public class QuestionController {
     @Autowired
     private QuestionsUpdateRepository questionsUpdateRepository;
 
+    /**
+     * constructor.
+     * @param questionService QuestionService
+     * @param questionsUpdateService QuestionUpdateService
+     * @param questionsUpdateRepository questionsUpdate Repository
+     * @param roomService roomService
+     */
     @Autowired
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService,
+                              QuestionsUpdateService questionsUpdateService,
+                              QuestionsUpdateRepository questionsUpdateRepository,
+                              RoomService roomService) {
         this.questionService = questionService;
+        this.questionsUpdateRepository = questionsUpdateRepository;
+        this.questionsUpdateService = questionsUpdateService;
+        this.roomService = roomService;
     }
 
     @GetMapping

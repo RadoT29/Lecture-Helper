@@ -122,7 +122,7 @@ public class ReactionService {
         try {
             int emotionSum = emotionReactionRepository.getEmotionSum(roomId);
             int emotionCount = emotionReactionRepository.getEmotionCount(roomId);
-            return Math.round(emotionSum / emotionCount);
+            return (int) Math.round((double) emotionSum / emotionCount);
         } catch (Exception e) {
             return 0;
         }
