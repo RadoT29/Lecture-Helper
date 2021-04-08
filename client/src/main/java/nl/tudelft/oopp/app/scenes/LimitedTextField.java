@@ -16,7 +16,7 @@ public class LimitedTextField extends TextField {
     @Override
     public void replaceText(int start, int end, String text) {
         // Delete or backspace user input.
-        if (text.equals("")) {
+        if (getText() == null || text.equals("")) {
             super.replaceText(start, end, text);
         } else if (getText().length() < maxlength) {
             super.replaceText(start, end, text);
@@ -26,7 +26,7 @@ public class LimitedTextField extends TextField {
     @Override
     public void replaceSelection(String text) {
         // Delete or backspace user input.
-        if (text.equals("")) {
+        if (getText() == null || text.equals("")) {
             super.replaceSelection(text);
         } else if (getText().length() < maxlength) {
             // Add characters, but don't exceed maxlength.
