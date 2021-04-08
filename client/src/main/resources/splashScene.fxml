@@ -51,7 +51,7 @@
             </font></Label>
           <HBox maxHeight="50.0" maxWidth="605.0" minHeight="50.0" minWidth="605.0" prefHeight="50.0" prefWidth="605.0">
               <children>
-                  <TextField fx:id="roomName" maxHeight="50.0" maxWidth="410.0" minHeight="50.0" minWidth="410.0" onAction="#createRoom" prefHeight="50.0" prefWidth="410.0" promptText="Enter a link">
+                  <TextField fx:id="roomName" maxHeight="50.0" maxWidth="410.0" minHeight="50.0" minWidth="410.0" onAction="#createRoom" prefHeight="50.0" prefWidth="410.0" promptText="Enter a room name">
                       <HBox.margin>
                           <Insets right="45.0" />
                       </HBox.margin></TextField>
