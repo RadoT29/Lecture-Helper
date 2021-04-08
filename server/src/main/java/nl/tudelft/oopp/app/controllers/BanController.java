@@ -69,7 +69,7 @@ public class BanController {
     public boolean isUserBanned(@PathVariable("roomLink") String roomLink,
                                 HttpServletRequest request) {
         System.out.println(roomLink);
-        String roomId = String.valueOf(roomService.getByLinkModerator(roomLink).getId());
+        String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         List<Integer> list = userService
                 .isUserBanned(request.getRemoteAddr(), Long.valueOf(roomId));
         return list.contains(-1);
@@ -100,7 +100,7 @@ public class BanController {
     public boolean isUserWarned(@PathVariable("roomLink") String roomLink,
                                 HttpServletRequest request) {
         System.out.println(roomLink);
-        String roomId = String.valueOf(roomService.getByLinkModerator(roomLink).getId());
+        String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         List<Integer> list = userService
                 .isUserWarned(request.getRemoteAddr(), Long.valueOf(roomId));
         return list.contains(0);
