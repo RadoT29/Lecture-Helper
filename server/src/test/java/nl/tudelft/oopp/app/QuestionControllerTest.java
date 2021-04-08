@@ -316,7 +316,7 @@ public class QuestionControllerTest {
         String text = "\"hello\"";
         String changedText = "hello";
         questionController.setAnswerText(questionIdString,
-                userIdString, text);
+                userIdString, "false",text );
         verify(questionServiceMock, times(1))
                 .setAnswered(changedText, questionIdString, userIdString, false);
     }
