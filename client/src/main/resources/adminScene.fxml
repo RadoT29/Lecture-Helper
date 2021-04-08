@@ -56,22 +56,22 @@
                 <Font name="System Bold" size="10.0" />
             </font>
         </Label>
-        <Button fx:id="openRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="openRoomButton">
+        <Button fx:id="openRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#openRooms" prefHeight="30.0" prefWidth="30.0" styleClass="openRoomButton">
             <VBox.margin>
                 <Insets bottom="2" left="35" top="30.0" />
             </VBox.margin>
         </Button>
-        <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Open Room" textAlignment="CENTER">
+        <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Open Rooms" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="10.0" />
             </font>
         </Label>
-        <Button fx:id="closeOpenRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+        <Button fx:id="closeOpenRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeRooms" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
             <VBox.margin>
                 <Insets bottom="2" left="35" top="30.0" />
             </VBox.margin>
         </Button>
-        <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Close Room" textAlignment="CENTER">
+        <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Close Rooms" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="10.0" />
             </font>

@@ -124,9 +124,11 @@ public class QuestionService {
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
-        Question question = questionRepository.getOne(questionId);
         //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
+        //delete the answer
+        answerRepository.deleteByQuestionID(questionId);
+        Question question = questionRepository.getOne(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
         System.out.println("Question " + question.getId() + "(room: "
@@ -207,7 +209,7 @@ public class QuestionService {
      * part so to identify the room from which to delete.
      */
     public void clearQuestions(String roomLink) {
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLinkModerator(roomLink);
         List<Question> qs = questionRepository.findAllByRoomLink(room.getLinkIdModerator());
         for (Question q : qs) {
             answerRepository.deleteByQuestionID(q.getId());
@@ -294,7 +296,7 @@ public class QuestionService {
      * @return list of questions from the room.
      */
     public String exportQuestions(String roomLink) {
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLinkModerator(roomLink);
 
         String logTemp = getQuestionsAndAnswers(room);
         return logTemp;

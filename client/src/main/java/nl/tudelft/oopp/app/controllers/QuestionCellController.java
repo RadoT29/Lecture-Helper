@@ -10,12 +10,15 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class QuestionCellController {
 
@@ -157,7 +160,13 @@ public class QuestionCellController {
         Node question = questionLogCell.getParent();
         String id = question.getId();
         QuestionCommunication.dismissQuestion(Long.parseLong(id));
-        //hsc.deleteQuestionFromScene(id);
+        try {
+            hsc.constantRefresh();
+        } catch (ExecutionException | InterruptedException
+                | NoStudentPermissionException | AccessDeniedException
+                | UserWarnedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -269,13 +278,11 @@ public class QuestionCellController {
         String userId = session.getUserId();
 
         try {
-            AnswerSceneController.initialize(oldAnswer, id, userId, false);
-
+            AnswerSceneController.initialize(oldAnswer, id, userId, hsc);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     /**
      * Creates an answer from the main scene.
      * Used by the reply button.

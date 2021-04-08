@@ -14,10 +14,11 @@ import java.util.List;
 
 public class AdminCommunication {
 
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
     private static AdminSession session;
 
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static HttpResponse<String> response;
 
     /**
      * Sends a get request to check that the given admin password is correct.
@@ -28,7 +29,6 @@ public class AdminCommunication {
 
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/admin/password/" + password)).build();
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -53,7 +53,6 @@ public class AdminCommunication {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/admin/rooms/" + session.getPassword()))
                 .build();
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -80,7 +79,6 @@ public class AdminCommunication {
                 .uri(URI.create("http://localhost:8080/admin/rooms/unbanUsers/" + session.getPassword()
                 + "/" + roomLink))
                 .build();
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

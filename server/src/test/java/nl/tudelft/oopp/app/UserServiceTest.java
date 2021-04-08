@@ -42,7 +42,6 @@ public class UserServiceTest {
 
     private Room room;
 
-    private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @BeforeEach
@@ -85,7 +84,7 @@ public class UserServiceTest {
     public void updateTest() {
         userService.update(userFirst.getId(), "Changed");
         verify(userRepository, times(1))
-                .updateUserName(userFirst.getId(), "Changed");
+                    .updateUserName(userFirst.getId(), "Changed");
     }
 
     /**
@@ -93,9 +92,9 @@ public class UserServiceTest {
      * in which a user is not found.
      */
     @Test
-    public void getByIDTestEmpty() {
+    public void getByIdTestEmpty() {
         when(userRepository.findById(anyLong()))
-        .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
         assertNull(userService.getByID(String.valueOf(userFirst.getId())));
     }
@@ -106,7 +105,7 @@ public class UserServiceTest {
      * Checks if the method prints the wanted String.
      */
     @Test
-    public void getByIDTestEmptyPrint() {
+    public void getByIdTestEmptyPrint() {
         when(userRepository.findById(anyLong()))
                 .thenReturn(Optional.empty());
         userService.getByID(String.valueOf(userFirst.getId()));
@@ -119,7 +118,7 @@ public class UserServiceTest {
      * in which a user exists and is found.
      */
     @Test
-    public void getByIDTestFound() {
+    public void getByIdTestFound() {
         when(userRepository.findById(userFirst.getId()))
                 .thenReturn(Optional.of(userFirst));
 

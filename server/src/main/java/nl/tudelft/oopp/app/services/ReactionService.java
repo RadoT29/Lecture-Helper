@@ -103,7 +103,7 @@ public class ReactionService {
         try {
             int speedSum = speedReactionRepository.getSpeedSum(roomId);
             int speedCount = speedReactionRepository.getSpeedCount(roomId);
-            return Math.round(speedSum / speedCount);
+            return (int) Math.round((double) speedSum / speedCount);
 
         } catch (Exception e) {
             return 0;
@@ -122,7 +122,7 @@ public class ReactionService {
         try {
             int emotionSum = emotionReactionRepository.getEmotionSum(roomId);
             int emotionCount = emotionReactionRepository.getEmotionCount(roomId);
-            return Math.round(emotionSum / emotionCount);
+            return (int) Math.round((double) emotionSum / emotionCount);
         } catch (Exception e) {
             return 0;
         }

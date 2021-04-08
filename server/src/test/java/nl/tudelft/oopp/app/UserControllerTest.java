@@ -2,7 +2,9 @@ package nl.tudelft.oopp.app;
 
 import nl.tudelft.oopp.app.controllers.UserController;
 import nl.tudelft.oopp.app.models.*;
+import nl.tudelft.oopp.app.repositories.ModeratorRepository;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
+import nl.tudelft.oopp.app.repositories.StudentRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
@@ -41,6 +43,12 @@ public class UserControllerTest {
     @Mock
     private RoomRepository roomRepository;
 
+    @Mock
+    private ModeratorRepository moderatorRepository;
+
+    @Mock
+    private StudentRepository studentRepository;
+
     private Room room;
 
     @BeforeEach
@@ -53,11 +61,40 @@ public class UserControllerTest {
      * Tests if a nullPointerException is thrown.
      */
     @Test
-    public void roomExistsModeratorTestNull() {
+    public void roomExistsTestNull() {
         when(roomRepository.findByLink(any()))
-            .thenReturn(room);
+                .thenReturn(room);
+
         assertThrows(NullPointerException.class,
                 (Executable) userController.roomExists(null));
+    }
+
+    /**
+     * Tests if when provided moderator link,
+     * the proper repository saves a moderator.
+     */
+    @Test
+    public void roomExistsTestModerator() {
+        when(roomRepository.findByLink(any()))
+                .thenReturn(room);
+
+        userController.roomExists(room.getLinkIdModerator().toString());
+        verify(moderatorRepository, times(1))
+                .save(any());
+    }
+
+    /**
+     * Tests if when provided student link,
+     * the proper repository saves a student.
+     */
+    @Test
+    public void roomExistsTestStudent() {
+        when(roomRepository.findByLink(any()))
+                .thenReturn(room);
+
+        userController.roomExists(room.getLinkIdStudent().toString());
+        verify(studentRepository, times(1))
+                .save(any());
     }
 
     /**
@@ -88,7 +125,8 @@ public class UserControllerTest {
         room.setTimeInterval(1);
         when(roomService.getByLink(any()))
                 .thenReturn(room);
-        when(questionService.questionsByUserIdRoomIdInterval(anyString(), anyLong(),any(LocalDateTime.class)))
+        when(questionService
+                .questionsByUserIdRoomIdInterval(anyString(), anyLong(),any(LocalDateTime.class)))
                 .thenReturn(Collections.singletonList(new Question("something")));
         assertFalse(userController.canAskQuestion("1", room.getLinkIdModerator().toString()));
     }

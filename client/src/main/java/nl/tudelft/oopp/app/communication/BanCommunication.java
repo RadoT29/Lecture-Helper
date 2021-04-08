@@ -12,9 +12,9 @@ import java.net.http.HttpResponse;
 
 public class BanCommunication {
 
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
 
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private static final HttpClient client = HttpClient.newBuilder().build();
 
     private static Session session = Session.getInstance();
 
@@ -91,7 +91,7 @@ public class BanCommunication {
     public static void postRequestResponse(String httpRequest) {
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create(httpRequest)).build();
-        HttpResponse<String> response = tryCatchResponse(request);
+        tryCatchResponse(request);
     }
 
     /**
@@ -106,8 +106,8 @@ public class BanCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        boolean result = gson.fromJson(response.body(), Boolean.class);
-        return result;
+
+        return gson.fromJson(response.body(), Boolean.class);
     }
 
     /**
@@ -131,6 +131,7 @@ public class BanCommunication {
      * @return - the response of the server
      */
     public static HttpResponse<String> tryCatchResponse(HttpRequest request) {
+
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

@@ -27,16 +27,6 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="createNewRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
-                <VBox.margin>
-                    <Insets bottom="2" left="35" top="30.0" />
-                </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Create new room" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="10.0" />
-                </font>
-            </Label>
             <Button fx:id="closeOpenRoomButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeOpenRoom" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
@@ -93,7 +83,7 @@
                     <Font name="System Bold" size="10.0" />
                 </font>
             </Label>
-            <Button fx:id="linkButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlMenu" prefHeight="20.0" prefWidth="30.0" styleClass="menuBtnBlack">
+            <Button fx:id="linkButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showLinks" prefHeight="20.0" prefWidth="30.0" styleClass="menuBtnBlack">
                 <VBox.margin>
                     <Insets bottom="2" left="35" top="30.0" />
                 </VBox.margin>
@@ -160,14 +150,6 @@
          </left>
          <right>
             <HBox prefHeight="100.0" spacing="20.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="speedStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="okButton" stylesheets="@styles/moderatorMainScene.css">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="emotionStat" alignment="CENTER_RIGHT" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="happyButton" />
-               </children>
                <BorderPane.margin>
                   <Insets bottom="10.0" top="5.0" />
                </BorderPane.margin>
@@ -185,7 +167,13 @@
                 <VBox fx:id="pollBox" prefHeight="446.0" />
             </content>
         </ScrollPane>
-      <Button mnemonicParsing="false" onMouseClicked="#createPoll" text="Button" />
+      <Button alignment="CENTER" maxHeight="60.0" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onMouseClicked="#createPoll" prefHeight="60.0" style="-fx-background-color: #17aeda; -fx-background-radius: 50; -fx-border-radius: 50;" text="Create new poll" textFill="WHITE">
+         <VBox.margin>
+            <Insets bottom="12.0" top="12.0" />
+         </VBox.margin>
+         <font>
+            <Font name="Roboto Slab Medium" size="30.0" />
+         </font></Button>
     </VBox>
 
 </AnchorPane>

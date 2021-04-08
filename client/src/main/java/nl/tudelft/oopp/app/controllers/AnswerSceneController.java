@@ -11,7 +11,12 @@ import javafx.stage.StageStyle;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 import lombok.Setter;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 
 @Setter
 public class AnswerSceneController {
@@ -25,7 +30,7 @@ public class AnswerSceneController {
     private String questionId;
     private String oldAnswer;
     private String userId;
-    private boolean type;
+    private SceneController sc;
 
 
     /**
@@ -48,7 +53,7 @@ public class AnswerSceneController {
         aqc.setQuestionId(questionId);
         aqc.setOldAnswer(oldAnswer);
         aqc.setUserId(userId);
-        aqc.setType(type);
+        aqc.setSc(sc);
 
         //put current answerText in the text area
         TextArea textArea = (TextArea) scene.lookup("#editTextArea");
@@ -77,7 +82,15 @@ public class AnswerSceneController {
 
         //if the text has changed
         if (!newText.equals(oldAnswer)) {
-            QuestionCommunication.addAnswerText(questionId, newText, userId, type);
+            QuestionCommunication.addAnswerText(questionId, newText, userId);
+            try {
+                sc.constantRefresh();
+            } catch (ExecutionException | InterruptedException
+                    | NoStudentPermissionException | AccessDeniedException
+                    | UserWarnedException e) {
+                e.printStackTrace();
+            }
+
         }
         Stage stage = (Stage) editTextArea.getScene().getWindow();
         stage.close();

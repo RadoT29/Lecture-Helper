@@ -16,13 +16,14 @@ import java.util.List;
 public final class Session {
 
     private static Session instance;
-
     private String roomLink;
     private String roomName;
     private boolean isModerator;
     private String userId;
     private List<String> upVotedQuestions = new ArrayList<>();
     private List<String> questionsMade = new ArrayList<>();
+    private List<String> pollsFinished = new ArrayList<>();
+    private List<String> pollsAnswersMarked = new ArrayList<>();
     private String timeZone;
     private Stage stage;
     private boolean darkTheme;

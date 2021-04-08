@@ -20,13 +20,6 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<Room> findAll() {
-        return roomRepository.findAll();
-    }
-
-    public long count() {
-        return roomRepository.count();
-    }
 
     /**
      * Looking for a room by UUID link.
@@ -36,8 +29,22 @@ public class RoomService {
      * @return the room
      */
     public Room getByLink(String link) {
-        UUID toCheck = UUID.fromString(link);
+
         Room room = roomRepository.findByLink(UUID.fromString(link));
+        updatePermission(room);
+        return room;
+    }
+
+    /**
+     * Looking for a room by UUID moderatorLink.
+     * Opens the room when it's time.
+     *
+     * @param link - the link of the room which is being searched
+     * @return the room
+     */
+    public Room getByLinkModerator(String link) {
+
+        Room room = roomRepository.findByLinkModerator(UUID.fromString(link));
         updatePermission(room);
         return room;
     }
@@ -78,4 +85,7 @@ public class RoomService {
     public void putConstraints(String roomLink, int numQuestions, int minutes) {
         roomRepository.putConstraints(UUID.fromString(roomLink), numQuestions, minutes);
     }
+
+
+
 }

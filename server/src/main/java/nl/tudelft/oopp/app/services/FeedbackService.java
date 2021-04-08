@@ -21,7 +21,7 @@ public class FeedbackService {
     }
 
     /**
-     * associates feedback with a room and
+     * Associates feedback with a room and
      * adds it feedback to the database.
      * @param roomLink String link of the rated room
      * @param feedback Feedback to be saved
@@ -48,7 +48,7 @@ public class FeedbackService {
      */
     public List<Feedback> getFeedback(String roomLink) {
         //is moderator link
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLinkModerator(roomLink);
         return feedbackRepository.findAllByRoomId(room.getId());
     }
 }

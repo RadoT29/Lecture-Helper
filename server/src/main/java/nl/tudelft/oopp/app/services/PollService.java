@@ -31,30 +31,40 @@ public class PollService {
      * @return list of all the polls of the room
      */
     public List<Poll> getPolls(String roomLinkString) {
+
         UUID roomLink = UUID.fromString(roomLinkString);
         List<Poll> polls = pollRepository.findAllByRoomLink(roomLink);
-        for (Poll poll :
-                polls) {
-            for (PollOption pollOption :
-                    poll.getPollOptions()) {
 
-                int answerCount = pollAnswerRepository
-                        .countByPollOptionId(pollOption.getId());
-                int markedCount = pollAnswerRepository
-                        .countMarkedByPollOptionId(pollOption.getId());
-
-                if (answerCount == 0) {
-                    pollOption.setScoreRate(-1);
-
-                } else if (pollOption.isCorrect()) {
-                    pollOption.setScoreRate((float)markedCount / answerCount);
-                } else {
-                    pollOption.setScoreRate(1 - (float)markedCount / answerCount);
-                }
-            }
+        for (Poll poll : polls) {
+            calculateScore(poll);
         }
 
         return polls;
+    }
+
+    /**
+     * Auxiliary method to getPolls. Calculates the score for each PollOption.
+     * @param poll The poll that you need to anlayze
+     */
+    public void calculateScore(Poll poll) {
+
+        for (PollOption pollOption :
+                poll.getPollOptions()) {
+
+            int answerCount = pollAnswerRepository
+                    .countByPollOptionId(pollOption.getId());
+            int markedCount = pollAnswerRepository
+                    .countMarkedByPollOptionId(pollOption.getId());
+
+            if (answerCount == 0) {
+                pollOption.setScoreRate(-1);
+
+            } else if (pollOption.isCorrect()) {
+                pollOption.setScoreRate((float)markedCount / answerCount);
+            } else {
+                pollOption.setScoreRate(1 - (float)markedCount / answerCount);
+            }
+        }
     }
 
     /**
@@ -62,15 +72,14 @@ public class PollService {
      * @param roomLink uuid link of the room
      * @return if the access was granted
      */
-    private boolean isModerator(String roomLink) {
-        Room room = roomService.getByLink(roomLink);
+    public boolean isModerator(String roomLink) {
+        Room room = roomService.getByLinkModerator(roomLink);
+
         if (room == null) {
             return false;
-        }
-        if (room.getLinkIdModerator().equals(UUID.fromString(roomLink))) {
+        } else {
             return true;
         }
-        return false;
     }
 
     //Moderator services
@@ -94,7 +103,7 @@ public class PollService {
      * Auxiliary method that removes all the poll's options.
      * @param pollId id of the poll to be cleared
      */
-    private void clearPollOptions(long pollId) {
+    public void clearPollOptions(long pollId) {
         this.pollOptionRepository.deleteOptionsFromRoom(pollId);
     }
 
@@ -105,7 +114,7 @@ public class PollService {
      * @param optionText the text of the option
      * @param isCorrect whether this option is a correct one
      */
-    private void addPollOption(long pollId, String optionText, boolean isCorrect) {
+    public void addPollOption(long pollId, String optionText, boolean isCorrect) {
         Poll poll = this.pollRepository.findById(pollId).get();
         PollOption pollOption = new PollOption(poll, optionText, isCorrect);
         this.pollOptionRepository.save(pollOption);
@@ -119,14 +128,14 @@ public class PollService {
      * @param poll new poll
      */
     public void updateAndOpenPoll(String roomLink, long pollId, Poll poll) {
+
         if (!isModerator(roomLink)) {
             return;
         }
-        System.out.println(poll.toString());
+
         clearPollOptions(pollId);
         for (PollOption pollOption :
                 poll.getPollOptions()) {
-            System.out.println(pollOption);
             addPollOption(pollId, pollOption.getOptionText(), pollOption.isCorrect());
         }
         this.pollRepository.updateAndOpenPoll(pollId, poll.getQuestion());
@@ -149,7 +158,7 @@ public class PollService {
         return pollAnswerRepository.findAnswersByUserAndPollId(pollId,userId);
     }
 
-    private void updateAnswer(long answerId, boolean isMarked) {
+    public void updateAnswer(long answerId, boolean isMarked) {
         pollAnswerRepository.updateAnswer(answerId, isMarked);
     }
 
@@ -163,13 +172,17 @@ public class PollService {
         List<PollAnswer> pollAnswers = new ArrayList<>();
         for (PollOption answerReceived :
                 poll.getPollOptions()) {
+
             long pollOptionId = answerReceived.getId();
             boolean isMarked = answerReceived.isCorrect();
+
             PollAnswer pollAnswer = pollAnswerRepository
                     .findAnswerByUserAndOptionId(pollOptionId, userId);
+
             if (pollAnswer != null) {
                 updateAnswer(pollAnswer.getId(), isMarked);
             } else {
+
                 Student student = (Student) userService.getByID(userId + "");
                 PollOption pollOption = pollOptionRepository.findById(pollOptionId).get();
                 pollAnswer = new PollAnswer(student, pollOption, isMarked);
@@ -178,4 +191,6 @@ public class PollService {
         }
         pollAnswerRepository.saveAll(pollAnswers);
     }
+
+
 }

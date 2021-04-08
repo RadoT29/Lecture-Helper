@@ -1,18 +1,16 @@
 package nl.tudelft.oopp.app.scenes;
 
-import javafx.scene.control.TextArea;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javafx.scene.control.TextField;
+
 
 /****************************************************************************************
-*    Title: TextField maxlength
-*    Author: Siggouroglou, G
-*    Date: 2013
-*    Availability: https://stackoverflow.com/questions/15159988/javafx-2-2-textfield-maxlength/15188135#15188135
-****************************************************************************************/
-@NoArgsConstructor
-@Setter
-public class LimitedTextArea extends TextArea {
+ *    Title: TextField maxlength
+ *    Author: Siggouroglou, G
+ *    Date: 2013
+ *    Availability: https://stackoverflow.com/questions/15159988/javafx-2-2-textfield-maxlength/15188135#15188135
+ ****************************************************************************************/
+public class LimitedTextField extends TextField {
+
     public int maxlength = 254;
 
     @Override

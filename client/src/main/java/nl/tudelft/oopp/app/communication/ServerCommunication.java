@@ -11,22 +11,21 @@ import java.net.http.HttpResponse;
 
 public class ServerCommunication {
 
-    private static Gson gson = new Gson();
-
-    private static HttpClient client = HttpClient.newBuilder().build();
-
+    private static final Gson gson = new Gson();
+    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static HttpResponse<String> response;
     private static Session session;
 
     /**
      * Close the room.
      *
      * @param linkId - name of the room
-     * @throws Exception if communication with the server fails.
      */
     public static void closeRoomStudents(String linkId) {
+
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/closeRoomForStudents/" + linkId)).build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -49,9 +48,10 @@ public class ServerCommunication {
      *      tried to entry in closed room
      */
     public static boolean isRoomOpenStudents(String linkId) throws NoStudentPermissionException {
+
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/hasStudentPermission/" + linkId)).build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -61,9 +61,9 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        System.out.println(response.body());
+
         boolean result = gson.fromJson(response.body(), Boolean.class);
-        System.out.println("The room is open:" + result);
+
         if (result) {
             return result;
         } else {
@@ -79,11 +79,12 @@ public class ServerCommunication {
      * @param nickName - the name of the user.
      */
     public static void setNick(String userId, String nickName) {
+
         HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/room/user/" + userId + "/nick/"
-                        + nickName))
+                        + nickName.replace(" ", "%20")))
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -104,7 +105,6 @@ public class ServerCommunication {
 
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/room/name/" + session.getRoomLink())).build();
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -127,9 +127,10 @@ public class ServerCommunication {
      *  @param linkId - the room link
      */
     public static void openRoomStudents(String linkId) {
+
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/openRoomForStudents/" + linkId)).build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -139,5 +140,28 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+    }
+
+    /**
+     * Gets the studentLink associated with the room with the given Moderator link.
+     * @param moderatorLink The moderatorLink to identify the room you need.
+     * @return The studentLink associated with your moderatorLink.
+     */
+    public static String getStudentLink(String moderatorLink) {
+
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/room/getStudentLink/" + moderatorLink)).build();
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+
+        return response.body();
     }
 }

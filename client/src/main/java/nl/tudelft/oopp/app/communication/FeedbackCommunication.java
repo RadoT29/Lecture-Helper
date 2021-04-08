@@ -13,16 +13,18 @@ import java.util.List;
 
 public class FeedbackCommunication {
 
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
     private static Session session;
 
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private static final HttpClient client = HttpClient.newBuilder().build();
+    private static HttpResponse<String> response;
 
     /**
      * Sends POST request with feedback given by a user.
      * @param feedback Feedback feedback given by the user
      */
     public static void sendFeedback(Feedback feedback) {
+
         String requestBody = gson.toJson(feedback);
         session = Session.getInstance();
 
@@ -32,8 +34,6 @@ public class FeedbackCommunication {
                 .setHeader("Content-Type", "application/json")
                 .build();
         System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -52,11 +52,12 @@ public class FeedbackCommunication {
      * @return list of Feedback or an empty list if the communication with the server fails
      */
     public static List<Feedback> getFeedback() {
+
         Session session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/feedback/view/" + session.getRoomLink()))
                 .build();
-        HttpResponse<String> response = null;
+
         try {
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
