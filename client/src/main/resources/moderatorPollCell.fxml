@@ -4,12 +4,13 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="116.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorPollCellController">
+<?import nl.tudelft.oopp.app.scenes.LimitedTextArea?>
+<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="186.0" prefWidth="997.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorPollCellController">
    <stylesheets>
       <URL value="@styles/svgIcons.css" />
+      <URL value="@styles/pollScene.css" />
    </stylesheets>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -17,33 +18,67 @@
    <children>
       <HBox fx:id="pollBox" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox maxWidth="1150.0" minWidth="700.0" prefHeight="200.0" style="-fx-background-color: #d5d5d5;" styleClass="pollSceneBox" HBox.hgrow="ALWAYS">
                <children>
                   <VBox prefHeight="241.0" prefWidth="496.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="67.0" stroke="BLACK" strokeType="INSIDE" width="769.0" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question" />
-                        <TextArea fx:id="questionText" prefHeight="93.0" prefWidth="769.0">
+                        <VBox alignment="CENTER_LEFT" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;">
+                           <children>
+                              <Text fx:id="pollLabel" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="New Poll">
+                                 <font>
+                                    <Font name="Roboto Slab Medium" size="24.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="8.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
                            <VBox.margin>
-                              <Insets bottom="20.0" />
+                              <Insets bottom="8.0" />
+                           </VBox.margin></VBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question">
+                           <VBox.margin>
+                              <Insets left="8.0" />
+                           </VBox.margin></Text>
+                        <LimitedTextArea fx:id="questionText" prefHeight="93.0" prefWidth="769.0">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="8.0" right="8.0" />
                            </VBox.margin>
-                        </TextArea>
+                        </LimitedTextArea>
                      </children>
                   </VBox>
                   <VBox fx:id="pollOptionBox" prefHeight="200.0" prefWidth="100.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onMouseClicked="#addOption" text="Add option" />
-                        <Button mnemonicParsing="false" onMouseClicked="#sendPoll" text="Open poll" />
-                        <Button mnemonicParsing="false" onMouseClicked="#closePoll" text="Close poll" />
+                        <Button fx:id="addOptionButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onMouseClicked="#addOption" prefWidth="100.0" text="Add option" />
+                        <Button fx:id="closePollButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onMouseClicked="#closePoll" prefWidth="100.0" text="Close poll" textFill="WHITE" visible="false">
+                           <HBox.margin>
+                              <Insets left="350.0" />
+                           </HBox.margin></Button>
+                        <Button fx:id="openPollButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onMouseClicked="#sendPoll" prefWidth="100.0" text="Open poll">
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin></Button>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="12.0" left="8.0" right="8.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" fx:id="resultBox">
-               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="67.0" stroke="BLACK" strokeType="INSIDE" width="120.0" />
+            <VBox fx:id="resultBox" maxHeight="250.0" prefHeight="171.0" prefWidth="207.0" style="-fx-background-color: #d5d5d5;" styleClass="pollSceneBox" visible="false">
+               <VBox alignment="CENTER_LEFT" maxHeight="40.0" maxWidth="180.0" minHeight="40.0" minWidth="180.0" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #17AEDA;"><children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Results">
+                     <font>
+                        <Font name="Roboto Slab Medium" size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="8.0" />
+                     </VBox.margin>
+                  </Text>
+               </children></VBox>
                <HBox.margin>
-                  <Insets left="20.0" />
+                  <Insets left="40.0" />
                </HBox.margin>
             </VBox>
          </children>
