@@ -6,10 +6,8 @@ import nl.tudelft.oopp.app.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * This class handles all the Endpoints related to the polls.
@@ -32,24 +30,6 @@ public class PollController {
         return pollService.getPolls(roomLink);
     }
 
-    /**
-     * Gets all polls in a room and sends them to client.
-     * The function is asynchronous.
-     * @return - Other.
-     */
-    @GetMapping("/constant/{roomLink}")
-    @ResponseBody
-    public DeferredResult<List<Poll>> sendAllPollsAsync(@PathVariable String roomLink) {
-        Long timeOut = 100000L;
-        String timeOutResp = "Time out.";
-        DeferredResult<List<Poll>> deferredResult = new DeferredResult<>(timeOut,timeOutResp);
-        CompletableFuture.runAsync(() -> {
-            List<Poll> newPolls = pollService.getPolls(roomLink);
-            deferredResult.setResult(newPolls);
-        });
-
-        return deferredResult;
-    }
 
     //Moderator routes
     @PostMapping("/{roomLink}")

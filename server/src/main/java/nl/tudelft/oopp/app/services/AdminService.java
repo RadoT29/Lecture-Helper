@@ -50,4 +50,12 @@ public class AdminService {
     public void unbanAllUsersForRoom(String roomId) {
         ipAddressRepository.unbanAllUsersForRoom(Long.parseLong(roomId));
     }
+
+    /**
+     * Used only for testing.
+     * @return password for the admin
+     */
+    public String getRealPassword() {
+        return realPassword;
+    }
 }
