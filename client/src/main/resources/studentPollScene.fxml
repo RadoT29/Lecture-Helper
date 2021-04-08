@@ -5,7 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" stylesheets="@styles/studentMainScene.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.StudentPollSceneController">
+<?import java.net.URL?>
+<AnchorPane id="NavPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.StudentPollSceneController">
+   <stylesheets>
+      <URL value="@styles/svgIcons.css" />
+      <URL value="@styles/studentMainScene.css" />
+   </stylesheets>
    <VBox id="vboxNav" fx:id="speedMenu" fillWidth="false" layoutX="100.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="100.0" style="-fx-background-color: #17AEDA;" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="252.0" VBox.vgrow="NEVER">
       <Button fx:id="fastButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tooFast" prefHeight="30.0" prefWidth="40.0" styleClass="menuBtnBlack" stylesheets="@styles/studentMainScene.css">
          <VBox.margin>
@@ -81,7 +86,7 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Label>
-      <Button fx:id="homeButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="menuBtnBlack">
+      <Button fx:id="homeButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToHome" prefHeight="30.0" prefWidth="35.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="31.5" top="30.0" />
          </VBox.margin>
@@ -91,7 +96,7 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Label>
-      <Button fx:id="pollsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToPolls" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+      <Button fx:id="pollsButton" disable="true" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToPolls" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="35" top="30.0" />
          </VBox.margin>
@@ -101,7 +106,7 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Label>
-      <Button fx:id="speedButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlSpeedMenu" prefHeight="30.0" prefWidth="35.0" styleClass="speedBtnBlack">
+      <Button fx:id="speedButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlSpeedMenu" prefHeight="30.0" prefWidth="35.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="32.5" top="30.0" />
          </VBox.margin>
@@ -111,7 +116,7 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Label>
-      <Button fx:id="reactionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlReactionMenu" prefHeight="30.0" prefWidth="30.0" styleClass="reactionBtnBlack">
+      <Button fx:id="reactionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#controlReactionMenu" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="35" top="30.0" />
          </VBox.margin>
@@ -121,7 +126,7 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Label>
-      <Button fx:id="questionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+      <Button fx:id="questionButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#goToLog" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
          <VBox.margin>
             <Insets bottom="2" left="35" top="30.0" />
          </VBox.margin>
@@ -132,12 +137,12 @@
          </font>
       </Label>
       <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-         <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
+         <Button fx:id="settingsButton" layoutX="50.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openSettings" prefHeight="30.0" prefWidth="30.0" styleClass="menuBtnBlack">
             <VBox.margin>
                <Insets bottom="2" />
             </VBox.margin>
          </Button>
-         <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
+         <Label fx:id="settingsLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Settings" textAlignment="CENTER">
             <font>
                <Font name="System Bold" size="10.0" />
             </font>
@@ -147,6 +152,7 @@
          </Label>
       </VBox>
    </VBox>
+
    <!-- Here ends the nav Bar -->
    <VBox alignment="CENTER" layoutX="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
       <BorderPane prefHeight="200.0" prefWidth="200.0">

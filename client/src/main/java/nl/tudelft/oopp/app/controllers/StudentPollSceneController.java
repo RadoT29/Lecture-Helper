@@ -1,253 +1,32 @@
 package nl.tudelft.oopp.app.controllers;
 
-import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.scene.paint.Color;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.*;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
-public class StudentPollSceneController implements Initializable {
-
-    @FXML
-    public Button reactionButton;
-    @FXML
-    public Button speedButton;
-    @FXML
-    public VBox speedMenu;
-    @FXML
-    public VBox reactionMenu;
-
-    @FXML
-    public Button fastButton;
-    @FXML
-    public Button okButton;
-    @FXML
-    public Button slowButton;
-
-    @FXML
-    public Button happyButton;
-    @FXML
-    public Button sadButton;
-    @FXML
-    public Button confusedButton;
+public class StudentPollSceneController extends StudentSceneController {
 
     @FXML
     public VBox pollBox;
 
     protected List<Poll> polls;
-    Session session = Session.getInstance();
 
-    private TranslateTransition openSpeedNav;
-    private TranslateTransition closeSpeedNav;
-    private TranslateTransition closeSpeedFastNav;
-
-    private TranslateTransition openReactionNav;
-    private TranslateTransition closeReactionNav;
-    private TranslateTransition closeReactionFastNav;
-
-    /**
-     * This method initializes the state of the navigation bar.
-     * It hides the sliding bars behind the regular one.
-     *
-     * @param url - The path.
-     * @param rb  - Provides any needed resources.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        openSpeedNav = new TranslateTransition(Duration.millis(100), speedMenu);
-        openSpeedNav.setToX(speedMenu.getTranslateX() - speedMenu.getWidth());
-        closeSpeedNav = new TranslateTransition(Duration.millis(100), speedMenu);
-        closeSpeedFastNav = new TranslateTransition(Duration.millis(.1), speedMenu);
-
-        openReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
-        openReactionNav.setToX(reactionMenu.getTranslateX() - reactionMenu.getWidth());
-        closeReactionNav = new TranslateTransition(Duration.millis(100), reactionMenu);
-        closeReactionFastNav = new TranslateTransition(Duration.millis(.1), reactionMenu);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                closeSpeedFastNav.setToX(-(speedMenu.getWidth()));
-                closeSpeedFastNav.play();
-                closeReactionFastNav.setToX(-(reactionMenu.getWidth()));
-                closeReactionFastNav.play();
-            }
-        });
-
-    }
-
-    /**
-     * This method closes the sliding part of the speed bar.
-     */
-    public void hideSpeedBar() {
-        speedButton.getStyleClass().remove("speedBtnWhite");
-        speedButton.getStyleClass().add("speedBtnBlack");
-        closeSpeedNav.setToX(-(speedMenu.getWidth()));
-        closeSpeedNav.play();
-    }
-
-    /**
-     * This method checks the current state of the speed bar.
-     * Afterwards, it decides whether to close or open the speed bar.
-     */
-    public void controlSpeedMenu() {
-        if ((reactionMenu.getTranslateX()) != -(reactionMenu.getWidth())) {
-            hideReactionBar();
-        }
-        if ((speedMenu.getTranslateX()) == -(speedMenu.getWidth())) {
-            speedButton.getStyleClass().remove("speedBtnBlack");
-            speedButton.getStyleClass().add("speedBtnWhite");
-            openSpeedNav.play();
-        } else {
-            hideSpeedBar();
-        }
-    }
-
-    /**
-     * This method closes the sliding part of the reaction bar.
-     */
-    public void hideReactionBar() {
-
-        reactionButton.getStyleClass().remove("reactionBtnWhite");
-        reactionButton.getStyleClass().add("reactionBtnBlack");
-        closeReactionNav.setToX(-(reactionMenu.getWidth()));
-        closeReactionNav.play();
-    }
-
-    /**
-     * This method checks the current state of the reaction bar.
-     * Afterwards, it decides whether to close or open the reaction bar.
-     */
-    public void controlReactionMenu() {
-        if ((speedMenu.getTranslateX()) != -(speedMenu.getWidth())) {
-            hideSpeedBar();
-        }
-        if ((reactionMenu.getTranslateX()) == -(reactionMenu.getWidth())) {
-            reactionButton.getStyleClass().remove("reactionBtnBlack");
-            reactionButton.getStyleClass().add("reactionBtnWhite");
-            openReactionNav.play();
-        } else {
-            hideReactionBar();
-        }
-    }
-
-    /**
-     * This method sends the corresponding SpeedReaction when the fastButton is clicked.
-     */
-    public void tooFast() {
-        ReactionCommunication.postReaction(new SpeedReaction(1));
-
-        // When a reaction is sent, it is disabled so that the same one can't be sent again
-        fastButton.setDisable(true);
-        okButton.setDisable(false);
-        slowButton.setDisable(false);
-    }
-
-
-    /**
-     * This method sends the corresponding SpeedReaction when the okButton is clicked.
-     */
-    public void fastEnough() {
-        ReactionCommunication.postReaction(new SpeedReaction(0));
-
-        // When a reaction is sent, it is disabled so that the same one can't be sent again
-        fastButton.setDisable(false);
-        okButton.setDisable(true);
-        slowButton.setDisable(false);
-    }
-
-    /**
-     * This method sends the corresponding SpeedReaction when the slowButton is clicked.
-     */
-    public void tooSlow() {
-        ReactionCommunication.postReaction(new SpeedReaction(-1));
-
-        // When a reaction is sent, it is disabled so that the same one can't be sent again
-        fastButton.setDisable(false);
-        okButton.setDisable(false);
-        slowButton.setDisable(true);
-    }
-
-    /**
-     * This method sends the corresponding EmotionReaction when the happyButton is clicked.
-     */
-    public void addHappy() {
-        ReactionCommunication.postReaction(new EmotionReaction(1));
-
-        // When a reaction is sent, it is disabled so that the same one can't be sent again
-        happyButton.setDisable(true);
-        sadButton.setDisable(false);
-        confusedButton.setDisable(false);
-    }
-
-    /**
-     * This method sends the corresponding EmotionReaction when the sadButton is clicked.
-     */
-    public void addSad() {
-        ReactionCommunication.postReaction(new EmotionReaction(0));
-
-        // When a reaction is sent, it is disabled so that the same one can't be sent again
-        happyButton.setDisable(false);
-        sadButton.setDisable(true);
-        confusedButton.setDisable(false);
-    }
-
-    /**
-     * This method sends the corresponding EmotionReaction when the confusedButton is clicked.
-     */
-    public void addConfused() {
-        ReactionCommunication.postReaction(new EmotionReaction(-1));
-
-        // When a reaction is sent, it is disabled so that the same one can't be sent again
-        happyButton.setDisable(false);
-        sadButton.setDisable(false);
-        confusedButton.setDisable(true);
-    }
-
-    /**
-     * will be removed with refactoring.
-     *
-     * @throws IOException k
-     */
-    public void goToPolls() throws IOException {
-        Parent loader = new FXMLLoader(getClass().getResource("/studentPollScene.fxml")).load();
-        Stage stage = (Stage) reactionMenu.getScene().getWindow();
-
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.8;
-        double height = screenSize.getHeight() * 0.8;
-
-        Scene scene = new Scene(loader, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
-    }
-
-    //Poll stuff
 
     /**
      * Create the poll options to fill the poll cell.
@@ -271,11 +50,24 @@ public class StudentPollSceneController implements Initializable {
         Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
         optionLabel.setText(pollAnswer.getPollOption().getOptionText());
 
+        VBox optionLabelBox = (VBox) newPollAnswer.lookup("#optionLabelBox");
         Label correctLabel = (Label) newPollAnswer.lookup("#correct");
-        correctLabel.setText("This option was "
-                + (pollAnswer.getPollOption().isCorrect() ? "correct" : "wrong"));
+        if (pollAnswer.getPollOption().isCorrect()) {
+            correctLabel.setText("This option was correct");
+            optionLabelBox.getStyleClass().add("rightAnswer");
+        } else {
+            correctLabel.setText("This option was wrong");
+            optionLabelBox.getStyleClass().add("wrongAnswer");
+        }
 
         Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
+        if (pollAnswer.getPollOption().isCorrect() == pollAnswer.isMarked()) {
+            scoredLabel.setText("And you answered correctly");
+            scoredLabel.setTextFill(Color.rgb(32,155,12));
+        } else {
+            scoredLabel.setText("And you answered it wrong :(");
+            scoredLabel.setTextFill(Color.rgb(195,35,35));
+        }
         scoredLabel.setText("And you answered "
                 + (pollAnswer.getPollOption().isCorrect() == pollAnswer.isMarked()
                 ? "correctly" : "wrong :("));
@@ -307,9 +99,15 @@ public class StudentPollSceneController implements Initializable {
         Label optionLabel = (Label) newPollAnswer.lookup("#optionText");
         optionLabel.setText(pollOption.getOptionText());
 
+        VBox optionLabelBox = (VBox) newPollAnswer.lookup("#optionLabelBox");
         Label correctLabel = (Label) newPollAnswer.lookup("#correct");
-        correctLabel.setText("This option was "
-                + (pollOption.isCorrect() ? "correct" : "wrong"));
+        if (pollOption.isCorrect()) {
+            correctLabel.setText("This option was correct");
+            optionLabelBox.getStyleClass().add("rightAnswer");
+        } else {
+            correctLabel.setText("This option was wrong");
+            optionLabelBox.getStyleClass().add("wrongAnswer");
+        }
 
         Label scoredLabel = (Label) newPollAnswer.lookup("#scored");
         scoredLabel.setText("You have not answered this poll in time");
@@ -331,8 +129,9 @@ public class StudentPollSceneController implements Initializable {
 
         newPollOption.setId("" + pollOption.getId());
 
-        Label optionLabel = (Label) newPollOption.lookup("#optionText");
-        optionLabel.setText(pollOption.getOptionText());
+        CheckBox checkBox = (CheckBox) newPollOption.lookup("#isCorrect");
+        checkBox.setText(pollOption.getOptionText());
+        checkBox.setSelected(session.getPollsAnswersMarked().contains("" + pollOption.getId()));
 
         return newPollOption;
     }
@@ -354,12 +153,8 @@ public class StudentPollSceneController implements Initializable {
 
         Label questionlabel = (Label) newPoll.lookup("#questionText");
         questionlabel.setText(poll.getQuestion());
-
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.4;
-        questionlabel.setPrefWidth(width);
-        questionlabel.setMaxWidth(width);
+        VBox questionBox = (VBox) newPoll.lookup("#questionBox");
+        questionBox.setPrefHeight(Region.USE_COMPUTED_SIZE);
 
         VBox pollOptionBox = (VBox) newPoll.lookup("#pollOptionBox");
         VBox resultBox = (VBox) newPoll.lookup("#resultBox");
@@ -367,6 +162,8 @@ public class StudentPollSceneController implements Initializable {
         int optionCount = 1;
         if (poll.isFinished()) {
 
+            resultBox.setVisible(true);
+            session.getPollsFinished().add("" + poll.getId());
             List<PollAnswer> pollAnswers = PollCommunication.getAnswers(poll.id);
 
             boolean unanswered = pollAnswers.isEmpty();
@@ -376,8 +173,10 @@ public class StudentPollSceneController implements Initializable {
                     pollOptionBox.getChildren().add(
                             createPollUnansweredCell(pollOption, optionCount));
                 }
-                resultBox.getChildren().add(new Label("Option " + optionCount
-                        + ":     " + pollOption.getScoreRate()));
+
+                int percentRight = (int) Math.round(pollOption.getScoreRate() * 100);
+                resultBox.getChildren().add(new Label("\n  Option " + optionCount
+                        + ":\t\t" + percentRight + "%"));
                 optionCount++;
             }
 
@@ -410,6 +209,7 @@ public class StudentPollSceneController implements Initializable {
         polls = PollCommunication.getPolls();
 
         pollBox.getChildren().clear();
+
         for (Poll poll :
                 polls) {
             if (poll.isOpen()) {
@@ -446,32 +246,8 @@ public class StudentPollSceneController implements Initializable {
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, AccessDeniedException, UserWarnedException {
         polls = new ArrayList<>();
-        polls.addAll(PollCommunication.constantlyGetPolls(session.getRoomLink()));
+        polls.addAll(PollCommunication.getPolls());
         loadPolls();
-        //        if (session.getIsModerator()) {
-        //            String linkId = session.getRoomLink();
-        //            try {
-        //                ServerCommunication.isRoomOpenStudents(linkId);
-        //                //changeImageOpenRoomButton();
-        //            } catch (NoStudentPermissionException exception) {
-        //                //changeImageCloseRoomButton();
-        //                exception.getStackTrace();
-        //            }
-        //        }
-
-        //ServerCommunication.isTheRoomClosed(session.getRoomLink());
-        //if (!session.getIsModerator()) {
-        //ServerCommunication.hasStudentPermission(session.getRoomLink());
-        ServerCommunication.isRoomOpenStudents(session.getRoomLink());
-        QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
-        if (!session.isWarned()) {
-            BanCommunication.isIpWarned(session.getRoomLink());
-        } else {
-            BanCommunication.isIpBanned(session.getRoomLink());
-        }
-        // }
-
-
     }
 }
 
