@@ -116,6 +116,13 @@ public class QuestionCellController {
             upvoteButton.getStyleClass().add("active");
         }
 
+        Session session = Session.getInstance();
+        if (!session.isModerator()
+                && session.getQuestionsMade().contains(question.getId() + "")) {
+            Button dismissButton = (Button) newQuestion.lookup("#dismissButton");
+            dismissButton.setDisable(false);
+        }
+
         return newQuestion;
     }
 
