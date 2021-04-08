@@ -18,7 +18,7 @@ public class QuestionCommunication {
     private static HttpResponse<String> response;
 
 
-    private static Session session = Session.getInstance();
+    private static Session session;
 
     /**
      * send a DELETE request to the server to delete the question.
@@ -77,9 +77,10 @@ public class QuestionCommunication {
      */
     public static void upVoteQuestion(String questionId) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:8080/questions/changeUpvote/" + questionId + "/" + Session.getInstance().getUserId()))
+                .uri(URI.create("http://localhost:8080/questions/changeUpvote/" + questionId + "/" + session.getUserId()))
                 .build();
 
         try {
@@ -101,9 +102,10 @@ public class QuestionCommunication {
      */
     public static void deleteUpvote(String questionId) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/questions/deleteUpvote/"
-                        + questionId + "/" + Session.getInstance().getUserId()))
+                        + questionId + "/" + session.getUserId()))
                 .DELETE()
                 .build();
 
@@ -152,6 +154,7 @@ public class QuestionCommunication {
      */
     public static boolean checkAnswered(String questionId) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/answer/checkAnswer/"
                         + questionId + "/" + session.getRoomLink()))
@@ -179,6 +182,7 @@ public class QuestionCommunication {
      */
     public static void setAnswered(String questionId, boolean createdInClass) {
 
+        session = Session.getInstance();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("http://localhost:8080/questions/answer/setAsAnswered/" + questionId + "/"
