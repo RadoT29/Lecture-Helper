@@ -270,5 +270,44 @@ public abstract class CommuncationResponses {
     }
 
 
+    /**
+     * Set up String for polls answers.
+     * @return String
+     */
+    public static String getPollsAnswers() {
+        return "[{"
+                + "\"id\": 5,"
+                + "\"student\": {"
+                + "\"id\": 20,"
+                + "\"name\": \"gghjk\","
+                + "\"isModerator\": false,"
+                + "\"roomId\": {"
+                + "\"id\": 1,"
+                + "\"name\": \"svcveher\","
+                + "\"linkIdStudent\": \"6094beba-10f7-43a0-a3bc-70c705ed8f3b\", "
+                + "\"linkIdModerator\": \"0a14ab08-7a3e-471c-aa43-1feb0ca88cc2\", "
+                + "\"isOpen\": true,"
+                + "\"permission\": true,"
+                + "\"numberQuestionsInterval\": 2147483647,"
+                + "\"timeInterval\": 2147483647,"
+                + "\"startDate\": \"2021-03-31T14:22:43.721675\","
+                + "\"endDateForStudents\": null,"
+                + "\"createdAt\": \"2021-03-31T14:22:43.813+0000\","
+                + "\"updatedAt\": \"2021-03-31T14:22:43.813+0000\", "
+                + "  },"
+                + "\"createdAt\": \"2021-03-31T16:39:54.101+0000\","
+                + "\"updatedAt\": \"2021-03-31T16:39:54.101+0000\"},"
+                + "\"pollOption\": {"
+                + "\"id\": 3,"
+                + "\"optionText\": \"correipacbsocaoef\","
+                + "\"scoreRate\": 0.0,"
+                + "\"createdAt\": \"2021-03-31T18:41:43.709324\","
+                + "\"updatedAt\": \"2021-03-31T18:41:43.709336\","
+                + "\"correct\": true},"
+                + "\"createdAt\": \"2021-03-31T18:42:12.515732\","
+                + "\"updatedAt\": \"2021-03-31T18:42:12.515749\","
+                + "\"marked\": true}]";
+
+    }
 }
 
