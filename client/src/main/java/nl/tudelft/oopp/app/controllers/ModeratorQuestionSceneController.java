@@ -1,22 +1,20 @@
 package nl.tudelft.oopp.app.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.*;
 import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
-import nl.tudelft.oopp.app.exceptions.OutOfLimitOfQuestionsException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.PriorityQueue;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class ModeratorQuestionSceneController extends ModeratorSceneController {
@@ -24,8 +22,6 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
 
     @FXML
     protected VBox questionBox;
-    @FXML
-    private TextField questionInput;
     @FXML
     public HBox reactionBox;
     @FXML
@@ -166,6 +162,60 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
             ViewFeedbackSceneController.init();
         } catch (IOException e) {
             return;
+        }
+    }
+
+    @Override
+    public void changeTheme(boolean mode) {
+        changeColourMainScene(mode);
+
+        String buttonRemove;
+        String buttonAdd;
+        String labelAdd;
+        String labelRemove;
+
+        List<HBox> list = new ArrayList<>();
+        list.add(reactionBox);
+        list.add(emotionReactions);
+
+        if (mode) {
+            buttonAdd = "menuBtnDark";
+            buttonRemove = "menuBtnBlack";
+            labelAdd = "labelDark";
+            labelRemove = "labelBlack";
+        } else  {
+            buttonAdd = "menuBtnBlack";
+            buttonRemove = "menuBtnDark";
+            labelAdd = "labelBlack";
+            labelRemove = "labelDark";
+        }
+        changeReactionColour(list, buttonAdd, buttonRemove,
+                labelAdd, labelRemove);
+
+        super.changeTheme(mode);
+    }
+
+    /**
+     * Applies the colour changes to the reaction icons.
+     * @param list - teh parents of the buttons.
+     * @param buttonAdd - the colour of the icon.
+     * @param buttonRemove - the previous colour of the icon.
+     * @param labelAdd - the label of the score.
+     * @param labelRemove - the previous label.
+     */
+    private void changeReactionColour(List<HBox> list, String buttonAdd,
+                                       String buttonRemove, String labelAdd,
+                                       String labelRemove) {
+        for (HBox box : list) {
+            for (Node child : box.getChildren()) {
+                if (child instanceof Button) {
+                    child.getStyleClass().removeAll(Collections.singleton(buttonRemove));
+                    child.getStyleClass().add(buttonAdd);
+                } else {
+                    child.getStyleClass().removeAll(Collections.singleton(labelRemove));
+                    child.getStyleClass().add(labelAdd);
+                }
+            }
         }
     }
 }

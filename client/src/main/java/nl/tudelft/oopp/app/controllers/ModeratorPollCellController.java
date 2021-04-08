@@ -80,6 +80,8 @@ public class ModeratorPollCellController {
 
         long pollId = Long.parseLong(pollBox.getParent().getId());
         PollCommunication.updatePoll(pollId, poll);
+
+        mpsc.refresh();
     }
 
     /**
@@ -89,6 +91,8 @@ public class ModeratorPollCellController {
     public void closePoll() {
         long pollId = Long.parseLong(pollBox.getParent().getId());
         PollCommunication.finishPoll(pollId);
+
+        mpsc.refresh();
     }
 
 }

@@ -38,7 +38,7 @@ public class BanController {
         System.out.println(request.getRemoteAddr());
 
 
-        Room room = roomService.getByLinkModerator(roomId);
+        Room room = roomService.getByLink(roomId);
         User user = userService.getByID(userId);
         System.out.println("reach here");
         userService.saveStudentIp(request.getRemoteAddr(), user, room);
@@ -53,7 +53,7 @@ public class BanController {
     @ResponseBody
     public void banUserForThatRoom(@PathVariable("questionId") String questionId,
                                    @PathVariable("roomLink") String roomLink) {
-        String roomId = String.valueOf(roomService.getByLinkModerator(roomLink).getId());
+        String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         String userId = String.valueOf(questionService.findUserByQuestionId(questionId));
         userService.banUserForThatRoom(userId, roomId);
     }
@@ -84,7 +84,7 @@ public class BanController {
     @ResponseBody
     public void warnUserForThatRoom(@PathVariable("questionId") String questionId,
                                    @PathVariable("roomLink") String roomLink) {
-        String roomId = String.valueOf(roomService.getByLinkModerator(roomLink).getId());
+        String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         String userId = String.valueOf(questionService.findUserByQuestionId(questionId));
         userService.warnUserForThatRoom(userId, roomId);
     }

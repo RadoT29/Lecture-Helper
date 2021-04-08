@@ -4,6 +4,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" prefHeight="19.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.ModeratorPollCellController">
    <stylesheets>
@@ -15,11 +16,36 @@
    <children>
       <VBox prefHeight="41.0" prefWidth="698.0">
          <children>
-            <Label text="Label" fx:id="optionNumber"/>
-            <Label text="Label" fx:id="optionText"/>
-            <Label text="Label" fx:id="correct"/>
-            <Label text="Label" fx:id="scored"/>
+            <Label fx:id="optionNumber" text="Label" />
+            <VBox fx:id="optionLabelBox" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 5; -fx-background-radius: 5;">
+               <children>
+                  <Label fx:id="optionText" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" text="Label">
+                     <VBox.margin>
+                        <Insets left="4.0" right="4.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Roboto Light" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="-4.0" right="4.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="correct" text="Label" />
+                  <Label fx:id="scored" text="Label">
+                     <HBox.margin>
+                        <Insets left="100.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
          </children>
+         <padding>
+            <Insets left="8.0" right="8.0" />
+         </padding>
       </VBox>
    </children>
 </AnchorPane>

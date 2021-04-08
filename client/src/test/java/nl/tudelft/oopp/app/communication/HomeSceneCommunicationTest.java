@@ -59,7 +59,9 @@ public class HomeSceneCommunicationTest {
         mockServer.stop();
     }
 
-    /**Test if HomeSceneCommunication.postQuestion sends a post question request to the right path.
+    /**
+     * Test if HomeSceneCommunication.postQuestion
+     * sends a post question request to the right path.
      */
     @Test
     void shouldSendQuestionRequest() {

@@ -124,9 +124,11 @@ public class QuestionService {
      * @param questionId long id of the question to be deleted
      **/
     public void dismissQuestion(long questionId) {
-        Question question = questionRepository.getOne(questionId);
         //delete upVotes
         upvoteRepository.deleteUpVotesByQuestionId(questionId);
+        //delete the answer
+        answerRepository.deleteByQuestionID(questionId);
+        Question question = questionRepository.getOne(questionId);
         //delete the question
         questionRepository.deleteById(questionId);
         System.out.println("Question " + question.getId() + "(room: "
@@ -263,11 +265,10 @@ public class QuestionService {
 
         if (answerType) {
             questionRepository.updateAnsweredStatus(question.getId(), true);
-            answerRepository.save(answer);
         } else {
             answerRepository.deleteByQuestionID(questionId2);
-            answerRepository.save(answer);
         }
+        answerRepository.save(answer);
         questionRepository.setAnswer(questionId2, answerText);
 
     }

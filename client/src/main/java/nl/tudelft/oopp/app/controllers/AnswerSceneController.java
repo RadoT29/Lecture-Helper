@@ -11,7 +11,12 @@ import javafx.stage.StageStyle;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 import lombok.Setter;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 
 @Setter
 public class AnswerSceneController {
@@ -25,6 +30,8 @@ public class AnswerSceneController {
     private String questionId;
     private String oldAnswer;
     private String userId;
+    private boolean type;
+    private SceneController sc;
 
 
     /**
@@ -33,7 +40,7 @@ public class AnswerSceneController {
      * @throws IOException when the loader fails
      */
     public static void initialize(
-            String oldAnswer, String questionId, String userId)
+            String oldAnswer, String questionId, String userId, boolean type, SceneController sc)
             throws IOException {
 
         //Load scene.
@@ -47,6 +54,8 @@ public class AnswerSceneController {
         aqc.setQuestionId(questionId);
         aqc.setOldAnswer(oldAnswer);
         aqc.setUserId(userId);
+        aqc.setType(type);
+        aqc.setSc(sc);
 
         //put current answerText in the text area
         TextArea textArea = (TextArea) scene.lookup("#editTextArea");
@@ -75,7 +84,15 @@ public class AnswerSceneController {
 
         //if the text has changed
         if (!newText.equals(oldAnswer)) {
-            QuestionCommunication.addAnswerText(questionId, newText, userId);   
+            QuestionCommunication.addAnswerText(questionId, newText, userId, type);
+            try {
+                sc.constantRefresh();
+            } catch (ExecutionException | InterruptedException
+                    | NoStudentPermissionException | AccessDeniedException
+                    | UserWarnedException e) {
+                e.printStackTrace();
+            }
+
         }
         Stage stage = (Stage) editTextArea.getScene().getWindow();
         stage.close();

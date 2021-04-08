@@ -298,6 +298,44 @@ public class ReactionServiceTest {
         assertEquals(0, reactionService.getSpeedStat((roomLink)));
     }
 
+    /**
+     * tests if the count of reactions is 0 (can't divide by 0)
+     * the exception is caught and 0 is returned.
+     */
+    @Test
+    public void getEmotionStat_noReactionsException_test() {
+        // 7*(-1) + 1*(1) + 2*(0) = -6
+        // -6/10 ~ -1
+        when(emotionReactionRepository.getEmotionSum(roomId)).thenReturn(-6);
+        when(emotionReactionRepository.getEmotionCount(roomId)).thenReturn(0);
+        assertEquals(0, reactionService.getEmotionStat((roomLink)));
+    }
+
+    /**
+     * tests if the method correctly evaluated the speed statistics.
+     */
+    @Test
+    public void getEmotionStat_minusOne_test() {
+        // 7*(-1) + 1*(1) + 2*(0) = -6
+        // -6/10 ~ -1
+        when(emotionReactionRepository.getEmotionSum(roomId)).thenReturn(-6);
+        when(emotionReactionRepository.getEmotionCount(roomId)).thenReturn(10);
+        assertEquals(-1, reactionService.getEmotionStat((roomLink)));
+    }
+
+    /**
+     * tests if one of the repository calls throws an exception 0 will be returned.
+     */
+    @Test
+    public void getEmotionStat_repositoryException_test() {
+        // 7*(-1) + 1*(1) + 2*(0) = -6
+        // -6/10 ~ -1
+        when(emotionReactionRepository.getEmotionSum(roomId)).thenReturn(-6);
+        when(emotionReactionRepository.getEmotionCount(roomId))
+                .thenThrow(new NullPointerException());
+        assertEquals(0, reactionService.getEmotionStat((roomLink)));
+    }
+
     //TEST getEmotionCounts(String roomLink)
 
     /**

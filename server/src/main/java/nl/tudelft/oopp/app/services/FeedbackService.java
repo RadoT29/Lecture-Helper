@@ -48,7 +48,7 @@ public class FeedbackService {
      */
     public List<Feedback> getFeedback(String roomLink) {
         //is moderator link
-        Room room = roomService.getByLink(roomLink);
+        Room room = roomService.getByLinkModerator(roomLink);
         return feedbackRepository.findAllByRoomId(room.getId());
     }
 }

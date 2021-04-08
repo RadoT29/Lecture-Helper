@@ -2,7 +2,6 @@ package nl.tudelft.oopp.app.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
@@ -15,7 +14,9 @@ import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.PriorityQueue;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
 public class StudentQuestionSceneController extends StudentSceneController {
@@ -24,8 +25,11 @@ public class StudentQuestionSceneController extends StudentSceneController {
     private Label passLimitQuestionsLabel;
     @FXML
     protected VBox questionBox;
-    @FXML
-    private TextField questionInput;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        super.initialize(url, rb);
+    }
 
     /**
      * This method is constantly called by a thread and refreshes the page.
@@ -121,5 +125,11 @@ public class StudentQuestionSceneController extends StudentSceneController {
                         new Label("Something went wrong while loading this question"));
             }
         }
+    }
+
+    @Override
+    public void changeTheme(boolean mode) {
+        changeColourMainScene(mode);
+        super.changeTheme(mode);
     }
 }

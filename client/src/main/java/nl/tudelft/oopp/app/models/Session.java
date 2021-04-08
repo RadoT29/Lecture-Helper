@@ -22,8 +22,11 @@ public final class Session {
     private String userId;
     private List<String> upVotedQuestions = new ArrayList<>();
     private List<String> questionsMade = new ArrayList<>();
+    private List<String> pollsFinished = new ArrayList<>();
+    private List<String> pollsAnswersMarked = new ArrayList<>();
     private String timeZone;
     private Stage stage;
+    private boolean darkTheme;
     //status of the student
     //if the student is warned,
     //that it will be banned

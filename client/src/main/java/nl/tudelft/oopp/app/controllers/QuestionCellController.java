@@ -10,12 +10,15 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.app.communication.BanCommunication;
 import nl.tudelft.oopp.app.communication.QuestionCommunication;
+import nl.tudelft.oopp.app.exceptions.AccessDeniedException;
+import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
 import nl.tudelft.oopp.app.exceptions.UserWarnedException;
 import nl.tudelft.oopp.app.models.Question;
 import nl.tudelft.oopp.app.models.Session;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class QuestionCellController {
 
@@ -126,11 +129,6 @@ public class QuestionCellController {
         return newQuestion;
     }
 
-
-    public String buttonColour;
-
-
-
     /**
      * dismisses the question.
      * deletes the database from the database and remove it from the screen
@@ -164,7 +162,13 @@ public class QuestionCellController {
         Node question = questionLogCell.getParent();
         String id = question.getId();
         QuestionCommunication.dismissQuestion(Long.parseLong(id));
-        //hsc.deleteQuestionFromScene(id);
+        try {
+            hsc.constantRefresh();
+        } catch (ExecutionException | InterruptedException
+                | NoStudentPermissionException | AccessDeniedException
+                | UserWarnedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -265,7 +269,7 @@ public class QuestionCellController {
     }
 
     /**
-     * Create an answer from the log scene.
+     * Creates an answer from the log scene.
      */
     public void answerFromLog() {
         String oldAnswer = answerTextLabel.getText();
@@ -276,8 +280,23 @@ public class QuestionCellController {
         String userId = session.getUserId();
 
         try {
-            AnswerSceneController.initialize(oldAnswer, id, userId);
+            AnswerSceneController.initialize(oldAnswer, id, userId, false, hsc);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * Creates an answer from the main scene.
+     * Used by the reply button.
+     */
+    public void replyFromMainScene() {
+        Node question = questionCell.getParent();
+
+        try {
+            AnswerSceneController
+                    .initialize("", question.getId(),
+                            session.getUserId(), true, hsc);
         } catch (IOException e) {
             e.printStackTrace();
         }
