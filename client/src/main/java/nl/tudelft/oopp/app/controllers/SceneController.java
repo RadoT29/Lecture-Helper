@@ -167,11 +167,34 @@ public abstract class SceneController implements Initializable {
             return;
         }
 
-        changeScene("/splashScene.fxml", 0.8);
+        changeSceneSplash(0.8);
 
         openOne = false;
     }
 
+    protected void changeSceneSplash(double dimensionScale) {
+        Parent loader = null;
+        try {
+            FXMLLoader page = new FXMLLoader(getClass().getResource("/splashScene.fxml"));
+            loader = page.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage stage = session.getStage();
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth() * dimensionScale;
+        double height = screenSize.getHeight() * dimensionScale;
+
+        assert loader != null;
+        Scene scene = new Scene(loader, width, height);
+
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+    
     /**
      * This method opens the settings window.
      * @throws IOException - may be thrown.
