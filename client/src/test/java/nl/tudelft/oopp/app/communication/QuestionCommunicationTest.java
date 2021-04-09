@@ -180,6 +180,9 @@ public class QuestionCommunicationTest {
         assertTrue(outputStreamCaptor.toString()
                 .trim().contains("Status: 300"));
     }
+
+
+
     /**Test if QuestionCommunication.editQuestionText sends
      *  a post edit question request to the right path.
      */
