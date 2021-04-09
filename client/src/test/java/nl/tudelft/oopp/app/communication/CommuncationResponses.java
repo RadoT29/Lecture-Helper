@@ -43,6 +43,24 @@ public abstract class CommuncationResponses {
                 + "\"open\":true}";
     }
 
+    /**
+     * String with room.
+     * @return String
+     */
+    public static String getListOfRooms() {
+        return "[{\"id\":0,"
+                + "\"name\":\"name\","
+                + "\"linkIdStudent\":\"f71b9850-a0b1-4ec6-b85e-ba4fffeaa7c9\","
+                + "\"linkIdModerator\":\"bea8d9bc-a3fd-4070-9dae-d4ceadfad3a6\","
+                + "\"permission\":false,"
+                + "\"numberQuestionsInterval\":2147483647,"
+                + "\"timeInterval\":2147483647,"
+                + "\"startDate\":\"2021-04-07T11:10:41.850161\","
+                + "\"createdAt\":\"2021-04-07T11:10:41.910+0000\","
+                + "\"updatedAt\":\"2021-04-07T11:10:41.910+0000\","
+                + "\"open\":true}]";
+    }
+
 
     /**
      * Method to return check room response body example for tests.
@@ -309,5 +327,12 @@ public abstract class CommuncationResponses {
                 + "\"marked\": true}]";
 
     }
+
+
+
+
+
+
+
 }
 

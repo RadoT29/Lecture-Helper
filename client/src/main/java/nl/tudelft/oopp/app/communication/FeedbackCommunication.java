@@ -62,6 +62,8 @@ public class FeedbackCommunication {
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
+                //Used for testing
+                return List.of();
             }
         } catch (Exception e) {
             e.printStackTrace();

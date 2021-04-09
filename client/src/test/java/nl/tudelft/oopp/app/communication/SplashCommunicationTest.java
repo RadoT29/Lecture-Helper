@@ -134,8 +134,8 @@ public class SplashCommunicationTest {
 
         assertNull(session);
     }
-    /**
-    Test
+
+    /**Test
     void shouldScheduleRoom() {
     LocalDateTime timeSet = LocalDateTime.now();
     timeSet.plusMinutes(10);

@@ -30,12 +30,13 @@ public class AdminCommunicationTest {
 
     @AfterEach
     public void stopServer() {
+        AdminSession.clearAdminSessionTest();
         mockServer.stop();
     }
 
     @Test
     void shouldCheckPasswordTrue() {
-        mockCheckPassword("password", true);
+        mockCheckPassword("password", true, 200);
 
         boolean access = AdminCommunication.checkPassword("password");
         assertTrue(access);
@@ -44,15 +45,23 @@ public class AdminCommunicationTest {
 
     @Test
     void shouldCheckPasswordFalse() {
-        mockCheckPassword("password", false);
+        mockCheckPassword("password", false, 200);
 
         boolean access = AdminCommunication.checkPassword("password");
         assertFalse(access);
 
     }
 
+    @Test
+    void shouldCheckPasswordFalse2() {
+        mockCheckPassword("password", true, 300);
 
-    void mockCheckPassword(String password, boolean access) {
+        boolean access = AdminCommunication.checkPassword("password");
+        assertFalse(access);
+    }
+
+
+    void mockCheckPassword(String password, boolean access, int statusCode) {
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -60,7 +69,7 @@ public class AdminCommunicationTest {
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
+                                .withStatusCode(statusCode)
                                 .withBody(String.valueOf(access)));
 
 
@@ -78,32 +87,44 @@ public class AdminCommunicationTest {
                 .withMethod("PUT")
                 .withPath(path)
         );
+        AdminSession.clearAdminSessionTest();
 
 
     }
 
     @Test
     void shouldGetAdminRooms() {
-        String path = "/admin/rooms/unbanUsers/" + session.getPassword();
+        String path = "/admin/rooms/" + session.getPassword();
         session = AdminSession.getInstance("password");
 
-        mockGetAdminRooms(path);
+        mockGetAdminRooms(path, 200);
+        List<AdminRoom> list = AdminCommunication.getAdminRooms();
+        assertNotNull(list);
+
+    }
+
+    @Test
+    void shouldGetAdminRoomsNull() {
+        String path = "/admin/rooms/" + session.getPassword();
+        session = AdminSession.getInstance("password");
+
+        mockGetAdminRooms(path, 300);
         List<AdminRoom> list = AdminCommunication.getAdminRooms();
         assertNull(list);
 
     }
 
 
-    void mockGetAdminRooms(String password) {
+    void mockGetAdminRooms(String path, int statusCode) {
         mockServer.when(
                 request()
                         .withMethod("GET")
-                        .withPath("/admin/password/" + password)
+                        .withPath(path)
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
-                                .withBody("null"));
+                                .withStatusCode(statusCode)
+                                .withBody(CommuncationResponses.getListOfRooms()));
 
 
     }
