@@ -61,8 +61,9 @@ public class HomeSceneCommunication {
      * @return a list questions
      */
     public static List<Question> getQuestions() {
+
         session = Session.getInstance();
-        System.out.println("http://localhost:8080/questions/refresh/" + session.getRoomLink());
+
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/refresh/" + session.getRoomLink()))
                 .build();
@@ -76,7 +77,7 @@ public class HomeSceneCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        System.out.println(response.body());
+
         return gson.fromJson(response.body(), new TypeToken<List<Question>>() {
         }.getType());
     }
@@ -229,7 +230,7 @@ public class HomeSceneCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        System.out.println(response.body());
+
         boolean result = gson.fromJson(response.body(), Boolean.class);
         if (!result) {
             throw new OutOfLimitOfQuestionsException("The user has passed the"

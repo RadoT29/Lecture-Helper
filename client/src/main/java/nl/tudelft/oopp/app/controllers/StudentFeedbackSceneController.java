@@ -38,9 +38,8 @@ public class StudentFeedbackSceneController {
             Session session = Session.getInstance();
             FXMLLoader loader = new FXMLLoader(StudentFeedbackSceneController
                     .class.getResource("/editQuestionScene.fxml"));
-            loader.setControllerFactory((Class<?> controllerType) -> {
-                return new StudentFeedbackSceneController();
-            });
+            loader.setControllerFactory((Class<?> controllerType) ->
+                    new StudentFeedbackSceneController());
             Parent parent = loader.load();
 
             Scene scene = new Scene(parent);

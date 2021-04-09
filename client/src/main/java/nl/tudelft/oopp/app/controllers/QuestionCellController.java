@@ -325,7 +325,6 @@ public class QuestionCellController {
      * @param questionId - QuestionId where answer is being added
      */
     public void setAnswer(String questionId) {
-        Session session = Session.getInstance();
 
         boolean status = QuestionCommunication.checkAnswered(questionId);
 

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -77,7 +75,6 @@ public class RoomController {
     @ResponseBody
     public boolean isOpen(@PathVariable String linkId) {
         Room room = roomService.getByLink(linkId);
-        //System.out.println("The room is open: " + room.isOpen());
         return room.isOpen() && room.isPermission();
     }
 

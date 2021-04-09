@@ -58,13 +58,9 @@ public class UserService {
      * @return The User Object with the associated userId
      */
     public User getByID(String userID) {
+
         Optional<User> dbUser = userRepository.findById(Long.valueOf(userID));
-        if (dbUser.isPresent()) {
-            return dbUser.get();
-        } else {
-            System.out.println("User not found");
-            return null;
-        }
+        return dbUser.orElse(null);
     }
 
     public void saveStudentIp(String ipAddress, User userId, Room roomLink) {

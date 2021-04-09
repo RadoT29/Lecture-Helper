@@ -42,14 +42,11 @@ public class StudentQuestionSceneController extends StudentSceneController {
      */
     public void constantRefresh() throws ExecutionException, InterruptedException,
             NoStudentPermissionException, AccessDeniedException, UserWarnedException {
+
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
 
-
-        //ServerCommunication.isTheRoomClosed(session.getRoomLink());
-
-        //ServerCommunication.hasStudentPermission(session.getRoomLink());
         ServerCommunication.isRoomOpenStudents(session.getRoomLink());
         QuestionCommunication.updatesOnQuestions(session.getUserId(), session.getRoomLink());
         if (!session.isWarned()) {
@@ -108,7 +105,7 @@ public class StudentQuestionSceneController extends StudentSceneController {
     }
 
     /**
-     * loads questions in the question box in the correct format.
+     * Loads questions in the question box in the correct format.
      */
     public void loadQuestions() {
 

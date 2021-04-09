@@ -2,14 +2,11 @@ package nl.tudelft.oopp.app.services;
 
 import nl.tudelft.oopp.app.models.*;
 import nl.tudelft.oopp.app.repositories.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -148,8 +145,6 @@ public class QuestionService {
         Question question = questionRepository.getOne(questionId);
         //delete question
         questionRepository.deleteSingular(questionId, userId);
-        System.out.println("Question " + question.getId()
-                + "(room: " + question.getRoom().getName() + ") was deleted by creator");
     }
 
 
@@ -298,8 +293,7 @@ public class QuestionService {
     public String exportQuestions(String roomLink) {
         Room room = roomService.getByLinkModerator(roomLink);
 
-        String logTemp = getQuestionsAndAnswers(room);
-        return logTemp;
+        return getQuestionsAndAnswers(room);
 
     }
 
@@ -432,8 +426,6 @@ public class QuestionService {
      * @param roomId - id of the room
      */
     public void getTimeOfAnswers(List<Long> answers, long roomId) {
-        String currentZone = ZoneId.systemDefault().toString();
-        ZoneId currentZoneId = ZoneId.of(currentZone);
 
         LocalDateTime roomTime = roomRepository.getRoomTime(roomId);
 
@@ -462,7 +454,6 @@ public class QuestionService {
         long minutes = duration.toMinutes() - duration.toHours() * 60;
         long seconds = duration.toSeconds() - 60 * minutes;
 
-        System.out.println(duration.toHours() + ":" + minutes + ":" + seconds);
         return (duration.toHours() + ":" + minutes + ":" + seconds);
     }
 

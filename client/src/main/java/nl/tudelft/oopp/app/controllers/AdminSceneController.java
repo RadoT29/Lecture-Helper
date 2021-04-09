@@ -17,7 +17,6 @@ import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.models.AdminRoom;
 
 import java.awt.*;
-import java.io.File;
 import java.io.FileWriter;
 import java.util.*;
 

@@ -36,8 +36,6 @@ public class SplashSceneController {
     @FXML
     private Button enterRoomButton;
     @FXML
-    private Button scheduleRoomButton;
-    @FXML
     private Label invalidRoomLink;
     @FXML
     private Label invalidRoomName;
@@ -66,6 +64,7 @@ public class SplashSceneController {
 
         //Creates a popup with the links
         LinkController linkController = new LinkController();
+        assert room != null;
         linkController.getLinks(room.linkIdStudent.toString(), room.linkIdModerator.toString());
 
 
@@ -166,12 +165,9 @@ public class SplashSceneController {
 
         Stage stage = (Stage) setNick.getScene().getWindow();
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent e) {
-                Platform.exit();
-                System.exit(0);
-            }
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
         });
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();

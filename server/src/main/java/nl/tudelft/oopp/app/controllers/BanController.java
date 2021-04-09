@@ -35,12 +35,10 @@ public class BanController {
     public void saveStudentIp(@PathVariable("userId") String userId,
                               @PathVariable("roomId") String roomId,
                               HttpServletRequest request) {
+
         System.out.println(request.getRemoteAddr());
-
-
         Room room = roomService.getByLink(roomId);
         User user = userService.getByID(userId);
-        System.out.println("reach here");
         userService.saveStudentIp(request.getRemoteAddr(), user, room);
     }
 
@@ -68,7 +66,6 @@ public class BanController {
     @ResponseBody
     public boolean isUserBanned(@PathVariable("roomLink") String roomLink,
                                 HttpServletRequest request) {
-        System.out.println(roomLink);
         String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         List<Integer> list = userService
                 .isUserBanned(request.getRemoteAddr(), Long.valueOf(roomId));
@@ -99,7 +96,6 @@ public class BanController {
     @ResponseBody
     public boolean isUserWarned(@PathVariable("roomLink") String roomLink,
                                 HttpServletRequest request) {
-        System.out.println(roomLink);
         String roomId = String.valueOf(roomService.getByLink(roomLink).getId());
         List<Integer> list = userService
                 .isUserWarned(request.getRemoteAddr(), Long.valueOf(roomId));

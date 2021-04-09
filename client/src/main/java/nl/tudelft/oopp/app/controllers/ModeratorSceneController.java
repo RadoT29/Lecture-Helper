@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.exceptions.NoStudentPermissionException;
+import nl.tudelft.oopp.app.models.Session;
 
 /**
  * This class controls the Main scene of the Moderators.
@@ -40,7 +41,6 @@ public abstract class ModeratorSceneController extends SceneController {
     public Button moreReactionButton;
 
 
-    private ModeratorReactionController reactionController;
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
 
@@ -147,9 +147,9 @@ public abstract class ModeratorSceneController extends SceneController {
      */
     public void clearQuestionsClicked() {
 
-        if (session.isModerator()) {
-            HomeSceneCommunication.clearQuestions(session.getRoomLink());
-        }
+        session = Session.getInstance();
+        HomeSceneCommunication.clearQuestions(session.getRoomLink());
+
 
         refresh();
     }
@@ -167,8 +167,10 @@ public abstract class ModeratorSceneController extends SceneController {
         }
 
         try {
-            FileWriter file = new FileWriter(new File("ExportedQuestions"
-                    + session.getRoomName() + ".txt"));
+            FileWriter file = new FileWriter("ExportedQuestions"
+                    + session.getRoomName() + ".txt");
+
+            assert exported != null;
             file.write(exported);
             file.close();
 
@@ -183,21 +185,19 @@ public abstract class ModeratorSceneController extends SceneController {
     /**
      * Method to load the presentation mode scene.
      * Makes the scene smaller so it takes less space on the lecturer screen
-     * @throws IOException if it cant load the fxml file
      */
-    public void presenterMode() throws IOException {
+    public void presenterMode() {
         changeScene("/presentationScene.fxml", 0.65);
     }
 
     /**
      * Method to load the poll scene.
-     * @throws IOException if it cant load the fxml file
      */
-    public void goToPolls() throws IOException {
+    public void goToPolls() {
         changeScene("/moderatorPollScene.fxml", 0.8);
     }
 
-    public void goToLog() throws IOException {
+    public void goToLog() {
         changeScene("/moderatorQuestionLogScene.fxml", 0.8);
     }
 

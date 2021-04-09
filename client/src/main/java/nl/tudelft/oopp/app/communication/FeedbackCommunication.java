@@ -33,7 +33,6 @@ public class FeedbackCommunication {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "application/json")
                 .build();
-        System.out.println("Sending request: " + request.toString());
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

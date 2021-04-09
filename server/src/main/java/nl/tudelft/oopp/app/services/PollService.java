@@ -75,11 +75,7 @@ public class PollService {
     public boolean isModerator(String roomLink) {
         Room room = roomService.getByLinkModerator(roomLink);
 
-        if (room == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return room != null;
     }
 
     //Moderator services
@@ -115,6 +111,7 @@ public class PollService {
      * @param isCorrect whether this option is a correct one
      */
     public void addPollOption(long pollId, String optionText, boolean isCorrect) {
+
         Poll poll = this.pollRepository.findById(pollId).get();
         PollOption pollOption = new PollOption(poll, optionText, isCorrect);
         this.pollOptionRepository.save(pollOption);

@@ -168,7 +168,7 @@ public class QuestionCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        System.out.println("This is answered " + response.body());
+
         return gson.fromJson(response.body(), Boolean.class);
     }
 
@@ -244,8 +244,9 @@ public class QuestionCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+
         QuestionsUpdate result = gson.fromJson(response.body(), QuestionsUpdate.class);
-        System.out.println("Result is " + result);
+
         if (result != null) {
             StudentSceneController.questionUpdatePopUp(result);
         }

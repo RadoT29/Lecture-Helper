@@ -80,9 +80,6 @@ public class ReactionCommunication {
                         + session.getRoomLink()))
                 .build();
 
-        System.out.println("Sending request: " + request.toString());
-
-        HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -114,7 +111,6 @@ public class ReactionCommunication {
                         + session.getRoomLink()))
                 .build();
 
-        System.out.println("Sending request: " + request.toString());
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

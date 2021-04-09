@@ -8,19 +8,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.EmotionReaction;
 import nl.tudelft.oopp.app.models.QuestionsUpdate;
 import nl.tudelft.oopp.app.models.SpeedReaction;
-
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 /**
  * This class controls the Main scene of the Students.
@@ -225,9 +220,8 @@ public abstract class StudentSceneController extends SceneController {
 
     /**
      * Method to load the poll scene.
-     * @throws IOException if it cant load the fxml file
      */
-    public void goToPolls() throws IOException {
+    public void goToPolls() {
         changeScene("/studentPollScene.fxml", 0.8);
     }
 
@@ -235,7 +229,7 @@ public abstract class StudentSceneController extends SceneController {
         changeScene("/studentMainScene.fxml", 0.8);
     }
 
-    public void goToLog() throws IOException {
+    public void goToLog() {
         changeScene("/studentQuestionLogScene.fxml", 0.8);
     }
 

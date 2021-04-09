@@ -42,7 +42,7 @@ public class SplashCommunication {
         }
 
         Room room = gson.fromJson(response.body(), Room.class);
-        System.out.println("Client1: " + gson.fromJson(response.body(), Room.class).isOpen());
+
         return room;
     }
 
@@ -99,10 +99,11 @@ public class SplashCommunication {
             User user = gson.fromJson(response.body(), User.class);
 
             Session.clearSession();
+
             // Uses the information received to update the session information.
-            System.out.println("Is moderator1 " + user.getIsModerator());
             session = session.getInstance(roomLink, String.valueOf(user.id), user.isModerator);
-            System.out.println("Is moderator2 " + session.isModerator());
+
+
             //If the link is not valid then no session is started
             // and user should stay on splash screen.
             if (session == null) {

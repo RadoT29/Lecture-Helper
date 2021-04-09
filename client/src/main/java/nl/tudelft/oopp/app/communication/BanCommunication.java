@@ -41,7 +41,6 @@ public class BanCommunication {
         if (result) {
             throw new AccessDeniedException("This user ip is banned for that room");
         }
-        System.out.println("access granted!");
     }
 
     /**

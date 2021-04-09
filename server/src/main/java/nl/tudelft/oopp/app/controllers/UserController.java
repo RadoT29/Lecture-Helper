@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -59,7 +57,7 @@ public class UserController {
             } else if (room.getLinkIdStudent().compareTo(UUID.fromString(roomLink)) == 0) {
                 Student student = new Student(room);
                 studentRepository.save(student);
-                System.out.println("Moderator created @ Room" + student.getRoomId() + ":"
+                System.out.println("Student created @ Room" + student.getRoomId() + ":"
                         + "\n\tUser id: " + student.getId()
                         + "\n\tUser name: " + student.getName());
 

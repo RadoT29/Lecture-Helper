@@ -31,9 +31,17 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
 
     ModeratorReactionController reactionController;
 
+    /**
+     * This method initializes the state of the navigation bar.
+     * It hides the sliding bar behind the regular one.
+     * It also refreshes the scene.
+     * @param url - The path.
+     * @param rb - Provides any needed resources.
+     */
     public void initialize(URL url, ResourceBundle rb) {
         super.initialize(url, rb);
         reactionController = new ModeratorReactionController(emotionReactions);
+        refresh();
     }
 
     /**
@@ -43,7 +51,6 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
     public void loadStats() {
         int speedStatInt = ReactionCommunication.getReactionStats(true);
 
-        System.out.println("speed = " + speedStatInt);
 
         if (speedStatInt == 1) {
             speedStat.getStyleClass().set(1, "fastButton");
@@ -161,7 +168,7 @@ public class ModeratorQuestionSceneController extends ModeratorSceneController {
         try {
             ViewFeedbackSceneController.init();
         } catch (IOException e) {
-            return;
+            e.printStackTrace();
         }
     }
 

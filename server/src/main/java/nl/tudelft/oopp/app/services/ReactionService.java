@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class ReactionService {
 
-    private ReactionRepository reactionRepository;
     private EmotionReactionRepository emotionReactionRepository;
     private SpeedReactionRepository speedReactionRepository;
     private RoomService roomService;
@@ -21,20 +20,17 @@ public class ReactionService {
 
     /**
      * This constructor injects all the dependencies needed by the class.
-     * @param reactionRepository the Reaction Repository
      * @param speedReactionRepository the SpeedReaction Repository
      * @param emotionReactionRepository the EmotionReaction Repository
      * @param roomService class that handles rooms services
      * @param userService class that handles user services
      */
     @Autowired
-    public ReactionService(ReactionRepository reactionRepository,
-                           EmotionReactionRepository emotionReactionRepository,
+    public ReactionService(EmotionReactionRepository emotionReactionRepository,
                            SpeedReactionRepository speedReactionRepository,
                            RoomService roomService,
                            UserService userService) {
 
-        this.reactionRepository = reactionRepository;
         this.emotionReactionRepository = emotionReactionRepository;
         this.speedReactionRepository = speedReactionRepository;
         this.roomService = roomService;
@@ -55,8 +51,8 @@ public class ReactionService {
         Room room = roomService.getByLink(roomLink); // Finds the room associated with the link
         reaction.setRoom(room);
 
-        Long roomId = room.getId();
-        Long userId = Long.parseLong(userIdStr);
+        long roomId = room.getId();
+        long userId = Long.parseLong(userIdStr);
 
         // Checks if reaction is of type SpeedReaction
         if (reaction instanceof SpeedReaction) {
@@ -98,7 +94,7 @@ public class ReactionService {
      */
     public int getSpeedStat(String roomLink) {
 
-        Long roomId = roomService.getByLink(roomLink).getId();
+        long roomId = roomService.getByLink(roomLink).getId();
 
         try {
             int speedSum = speedReactionRepository.getSpeedSum(roomId);
@@ -118,7 +114,7 @@ public class ReactionService {
      */
     public int getEmotionStat(String roomLink) {
 
-        Long roomId = roomService.getByLink(roomLink).getId();
+        long roomId = roomService.getByLink(roomLink).getId();
         try {
             int emotionSum = emotionReactionRepository.getEmotionSum(roomId);
             int emotionCount = emotionReactionRepository.getEmotionCount(roomId);

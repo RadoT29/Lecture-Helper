@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.app.communication.HomeSceneCommunication;
+import nl.tudelft.oopp.app.communication.ReactionCommunication;
 import nl.tudelft.oopp.app.models.Question;
 import java.io.IOException;
 import java.util.Collections;
@@ -16,10 +17,13 @@ import java.util.PriorityQueue;
  * This class controls the Main scene of the Moderators.
  */
 public class PresentationSceneController extends SceneController implements Initializable {
+
     @FXML
     private VBox questionBox;
     @FXML
     public VBox mainMenu;
+    @FXML
+    public Button speedStat;
 
     /**
      * Method to load questions.
@@ -55,6 +59,7 @@ public class PresentationSceneController extends SceneController implements Init
     public void refresh() {
         questions = new PriorityQueue<>();
         questions.addAll(HomeSceneCommunication.getQuestions());
+        loadStats();
         loadQuestions();
     }
 
@@ -69,6 +74,7 @@ public class PresentationSceneController extends SceneController implements Init
         questions.clear();
         questions.addAll(HomeSceneCommunication.constantlyGetQuestions(session.getRoomLink()));
         loadQuestions();
+        loadStats();
     }
 
     @Override
@@ -108,5 +114,24 @@ public class PresentationSceneController extends SceneController implements Init
                 child.getStyleClass().add(labelAdd);
             }
         }
+    }
+
+
+    /**
+     * This method changes the icons that represent the Speed and Emotion Reaction to
+     * match their statistics.
+     */
+    public void loadStats() {
+        int speedStatInt = ReactionCommunication.getReactionStats(true);
+
+
+        if (speedStatInt == 1) {
+            speedStat.getStyleClass().set(1, "fastButton");
+        } else if (speedStatInt == -1) {
+            speedStat.getStyleClass().set(1, "slowButton");
+        } else {
+            speedStat.getStyleClass().set(1, "okButton");
+        }
+
     }
 }

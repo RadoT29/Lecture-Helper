@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -74,40 +73,37 @@ public abstract class SceneController implements Initializable {
      * @param rb  - Provides any needed resources.
      */
     public void initialize(URL url, ResourceBundle rb) {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                keepRequesting = true;
-                while (keepRequesting) {
-                    try {
-                        Platform.runLater(() -> {
-                            try {
-                                constantRefresh();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (UserWarnedException e) {
-                                //Pops up a message
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setWidth(900);
-                                alert.setHeight(300);
-                                alert.setTitle("Warning!");
-                                alert.setHeaderText("Banning warning!");
-                                styleAlert(alert);
-                                alert.showAndWait();
-                            } catch (Exception e) {
-                                closeWindow();
-                            }
-                        });
-
-                        Thread.sleep(10000);
-                        if (interruptThread) {
-                            Thread.currentThread().interrupt();
-                            break;
+        thread = new Thread(() -> {
+            keepRequesting = true;
+            while (keepRequesting) {
+                try {
+                    Platform.runLater(() -> {
+                        try {
+                            constantRefresh();
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (UserWarnedException e) {
+                            //Pops up a message
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setWidth(900);
+                            alert.setHeight(300);
+                            alert.setTitle("Warning!");
+                            alert.setHeaderText("Banning warning!");
+                            styleAlert(alert);
+                            alert.showAndWait();
+                        } catch (Exception e) {
+                            closeWindow();
                         }
+                    });
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    Thread.sleep(10000);
+                    if (interruptThread) {
+                        Thread.currentThread().interrupt();
+                        break;
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -137,6 +133,11 @@ public abstract class SceneController implements Initializable {
             loader = page.load();
             SceneController controller = page.getController();
             controller.changeTheme(darkTheme);
+            //set roomName
+            Label roomName = (Label) loader.lookup("#roomName");
+            if (roomName != null) {
+                roomName.setText(session.getRoomName());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -167,12 +168,13 @@ public abstract class SceneController implements Initializable {
             return;
         }
 
-        changeSceneSplash(0.8);
+        changeSceneSplash();
 
         openOne = false;
     }
 
-    protected void changeSceneSplash(double dimensionScale) {
+    protected void changeSceneSplash() {
+        double dimensionScale = 0.8;
         Parent loader = null;
         try {
             FXMLLoader page = new FXMLLoader(getClass().getResource("/splashScene.fxml"));

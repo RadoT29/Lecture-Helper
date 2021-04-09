@@ -101,20 +101,6 @@ public class UserServiceTest {
 
     /**
      * Tests the getByID method in a situation
-     * in which a user is not found.
-     * Checks if the method prints the wanted String.
-     */
-    @Test
-    public void getByIdTestEmptyPrint() {
-        when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.empty());
-        userService.getByID(String.valueOf(userFirst.getId()));
-        assertEquals("User not found", outputStreamCaptor.toString()
-                .trim());
-    }
-
-    /**
-     * Tests the getByID method in a situation
      * in which a user exists and is found.
      */
     @Test

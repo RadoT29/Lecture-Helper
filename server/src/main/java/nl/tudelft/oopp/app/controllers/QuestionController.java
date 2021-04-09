@@ -126,7 +126,6 @@ public class QuestionController {
     @ResponseBody
     public void addUpvote(@PathVariable String questionId,
                           @PathVariable String userId) {
-        System.out.println("Upvote arrived on server!");
 
         questionService.addUpvote(questionId, userId);
 
