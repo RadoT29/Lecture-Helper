@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockserver.integration.ClientAndServer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +29,8 @@ public class PollCommunicationTest {
     private Room room;
     private Question question;
     private String path;
+    private PrintStream standardOut = System.out;
+    private ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
 
     /**
@@ -35,6 +39,8 @@ public class PollCommunicationTest {
     @BeforeEach
     public void setup() {
         mockServer = startClientAndServer(8080);
+        System.setOut(new PrintStream(outputStreamCaptor));
+
         feedback = new Feedback("Alright", 4);
         userId = 1L;
 
@@ -49,8 +55,12 @@ public class PollCommunicationTest {
                 room.getName(), String.valueOf(userId), true);
     }
 
+    /**
+     * Stops server.
+     */
     @AfterEach
     public void stopServer() {
+        System.setOut(standardOut);
         Session.clearSessionTest();
         mockServer.stop();
     }
@@ -58,12 +68,21 @@ public class PollCommunicationTest {
     @Test
     void shouldGetPollList() {
         path = "/polls/" + session.getRoomLink();
-        mockGetPollList(path);
+        mockGetPollList(path, 200);
         List<Poll> polls = PollCommunication.getPolls();
         assertEquals(1, polls.size());
     }
 
-    void mockGetPollList(String path) {
+    @Test
+    void shouldGetPollListError() {
+        path = "/polls/" + session.getRoomLink();
+        mockGetPollList(path, 300);
+        PollCommunication.getPolls();
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+    }
+
+    void mockGetPollList(String path, int statusCode) {
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -71,7 +90,7 @@ public class PollCommunicationTest {
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
+                                .withStatusCode(statusCode)
                                 .withBody(CommuncationResponses
                                         .getPollsList()));
 
@@ -81,21 +100,42 @@ public class PollCommunicationTest {
     @Test
     void shouldConstantlyGetPollList() throws InterruptedException {
         path = "/polls/constant/" + session.getRoomLink();
-        mockGetPollList(path);
+        mockGetPollList(path, 200);
         List<Poll> polls = PollCommunication.constantlyGetPolls(
                 String.valueOf(room.getLinkIdModerator()));
         assertEquals(1, polls.size());
     }
 
     @Test
+    void shouldConstantlyGetPollListError() throws InterruptedException {
+        path = "/polls/constant/" + session.getRoomLink();
+        mockGetPollList(path, 300);
+        List<Poll> polls = PollCommunication.constantlyGetPolls(
+                String.valueOf(room.getLinkIdModerator()));
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+    }
+
+
+    @Test
     void shouldCreatePoll() {
         path = "/polls/" + session.getRoomLink();
-        mockCreatePoll(path);
+        mockCreatePoll(path, 200);
         Long id = PollCommunication.createPoll();
         assertEquals(2, id);
     }
 
-    void mockCreatePoll(String path) {
+
+    @Test
+    void shouldCreatePollError() {
+        path = "/polls/" + session.getRoomLink();
+        mockCreatePoll(path, 300);
+        PollCommunication.createPoll();
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+    }
+
+    void mockCreatePoll(String path, int statusCode) {
         mockServer.when(
                 request()
                         .withMethod("POST")
@@ -103,7 +143,7 @@ public class PollCommunicationTest {
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
+                                .withStatusCode(statusCode)
                                 .withBody("2"));
 
 
@@ -135,10 +175,48 @@ public class PollCommunicationTest {
 
     @Test
     void shouldGetPollAnswers() {
+        path = "/polls/answer/" + session.getUserId() + '/' + 1;
+        mockGetPollAnswers(path, 200);
+        List<PollAnswer> list = PollCommunication.getAnswers(1);
+        assertEquals(0, list.size());
+    }
 
+    @Test
+    void shouldGetPollAnswersError() {
+        path = "/polls/answer/" + session.getUserId() + '/' + 1;
+        mockGetPollAnswers(path, 300);
+        PollCommunication.getAnswers(1);
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
     }
 
 
 
+
+    void mockGetPollAnswers(String path, int statusCode) {
+        mockServer.when(
+                request()
+                        .withMethod("GET")
+                        .withPath(path)
+        )
+                .respond(
+                        response()
+                                .withStatusCode(statusCode)
+                                .withBody("[]"));
+
+
+    }
+
+
+    @Test
+    void shouldSendAnswer() {
+        path = "/polls/answer" + '/' + session.getUserId();
+        PollCommunication.sendAnswers(new Poll());
+
+        mockServer.verify(request()
+                .withMethod("POST")
+                .withPath(path)
+        );
+    }
 
 }

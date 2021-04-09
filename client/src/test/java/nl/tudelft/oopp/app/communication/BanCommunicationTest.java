@@ -66,7 +66,7 @@ public class BanCommunicationTest {
     @Test
     void shouldGetIsIpBannedSuccessful() {
         String path = "/room/user/isBanned/" + room.getLinkIdModerator();
-        mockGetIsIpBanned(path, false);
+        mockGetIsIpBanned(path, false, 200);
         assertDoesNotThrow(() -> {
             BanCommunication.isIpBanned(String.valueOf(room.getLinkIdModerator()));
         });
@@ -75,13 +75,26 @@ public class BanCommunicationTest {
     @Test
     void shouldGetIsIpBannedException() {
         String path = "/room/user/isBanned/" + room.getLinkIdModerator();
-        mockGetIsIpBanned(path, true);
+        mockGetIsIpBanned(path, true, 200);
         assertThrows(AccessDeniedException.class, () -> {
             BanCommunication.isIpBanned(String.valueOf(room.getLinkIdModerator()));
         });
     }
 
-    void mockGetIsIpBanned(String path, boolean access) {
+
+    @Test
+    void shouldGetIsIpBannedError() {
+        String path = "/room/user/isBanned/" + room.getLinkIdModerator();
+        mockGetIsIpBanned(path, false, 300);
+        assertThrows(AccessDeniedException.class, () -> {
+            BanCommunication.isIpBanned(String.valueOf(room.getLinkIdModerator()));
+        });
+    }
+
+
+
+
+    void mockGetIsIpBanned(String path, boolean access, int statusCode) {
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -89,7 +102,7 @@ public class BanCommunicationTest {
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
+                                .withStatusCode(statusCode)
                                 .withBody(String.valueOf(access)));
 
 

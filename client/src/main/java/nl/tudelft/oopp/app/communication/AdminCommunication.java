@@ -62,6 +62,7 @@ public class AdminCommunication {
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
+            return null;
         }
 
         return gson.fromJson(response.body(),

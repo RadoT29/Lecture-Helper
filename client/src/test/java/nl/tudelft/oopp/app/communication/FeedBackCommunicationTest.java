@@ -59,13 +59,23 @@ public class FeedBackCommunicationTest {
     void shouldGetFeedBack() {
         String path = "/feedback/view/" + session.getRoomLink();
 
-        mockGetFeedBack(path);
+        mockGetFeedBack(path, 200);
         List<Feedback> feedbackList = FeedbackCommunication.getFeedback();
         assertEquals(1, feedbackList.size());
 
     }
 
-    void mockGetFeedBack(String path) {
+    @Test
+    void shouldGetFeedBackNull() {
+        String path = "/feedback/view/" + session.getRoomLink();
+
+        mockGetFeedBack(path, 300);
+        List<Feedback> feedbackList = FeedbackCommunication.getFeedback();
+        assertEquals(0, feedbackList.size());
+
+    }
+
+    void mockGetFeedBack(String path, int statusCode) {
         mockServer.when(
                     request()
                             .withMethod("GET")
@@ -73,10 +83,11 @@ public class FeedBackCommunicationTest {
             )
                     .respond(
                             response()
-                                    .withStatusCode(200)
+                                    .withStatusCode(statusCode)
                                     .withBody(CommuncationResponses
                                             .getFeedBackList(room.getName())));
 
 
     }
+
 }

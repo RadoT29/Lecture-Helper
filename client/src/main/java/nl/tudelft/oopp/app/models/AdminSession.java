@@ -37,4 +37,11 @@ public final class AdminSession {
     public String getPassword() {
         return password;
     }
+
+    /**
+     * This method resets the session by making it null for tests.
+     */
+    public static void clearAdminSessionTest() {
+        instance = null;
+    }
 }

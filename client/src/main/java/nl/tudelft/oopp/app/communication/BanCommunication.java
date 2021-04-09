@@ -103,11 +103,14 @@ public class BanCommunication {
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create(httpRequest)).build();
         HttpResponse<String> response = tryCatchResponse(request);
+
+        boolean accessDenied = gson.fromJson(response.body(), Boolean.class);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
+            accessDenied = true;
         }
 
-        return gson.fromJson(response.body(), Boolean.class);
+        return accessDenied;
     }
 
     /**

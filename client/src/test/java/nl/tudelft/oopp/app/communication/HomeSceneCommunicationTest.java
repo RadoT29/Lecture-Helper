@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockserver.integration.ClientAndServer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,12 +30,16 @@ public class HomeSceneCommunicationTest {
     private Question question1;
     private Question question2;
     private List<Question> questions;
+    private PrintStream standardOut = System.out;
+    private ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
-    /**Start the mock server before each test.
+    /**
+     * Start the mock server before each test.
      */
     @BeforeEach
     public void startMockServer() {
         mockServer = startClientAndServer(8080);
+        System.setOut(new PrintStream(outputStreamCaptor));
 
         roomLink = UUID.randomUUID().toString();
         roomName = "roomName456";
@@ -55,6 +61,7 @@ public class HomeSceneCommunicationTest {
      */
     @AfterEach
     public void stopMockServer() {
+        System.setOut(standardOut);
         Session.clearSessionTest();
         mockServer.stop();
     }
@@ -76,12 +83,14 @@ public class HomeSceneCommunicationTest {
         mockServer.verify(request()
                 .withMethod("POST")
                 .withPath(path));
+        Session.clearSessionTest();
     }
 
     /**Method to set the mock server for the proper request/response.
      */
     void mockGetQuestions(
-            List<Question> questions, String roomLink, String roomName, String userId
+            List<Question> questions, String roomLink, String roomName, String userId,
+            int statusCode
     ) {
         mockServer.when(
                 request()
@@ -90,7 +99,7 @@ public class HomeSceneCommunicationTest {
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
+                                .withStatusCode(statusCode)
                                 .withBody(CommuncationResponses.getQuestionsBodyResponse(
                                                 questions, roomLink, roomName, userId)));
     }
@@ -100,7 +109,7 @@ public class HomeSceneCommunicationTest {
     @Test
     void shouldGetQuestions() {
 
-        mockGetQuestions(questions, roomLink, roomName, userId);
+        mockGetQuestions(questions, roomLink, roomName, userId, 200);
 
         List<Question> retrievedQuestions = HomeSceneCommunication.getQuestions();
 
@@ -109,9 +118,22 @@ public class HomeSceneCommunicationTest {
         assertEquals(retrievedQuestions.get(0).getRoom().getLinkIdModerator().toString(), roomLink);
     }
 
+
+    @Test
+    void shouldGetQuestionsError() {
+
+        mockGetQuestions(questions, roomLink, roomName, userId, 300);
+
+        List<Question> retrievedQuestions = HomeSceneCommunication.getQuestions();
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+
+    }
+
+
     /**Method to set the mock server for the proper request/response.
      */
-    void mockGetSingleQuestion(String roomLink, String userId, Long questionId) {
+    void mockGetSingleQuestion(String roomLink, String userId, Long questionId, int statusCode) {
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -119,7 +141,7 @@ public class HomeSceneCommunicationTest {
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
+                                .withStatusCode(statusCode)
                                 .withBody(questionId.toString()));
     }
 
@@ -135,12 +157,32 @@ public class HomeSceneCommunicationTest {
         Session.getInstance(roomLink, roomName, userId, true);
 
         Long questionId = 1L;
-        mockGetSingleQuestion(roomLink, userId, questionId);
+        mockGetSingleQuestion(roomLink, userId, questionId, 200);
 
         Long receivedLong = HomeSceneCommunication.getSingleQuestion();
 
         assertEquals(questionId, receivedLong);
+        Session.clearSessionTest();
     }
+
+    @Test
+    void shouldGetSingleQuestionsError() {
+        String roomLink = UUID.randomUUID().toString();
+        String roomName = "roomName456";
+        String userId = UUID.randomUUID().toString();
+
+        Session.getInstance(roomLink, roomName, userId, true);
+
+        Long questionId = 1L;
+        mockGetSingleQuestion(roomLink, userId, questionId, 300);
+        HomeSceneCommunication.getSingleQuestion();
+
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+        Session.clearSessionTest();
+    }
+
+
 
     /**Test if HomeSceneCommunication.clearQuestions sends
      *  a delete questions request to the right path.
@@ -162,15 +204,30 @@ public class HomeSceneCommunicationTest {
     @Test
     void shouldConstantlyGetQuestions() throws InterruptedException {
 
-        mockConstantlyGetQuestions(questions, roomLink, roomName, userId);
+        mockConstantlyGetQuestions(questions, roomLink, roomName, userId, 200);
 
         List<Question> retrievedQuestions = HomeSceneCommunication.constantlyGetQuestions(roomLink);
 
         assertEquals(retrievedQuestions.get(0).getQuestionText(), question1.getQuestionText());
     }
 
+
+    @Test
+    void shouldConstantlyGetQuestionsError() throws InterruptedException {
+
+        mockConstantlyGetQuestions(questions, roomLink, roomName, userId, 300);
+
+        List<Question> retrievedQuestions = HomeSceneCommunication.constantlyGetQuestions(roomLink);
+
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+    }
+
+
+
     void mockConstantlyGetQuestions(
-            List<Question> questions, String roomLink, String roomName, String userId
+            List<Question> questions, String roomLink, String roomName, String userId,
+            int statusCode
     ) {
         mockServer.when(
                 request()
@@ -179,43 +236,14 @@ public class HomeSceneCommunicationTest {
         )
                 .respond(
                         response()
-                                .withStatusCode(200)
+                                .withStatusCode(statusCode)
                                 .withBody(CommuncationResponses.getQuestionsBodyResponse(
                                         questions, roomLink, roomName, userId)));
     }
-
-
-    @Test
-    void shouldGetConstantlyAnsweredQuestions() throws InterruptedException {
-        mockConstantlyGetAnsweredQuestions(questions, roomLink, roomName, userId);
-
-        List<Question> retrievedQuestions = HomeSceneCommunication
-                                        .constantlyGetAnsweredQuestions(roomLink);
-
-        assertEquals(2, retrievedQuestions.size());
-    }
-
-
-    void mockConstantlyGetAnsweredQuestions(
-            List<Question> questions, String roomLink, String roomName, String userId
-    ) {
-        mockServer.when(
-                request()
-                        .withMethod("GET")
-                        .withPath("/questions/log/" + roomLink)
-        )
-                .respond(
-                        response()
-                                .withStatusCode(200)
-                                .withBody(CommuncationResponses.getQuestionsBodyResponse(
-                                        questions, roomLink, roomName, userId)));
-    }
-
-
 
     @Test
     void shouldExportQuestions() {
-        mockExportQuestions(questions, roomLink, roomName, userId);
+        mockExportQuestions(questions, roomLink, roomName, userId, 200);
 
         String exported = HomeSceneCommunication.exportQuestions(roomLink);
         String expected = "Questions and Answers from Room: sala 17\n"
@@ -232,9 +260,18 @@ public class HomeSceneCommunicationTest {
         assertEquals(expected, exported);
     }
 
+    @Test
+    void shouldExportQuestionsError() {
+        mockExportQuestions(questions, roomLink, roomName, userId, 300);
+
+        HomeSceneCommunication.exportQuestions(roomLink);
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+    }
 
     void mockExportQuestions(
-            List<Question> questions, String roomLink, String roomName, String userId) {
+            List<Question> questions, String roomLink, String roomName, String userId,
+            int statusCode) {
         {
             mockServer.when(
                     request()
@@ -243,17 +280,61 @@ public class HomeSceneCommunicationTest {
             )
                     .respond(
                             response()
-                                    .withStatusCode(200)
+                                    .withStatusCode(statusCode)
                                     .withBody(CommuncationResponses
                                             .getExportedQuestionsBodyResponse(
-                                            questions, roomLink, roomName, userId)));
+                                                    questions, roomLink, roomName, userId)));
         }
     }
+
+    @Test
+    void shouldGetConstantlyAnsweredQuestions() throws InterruptedException {
+        mockConstantlyGetAnsweredQuestions(questions, roomLink, roomName, userId, 200);
+
+        List<Question> retrievedQuestions = HomeSceneCommunication
+                                        .constantlyGetAnsweredQuestions(roomLink);
+
+        assertEquals(2, retrievedQuestions.size());
+    }
+
+    @Test
+    void shouldGetConstantlyAnsweredQuestionsError() throws InterruptedException {
+        mockConstantlyGetAnsweredQuestions(questions, roomLink, roomName, userId, 300);
+
+        HomeSceneCommunication.constantlyGetAnsweredQuestions(roomLink);
+
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+    }
+
+
+
+
+    void mockConstantlyGetAnsweredQuestions(
+            List<Question> questions, String roomLink, String roomName, String userId,
+            int statusCode
+    ) {
+        mockServer.when(
+                request()
+                        .withMethod("GET")
+                        .withPath("/questions/log/" + roomLink)
+        )
+                .respond(
+                        response()
+                                .withStatusCode(statusCode)
+                                .withBody(CommuncationResponses.getQuestionsBodyResponse(
+                                        questions, roomLink, roomName, userId)));
+    }
+
+
+
+
+
 
 
     @Test
     void isInLimitOfQuestionsTestTrue() {
-        mockIsInLimitOfQuestion(true);
+        mockIsInLimitOfQuestion(true, 200);
 
         assertDoesNotThrow(() -> {
             HomeSceneCommunication.isInLimitOfQuestion(userId, roomLink);
@@ -263,15 +344,25 @@ public class HomeSceneCommunicationTest {
 
     @Test
     void isInLimitOfQuestionsTestFalse() {
-        mockIsInLimitOfQuestion(false);
+        mockIsInLimitOfQuestion(false, 200);
 
         assertThrows(OutOfLimitOfQuestionsException.class, () -> {
             HomeSceneCommunication.isInLimitOfQuestion(userId, roomLink);
         });
     }
 
+    @Test
+    void isInLimitOfQuestionsTestError() throws OutOfLimitOfQuestionsException {
+        mockIsInLimitOfQuestion(true, 300);
+        HomeSceneCommunication.isInLimitOfQuestion(userId, roomLink);
 
-    void mockIsInLimitOfQuestion(boolean check) {
+        assertTrue(outputStreamCaptor.toString()
+                .trim().contains("Status: 300"));
+    }
+
+
+
+    void mockIsInLimitOfQuestion(boolean check, int statusCode) {
         {
             mockServer.when(
                     request()
@@ -280,7 +371,7 @@ public class HomeSceneCommunicationTest {
             )
                     .respond(
                             response()
-                                    .withStatusCode(200)
+                                    .withStatusCode(statusCode)
                                     .withBody(String.valueOf(check)));
         }
     }

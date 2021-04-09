@@ -264,7 +264,7 @@ public class QuestionCommunication {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/questions/setAnswer/"
-                        + questionId + "/user/" + userId + "/type/" + Boolean.toString(type)))
+                        + questionId + "/user/" + userId + "/type/" + type))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("Content-Type", "text/plain")
                 .build();
